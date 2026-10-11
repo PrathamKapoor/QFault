@@ -19,8 +19,8 @@ qfault/experiments.py:benchmark_run executes the frozen corpus through investiga
 
 | Session change | Actual paths | Decisions | Commit |
 |---|---|---|---|
-| Native circuits, contracts, noise and faults | qfault/quantum.py; tests/test_quantum.py | D-001–003 | Implementation commit containing this table |
-| Evidence, bounded diagnosis and recovery | qfault/diagnostics.py; qfault/recovery.py; qfault/workflow.py | D-004–005, D-010–011 | Implementation commit containing this table |
-| Integrity, review and robustness fixes | qfault/evidence.py; qfault/storage.py; qfault/api.py | D-006, D-009, D-012 | Implementation commit containing this table |
-| CLI, API and actual-results interface | qfault/cli.py; web/src; scripts | D-007 | Implementation commit containing this table |
-| Frozen comparisons and reproducibility | qfault/experiments.py; benchmarks; docs | D-008 | Implementation commit containing this table |
+| Native circuits, contracts, noise and faults | qfault/quantum.py; tests/test_quantum.py | D-001–003 | d1f81b6 |
+| Evidence, bounded diagnosis and recovery | qfault/diagnostics.py; qfault/recovery.py; qfault/workflow.py | D-004–005, D-010–011 | d1f81b6 |
+| Integrity, review and robustness fixes | qfault/evidence.py; qfault/storage.py; qfault/api.py | D-006, D-009, D-012 | d1f81b6 |
+| CLI, API and actual-results interface | qfault/cli.py; web/src; scripts | D-007 | d1f81b6 |
+| Frozen comparisons and reproducibility | qfault/experiments.py; benchmarks; docs | D-008 | d1f81b6 |

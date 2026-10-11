@@ -44,6 +44,8 @@ First establish an isolated compatible runtime and fresh-install demo, then run 
 
 ## 11. Critical Context
 
+Implementation committed locally on main as d1f81b669808550a81eec4519cba4462469f71ed with the required author and committer. No remote is configured and no push occurred. Subsequent documentation commit binds this handoff to that verified implementation.
+
 Verified Windows 10.0.26200, Python 3.13.15 (LibreOffice), Qiskit 2.3.1, Node 24.19.0, npm 11.17.0, Git 2.55.0.windows.2; versions and donor revisions in docs/environment.json. No Docker/services required. Normal exec setup failed; Node child-process orchestration enabled local work without downloading executables. scripts/local_bootstrap.py reads packages from C:/Projects/Quantum_Simulator/.venv/Lib/site-packages and C:/study/projects/quanum_ml/.python_lib and disables bytecode writes. Build tools read donor node_modules only. Per-command safe.directory overrides avoid global Git changes.
 
 All donor HEADs remained unchanged; Quantumattack gained two additional dirty file paths during the session (logistic.py and test_statistics.py). QFAULT issued no donor writes and did not revert that concurrent work; other donor status snapshots matched. See docs/source-preservation.json. No direct donor code copied; conceptual adaptations and licenses in docs/reuse-inventory.md and THIRD_PARTY_NOTICES.md.

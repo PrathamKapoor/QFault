@@ -2,7 +2,7 @@
 
 ### D-001: Independent local repository and verified runtime bridge
 
-- Date / phase / commit: 2026-10-11 / environment discovery and quantum foundation / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / environment discovery and quantum foundation / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: C:/Projects/QFF was empty and outside an existing Git repository. Normal terminal setup failed. Python was absent from PATH and donor virtualenv launchers pointed to an inaccessible Windows Store interpreter.
 - Decision: Initialize only QFF, set repository-local PrathamKapoor identity, and run the existing LibreOffice Python 3.13.15 through a read-only dependency bridge. Use per-command safe.directory overrides in this sandbox; never change global Git configuration.
 - Why: Enables actual local Qiskit execution without modifying donors, downloading executables or requesting cloud services.
@@ -12,7 +12,7 @@
 
 ### D-002: Small native Qiskit circuits and analytic fixed-input contracts
 
-- Date / phase / commit: 2026-10-11 / quantum foundation / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / quantum foundation / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Circuit correctness requires an explicit specification; sampled distributions cannot establish arbitrary unitary behavior.
 - Decision: Native QuantumCircuit templates for Bell, GHZ and QFT; independent analytic target states; 2–5 qubits and 32-operation cap for bounded local execution. Bell uses exactly two qubits by definition.
 - Why: Scientifically inspectable calculations and a reproducible small demonstration.
@@ -25,7 +25,7 @@
 
 ### D-003: Explicit quantum-channel fallback because Aer is unavailable
 
-- Date / phase / commit: 2026-10-11 / noise execution / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / noise execution / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Local Aer 0.17.2 is cp311; accessible Python is cp313. Import fails at controller_wrappers.
 - Decision: Ideal sampling via BasicSimulator; gate noise via Qiskit DensityMatrix/Kraus with explicit local depolarizing channels; symmetric readout flips after quantum measurement. Mark Aer unavailable.
 - Why: A valid executed fallback is preferable to an unexecuted backend claim.
@@ -38,7 +38,7 @@
 
 ### D-004: Allowlisted evidence boundary and transparent diagnostic policies
 
-- Date / phase / commit: 2026-10-11 / investigation / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / investigation / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Injected labels and hidden physical parameters must not drive diagnosis.
 - Decision: EvidenceCollector projects only execution ID, validated counts and shots. DiagnosticAnalyst receives the candidate, contract, projection and bounded DiagnosticAccess. Evaluator truth is attached only after prediction_digest is frozen and persisted separately.
 - Why: Demonstrable label separation; poisoning irrelevant metadata leaves analyst results unchanged.
@@ -48,7 +48,7 @@
 
 ### D-005: Bounded one-edit repair and independent validation
 
-- Date / phase / commit: 2026-10-11 / recovery / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / recovery / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: A satisfying selection score is insufficient proof of recovery.
 - Decision: Enumerate at most 256 declared one-edit candidates without a trusted full-circuit replacement. Verify with separate DensityMatrix evolution and fresh seeded counts. Preserve original circuits and require human review.
 - Why: Reproducible admissible recovery with explicit rejection/inconclusive outcomes.
@@ -58,7 +58,7 @@
 
 ### D-006: Immutable file artifacts and hash-bound append-only review
 
-- Date / phase / commit: 2026-10-11 / provenance and persistence / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / provenance and persistence / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: A local demo needs raw data, stable relationships, export and tamper detection without a service stack.
 - Decision: Exclusive experiment directories, canonical JSON investigation/evaluator documents, SHA-256 manifest and separate immutable human review records bound to the investigation digest.
 - Why: Inspectable, reproducible storage is sufficient for the bounded local product.
@@ -68,7 +68,7 @@
 
 ### D-007: Local API and restrained scientific React interface
 
-- Date / phase / commit: 2026-10-11 / usable workbench / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / usable workbench / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Judging needs a usable investigation journey backed by the real core.
 - Decision: FastAPI localhost single-process API; React/TypeScript/Vite frontend with actual distributions, hypotheses, recovery, ledger, benchmark, review and JSON export. No external fonts, charts, animations, telemetry or cloud infrastructure.
 - Why: Small dependency footprint and direct connection to measured evidence.
@@ -81,7 +81,7 @@
 
 ### D-008: Publish fixed-plan wins and the evidence-policy negative result
 
-- Date / phase / commit: 2026-10-11 / frozen benchmark / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / frozen benchmark / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: The contribution hypothesis requires actual comparisons with equal resource ceilings and honest losing cases.
 - Decision: Freeze 25 family/scenario combinations, seeds 11/29/47, four policies, 6,144-shot/4-evaluation ceilings. Publish all 300 policy results and six separate recovery trials. Repeat independently without tuning.
 - Why: Evidence policy achieved 47/75 correct versus fixed 66/75; threshold also 47/75 with fewer shots. No superiority claim is warranted.
@@ -91,7 +91,7 @@
 
 ### D-009: Validate manifest shape before integrity access
 
-- Date / phase / commit: 2026-10-11 / robustness fix / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / robustness fix / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Corruption must report failed verification rather than crash.
 - Symptom: verify() raised AttributeError for JSON null, array manifests and array artifact maps.
 - Root cause: Parsed JSON was assumed to be a dictionary before .get calls; JSON syntax validity did not imply schema validity.
@@ -104,7 +104,7 @@
 
 ### D-010: Record resource kinds and measured/derived provenance separately
 
-- Date / phase / commit: 2026-10-11 / reporting / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / reporting / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Exact simulator calculations and shot executions are different costs; raw data must remain traceable.
 - Decision: Record total evaluations, actual sampled circuit executions, exact-state evaluations, shot sums, operation resources and measured/derived observation records with execution references.
 - Why: Prevent a zero-shot classical state calculation from disappearing or being mislabeled as quantum hardware execution.
@@ -114,7 +114,7 @@
 
 ### D-011: Distinguish completed verification from successful verification
 
-- Date / phase / commit: 2026-10-11 / release correctness / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / release correctness / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Supervisor progress must not imply recovery success.
 - Symptom: A budget-inconclusive validation could enter a state named VERIFIED.
 - Root cause: The transition name described a successful verdict instead of completion of the verification operation.
@@ -127,7 +127,7 @@
 
 ### D-012: Fail closed on corrupt artifacts and bind review membership
 
-- Date / phase / commit: 2026-10-11 / independent release review / implementation commit containing this entry.
+- Date / phase / commit: 2026-10-11 / independent release review / d1f81b669808550a81eec4519cba4462469f71ed.
 - Context: Static review found artifact-shape failures and undetected review deletion.
 - Symptom: Malformed investigation/review JSON caused HTTP 500; deleting a review left verification valid.
 - Root cause: Detail loading preceded verification and assumed object shapes; the manifest did not enumerate review records.
