@@ -236,7 +236,12 @@
     "layout": "Summaries in source bundle only; raw JSON in evidence ZIP",
     "first_bundle_clone": "5e18ab946b5a2dfe67e148d32c6df6dcc09d311c restored clean before extraction",
     "duplicate_restore_issue": "First evidence ZIP included tracked summaries; checkout line ending changes produced conflicts. D-027 excludes them; regression failed before, passes after.",
-    "source_package": "Clean-commit repackaging required after D-027; not fresh-install validation"
+    "source_package": "PASSED: bundle verify, independent local clone, SHA256/CRC and both archive restores; source remains clean",
+    "validation": "artifacts/submission-delivery/transfer-verified.json",
+    "validated_source_commit": "cf23b95e747b7d061323232caf48de071cef8b15",
+    "evidence_archive_entries": 2425,
+    "demo_archive_entries": 39,
+    "fresh_install": false
   },
   "competition": {
     "controlling_deadline": "UNCONFIRMED",

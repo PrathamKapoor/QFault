@@ -337,3 +337,5 @@
 - Consequences: The first package/source-copy remains a labeled failed-restore audit. Rebuild from clean corrected source and verify restoration without any file overwrite. No authoritative benchmark bytes or scientific logic changed.
 - Regression test: tests/test_transfer.py:test_transfer_keeps_authoritative_summaries_in_source_only uses real quantum execution/storage. It failed before the fix; all99 tests pass afterward,1 deprecation warning.
 - Files: scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; flow.md; handoff.md; benchmarks/submission-verification.json.
+
+D-027 verification outcome: corrected source cf23b95e747b7d061323232caf48de071cef8b15 bundles/clones successfully. SHA256/size/CRC checks and guarded extraction restore2425 raw records plus39 demo files without overwriting source. Independent local source copy remains clean at exact HEAD; this is not isolated-install validation. Actual evidence: artifacts/submission-delivery/transfer-verified.json.

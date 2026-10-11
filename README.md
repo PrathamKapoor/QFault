@@ -152,7 +152,7 @@ Artifact directories contain investigation.json, separate evaluator-only evaluat
 - Repair is bounded and incomplete; no successful candidate is guaranteed. Validation can reject an ideal repair under noise or remain inconclusive.
 - The small benchmark repeats fixed circuits at three seeds. Its Wilson intervals are descriptive; unseen-circuit generalization and statistical superiority are unestablished.
 - A crash during multi-file persistence can leave a partial directory; verification reports it incomplete. Mid-investigation failure checkpointing is limited to API failure records, not every intermediate quantum result.
-- The supported server is localhost-only, one process. Isolated installation, packaging portability and npm lockfile validation remain unfinished. Browser coverage is limited to the tested Chromium desktop/mobile sizes.
+- The supported server is localhost-only, one process. Source/evidence transfer is verified; isolated installation and npm lockfile validation remain unfinished. Browser coverage is limited to the tested Chromium desktop/mobile sizes.
 
 ## Sources and documents
 

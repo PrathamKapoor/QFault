@@ -63,3 +63,9 @@ The following are explicitly local development fallbacks: scripts/local.ps1 and 
 ## Acceptance after transfer
 
 A Git bundle clone alone is source-transfer verification. Fresh-install acceptance additionally requires isolated Python dependency installation, genuine Aer and reference execution, own npm ci/check/build, tests, CLI demo, real API, browser workflow, export verification and tamper rejection. Record exact versions/errors and compare frozen metrics without tuning. Organizer eligibility/deadline and final narrated video approval remain separate external actions; see organizer-confirmations.md and demo.md.
+
+## Actual local transfer validation
+
+The corrected package from cf23b95e747b7d061323232caf48de071cef8b15 was built and Git-verified, cloned to artifacts/transfer-restored, and restored with guarded standard-library ZIP extraction. All package SHA256/lengths and both ZIP CRC checks passed:2425 raw evidence files and39 demo-material files. Existing files were required to match before any write; no source overwrite occurred. The restored clone remained clean with102 tracked files and the exact source HEAD. A global Git-ignore read warning did not prevent cloning/status verification. Evidence: artifacts/submission-delivery/transfer-verified.json; summary: benchmarks/submission-verification.json. This validates transfer only; no dependency installation was performed in that copy.
+
+Final delivery is generated from the final clean committed source into artifacts/qfault-submission. Its manifest, rather than this historical validation hash, is authoritative for that package's exact HEAD. The earlier artifacts/transfer-validation package is retained only as the failed duplicate-summary restore audit; do not use it for submission.
