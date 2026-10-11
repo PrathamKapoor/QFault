@@ -1,6 +1,6 @@
 # Implemented runtime flow
 
-Inputs enter qfault/cli.py:main or qfault/api.py:create_app. Both use the same qfault/workflow.py:RunRequest and investigate. The React client in web/src/main.tsx submits validated template settings to POST /api/experiments; it never executes uploaded code.
+Inputs enter qfault/cli.py:main or qfault/api.py:create_app. Both use the same qfault/workflow.py:RunRequest and investigate. The React client in web/src/main.tsx submits validated template settings to POST /api/experiments; it never executes uploaded code. Family/qubit selection fetches the matching /api/contracts/{family}/{qubits} contract. load restores saved run controls and the associated contract; probability keys are sorted in binary order.
 
 1. RunRequest validates family, qubit count, scenario, seeds, shot and evaluation bounds. scenario constructs a benchmark copy, controlled valid mutation and configured noise. Evaluator labels remain outside analyst inputs.
 2. quantum.contract supplies an analytic fixed-input state and expected measurement distribution. Supervisor starts REGISTERED. ExecutionBudget reserves each operation before it runs.
@@ -31,4 +31,10 @@ compare_policies executes a committed development/final/low-shot split through i
 |---|---|---|---|
 | Frozen development/final inputs and original audit | configs/diagnostic-evaluation.json; scripts/audit_diagnostics.py; benchmarks/policy-audit.json | D-013–015 |1d89eff |
 | Complementary measurements, separate phase policy, validation reservation | qfault/quantum.py; diagnostics.py; recovery.py; workflow.py; tests/test_phase_measurements.py | D-014–015 |3039215 |
-| Aer adapter, report verification, boundary controls and measured submission evidence | qfault/backends.py; storage.py; CLI/API; web/src/main.tsx; scripts; benchmarks | D-016–019 |Stabilization commit containing this table |
+| Aer adapter, report verification, boundary controls and measured submission evidence | qfault/backends.py; storage.py; CLI/API; web/src/main.tsx; scripts; benchmarks | D-016–019 |dffeb54 |
+
+The separate scripts/browser_bootstrap.py launcher loads installed Playwright for testing without changing the quantum server environment. scripts/browser_e2e.py drives real browser inputs and API calls, downloads a report and verifies it with storage.verify_export, checks refresh/settings, negative422, loading, console and mobile geometry. It writes ignored raw evidence/screenshots; benchmarks/browser-verification.json records the executed summary.
+
+| Session change | Actual paths | Decisions | Commit |
+|---|---|---|---|
+| Real browser workflow, saved configuration/qubit controls, binary plot order and interpreter requirement | scripts/browser_e2e.py; scripts/browser_bootstrap.py; web/src/main.tsx; pyproject.toml; tests/test_dependency_compatibility.py; benchmarks/delivery-verification.json | D-020–021 | Commit containing this entry |

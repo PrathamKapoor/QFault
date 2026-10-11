@@ -8,9 +8,9 @@ Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements
 | Fresh frontend installation / lockfile | BLOCKED | Offline metadata ENOTCACHED, online registry EACCES; no own node_modules or lockfile |
 | Actual quantum core | PASS locally | Qiskit2.3.1 reference and Aer0.17.2 executed Bell/GHZ/QFT |
 | Aer compatibility | PASS locally | Matching cp313 Windows x64 binary;8 tests;9 paired circuit/noise cases; saved densities agree |
-| Core/API/CLI regression tests | PASS locally |94 passed,1 Starlette/httpx deprecation warning |
+| Core/API/CLI regression tests | PASS locally |95 passed,1 Starlette/httpx deprecation warning |
 | TypeScript / production build | PASS with bridge | TypeScript6.0.3 and Vite8.2.2; own dependency installation still blocked |
-| Browser E2E / responsive / console | BLOCKED | Browser discovery empty; no screenshots or E2E success claimed |
+| Browser E2E / responsive / console | PASS locally | Installed Playwright1.62.0 / Chromium151; six real scientific journeys, export verification, history/refresh, loading, desktop/mobile, expected422; no unexpected errors |
 | Original benchmark reproducibility | PASS locally |75 cases/policy and6 selected repairs match, authoritative artifacts unchanged |
 | Frozen new evaluation | PASS locally |68 cases/policy, five policies, equal ceilings; full metrics reproduced |
 | Phase evidence / global phase | PASS within declared scope | Actual complementary counts; global-phase invariance; incomplete witnesses documented |
@@ -20,8 +20,8 @@ Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements
 | Cost ceilings | PASS | Reservations and shot/execution consistency; basis-gate and exact-evaluation costs retained |
 | Export / integrity | PASS relative to supplied manifest | Standalone verify-report; covered tampering fails; restoration passes; no signatures |
 | Local demo and HTTP journey | PASS |Aer healthy/fault/noise/phase/abstention; export verified; production assets served |
-| Scientific presentation | PARTIAL |Measured charts, bases, costs, negative findings in UI; browser presentation still unverified |
+| Scientific presentation | PASS within tested scope |Actual charts/circuit/bases/costs/recovery/results, visually inspected desktop/mobile screenshots; self-declared human review remains pending |
 | Local authorship / attribution | Checked at delivery |Requested author/committer; notices retained; no donor code copied or remote push |
 | QCEC / mitigation / ML-DSA / temporal / hardware | NOT IMPLEMENTED |Explicitly excluded from functional claims |
 
-See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, browser, winning result, scientific novelty or quantum-advantage claim is made.
+See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, winning result, scientific novelty or quantum-advantage claim is made. Browser success is limited to the actual recorded local Chromium checks. Current verification: benchmarks/delivery-verification.json and benchmarks/browser-verification.json; the earlier stabilization-verification.json is a historical snapshot before browser discovery.

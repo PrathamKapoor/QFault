@@ -227,3 +227,35 @@
 - Consequences: Search remains bounded and incomplete; invalid edits are never proposed. Optional-Aer-absence regression also confirms reference execution remains usable and explicit Aer requests fail honestly.
 - Regression test: tests/test_repair_boundaries.py; tests/test_aer_absence.py.
 - Files: qfault/recovery.py; tests/test_repair_boundaries.py; tests/test_aer_absence.py.
+
+### D-020: Verify the real browser workflow and restore truthful UI configuration
+
+- Date / phase / commit: 2026-10-11 / browser release verification / commit containing this entry.
+- Context: Connected-browser discovery was empty, but read-only inspection found installed Playwright1.62.0 and cached Chromium151.0.7922.34.
+- Symptom: Computational bitstrings displayed10/11 before00/01; loading history left default controls inconsistent with the recorded run; no qubit selector exposed supported four-qubit configurations.
+- Root cause: JavaScript integer-key enumeration order, load setting only results/integrity, and omitted validated qubit state/control.
+- Decision: Supersede D-007 and D-018 browser-unavailable outcomes. Use a separate local browser launcher, sort plot keys, restore all saved settings and fetch their contract, and expose the existing supported qubit count. Keep actual scientific decisions and frozen evaluation unchanged.
+- Why: Real pre-fix browser assertions reproduced ordering/history defects and missing qubit control; the final six-workflow Aer journey passes with report download verification, independent repair display, loading/error states, refresh and mobile geometry.
+- Alternatives considered: Claiming compilation proves browser behavior, mocking successful API responses, or changing application package paths to load Playwright; rejected.
+- Consequences: Browser E2E is verified locally, not a fresh installation or exhaustive device matrix. Screenshots remain ignored local evidence. Human review remains pending.
+- Regression test: scripts/browser_e2e.py; raw pre-fix browser-regression-before-fix, browser-history-before-fix, browser-qubits-before-fix and passing browser-delivery evidence.
+- Files: web/src/main.tsx; scripts/browser_bootstrap.py; scripts/browser_e2e.py; scripts/local_browser.ps1; docs/browser-verification.md; benchmarks/browser-verification.json.
+- Package: Optional playwright==1.62.0; observed pyee13.0.1 and greenlet3.5.4 recorded in requirements-browser-tested.txt.
+- Why this package: Installed real browser automation executes the entire scientific UI without network downloads.
+- Packages compared: Unavailable connected-browser runtime versus installed standalone Playwright/Chromium; the latter actually executed.
+
+### D-021: Align supported Python with tested dependency metadata
+
+- Date / phase / commit: 2026-10-11 / installation compatibility / commit containing this entry.
+- Context: Further installer discovery located uv0.12.5 and CPython3.11.16, while actual quantum runtime remains CPython3.13.15.
+- Symptom: QFAULT advertised Python>=3.11 despite pinned NumPy2.5.2 and SciPy1.18.1 requiring Python>=3.12.
+- Root cause: Project requires-python was not aligned with the actual pinned dependency Requires-Python metadata.
+- Decision: Require Python>=3.12; retain tested versions and add metadata compatibility regression. Do not claim execution on untested interpreters. Record uv's failed embedded-interpreter isolation and keep partial attempts ignored.
+- Why: The regression fails before the manifest correction and passes afterward. uv also could not find a suitable executable based on LibreOffice's embedded python-core-3.13.15; no fresh install succeeded.
+- Alternatives considered: Downgrade scientific packages without revalidation, claim CPython3.11 install support, or fabricate a frontend lockfile; rejected.
+- Consequences: Tested runtime is still3.13.15 through the disclosed bridge. Fresh Python/frontend installation and own npm lockfile remain release blockers.
+- Regression test: tests/test_dependency_compatibility.py; latest complete suite95 passed,1 warning.
+- Files: pyproject.toml; tests/test_dependency_compatibility.py; .gitignore; docs/environment-stabilization.md; benchmarks/delivery-verification.json.
+- Package: Existing numpy==2.5.2 and scipy==1.18.1; no scientific dependency replacement.
+- Why this package: Preserve executed scientific results and correct the compatibility claim to installed metadata.
+- Packages compared: Existing tested pins versus speculative older pins; existing installed uv versus missing stdlib venv launchers.

@@ -1,6 +1,6 @@
 # Verified judging rehearsal and recording script
 
-The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. This document is a recording script; no prerecorded video or browser screenshots have been produced.
+The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. This document is a recording script; no prerecorded video has been produced. Actual browser screenshots are retained under artifacts/browser-delivery.
 
 From C:\Projects\QFF in PowerShell:
 
@@ -8,7 +8,7 @@ From C:\Projects\QFF in PowerShell:
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
 ~~~
 
-Open http://127.0.0.1:8000/. If the supplied server already owns port8000, use it rather than starting a second instance. The React production build is served by FastAPI. Browser interactions are not yet verified because no browser is available; real HTTP and CLI paths have passed.
+Open http://127.0.0.1:8000/. If the supplied server already owns port8000, use it rather than starting a second instance. The React production build is served by FastAPI. Standalone installed Playwright/Chromium now verifies the real UI scientific workflow as well as HTTP/CLI paths. See benchmarks/browser-verification.json.
 
 Run the complete offline rehearsal in a separate terminal, using a new destination:
 
@@ -40,7 +40,7 @@ All sampled execution records identify AerSimulator/density_matrix. The original
 
 2:05–2:30 — Integrity: export the investigation. The rehearsal's dedicated throwaway artifact verifies true, false after covered-count alteration, true after restoring original bytes. This is SHA256 integrity relative to an unsigned manifest, not ML-DSA, authenticity or proof of scientific truth.
 
-2:30–3:00 — Findings and limitations: the original evidence policy loses to fixed and is dominated by threshold on shots/accuracy. The separate frozen phase comparison reaches66/68 versus fixed58/68 with40% more shots and two missed angle faults. Fixed remains default. Across12 selected recovery cases,10 verified and2 were inconclusive. Exact attribution is privileged simulation, witnesses are incomplete, contracts cover one input, and fresh installation/browser gates remain unfinished.
+2:30–3:00 — Findings and limitations: the original evidence policy loses to fixed and is dominated by threshold on shots/accuracy. The separate frozen phase comparison reaches66/68 versus fixed58/68 with40% more shots and two missed angle faults. Fixed remains default. Across12 selected recovery cases,10 verified and2 were inconclusive. Exact attribution is privileged simulation, witnesses are incomplete, contracts cover one input, and fresh isolated installation/own frontend dependency gates remain unfinished.
 
 ## CLI equivalents and export checking
 
@@ -58,4 +58,12 @@ For an HTTP rehearsal with the server running:
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.http_release_smoke --out artifacts/my-http-check
 ~~~
 
-benchmarks/http-stabilization.json records actual201 scientific responses, valid exports, reload GETs, production-asset200s and invalid-input422s. This is not browser rendering, console, responsive-layout or download-interaction verification. A human reviewer must still inspect and operate the interface before a submission-ready claim.
+benchmarks/http-stabilization.json records actual201 scientific responses, valid exports, reload GETs, production-asset200s and invalid-input422s. This is not browser rendering, console, responsive-layout or download-interaction verification. The separate actual browser workflow is verified in benchmarks/browser-verification.json. A human reviewer must still make their own decision; no test pretends to supply human approval.
+
+## Reproduce actual browser verification
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/my-browser-demo
+~~~
+
+This executed six actual UI-driven Aer investigations, including GHZ4/QFT4 configuration, healthy/faulty/noisy/insufficient Bell controls; it verified the downloaded artifact and checked a genuine budget-validation422. Screenshots and responses remain local and ignored. No mocked success or browser-state injection produces the scientific results. Current browser coverage is Chromium151 at1600px and390px, not every browser/device.

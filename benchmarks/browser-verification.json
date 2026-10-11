@@ -1,0 +1,119 @@
+{
+  "artifact_directory": "artifacts\\browser-delivery",
+  "bitstrings_sorted": true,
+  "saved_configuration_restored": true,
+  "qubit_configuration_verified": true,
+  "expected_console_after_invalid": [
+    "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)"
+  ],
+  "playwright": "1.62.0",
+  "browser_version": "151.0.7922.34",
+  "browser_executable": "C:\\Users\\LENOVO\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe",
+  "mocked_scientific_successes": false,
+  "workflows": [
+    {
+      "family": "qft",
+      "n_qubits": 4,
+      "scenario": "clean",
+      "shots_per_execution": 2048,
+      "experiment_id": "experiment_43891fac770b46bfbc033d2d19505013",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "actual_shots": 7168,
+      "evaluations": 4,
+      "loading_observed": true,
+      "recovery": null
+    },
+    {
+      "family": "ghz",
+      "n_qubits": 4,
+      "scenario": "clean",
+      "shots_per_execution": 2048,
+      "experiment_id": "experiment_332e33af8ab1417981d097020350e560",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "actual_shots": 7168,
+      "evaluations": 4,
+      "loading_observed": true,
+      "recovery": null
+    },
+    {
+      "family": "bell",
+      "n_qubits": 2,
+      "scenario": "clean",
+      "shots_per_execution": 2048,
+      "experiment_id": "experiment_8cae4f4ca80c48b182c6c303b9f4c100",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "actual_shots": 7168,
+      "evaluations": 4,
+      "loading_observed": true,
+      "recovery": null
+    },
+    {
+      "family": "bell",
+      "n_qubits": 2,
+      "scenario": "remove",
+      "shots_per_execution": 2048,
+      "experiment_id": "experiment_fd60119dd357492b8a0d4c8993aa5a25",
+      "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+      "actual_shots": 11264,
+      "evaluations": 30,
+      "loading_observed": true,
+      "recovery": "VERIFIED"
+    },
+    {
+      "family": "bell",
+      "n_qubits": 2,
+      "scenario": "readout",
+      "shots_per_execution": 2048,
+      "experiment_id": "experiment_4606aba9af9e480c8ce513d64da9a376",
+      "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+      "actual_shots": 7168,
+      "evaluations": 5,
+      "loading_observed": true,
+      "recovery": null
+    },
+    {
+      "family": "bell",
+      "n_qubits": 2,
+      "scenario": "phase",
+      "shots_per_execution": 64,
+      "experiment_id": "experiment_a8bd58d85be24aaf8d7fc87242ecd95c",
+      "diagnosis": "INSUFFICIENT_EVIDENCE",
+      "actual_shots": 128,
+      "evaluations": 2,
+      "loading_observed": true,
+      "recovery": null
+    }
+  ],
+  "contract_selection": true,
+  "circuit_rendered": true,
+  "independent_recovery_display": true,
+  "download_export_verified": true,
+  "refresh_and_history_reload": true,
+  "integrity_recheck": true,
+  "frozen_comparison_display": true,
+  "mobile_geometry": {
+    "width": 390,
+    "scroll": 390
+  },
+  "positive_console_errors": [],
+  "page_errors": [],
+  "failed_requests": [],
+  "expected_invalid_http": [
+    {
+      "url": "http://127.0.0.1:8000/api/experiments",
+      "status": 422
+    }
+  ],
+  "invalid_error_display": true,
+  "screenshots": [
+    "evidence-desktop.png",
+    "recovery-desktop.png",
+    "mobile.png",
+    "invalid-input.png"
+  ],
+  "limitations": [
+    "Local installed Playwright/Chromium bridge; not fresh dependency installation",
+    "Single tested desktop/mobile sizes, not exhaustive device/browser coverage",
+    "Review remains pending; no automated test poses as human approval"
+  ]
+}

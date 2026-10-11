@@ -45,7 +45,19 @@ node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
 node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
 ~~~
 
-No dependencies need to be downloaded for the current local demonstration. Browser automation could not be executed because no connected browser was available. The frontend typecheck/build and real API integration passed; responsive layouts and interactive UI flows still need browser verification.
+No dependencies need to be downloaded for the current local demonstration. Standalone Playwright1.62.0 with installed Chromium151.0.7922.34 now passes the real browser workflow: configured GHZ4/QFT4 and Bell runs, fault diagnosis, independent repair display, noise/abstention controls, export download/verification, refresh/history, loading, invalid-budget422 display and390px mobile layout. There are no unexpected console/page/request failures. The connected browser remains unavailable; the user's requested local Playwright fallback executed successfully. Screenshots remain local under artifacts/browser-delivery. See [browser evidence](benchmarks/browser-verification.json).
+
+## Repeat the verified browser workflow
+
+Keep the local server running, then execute:
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/my-browser-check
+~~~
+
+This separate machine-specific launcher reads installed Playwright packages and uses a cached headless Chromium; it does not alter the quantum server's dependency paths. The script rejects an existing output directory and preserves actual API results, downloaded report, screenshots and a summary. See [browser QA](docs/browser-verification.md).
+
+In a normal environment install the optional browser extra or requirements-browser-tested.txt, install its official Chromium with python -m playwright install chromium, and run python -m scripts.browser_e2e --out artifacts/new-browser-check. Fresh installation of those dependencies/browser is not claimed here.
 
 ## Standard installation on another machine
 
@@ -63,7 +75,7 @@ npm.cmd --prefix web run build
 .venv\Scripts\python -m qfault serve
 ~~~
 
-Use CPython 3.13 for the recorded dependency set. No Docker or external services are required. Optional Aer is also declared as the project extra aer; the tested requirements file records its observed dependency versions. A portable wheel and fresh-install dependency resolution remain release tasks; no npm lockfile is claimed.
+Use CPython 3.13 for the recorded dependency set; project metadata requires3.12+ because the pinned NumPy/SciPy releases require3.12+. Only3.13 was executed for the quantum application. No Docker or external services are required. Optional Aer is also declared as the project extra aer; the tested requirements file records its observed dependency versions. A portable wheel and fresh-install dependency resolution remain release tasks; no npm lockfile is claimed.
 
 ## CLI workflow
 
@@ -150,7 +162,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.ev
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.compare_backends --out artifacts/new-backend-check
 ~~~
 
-In a normal installed environment replace the PowerShell prefix with python -m. Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation/browser checks.
+In a normal installed environment replace the PowerShell prefix with python -m. Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation checks and verified browser scope.
 
 ## API and data
 
@@ -167,7 +179,7 @@ Artifact directories contain investigation.json, separate evaluator-only evaluat
 - Repair is bounded and incomplete; no successful candidate is guaranteed. Validation can reject an ideal repair under noise or remain inconclusive.
 - The small benchmark repeats fixed circuits at three seeds. Its Wilson intervals are descriptive; unseen-circuit generalization and statistical superiority are unestablished.
 - A crash during multi-file persistence can leave a partial directory; verification reports it incomplete. Mid-investigation failure checkpointing is limited to API failure records, not every intermediate quantum result.
-- The supported server is localhost-only, one process. Browser interaction tests, isolated installation, packaging portability and npm lockfile validation remain unfinished.
+- The supported server is localhost-only, one process. Isolated installation, packaging portability and npm lockfile validation remain unfinished. Browser coverage is limited to the tested Chromium desktop/mobile sizes.
 
 ## Sources and documents
 
