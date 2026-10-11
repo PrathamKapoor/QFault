@@ -25,3 +25,10 @@ Assessment: 2026-10-11. Status: PARTIALLY READY. Current evidence supplements th
 | QCEC / mitigation / ML-DSA / temporal / hardware | NOT IMPLEMENTED |Explicitly excluded from functional claims |
 
 See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, winning result, scientific novelty or quantum-advantage claim is made. Browser success is limited to the actual recorded local Chromium checks. Current release verification: benchmarks/release-candidate-verification.json and docs/release-candidate.md. Earlier verification: benchmarks/delivery-verification.json and benchmarks/browser-verification.json; the earlier stabilization-verification.json is a historical snapshot before browser discovery.
+
+
+## Final recovery delivery update (2026-10-11)
+
+Current evidence: benchmarks/submission-verification.json. Retained-environment suite98 passed; TypeScript/build and seven genuine recorded Aer browser workflows passed. CLI Aer demo and valid/tampered exports behave correctly. All340 final row scientific fields and policy metrics reproduce unchanged. The transfer collector verifies2432 referenced JSON files and refuses outside-artifacts or changed manifest references. Source bundle/ZIP packaging requires a clean committed branch; package manifest records its exact source commit.
+
+Independent Python/frontend installation, own npm lockfile and browser acceptance on a clean install remain blocked, not passed. One bounded official npm/PyPI probe each still fails at connect EACCES; no further retries or security bypasses. A34.64-second silent browser recording exists and three sampled frames were inspected. Final narrated video, organizer eligibility/deadline/portal/rules and user publication/submission remain unfinished. Overall submission status remains PARTIALLY READY.

@@ -1,0 +1,250 @@
+{
+  "status": "PARTIALLY READY",
+  "starting_commit": "36ba7f17a0b85c9df1cb8063f03cc5da6140255a",
+  "tests": {
+    "passed": 98,
+    "warning": "Starlette/httpx deprecation",
+    "actual_output": "artifacts/submission-delivery/tests.json",
+    "final_output": "artifacts/submission-delivery/final-tests.json",
+    "final_runtime_seconds": 12.61
+  },
+  "frontend": {
+    "typescript": "PASSED retained dependency bridge",
+    "build": "PASSED retained dependency bridge",
+    "lockfile": "ABSENT; not fabricated",
+    "fresh_npm_ci": "NOT VERIFIED; package source remains blocked"
+  },
+  "python": {
+    "version": "3.13.15",
+    "isolated_install": "NOT VERIFIED; retained embedded interpreter and read-only dependency bridge"
+  },
+  "package_sources": {
+    "attempts_per_source": 1,
+    "evidence": "artifacts/submission-delivery/package-source-checks.json",
+    "result": "npm and PyPI connect EACCES before TLS"
+  },
+  "browser": {
+    "artifact_directory": "artifacts\\submission-delivery\\browser-recording",
+    "bitstrings_sorted": true,
+    "saved_configuration_restored": true,
+    "qubit_configuration_verified": true,
+    "expected_console_after_invalid": [
+      "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)"
+    ],
+    "playwright": "1.62.0",
+    "browser_version": "151.0.7922.34",
+    "browser_executable": "C:\\Users\\LENOVO\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe",
+    "mocked_scientific_successes": false,
+    "workflows": [
+      {
+        "family": "qft",
+        "n_qubits": 4,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_df7d4f9689e044e7966b72b916abd11c",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "ghz",
+        "n_qubits": 4,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_0875dc60f9ae41f8a4df936063f7ebac",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_32f29989592e45faaf05ebc97e3a2a97",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "remove",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_61a1eacc981946b8bcc8e0442fe4a379",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "actual_shots": 11264,
+        "evaluations": 30,
+        "loading_observed": true,
+        "recovery": "VERIFIED"
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "readout",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_cca21082b2404a9ba07254a556f6bffa",
+        "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+        "actual_shots": 7168,
+        "evaluations": 5,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "phase",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_8c9428c3a9914deb8ccf987ffcdd2982",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "actual_shots": 11264,
+        "evaluations": 25,
+        "loading_observed": true,
+        "recovery": "VERIFIED"
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "phase",
+        "shots_per_execution": 64,
+        "experiment_id": "experiment_752a76d1eedd4d669d8140fe71409593",
+        "diagnosis": "INSUFFICIENT_EVIDENCE",
+        "actual_shots": 128,
+        "evaluations": 2,
+        "loading_observed": true,
+        "recovery": null
+      }
+    ],
+    "contract_selection": true,
+    "circuit_rendered": true,
+    "independent_recovery_display": true,
+    "download_export_verified": true,
+    "refresh_and_history_reload": true,
+    "integrity_recheck": true,
+    "frozen_comparison_display": true,
+    "mobile_geometry": {
+      "width": 390,
+      "scroll": 390
+    },
+    "positive_console_errors": [],
+    "page_errors": [],
+    "failed_requests": [],
+    "expected_invalid_http": [
+      {
+        "url": "http://127.0.0.1:8000/api/experiments",
+        "status": 422
+      }
+    ],
+    "invalid_error_display": true,
+    "screenshots": [
+      "evidence-desktop.png",
+      "recovery-desktop.png",
+      "mobile.png",
+      "invalid-input.png"
+    ],
+    "limitations": [
+      "Local installed Playwright/Chromium bridge; not fresh dependency installation",
+      "Single tested desktop/mobile sizes, not exhaustive device/browser coverage",
+      "Review remains pending; no automated test poses as human approval"
+    ],
+    "recording": {
+      "path": "C:\\Projects\\QFF\\artifacts\\submission-delivery\\browser-recording\\video\\browser-workflow.webm",
+      "bytes": 2874466,
+      "kind": "Genuine silent unedited browser capture; not a narrated final submission video"
+    }
+  },
+  "quantum": {
+    "versions": {
+      "qiskit": "2.3.1",
+      "aer": "0.17.2"
+    },
+    "actual_demo": "artifacts/submission-delivery/demo/summary.json",
+    "final_reproduction": "artifacts/submission-delivery/reproduction-comparison.json",
+    "reproduced_policy_metrics": true,
+    "reproduced_rows": 340,
+    "policies": {
+      "evidence": {
+        "correct": 34,
+        "cases": 68,
+        "shots": 303104,
+        "evaluations": 184
+      },
+      "fixed": {
+        "correct": 58,
+        "cases": 68,
+        "shots": 348160,
+        "evaluations": 272
+      },
+      "phase": {
+        "correct": 66,
+        "cases": 68,
+        "shots": 487424,
+        "evaluations": 328
+      },
+      "random": {
+        "correct": 21,
+        "cases": 68,
+        "shots": 303104,
+        "evaluations": 171
+      },
+      "threshold": {
+        "correct": 34,
+        "cases": 68,
+        "shots": 278528,
+        "evaluations": 162
+      }
+    }
+  },
+  "export_control": [
+    {
+      "path": "C:/Projects/QFF/artifacts/submission-delivery/demo/hidden_logical_failure.json",
+      "exit_code": 0,
+      "stdout": "{\r\n  \"valid\": true,\r\n  \"errors\": [],\r\n  \"assurance\": \"Unsigned hash consistency relative to supplied manifest; no external trust anchor or scientific correctness proof\"\r\n}\r\n",
+      "stderr": ""
+    },
+    {
+      "path": "C:/Projects/QFF/artifacts/submission-delivery/demo/tampered-report.json",
+      "exit_code": 1,
+      "code": 1,
+      "stdout": "{\r\n  \"valid\": false,\r\n  \"errors\": [\r\n    \"digest mismatch: investigation.json\",\r\n    \"digest mismatch: evaluation.json\"\r\n  ],\r\n  \"assurance\": \"Unsigned hash consistency relative to supplied manifest; no external trust anchor or scientific correctness proof\"\r\n}\r\n",
+      "stderr": ""
+    }
+  ],
+  "media": {
+    "file": "artifacts/submission-delivery/browser-recording/video/browser-workflow.webm",
+    "bytes": 2874466,
+    "duration_seconds": 34.64,
+    "dimensions": [
+      1440,
+      900
+    ],
+    "codec": "VP8",
+    "audio": false,
+    "inspection": "Beginning/middle/end frames decoded and visually inspected; not exhaustive playback",
+    "full_decode": "Not completed: installed FFmpeg limited muxers; re-encode timed out",
+    "final_narrated_video": "NOT COMPLETED"
+  },
+  "transfer": {
+    "verified_evidence_files": 2432,
+    "uncompressed_bytes": 10274729,
+    "source_package": "Pending clean-commit packaging; do not infer fresh install"
+  },
+  "competition": {
+    "controlling_deadline": "UNCONFIRMED",
+    "eligibility_and_deliverables": "Organizer responses pending",
+    "checklist": "docs/organizer-confirmations.md"
+  },
+  "limitations": [
+    "No physical hardware",
+    "Privileged ideal state used for attribution/planning",
+    "Unsigned integrity only",
+    "Frozen policies unchanged",
+    "Clean-installed browser workflow unverified"
+  ]
+}

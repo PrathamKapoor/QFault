@@ -6,6 +6,8 @@ Release stabilization and diagnostic evidence are implemented and locally verifi
 
 Submission release continuation began at clean ee7120286de69f54609e53855a2c09d48a324b2b. npm lockfile resolution and exact ci failed in a disposable source copy; no suitable standard CPython>=3.12 was available. No elevation or speculative dependency changes. Current evidence: benchmarks/release-candidate-verification.json and docs/release-candidate.md.
 
+Final recovery continuation started at clean36ba7f17a0b85c9df1cb8063f03cc5da6140255a. One bounded probe per official package source still returns EACCES before TLS. Repeated install experiments stopped. Portable committed-history/evidence packaging and genuine silent browser footage now exist; no independent install or narrated final video is claimed. Current summary: benchmarks/submission-verification.json.
+
 ## 2. Work Completed
 
 Continued the existing project without rewrite. Initial branch main at d30535caac17fb55718ac313c3e033dabb631364 was clean. Read decisions/flow/handoff and required docs, inspected implementation, reran62 tests and reproduced the original75-case/policy benchmark. Audited all300 original predictions and their evidence/actions. Preserved authoritative benchmarks/results.json, reproduction.json and demo.json.
@@ -16,11 +18,15 @@ Located a matching cp313 Aer0.17.2 installation read-only. Added optional explic
 
 Reproduced original/final metrics again under artifacts/release-candidate, all12 recovery scientific rows and two rejected controls. Ran nine paired conformance cases and Aer judging demo. Added a paired existing-results audit:56 both correct,10 phase-only,2 fixed-only,0 neither; all340 final raw manifests verify. Negative audit controls reject mismatched evaluator truth and modified manifest copies. Expanded actual browser to seven Aer workflows with full phase repair; clarified higher-cost phase and privileged calculation labels. Scientific code/defaults/thresholds remain unchanged.
 
+Latest continuation:98 Python tests pass, TypeScript/build pass through the disclosed retained bridge, seven recorded real Aer browser workflows pass, Aer CLI judging demo runs, valid export verifies and disposable altered export fails. All340 final row scientific fields and policy metrics excluding runtime reproduce unchanged. Added guarded transfer packager; collect_evidence verifies2432 referenced files (10,274,729 bytes). Browser raw video is34.64 seconds,1440×900,VP8,no audio; three sampled frames decoded and visually inspected. Final narrated video is pending.
+
 ## 3. Files Changed
 
 Core: qfault/quantum.py, diagnostics.py, recovery.py, workflow.py, experiments.py, storage.py, cli.py, api.py; new backends.py. Interface: web/src/main.tsx. Tests: test_phase_measurements.py, test_policy_evaluation.py, test_export_verification.py, test_aer_backend.py, test_aer_absence.py, test_measurement_boundaries.py, test_phase_truth_isolation.py, test_repair_boundaries.py. Additional release files: scripts/browser_bootstrap.py, browser_e2e.py, local_browser.ps1; tests/test_dependency_compatibility.py; requirements-browser-tested.txt; docs/browser-verification.md; benchmarks/browser-verification.json and delivery-verification.json. Tooling: scripts/audit_diagnostics.py, compare_backends.py, evaluate_recovery.py, submission_demo.py, http_release_smoke.py, plot_policy_tradeoff.py, local_bootstrap.py. Manifests: configs/diagnostic-evaluation.json, pyproject.toml optional Aer extra, requirements-aer-tested.txt. Documentation: README, decisions, flow, this handoff, docs/environment-stabilization.md, diagnostic-findings.md, methodology.md, demo.md, release-gates.md. Actual measured summaries/figure under benchmarks; raw artifacts and built frontend remain ignored.
 
 Release continuation changes: scripts/audit_release.py, scripts/browser_e2e.py, web/src/main.tsx labels, benchmarks/paired-policy-audit.json, benchmarks/release-candidate-verification.json, docs/release-candidate.md, docs/simulator-information-audit.md and current root documentation. No dependency versions replaced.
+
+Latest transfer/demo files: scripts/package_submission.py, tests/test_transfer.py, scripts/browser_e2e.py optional recording; docs/transfer.md, local-development.md, organizer-confirmations.md, demo.md; README, decisions/flow/handoff; benchmarks/submission-verification.json. No quantum policy, threshold, default or authoritative result changed.
 
 ## 4. Current Architecture / State
 
@@ -33,6 +39,8 @@ The local application is served at http://127.0.0.1:8000/ by the owned process s
 D-001–012 retain the original foundation/history. D-013 records the original cp311 mismatch and failed install attempts; D-016 explicitly supersedes its Aer-unavailable outcome after locating cp313. D-014 defines complementary witnesses. D-015 freezes holdout/reserves validation and retains fixed default. D-017 adds exported-report checking and bounded internal analysis circuits. D-018 publishes all frozen negative findings. D-019 skips invalid repair angle edits rather than weakening input validation. D-020 supersedes the browser-unavailable outcome with actual Playwright evidence and UI regressions. D-021 corrects requires-python to >=3.12 from installed dependency metadata. Commits1d89eff and3039215 precede final evaluation; dffeb54 contains Aer/reporting/frozen evidence; the commit containing this update contains browser verification and installation-bound correction.
 
 D-022 records precise repeatable install blockers and keeps the normal own-manifest path distinct from the development-only fallback. D-023 documents descriptive paired outcomes, actual privileged information flow and scientific labels.
+
+D-025 defines clean committed-source/evidence transfer, with no fresh-install implication. D-026 records genuine silent browser footage and pending final narration/organizer confirmation.
 
 ## 6. Requirements and Constraints
 
@@ -66,6 +74,8 @@ Current seven-workflow browser output: artifacts/release-candidate/browser-compl
 
 D-024 fixes the recovery runner unconditionally overwriting its fixed published summary despite --out. Original tracked bytes restored; new sentinel regression failed before, passes after. Full96 tests pass. All new recovery artifacts remain separately retained.
 
+Latest checks:98 passed,1 deprecation warning,12.61s (final rerun; earlier run10.76s). Raw command results: artifacts/submission-delivery/{tests,typescript,build,demo-command,final-command,recording-command,report-verification,reproduction-comparison}.json. Full recorded browser evidence: artifacts/submission-delivery/browser-recording/summary.json; recording path: video/browser-workflow.webm. Actual export exit statuses are0 valid/1 tampered. Only sampled frame inspection is claimed; stripped FFmpeg full decode/re-encode was unsupported/timed out. docs/demo.md has exact seeds/settings, a timed shot/narration guide and honest raw-footage status.
+
 ## 8. Known Issues / Risks
 
 LibreOffice Python3.13.15 lacks venvlauncher.exe/venvwlauncher.exe. Python package network access fails EACCES/connection errors; npm online registry fails EACCES and offline metadata ENOTCACHED. The ignored partial .venv has no usable interpreter; do not treat it as an install. No package-lock.json or own node_modules could be generated/installed. Connected-browser discovery is empty, but installed standalone Playwright successfully executes Chromium. Installed uv0.12.5 also failed to create isolation from embedded LibreOffice Python; discovered complete CPython3.11.16 is below the pinned NumPy/SciPy >=3.12 requirement. Partial .venv-isolated and .venv-isolated-retry remain ignored. Exact attempts are docs/environment-stabilization.md.
@@ -76,7 +86,7 @@ Current install details: official npm/PyPI DNS resolves, connect EACCES precedes
 
 ## 9. Unfinished Work
 
-Fresh Python/frontend install and lockfile; repeat the passing browser workflow against that fresh installation; actual judging video recording. Optional stronger independent scientific validation, larger unseen-circuit corpus, phase-angle detection study and measurement-efficient selection remain separate future work. Do not silently retune frozen final cases or replace losing results.
+Fresh Python/frontend install and lockfile; repeat browser acceptance against that independent installation; record narration/edit/inspect the final judging video from genuine raw footage; obtain organizer eligibility/deadline/portal/deliverable confirmations. Optional stronger independent scientific validation, larger unseen-circuit corpus, phase-angle detection study and measurement-efficient selection remain separate future work. Do not silently retune frozen final cases or replace losing results.
 
 ## 10. Next Subphase
 
@@ -84,7 +94,7 @@ On an unrestricted machine, use normal CPython3.13, install the tested manifests
 
 ## 11. Critical Context
 
-Original expected HEAD d30535c was verified. Current commits are local on main; inspect git log/status for exact delivery HEAD. Authoritative old summaries remain unchanged. New holdout was frozen before implementation; final results were opened once without tuning, then reproduced. Latest raw evidence is artifacts/release-candidate (original/final/recovery/conformance/demo/browser-complete plus exact failed-install logs). Raw directories also include artifacts/stabilization-original, stabilization-current-original, diagnostic-development, diagnostic-final, diagnostic-final-reproduction, diagnostic-low-shot, recovery-stabilization, recovery-reproduction, backend-conformance, submission-rehearsal, http-stabilization and browser-delivery. These are ignored but retained locally. Normal fresh-machine commands are documented as unverified installation instructions. No donor implementation copied; prior reuse inventory/THIRD_PARTY_NOTICES remain valid. Deadline supplied by user: October12,2026; not independently reinterpreted as a winning outcome.
+Original expected HEAD d30535c was verified. Current commits are local on main; inspect git log/status for exact delivery HEAD. Authoritative old summaries remain unchanged. New holdout was frozen before implementation; final results were opened once without tuning, then reproduced. Latest raw evidence is artifacts/release-candidate (original/final/recovery/conformance/demo/browser-complete plus exact failed-install logs). Raw directories also include artifacts/stabilization-original, stabilization-current-original, diagnostic-development, diagnostic-final, diagnostic-final-reproduction, diagnostic-low-shot, recovery-stabilization, recovery-reproduction, backend-conformance, submission-rehearsal, http-stabilization and browser-delivery. These are ignored but retained locally. Normal fresh-machine commands are documented as unverified installation instructions. No donor implementation copied; prior reuse inventory/THIRD_PARTY_NOTICES remain valid. The official public site presents conflicting October12 and October23,23:59IST submission dates and lists Pratham Kapoor as a workshop lead. No controlling deadline or eligibility has been confirmed. See docs/organizer-confirmations.md; do not submit before resolution.
 
 ## 12. Agent Instructions
 

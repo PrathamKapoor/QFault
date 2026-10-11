@@ -299,3 +299,28 @@
 - Consequences: Reproduction cannot silently publish new results. Any future authoritative publication must be a separate explicitly reviewed operation. No scientific thresholds/results changed; prior summary is restored byte-for-byte as tracked.
 - Regression test: tests/test_recovery_output_isolation.py (observed fail, then pass; full integration suite passes).
 - Files: scripts/evaluate_recovery.py; tests/test_recovery_output_isolation.py; benchmarks/release-candidate-verification.json; docs/release-candidate.md.
+
+### D-025: Transfer committed history with verified measured evidence
+
+- Date / phase / commit: 2026-10-11 / submission transfer / commit containing this entry.
+- Context: One bounded official npm and PyPI probe each still returns connect EACCES; the current source cannot independently resolve dependencies here.
+- Decision: Stop network/install retries. Add scripts/package_submission.py to package the clean committed branch as a verified Git bundle, frozen summaries and verified referenced JSON as a CRC-checked ZIP, and optional genuine demo material separately. Bind sizes/SHA256/source commit in an unsigned manifest. Move machine-specific fallback instructions out of README into docs/local-development.md; document normal external installation without a donor dependency path.
+- Why: Transfer should preserve history and raw evidence without a second maintained source tree, ignored dependencies or invented lockfile. collect_evidence verifies2432 actual files,10,274,729 uncompressed bytes, including referenced manifests before packaging.
+- Alternatives considered: Repeated blocked installs, hand-authored lockfile, copied donor dependencies or source-only transfer losing raw evidence; rejected.
+- Consequences: Bundle/source verification does not establish fresh installation. Normal CPython/npm resolution and clean-installed browser acceptance remain externally required. Packaging refuses dirty source and outside-workspace evidence.
+- Regression test: tests/test_transfer.py failed before implementation and passes after; outside-artifacts references and changed manifest digests are rejected. Full98 tests pass.
+- Files: scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; docs/local-development.md; README.md; benchmarks/submission-verification.json.
+- Package: No dependency added or replaced; stdlib Git/ZIP/SHA256 packaging uses existing ArtifactStore verification.
+- Why this package: Avoid additional tooling and preserve scientific pins.
+- Packages compared: Existing stdlib/Git versus additional archive/deployment infrastructure; existing tools suffice.
+
+### D-026: Record genuine browser footage without claiming a final narrated video
+
+- Date / phase / commit: 2026-10-11 / judging demonstration / commit containing this entry.
+- Context: Installed official Playwright/Chromium can record the currently working scientific UI without registry access.
+- Decision: Add optional --record-video to the existing real browser acceptance runner. Keep default behavior and actual assertions. Capture silent unedited WebM, then provide a timed narration/shot guide and organizer-confirmation checklist.
+- Why: Seven actual Aer workflows pass with download verification, history restoration, invalid422 and mobile390px checks. The resulting34.64-second VP8 clip is real footage, not a narrated three-minute final submission. Beginning/middle/end frames decode and were visually inspected; full-file re-encoding timed out with the limited installed FFmpeg, so exhaustive playback is not claimed.
+- Alternatives considered: Invent a video, synthetic screenshots, mocked successes or delay all demonstration work for registry access; rejected.
+- Consequences: A person must record narration, edit/inspect/approve the final video and obtain controlling deadline/eligibility/rules. The public official page contains conflicting October12/October23 submission dates; no organizer response is invented. No submission, publication or message to organizers occurred.
+- Regression test: scripts/browser_e2e.py completed all seven genuine workflows with recording enabled; no unexpected console/page/request errors. Valid export exits0; disposable covered alteration exits1. Frozen final340 rows/scientific metrics reproduce unchanged.
+- Files: scripts/browser_e2e.py; docs/demo.md; docs/organizer-confirmations.md; benchmarks/submission-verification.json; artifacts/submission-delivery (ignored measured/media outputs).

@@ -1,8 +1,8 @@
 # Verified judging rehearsal and recording script
 
-The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. This document is a recording script; no prerecorded video has been produced. Actual browser screenshots are retained under artifacts/browser-delivery.
+The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. A genuine silent browser recording now exists at artifacts/submission-delivery/browser-recording/video/browser-workflow.webm. It is raw test footage, not a narrated final submission video. Actual screenshots and responses accompany it.
 
-From C:\Projects\QFF in PowerShell:
+From the repository root in PowerShell (restricted-machine development bridge only; normal installed environments use python -m):
 
 ~~~powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
@@ -70,4 +70,32 @@ This executed six actual UI-driven Aer investigations, including GHZ4/QFT4 confi
 
 ## Submission release rehearsal
 
-Latest actual output is artifacts/release-candidate/demo/summary.json, with per-scene JSON exports in the same directory. The recorded seed42 and configurations remain unchanged. Latest seven-workflow browser screenshots/exports are artifacts/release-candidate/browser-complete; these include an actual successful full phase-fault recovery. Existing narration is still accurate; no video has been recorded. The release paired audit adds56 cases both fixed/phase correct,10 phase-only and2 fixed-only, without a significance claim. See docs/release-candidate.md for exact executed commands and independent-install blockers.
+Latest actual output is artifacts/release-candidate/demo/summary.json, with per-scene JSON exports in the same directory. The recorded seed42 and configurations remain unchanged. Latest seven-workflow browser screenshots/exports are artifacts/release-candidate/browser-complete; these include an actual successful full phase-fault recovery. The silent browser recording described below supersedes the earlier no-recording state; a narrated final video remains unfinished. The release paired audit adds56 cases both fixed/phase correct,10 phase-only and2 fixed-only, without a significance claim. See docs/release-candidate.md for exact executed commands and independent-install blockers.
+
+## Recording material and exact shot plan
+
+Latest executed rehearsal: artifacts/submission-delivery/demo/summary.json. Latest recorded browser suite: artifacts/submission-delivery/browser-recording/summary.json, with video/browser-workflow.webm (2,874,466 bytes, VP8,1440×900,34.64 seconds, no audio). Installed Playwright/Chromium recorded genuine inputs and responses; no synthetic console or mocked scientific success. Beginning/middle/end frames were decoded to PNG; all three frames were visually inspected. Full-file decoding with the installed stripped FFmpeg did not complete, so no exhaustive video playback claim is made. This fast automated clip is usable source footage, not the complete three-minute judging story.
+
+Actual screenshot assets: browser-recording/evidence-desktop.png, recovery-desktop.png, mobile.png and invalid-input.png under artifacts/submission-delivery. The screenshots and clip remain ignored local deliverables and are included by the transfer packager. No recorded narration or final edited MP4 is claimed.
+
+For a new genuine capture with the current working server:
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/my-recording --record-video
+~~~
+
+This is the restricted-machine launcher. In a normal independently installed environment use python -m scripts.browser_e2e with the same arguments. The latter remains unverified here. Recording does not bypass actual scientific assertions.
+
+Use these exact inputs for a slower manual recording: Bell2, Aer, seed42, phase-sensitive policy (explicitly higher-cost),2048 shots/execution. The CLI rehearsal already executed these inputs. For the browser insufficient-evidence shot, select phase fault and64 shots/execution; this actual browser control abstained after128 shots/2 evaluations. The separate CLI control uses remove with4096 total shots/2 evaluations and also abstains. Do not mix these two costs in narration. Human review remains pending.
+
+| Time | Real UI/terminal action and shot | Narration to record |
+|---|---|---|
+| 0:00–0:25 | Title and contract panel; identify local simulation | A successful quantum job does not establish correct behavior. QFAULT investigates an explicit circuit contract using Qiskit execution evidence. |
+| 0:25–0:50 | Bell2, clean, Aer, phase policy, seed42,2048; run and show circuit/counts | This Bell preparation agrees with the supported fixed-input contract. These are actual sampled simulator counts; no defect is invented. |
+| 0:50–1:25 | Same settings, missing gate; run; show distributions, competing hypotheses and privileged-calculation label | The evaluator hides the mutation label from diagnosis. Measured disagreement triggers investigation. Exact attribution also uses privileged simulator state, so this is a simulation-backed developer tool. |
+| 1:25–1:55 | Scroll to real recovery and fresh verification evidence | A bounded one-edit proposal operates on a copy. Fresh sampled evidence and a separate density-matrix calculation verify this selected recovery. The complete run costs11264 shots; this is not general repair or unitary equivalence. |
+| 1:55–2:20 | Readout noise with same settings, then phase fault at64 shots | A logically valid circuit can have noisy output. The noise control gives a noise-consistent explanation. When evidence cannot be funded, QFAULT abstains. |
+| 2:20–2:45 | Frozen comparison panel and actual exported report; show CLI verification from the rehearsal | In68 controlled cases fixed gets58 correct and phase-sensitive66, using40% more shots. Two angle faults remain missed; selected recovery is10/12 with two inconclusive. A covered change to a disposable export is rejected. |
+| 2:45–3:00 | Limitations and pending human review | The contribution is an auditable investigation workflow with bounded recovery and cost accounting. It is simulation-only; unsigned hashes establish consistency, not physical correctness or authenticity. |
+
+For the integrity shot, run qfault verify-report on artifacts/submission-delivery/demo/hidden_logical_failure.json (actual exit0) and on its disposable tampered-report.json (actual exit1). Prefix with the appropriate installed Python or documented local launcher. Do not edit a benchmark. The current raw clip shows export/verification but not the CLI tamper sequence; record that additional shot honestly. Pause for reading rather than speeding through evidence. Adjust final duration only after organizers confirm the format. Add human narration and inspect the final edited file before claiming the video complete.

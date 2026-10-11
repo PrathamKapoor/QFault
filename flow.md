@@ -46,3 +46,13 @@ Submission audit: scripts/audit_release.py reads existing final rows, matches fi
 | Disposable install audit, paired integrity checks and clearer scientific labels | scripts/audit_release.py; scripts/browser_e2e.py; web/src/main.tsx; docs/release-candidate.md; benchmarks/release-candidate-verification.json | D-022–023 | Commit containing this entry |
 
 scripts/evaluate_recovery.py now writes only the requested exclusive directory and its summary.json; it never implicitly republishes benchmarks/recovery-stabilization.json. D-024 and tests/test_recovery_output_isolation.py document the real-execution preservation regression.
+
+
+Submission transfer: scripts/package_submission.py:main requires a clean named branch, then collect_evidence reads the seven frozen summaries, confines raw references to artifacts, checks recorded digests and ArtifactStore.verify, and collects JSON evidence. It creates/verifies the Git source bundle, archive writes each ZIP exclusively and checks CRC, then main writes the SHA256/source-commit manifest. Optional repeated --demo directories add only JSON/PNG/WebM material. No installation, cloud upload or scientific decision is performed by this path. docs/transfer.md describes restoring the same committed source and raw evidence on a supported external computer.
+
+Optional browser recording: scripts/browser_e2e.py:main passes --record-video to the existing Playwright context, retains all real interaction/assertions, closes the context to finalize video, and records the actual path/size in summary.json. The silent raw clip is separate from final human narration. ArtifactStore export verification and the CLI tamper control are unchanged.
+
+| Session change | Actual paths | Decisions | Commit |
+|---|---|---|---|
+| Verified source/evidence transfer and normal-install handoff | scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; README.md | D-025 | Commit containing this entry |
+| Genuine optional browser recording and organizer/narration guide | scripts/browser_e2e.py; docs/demo.md; docs/organizer-confirmations.md; benchmarks/submission-verification.json | D-026 | Commit containing this entry |

@@ -6,11 +6,13 @@ from playwright.sync_api import sync_playwright,expect
 from qfault.storage import verify_export
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--out',required=True);parser.add_argument('--record-video',action='store_true');args=parser.parse_args()
     root=Path(args.out);root.mkdir(parents=True,exist_ok=False)
     console_errors=[];page_errors=[];failed_requests=[];http_errors=[];rows=[]
     with sync_playwright() as p:
-        browser=p.chromium.launch(headless=True);context=browser.new_context(viewport={'width':1600,'height':1000},accept_downloads=True);page=context.new_page()
+        browser=p.chromium.launch(headless=True)
+        recording={'record_video_dir':str(root/'video'),'record_video_size':{'width':1440,'height':900}} if args.record_video else {}
+        context=browser.new_context(viewport={'width':1600,'height':1000},accept_downloads=True,**recording);page=context.new_page()
         page.on('console',lambda msg:console_errors.append(msg.text) if msg.type=='error' else None)
         page.on('pageerror',lambda err:page_errors.append(str(err)))
         page.on('requestfailed',lambda req:failed_requests.append({'url':req.url,'failure':req.failure}))
@@ -39,6 +41,7 @@ def main():
             expect(page.get_by_role('button',name='Run investigation')).to_be_enabled()
             expect(page.get_by_text('Artifact hashes verified',exact=True)).to_be_visible()
             (root/(data['experiment_id']+'.json')).write_text(json.dumps(data,indent=2),encoding='utf8')
+            if args.record_video: page.wait_for_timeout(2000)  # Genuine reading hold in silent raw footage.
             return data
         for family in ['qft','ghz']:
             page.get_by_label('Circuit family').select_option(family);page.get_by_label('Qubit count').select_option('4')
@@ -58,6 +61,7 @@ def main():
         expect(page.get_by_text('Fresh candidate phase-basis quality',exact=True)).to_be_visible()
         expect(page.get_by_text(str(bad['recovery']['verification']['validation_seed']),exact=True)).to_be_visible()
         page.screenshot(path=str(root/'recovery-desktop.png'),full_page=True)
+        if args.record_video: page.wait_for_timeout(3000)
         page.get_by_role('tab',name='Report',exact=True).click()
         with page.expect_download() as download_info:page.get_by_role('link',name='Export investigation JSON').click()
         download=download_info.value;download.save_as(root/'investigation-export.json');report=json.loads((root/'investigation-export.json').read_bytes());assert verify_export(report)['valid'];assert report['investigation']['experiment_id']==bad['experiment_id']
@@ -72,6 +76,7 @@ def main():
         phase_fault=investigate('phase','LOGICAL_CIRCUIT_DEFECT');assert phase_fault['recovery']['status']=='VERIFIED'
         low=investigate('phase','INSUFFICIENT_EVIDENCE',64);assert low['recovery'] is None
         page.get_by_role('tab',name='Benchmark',exact=True).click();expect(page.get_by_role('heading',name='Separate frozen final comparison')).to_be_visible();expect(page.get_by_role('cell',name='66/68',exact=True)).to_be_visible()
+        if args.record_video: page.wait_for_timeout(4000)
         page.set_viewport_size({'width':390,'height':844});page.screenshot(path=str(root/'mobile.png'),full_page=True)
         geometry=page.evaluate('({width:innerWidth,scroll:document.documentElement.scrollWidth})');assert geometry['scroll']<=geometry['width']+1,geometry
         # Actual invalid API request from a valid HTML input: 7000*2 exceeds fixed12000 budget.
@@ -83,5 +88,10 @@ def main():
         assert not page_errors and not failed_requests and not positive_console and not positive_http,{'page':page_errors,'requests':failed_requests,'console':positive_console,'http':positive_http}
         assert len(http_errors)==1 and http_errors[0]['status']==422
         summary={'artifact_directory':str(root),'bitstrings_sorted':True,'saved_configuration_restored':True,'qubit_configuration_verified':True,'expected_console_after_invalid':console_errors[len(positive_console):],'playwright':version('playwright'),'browser_version':browser.version,'browser_executable':p.chromium.executable_path,'mocked_scientific_successes':False,'workflows':rows,'contract_selection':True,'circuit_rendered':True,'independent_recovery_display':True,'download_export_verified':True,'refresh_and_history_reload':True,'integrity_recheck':True,'frozen_comparison_display':True,'mobile_geometry':geometry,'positive_console_errors':positive_console,'page_errors':page_errors,'failed_requests':failed_requests,'expected_invalid_http':http_errors,'invalid_error_display':True,'screenshots':['evidence-desktop.png','recovery-desktop.png','mobile.png','invalid-input.png'],'limitations':['Local installed Playwright/Chromium bridge; not fresh dependency installation','Single tested desktop/mobile sizes, not exhaustive device/browser coverage','Review remains pending; no automated test poses as human approval']}
-        (root/'summary.json').write_text(json.dumps(summary,indent=2),encoding='utf8');print(json.dumps(summary,indent=2));context.close();browser.close()
+        context.close()
+        if args.record_video:
+            video=Path(page.video.path());named=video.with_name('browser-workflow.webm');video.rename(named)
+            summary['recording']={'path':str(named),'bytes':named.stat().st_size,'kind':'Genuine silent unedited browser capture; not a narrated final submission video'}
+        browser.close()
+        (root/'summary.json').write_text(json.dumps(summary,indent=2),encoding='utf8');print(json.dumps(summary,indent=2))
 if __name__=='__main__':main()
