@@ -1,0 +1,42 @@
+[
+  {
+    "route": "/",
+    "status": 200,
+    "bytes": 422
+  },
+  {
+    "route": "/api/circuits",
+    "status": 200,
+    "bytes": 3084
+  },
+  {
+    "route": "/api/benchmark",
+    "status": 200,
+    "bytes": 8928
+  },
+  {
+    "route": "/api/benchmark/report",
+    "status": 200,
+    "bytes": 201333
+  },
+  {
+    "route": "POST /api/experiments",
+    "status": 201,
+    "experiment_id": "experiment_5debfd8b1c834f34aef45079c84e20ae",
+    "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+    "recovery": "VERIFIED"
+  },
+  {
+    "route": "/verification",
+    "status": 200,
+    "valid": true,
+    "experiment_id": "experiment_5debfd8b1c834f34aef45079c84e20ae",
+    "errors": [],
+    "assurance": "Hash consistency only; a party replacing both data and manifest can rehash. No signature or external anchor."
+  },
+  {
+    "route": "/report",
+    "status": 200,
+    "exported": true
+  }
+]

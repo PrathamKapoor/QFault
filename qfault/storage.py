@@ -1,0 +1,104 @@
+"""Exclusive immutable file artifacts, separate evaluator truth and bound human reviews."""
+import json
+import re
+from pathlib import Path
+from .evidence import canonical,digest,identifier,timestamp
+
+
+class ArtifactStore:
+    def __init__(self,root):
+        self.root=Path(root)
+        self.root.mkdir(parents=True,exist_ok=True)
+
+    def folder(self,eid):
+        if not re.fullmatch(r"experiment_[0-9a-f]{32}",eid): raise ValueError("invalid experiment identifier")
+        return self.root/eid
+
+    def save(self,result):
+        eid=result["experiment_id"]
+        folder=self.folder(eid)
+        folder.mkdir()  # exclusive, never overwrite an earlier investigation
+        report=dict(result)
+        truth=report.pop("evaluation_truth")
+        documents={"investigation.json":report,"evaluation.json":truth}
+        manifest={"schema_version":1,"algorithm":"sha256","canonicalization":"qfault-json-v1",
+                  "experiment_id":eid,"reviews":{},"artifacts":{name:digest(value) for name,value in documents.items()}}
+        for name,value in {**documents,"manifest.json":manifest}.items():
+            with (folder/name).open("xb") as stream: stream.write(canonical(value))
+        return eid
+
+    def verify(self,eid):
+        folder=self.folder(eid)
+        errors=[]
+        try:
+            manifest=json.loads((folder/"manifest.json").read_bytes())
+            if not isinstance(manifest,dict) or not isinstance(manifest.get("artifacts"),dict):
+                raise ValueError("manifest and artifact map must be objects")
+            if manifest.get("algorithm")!="sha256" or manifest.get("canonicalization")!="qfault-json-v1":
+                errors.append("unsupported integrity format")
+            if set(manifest.get("artifacts",{}))!={"investigation.json","evaluation.json"} or manifest.get("experiment_id")!=eid:
+                errors.append("invalid manifest membership")
+            for name in ["investigation.json","evaluation.json"]:
+                actual=digest(json.loads((folder/name).read_bytes()))
+                if actual!=manifest["artifacts"].get(name): errors.append(f"digest mismatch: {name}")
+            reviews=manifest.get("reviews",{})
+            if not isinstance(reviews,dict): raise ValueError("review index must be an object")
+            present={p.name for p in folder.glob("review_*.json")}
+            if set(reviews)!=present: errors.append("review membership mismatch")
+            for path in sorted(folder.glob("review_*.json")):
+                review=json.loads(path.read_bytes())
+                if digest(review)!=reviews.get(path.name): errors.append(f"review digest mismatch: {path.name}")
+                record=review["record"]
+                if digest(record)!=review["digest"] or record["investigation_digest"]!=manifest["artifacts"]["investigation.json"]:
+                    errors.append(f"review mismatch: {path.name}")
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            errors.append(f"missing or malformed artifacts: {type(exc).__name__}")
+        return {"valid":not errors,"experiment_id":eid,"errors":errors,
+                "assurance":"Hash consistency only; a party replacing both data and manifest can rehash. No signature or external anchor."}
+
+    def load(self,eid):
+        folder=self.folder(eid)
+        if not folder.is_dir(): raise FileNotFoundError(eid)
+        if not self.verify(eid)["valid"]: raise ValueError("investigation integrity check failed")
+        result=json.loads((folder/"investigation.json").read_bytes())
+        if not isinstance(result,dict): raise ValueError("investigation must be an object")
+        result["human_decisions"]=[json.loads(p.read_bytes())["record"] for p in sorted(folder.glob("review_*.json"))]
+        return result
+
+    def list(self):
+        rows=[]
+        for folder in sorted(self.root.glob("experiment_*"),key=lambda p:p.stat().st_mtime,reverse=True):
+            try:
+                r=self.load(folder.name)
+                rows.append({"experiment_id":folder.name,"created_at":r["created_at"],"family":r["contract"]["family"],
+                             "category":r["diagnosis"]["category"],"integrity_valid":self.verify(folder.name)["valid"]})
+            except (ValueError,OSError,KeyError):
+                rows.append({"experiment_id":folder.name,"category":"CORRUPT_ARTIFACT","integrity_valid":False})
+        return rows
+
+    def review(self,eid,reviewer,action,reason):
+        if action not in {"acknowledge","reject","request_evidence"}: raise ValueError("invalid human action")
+        if not reviewer.strip() or not reason.strip(): raise ValueError("reviewer and reason required")
+        if not self.verify(eid)["valid"]: raise ValueError("cannot review artifacts that fail integrity verification")
+        folder=self.folder(eid)
+        manifest=json.loads((folder/"manifest.json").read_bytes())
+        record={"review_id":identifier("review"),"experiment_id":eid,"reviewer":reviewer,"action":action,
+                "reason":reason,"created_at":timestamp(),"investigation_digest":manifest["artifacts"]["investigation.json"],
+                "identity_assurance":"self-declared local reviewer; no authentication"}
+        name=record["review_id"]+".json"
+        envelope={"record":record,"digest":digest(record)}
+        with (folder/name).open("xb") as stream: stream.write(canonical(envelope))
+        manifest.setdefault("reviews",{})[name]=digest(envelope)
+        temporary=folder/(identifier("manifest")+".tmp")
+        with temporary.open("xb") as stream: stream.write(canonical(manifest))
+        temporary.replace(folder/"manifest.json")  # intentional atomic review-index update
+
+        return record
+
+    def export(self,eid):
+        folder=self.folder(eid)
+        return {"investigation":json.loads((folder/"investigation.json").read_bytes()),
+                "evaluation":json.loads((folder/"evaluation.json").read_bytes()),
+                "manifest":json.loads((folder/"manifest.json").read_bytes()),
+                "reviews":[json.loads(p.read_bytes()) for p in sorted(folder.glob("review_*.json"))],
+                "verification":self.verify(eid)}

@@ -1,0 +1,62 @@
+{
+  "checked_at": "2026-10-11T09:58:25.554Z",
+  "repositories": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/Quantumattack",
+        "head_unchanged": true,
+        "status_unchanged": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/QFTdone",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/uncertainity_aware_quantum_optDONE",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/Closure-Trace-release",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/trust-sat",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/Quantum-Secure_Agentic_MLOps_Pipeline_Management_SystemDONE_TBU",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "path": "C:/Projects/Quantum_Simulator",
+        "head_unchanged": true,
+        "status_unchanged": true
+      }
+    }
+  ],
+  "observation": "Quantumattack status gained modifications to src/quantumattack/baselines/logistic.py and tests/test_statistics.py during the session. QFAULT performed no writes to that repository and did not revert or inspect user edits. All donor HEAD revisions remained unchanged; other donor status snapshots matched."
+}

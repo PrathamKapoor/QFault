@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-11",
+  "cwd": "C:/Projects/QFF",
+  "platform": "win32",
+  "release": "10.0.26200",
+  "memory_bytes": 25439199232,
+  "logical_cpus": 16,
+  "free_bytes": 25134768128,
+  "git": "2.55.0.windows.2",
+  "node": "24.19.0",
+  "npm": "11.17.0",
+  "python_runtime": "C:/Program Files/LibreOffice/program/python.exe",
+  "python_version": "3.13.15",
+  "packages": {
+    "qiskit": "2.3.1",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1"
+  },
+  "aer_status": "Unavailable: cp311 binary incompatible with cp313 runtime",
+  "source_repositories": [
+    {
+      "path": "C:/Projects/Quantumattack",
+      "remote": "",
+      "head": "cd73829e3e83b5e7837410cea40d7f5a8f22e60d\n",
+      "branch": "main\n",
+      "status": " M decisions.md\n M scripts/evaluate_reliability.py\n?? docs/reliability-research-report.md\n"
+    },
+    {
+      "path": "C:/Projects/QFTdone",
+      "remote": "origin\thttps://github.com/PrathamKapoor/QFT-Lab.git (fetch)\norigin\thttps://github.com/PrathamKapoor/QFT-Lab.git (push)\n",
+      "head": "b44f4d1a84cd6ae597b954b76de4d618e120b667\n",
+      "branch": "main\n",
+      "status": ""
+    },
+    {
+      "path": "C:/Projects/uncertainity_aware_quantum_optDONE",
+      "remote": "origin\thttps://github.com/PrathamKapoor/Uncertainty-Aware-QUBO-EV-Scheduling.git (fetch)\norigin\thttps://github.com/PrathamKapoor/Uncertainty-Aware-QUBO-EV-Scheduling.git (push)\n",
+      "head": "4262915d3f8c5e155b0947a99bdd592e17e3b10f\n",
+      "branch": "main\n",
+      "status": ""
+    },
+    {
+      "path": "C:/Projects/Closure-Trace-release",
+      "remote": "origin\thttps://github.com/PrathamKapoor/Closure-Trace.git (fetch)\norigin\thttps://github.com/PrathamKapoor/Closure-Trace.git (push)\n",
+      "head": "1c5d5c9209395748a8e21fe439b2812b43cee91a\n",
+      "branch": "main\n",
+      "status": " M evaluation/controlled_benchmark/manifest.py\n M satsa/analysis/compval.py\n M satsa/analysis/validate.py\n M tests/test_controlled_benchmark.py\n?? temp_bench/\n"
+    },
+    {
+      "path": "C:/Projects/trust-sat",
+      "remote": "",
+      "head": "6ff7d61416748bac1b8c0f66edb7d8a1ca03fc3c\n",
+      "branch": "main\n",
+      "status": " M satsa/api/investigation_routes.py\n M satsa/api/scam_routes.py\n M satsa/api/schemas.py\n M satsa/scam/case_service.py\n M satsa/scam/extract/__init__.py\n M satsa/scam/intake.py\n?? .satsa-demo/\n?? docs/DEMO_SCRIPT.md\n?? docs/PHASE6_DEMO.md\n?? docs/PHASE6_DEMO_AUDIT.md\n?? scripts/demo/\n?? tests/test_phase6_demo.py\n"
+    },
+    {
+      "path": "C:/Projects/Quantum-Secure_Agentic_MLOps_Pipeline_Management_SystemDONE_TBU",
+      "remote": "origin\thttps://github.com/PrathamKapoor/Quantum-Secure-MLOps.git (fetch)\norigin\thttps://github.com/PrathamKapoor/Quantum-Secure-MLOps.git (push)\n",
+      "head": "5995f0dab48819bd6fb2588cf4cc55c86861bf91\n",
+      "branch": "main\n",
+      "status": "?? docs/PHASE_11_FORENSIC_BLOCKER.md\n?? handoff.md\n"
+    },
+    {
+      "path": "C:/Projects/Quantum_Simulator",
+      "remote": "origin\thttps://github.com/PrathamKapoor/Quantum-Simulator.git (fetch)\norigin\thttps://github.com/PrathamKapoor/Quantum-Simulator.git (push)\n",
+      "head": "b6d68146a57cbc4f2010652dcab36bc89748448c\n",
+      "branch": "main\n",
+      "status": "?? .pytest_full.log\n?? .pytest_full_final.log\n?? .pytest_gapclosure_full.log\n?? e2e/playwright_gapclosure.log\n?? e2e/playwright_gapclosure2.log\n?? playwright_final.log\n?? playwright_full.log\n"
+    }
+  ]
+}

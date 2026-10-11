@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-11",
+  "python": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 pytest tests -q -p no:cacheprovider",
+    "result": "62 passed, 1 warning in 9.92s",
+    "warning": "Starlette TestClient httpx deprecation; not suppressed"
+  },
+  "typescript": {
+    "command": "node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+    "result": "TypeScript check passed"
+  },
+  "frontend": {
+    "command": "node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+    "result": "Vite 8.2.2 build succeeded; 15 modules transformed"
+  },
+  "demo": "benchmarks/demo.json",
+  "http": "benchmarks/http-smoke.json",
+  "browser": "NOT RUN: browser runtime listed no available browsers",
+  "fresh_install": "NOT RUN: restricted network/runtime",
+  "review": "Static independent code review; two artifact-integrity findings reproduced and fixed with seven regression cases"
+}

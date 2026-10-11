@@ -1,0 +1,15 @@
+{
+  "first": "artifacts/benchmark",
+  "second": "artifacts/benchmark-reproduction",
+  "policy_metrics_identical": true,
+  "recovery_metrics_identical": true,
+  "excluded_nondeterministic_fields": [
+    "experiment identifiers",
+    "UTC timestamps",
+    "runtime",
+    "artifact digests binding those fields"
+  ],
+  "release_run": "artifacts/release-benchmark",
+  "release_policy_metrics_identical": true,
+  "release_recovery_metrics_identical": true
+}

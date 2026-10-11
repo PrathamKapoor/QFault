@@ -1,0 +1,65 @@
+{
+  "investigations": [
+    {
+      "experiment_id": "experiment_7b284e61b8584eb7aea4f43f1fc86ae5",
+      "family": "bell",
+      "scenario": "clean",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "recovery_status": null,
+      "shots": 4096,
+      "evaluations": 2
+    },
+    {
+      "experiment_id": "experiment_f6ecc61fae144f3588c1f48a2bee3c55",
+      "family": "bell",
+      "scenario": "remove",
+      "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+      "recovery_status": "VERIFIED",
+      "shots": 7168,
+      "evaluations": 28
+    },
+    {
+      "experiment_id": "experiment_2a4ed75d94c74971b9c2f22d76c27975",
+      "family": "bell",
+      "scenario": "readout",
+      "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+      "recovery_status": null,
+      "shots": 5120,
+      "evaluations": 4
+    },
+    {
+      "experiment_id": "experiment_e0a3065bda884d32bbb2be25fe08c189",
+      "family": "ghz",
+      "scenario": "mixed",
+      "diagnosis": "MIXED_OR_AMBIGUOUS",
+      "recovery_status": null,
+      "shots": 5120,
+      "evaluations": 4
+    },
+    {
+      "experiment_id": "experiment_5d934a8a2fb4400b8d44d202796975da",
+      "family": "qft",
+      "scenario": "clean",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "recovery_status": null,
+      "shots": 5120,
+      "evaluations": 4
+    },
+    {
+      "experiment_id": "experiment_0491a170c1f44b479c0616a93ee06eff",
+      "family": "bell",
+      "scenario": "phase",
+      "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+      "recovery_status": "VERIFIED",
+      "shots": 7168,
+      "evaluations": 23
+    }
+  ],
+  "integrity_demonstration": {
+    "original": true,
+    "tampered": false,
+    "restored": true
+  },
+  "integrity_throwaway_experiment": "experiment_9e09bf7dfda945139c87cb0e1ecb0b66",
+  "backend_mode": "Qiskit local simulation; Aer unavailable in tested runtime"
+}

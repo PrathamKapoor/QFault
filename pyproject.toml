@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qfault"
+version = "0.1.0"
+description = "Evidence-driven quantum failure investigation"
+requires-python = ">=3.11"
+dependencies = ["qiskit==2.3.1", "numpy==2.5.2", "scipy==1.18.1", "pydantic==2.13.4", "fastapi==0.141.1", "uvicorn==0.52.4"]
+
+[project.optional-dependencies]
+dev = ["pytest==9.1.1", "httpx==0.28.1"]
+
+[project.scripts]
+qfault = "qfault.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["qfault*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
