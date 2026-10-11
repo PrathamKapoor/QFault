@@ -1,6 +1,6 @@
 # Publication audit
 
-Assessment: 2026-10-11. Starting source:90503efe6576d1fcb080ef92b2c12c34f0fd050b, clean main. Product QFAULT; selected repository PrathamKapoor/QTrust. Publication is **not verified**: the connected GitHub account is PrathamKapoor, the destination is public with push/admin permission and no main branch returned, but local Git HTTPS cannot connect to github.com:443. A normal push and matching remote SHA remain required. No force push or reconstruction of historical commits is authorized.
+Assessment: 2026-10-11. Starting source:90503efe6576d1fcb080ef92b2c12c34f0fd050b, clean main. Product QFAULT; selected repository PrathamKapoor/QTrust. Publication is **FAILED / environment-blocked**: the connected GitHub account is PrathamKapoor, the destination is public with push/admin permission and no main branch returned, but local Git HTTPS cannot connect to github.com:443. The authorized normal git push -u origin main and subsequent fetch/ls-remote each exited128 because Git could not connect. Connector recheck still returns no main, and README retrieval returns404: This repository is empty. No remote SHA or upstream branch exists to verify. A normal push from a permitted environment and matching remote SHA remain required. No force push or reconstruction of historical commits is authorized.
 
 [Machine-readable executed checks](../benchmarks/publication-verification.json) record this audit. Raw command logs, fresh screenshots and reproduction records are local-only under artifacts/publication-audit. They are not downloadable through a clone.
 
@@ -47,3 +47,7 @@ Frozen final classification totals remain evidence34/68, fixed58/68, random21/68
 The genuine176.56-second silent footage remains local-only, unchanged at13580390 bytes (SHA25623bfd3492fd21a1238c0653116dbe0a56d74ff98ee6d5ee67c6239baa1845a7e). Existing complete-playback proof was inspected; no new narrated edit or public media URL exists. See video.md and video-timeline.json for the exact voiceover and recording instructions.
 
 The official event page was rechecked: conflicting deadlines, team rules, workshop-lead status and prompt timing still require organizer confirmation. No competition submission was made. GitHub publication, fresh installation and eligibility are separate gates. See organizer-confirmations.md and transfer.md.
+
+## Transfer after the blocked push
+
+The audited27ed91f source was packaged successfully under artifacts/qfault-publication-transfer with2425 verified raw JSON files and genuine local media. Its manifest identifies that exact historical snapshot. A final package for the clean closing commit is generated separately under artifacts/qfault-publication-final; inspect its manifest for the exact source SHA. Neither package implies successful publication or independent installation. The publication failure log and post-attempt Git checks are artifacts/publication-audit/push-command.json and publication-result.json.

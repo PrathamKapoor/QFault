@@ -12,7 +12,14 @@
     ],
     "main_search_results": [],
     "local_git_probe": "Failed to connect to github.com:443",
-    "status": "UNVERIFIED; no matching remote main established"
+    "status": "FAILED; normal push and fetch cannot connect to github.com:443",
+    "attempted_commit": "27ed91f3325d1c41300b6faf26b06fa15fde88d7",
+    "push_exit_code": 128,
+    "fetch_exit_code": 128,
+    "remote_main_sha": null,
+    "post_attempt_main_search_results": [],
+    "post_attempt_readme": "GitHub API 404: This repository is empty.",
+    "tracking_branch_created": false
   },
   "security": {
     "starting_head": "90503efe6576d1fcb080ef92b2c12c34f0fd050b",
