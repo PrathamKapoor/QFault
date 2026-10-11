@@ -13,7 +13,7 @@ python -m scripts.package_submission --out artifacts/qfault-submission --demo ar
 On this restricted machine use the explicitly development-only launcher in [local-development.md](local-development.md) instead of python -m. Output destinations are exclusive; choose a new directory for reruns.
 
 - qfault-source.bundle contains the committed main history, source, manifests, tests, notices and documentation. Git verifies the bundle. It excludes working-tree/private configuration and ignored dependencies.
-- qfault-evidence.zip contains the seven frozen benchmark/demo summaries and their referenced raw JSON evidence. Every included investigation is checked against its recorded manifest digest and ArtifactStore.verify before packaging. Original benchmark recovery paths are reconstructed from their recorded experiment identifiers.
+- qfault-evidence.zip contains the raw JSON evidence referenced by the seven frozen benchmark/demo summaries in the source bundle. Every included investigation is checked against its recorded manifest digest and ArtifactStore.verify before packaging. Original benchmark recovery paths are reconstructed from their recorded experiment identifiers.
 - qfault-demo-material.zip contains genuine browser screenshots, responses, silent WebM footage and current CLI demo exports. The intentionally tampered export is a labeled negative control, not a valid investigation.
 - manifest.json binds package byte lengths and SHA256 hashes to the exact source commit. ZIP CRC checks detect archive corruption. These are unsigned consistency checks, not proof of authenticity, authorship or scientific truth.
 

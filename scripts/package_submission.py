@@ -32,7 +32,7 @@ def collect_evidence(repo,summaries):
         elif isinstance(value,list):
             for child in value:visit(child)
     for source in summaries:
-        data=json.loads(source.read_bytes());visit(data);files.add(source.resolve())
+        data=json.loads(source.read_bytes());visit(data)  # Summaries belong to the source bundle, not the evidence ZIP.
         # Original benchmark recovery rows omit a path but use the same stored investigation root.
         if isinstance(data.get('recovery'),dict) and data.get('rows'):
             parent=Path(data['rows'][0]['artifact_path'].replace('\\','/')).parent

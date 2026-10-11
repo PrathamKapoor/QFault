@@ -2,11 +2,11 @@
   "status": "PARTIALLY READY",
   "starting_commit": "36ba7f17a0b85c9df1cb8063f03cc5da6140255a",
   "tests": {
-    "passed": 98,
+    "passed": 99,
     "warning": "Starlette/httpx deprecation",
     "actual_output": "artifacts/submission-delivery/tests.json",
     "final_output": "artifacts/submission-delivery/final-tests.json",
-    "final_runtime_seconds": 12.61
+    "final_runtime_seconds": 11.73
   },
   "frontend": {
     "typescript": "PASSED retained dependency bridge",
@@ -231,9 +231,12 @@
     "final_narrated_video": "NOT COMPLETED"
   },
   "transfer": {
-    "verified_evidence_files": 2432,
-    "uncompressed_bytes": 10274729,
-    "source_package": "Pending clean-commit packaging; do not infer fresh install"
+    "verified_raw_evidence_files": 2425,
+    "authoritative_summaries": 7,
+    "layout": "Summaries in source bundle only; raw JSON in evidence ZIP",
+    "first_bundle_clone": "5e18ab946b5a2dfe67e148d32c6df6dcc09d311c restored clean before extraction",
+    "duplicate_restore_issue": "First evidence ZIP included tracked summaries; checkout line ending changes produced conflicts. D-027 excludes them; regression failed before, passes after.",
+    "source_package": "Clean-commit repackaging required after D-027; not fresh-install validation"
   },
   "competition": {
     "controlling_deadline": "UNCONFIRMED",

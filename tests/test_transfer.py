@@ -14,3 +14,15 @@ def test_transfer_rejects_changed_manifest_reference(tmp_path):
     eid=store.save(investigate(RunRequest(shots=128,max_shots=256,max_evaluations=2,recover=False)))
     source=tmp_path/'summary.json';source.write_text(json.dumps({'rows':[{'artifact_path':f'artifacts/investigations/{eid}','manifest_digest':'0'*64}]}))
     with pytest.raises(ValueError,match='manifest digest'):collect_evidence(tmp_path,[source])
+
+
+def test_transfer_keeps_authoritative_summaries_in_source_only(tmp_path):
+    from scripts.package_submission import sha
+    store=ArtifactStore(tmp_path/'artifacts'/'investigations')
+    eid=store.save(investigate(RunRequest(shots=128,max_shots=256,max_evaluations=2,recover=False)))
+    source=tmp_path/'benchmarks'/'summary.json';source.parent.mkdir()
+    source.write_text(json.dumps({'rows':[{'artifact_path':f'artifacts/investigations/{eid}','manifest_digest':sha(store.folder(eid)/'manifest.json')}]}))
+    files=collect_evidence(tmp_path,[source])
+    assert source not in files  # Already restored from the committed source bundle.
+    assert files and all(path.is_relative_to(tmp_path/'artifacts') for path in files)
+    assert set(files)==set(store.folder(eid).glob('*.json'))

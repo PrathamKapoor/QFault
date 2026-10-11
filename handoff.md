@@ -18,7 +18,7 @@ Located a matching cp313 Aer0.17.2 installation read-only. Added optional explic
 
 Reproduced original/final metrics again under artifacts/release-candidate, all12 recovery scientific rows and two rejected controls. Ran nine paired conformance cases and Aer judging demo. Added a paired existing-results audit:56 both correct,10 phase-only,2 fixed-only,0 neither; all340 final raw manifests verify. Negative audit controls reject mismatched evaluator truth and modified manifest copies. Expanded actual browser to seven Aer workflows with full phase repair; clarified higher-cost phase and privileged calculation labels. Scientific code/defaults/thresholds remain unchanged.
 
-Latest continuation:98 Python tests pass, TypeScript/build pass through the disclosed retained bridge, seven recorded real Aer browser workflows pass, Aer CLI judging demo runs, valid export verifies and disposable altered export fails. All340 final row scientific fields and policy metrics excluding runtime reproduce unchanged. Added guarded transfer packager; collect_evidence verifies2432 referenced files (10,274,729 bytes). Browser raw video is34.64 seconds,1440×900,VP8,no audio; three sampled frames decoded and visually inspected. Final narrated video is pending.
+Latest continuation:98 Python tests pass, TypeScript/build pass through the disclosed retained bridge, seven recorded real Aer browser workflows pass, Aer CLI judging demo runs, valid export verifies and disposable altered export fails. All340 final row scientific fields and policy metrics excluding runtime reproduce unchanged. Added guarded transfer packager; initial validation covered2432 files including7 summaries (10,274,729 bytes). D-027 keeps the7 summaries in Git source only and2425 raw JSON files in the evidence archive to avoid source extraction conflicts. Browser raw video is34.64 seconds,1440×900,VP8,no audio; three sampled frames decoded and visually inspected. Final narrated video is pending.
 
 ## 3. Files Changed
 
@@ -40,7 +40,7 @@ D-001–012 retain the original foundation/history. D-013 records the original c
 
 D-022 records precise repeatable install blockers and keeps the normal own-manifest path distinct from the development-only fallback. D-023 documents descriptive paired outcomes, actual privileged information flow and scientific labels.
 
-D-025 defines clean committed-source/evidence transfer, with no fresh-install implication. D-026 records genuine silent browser footage and pending final narration/organizer confirmation.
+D-025 defines clean committed-source/evidence transfer, with no fresh-install implication. D-027 removes duplicate tracked-summary archive entries after actual restore detected CRLF checkout conflicts; the real-artifact regression failed before and passes after. D-026 records genuine silent browser footage and pending final narration/organizer confirmation.
 
 ## 6. Requirements and Constraints
 
@@ -74,7 +74,7 @@ Current seven-workflow browser output: artifacts/release-candidate/browser-compl
 
 D-024 fixes the recovery runner unconditionally overwriting its fixed published summary despite --out. Original tracked bytes restored; new sentinel regression failed before, passes after. Full96 tests pass. All new recovery artifacts remain separately retained.
 
-Latest checks:98 passed,1 deprecation warning,12.61s (final rerun; earlier run10.76s). Raw command results: artifacts/submission-delivery/{tests,typescript,build,demo-command,final-command,recording-command,report-verification,reproduction-comparison}.json. Full recorded browser evidence: artifacts/submission-delivery/browser-recording/summary.json; recording path: video/browser-workflow.webm. Actual export exit statuses are0 valid/1 tampered. Only sampled frame inspection is claimed; stripped FFmpeg full decode/re-encode was unsupported/timed out. docs/demo.md has exact seeds/settings, a timed shot/narration guide and honest raw-footage status.
+Latest checks:99 passed,1 deprecation warning,11.73s after the D-027 transfer regression. Earlier98-test runs remain historical. Raw command results: artifacts/submission-delivery/{tests,typescript,build,demo-command,final-command,recording-command,report-verification,reproduction-comparison}.json. Full recorded browser evidence: artifacts/submission-delivery/browser-recording/summary.json; recording path: video/browser-workflow.webm. Actual export exit statuses are0 valid/1 tampered. Only sampled frame inspection is claimed; stripped FFmpeg full decode/re-encode was unsupported/timed out. docs/demo.md has exact seeds/settings, a timed shot/narration guide and honest raw-footage status.
 
 ## 8. Known Issues / Risks
 

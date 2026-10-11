@@ -324,3 +324,16 @@
 - Consequences: A person must record narration, edit/inspect/approve the final video and obtain controlling deadline/eligibility/rules. The public official page contains conflicting October12/October23 submission dates; no organizer response is invented. No submission, publication or message to organizers occurred.
 - Regression test: scripts/browser_e2e.py completed all seven genuine workflows with recording enabled; no unexpected console/page/request errors. Valid export exits0; disposable covered alteration exits1. Frozen final340 rows/scientific metrics reproduce unchanged.
 - Files: scripts/browser_e2e.py; docs/demo.md; docs/organizer-confirmations.md; benchmarks/submission-verification.json; artifacts/submission-delivery (ignored measured/media outputs).
+
+### D-027: Keep authoritative summaries only in the source bundle
+
+- Date / phase / commit: 2026-10-11 / portable restore correction / commit containing this entry.
+- Context: The first package's bundle cloned to exact HEAD5e18ab9 with102 tracked files and clean status. Package hashes and ZIP CRCs passed, but actual extraction detected a duplicate tracked summary.
+- Symptom: Guarded restoration rejected benchmarks/diagnostic-development.json; allowing line-ending-only replacement subsequently made four tracked summaries appear modified.
+- Root cause: The evidence ZIP duplicated seven authoritative summary files already in the source bundle. System core.autocrlf=true changed checkout line endings; replacing checkout bytes with original evidence ZIP bytes caused extraction conflicts/dirty source.
+- Decision: Supersede D-025 archive membership: retain all authoritative summaries in the committed source bundle only. collect_evidence still reads them to verify all referenced raw records but no longer adds summary paths to the evidence ZIP. Raw evidence count is2425, with7 summaries supplied through source.
+- Why: Evidence restoration must not overwrite tracked source; separating ownership avoids normalization changes while preserving every measured record.
+- Alternatives considered: Force-overwrite tracked files, normalize scientific artifact bytes or ignore a dirty restored source; rejected.
+- Consequences: The first package/source-copy remains a labeled failed-restore audit. Rebuild from clean corrected source and verify restoration without any file overwrite. No authoritative benchmark bytes or scientific logic changed.
+- Regression test: tests/test_transfer.py:test_transfer_keeps_authoritative_summaries_in_source_only uses real quantum execution/storage. It failed before the fix; all99 tests pass afterward,1 deprecation warning.
+- Files: scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; flow.md; handoff.md; benchmarks/submission-verification.json.
