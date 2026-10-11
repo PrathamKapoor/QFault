@@ -1,0 +1,122 @@
+{
+  "python": "3.13.15 (main, Aug 23 2026, 18:28:23) [MSC v.1944 64 bit (AMD64)]",
+  "architecture": "",
+  "qiskit": "2.3.1",
+  "aer": "0.17.2",
+  "aer_package": "C:\\Users\\LENOVO\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\qiskit_aer\\__init__.py",
+  "rows": [
+    {
+      "family": "bell",
+      "noise": "ideal",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.00048828125,
+        "aer": 0.008544921875
+      },
+      "maximum_density_element_error": 2.220446049250313e-16,
+      "artifact": "artifacts\\backend-conformance\\bell-ideal.json",
+      "sha256": "c61eea672e3385efd4ffc66f24074769de2369ed83182390c32ef53c3e153db0"
+    },
+    {
+      "family": "bell",
+      "noise": "readout",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.004621679687499991,
+        "aer": 0.0054931640625
+      },
+      "maximum_density_element_error": 2.220446049250313e-16,
+      "artifact": "artifacts\\backend-conformance\\bell-readout.json",
+      "sha256": "2fa09160fd530f49a94d1dfeedd35c1a9e45c4053c02736808f0fd617aa0168b"
+    },
+    {
+      "family": "bell",
+      "noise": "depolarizing",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.00244140625,
+        "aer": 0.009082031250000018
+      },
+      "maximum_density_element_error": 3.3306690738754696e-16,
+      "artifact": "artifacts\\backend-conformance\\bell-depolarizing.json",
+      "sha256": "9124ce2f0ca9059d6384fa33e2be468d66c8f58b9e24c6555bf4519e28288057"
+    },
+    {
+      "family": "ghz",
+      "noise": "ideal",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.00048828125,
+        "aer": 0.008544921875
+      },
+      "maximum_density_element_error": 2.220446049250313e-16,
+      "artifact": "artifacts\\backend-conformance\\ghz-ideal.json",
+      "sha256": "dade87e950c27fc9083bcf742932be5380030d40785b89c12c91fc523fd41ac6"
+    },
+    {
+      "family": "ghz",
+      "noise": "readout",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.002283789062500041,
+        "aer": 0.007603906249999959
+      },
+      "maximum_density_element_error": 2.220446049250313e-16,
+      "artifact": "artifacts\\backend-conformance\\ghz-readout.json",
+      "sha256": "c61eb666622d049d1eb5d588b82769d5f786ce53247118d85fcbe5866d5f7254"
+    },
+    {
+      "family": "ghz",
+      "noise": "depolarizing",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.007578125000000324,
+        "aer": 0.010546875000000032
+      },
+      "maximum_density_element_error": 3.3306690738754696e-16,
+      "artifact": "artifacts\\backend-conformance\\ghz-depolarizing.json",
+      "sha256": "4f4405576fd358db0de25a5f6c7a4bc70460077f1587f94d9120a571903b7929"
+    },
+    {
+      "family": "qft",
+      "noise": "ideal",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.018798828124999986,
+        "aer": 0.01660156250000004
+      },
+      "maximum_density_element_error": 1.3877787807814457e-16,
+      "artifact": "artifacts\\backend-conformance\\qft-ideal.json",
+      "sha256": "1d0a832303354960b6bdf5d52ef3ef8d2ac99ffdd79ae1e31e15cdd5619d6285"
+    },
+    {
+      "family": "qft",
+      "noise": "readout",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.013427734375000028,
+        "aer": 0.016113281249999972
+      },
+      "maximum_density_element_error": 1.3877787807814457e-16,
+      "artifact": "artifacts\\backend-conformance\\qft-readout.json",
+      "sha256": "990f8a23562cd82b5e333ab1a30ca9cd9a2d14ba02242ce8616a2e309bd67633"
+    },
+    {
+      "family": "qft",
+      "noise": "depolarizing",
+      "shots_per_backend": 4096,
+      "TV_from_analytic_noisy_distribution": {
+        "reference": 0.018798828124999972,
+        "aer": 0.016601562500000167
+      },
+      "maximum_density_element_error": 2.220446049250313e-16,
+      "artifact": "artifacts\\backend-conformance\\qft-depolarizing.json",
+      "sha256": "d460abb20f1ba16c75bd5c31246605592e89599fc0ad549c8889d9b67674476e"
+    }
+  ],
+  "limitations": [
+    "Conformance of these small simulated circuits, not hardware validation",
+    "Backend seeds reproduce within backend, not identical draws across backends",
+    "No transpilation; same per-logical-gate depolarizing channel"
+  ]
+}

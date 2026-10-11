@@ -175,3 +175,55 @@
 - Consequences: All final cases and losing outcomes must be published without tuning. Separate computational-basis and phase-basis recovery qualities prevent a phase repair from looking unchanged solely because Z counts match.
 - Regression test: tests/test_policy_evaluation.py; reservation/default regressions in tests/test_phase_measurements.py, each observed failing before fix.
 - Files: configs/diagnostic-evaluation.json (frozen commit 1d89eff), qfault/experiments.py, qfault/recovery.py, qfault/cli.py, benchmarks/diagnostic-development.json.
+
+### D-016: Execute the verified cp313 Aer package through an explicit optional adapter
+
+- Date / phase / commit: 2026-10-11 / backend conformance / commit containing this entry.
+- Context: Further read-only discovery located a different user-package Aer 0.17.2 installation with WHEEL tag cp313-cp313-win_amd64 and controller_wrappers.cp313-win_amd64.pyd.
+- Symptom: The original bridge's cp311 Aer could not import on Python 3.13.
+- Root cause: D-013's verified ABI mismatch applied to that installation, not every available Aer package.
+- Decision: Supersede D-013's Aer-unavailable conclusion. Add lazy qfault.backends adapter and explicit reference/aer request choice. Local bootstrap loads only the matching Aer package by import spec, without inserting its different Qiskit/NumPy environment into sys.path. Keep reference default and frozen reference evaluations.
+- Why: Real Bell Aer execution succeeded, eight regression tests passed, and nine paired circuit/noise conformance cases executed both backends. Density differences <=3.34e-16; sampled TV versus analytic noisy distributions <=0.0188 in this small test.
+- Alternatives considered: Replacing the reference backend, silently falling back on requested Aer failure, broad user-package sys.path contamination, or renaming .pyd files; rejected.
+- Consequences: Aer works locally, but this remains a read-only dependency bridge; fresh isolated Python/frontend installs are still blocked. Explicit logical gates retain per-gate noise semantics, with no transpilation. Aer uses density_matrix and one parallel thread; exported records identify its actual version.
+- Regression test: tests/test_aer_backend.py (eight failures before adapter, eight passed after), actual backend comparison script and HTTP/CLI Aer workflows.
+- Files: qfault/backends.py, qfault/quantum.py, qfault/workflow.py, qfault/diagnostics.py, qfault/recovery.py, scripts/local_bootstrap.py, scripts/compare_backends.py, benchmarks/backend-conformance.json.
+- Package: qiskit-aer==0.17.2 optional extra, psutil 7.2.2 observed.
+- Why this package: Actual compatible installed Aer quantum execution and standard noise channels.
+- Packages compared: Aer 0.17.2 cp313 versus incompatible cp311 installation; existing BasicSimulator/DensityMatrix remains a valid independent reference.
+
+### D-017: Bind exported reports and correct measurement-boundary validation
+
+- Date / phase / commit: 2026-10-11 / release correctness / commit containing this entry.
+- Context: Downloaded reports need standalone verification; independent review found two measurement construction edges outside the frozen corpus.
+- Symptom: QFT input 9 on four qubits produced a rotation outside the gate angle bound; adding basis gates to a valid 32-gate submitted circuit exceeded the submitted-circuit length cap.
+- Root cause: Unnormalized equivalent Rz angles and reuse of the submitted-circuit length validator for internal analysis circuits.
+- Decision: Normalize only out-of-range analysis angles modulo 2π; permit at most 42 gates in private _AnalysisCircuit (32 submitted + at most 10 analysis gates). Preserve the 32-gate submitted input bound. Add verify_export and CLI verify-report that recompute covered hashes rather than trusting embedded success.
+- Why: Both boundary regression tests failed before the fix and passed after. Standard frozen corpus uses QFT input 1 and shorter circuits, so its measurements are unchanged and current reproduction confirms original/final metrics.
+- Alternatives considered: Relax all submitted bounds, ignore unsupported angle failures, or trust a report's embedded valid flag; rejected.
+- Consequences: Signed authenticity remains unavailable. qfault-json-v1 preserves numeric representation: 1 and 1.0 are different canonical values. Rewriting JSON through a tool that changes numeric types may invalidate it.
+- Regression test: tests/test_measurement_boundaries.py; five tests/test_export_verification.py; tests/test_phase_truth_isolation.py; CLI valid export exits 0 and tampered export exits 1.
+- Files: qfault/quantum.py, qfault/storage.py, qfault/cli.py, tests/test_measurement_boundaries.py, tests/test_export_verification.py.
+
+### D-018: Publish the frozen tradeoff and selected recovery failures
+
+- Date / phase / commit: 2026-10-11 / submission evidence / commit containing this entry.
+- Context: The final scenarios were frozen in 1d89eff before phase implementation in 3039215. Final results were generated without further policy tuning.
+- Decision: Publish all five policies, confusion matrices, resources and negative cases. Keep fixed default; expose phase as an explicit option. Publish selected recovery 10/12 verified with two inconclusive QFT4 cases and two rejected negative controls.
+- Why: Phase 66/68 versus fixed 58/68 costs 487424 versus 348160 shots. Phase misses two QFT2 angle faults, while fixed's exact checks catch those. Higher aggregate category accuracy does not establish a dominant policy.
+- Alternatives considered: Change thresholds after final results, omit difficult QFT cases, conflate calibration noise with task failure, or claim 6/6 applies generally; rejected.
+- Consequences: Descriptive intervals only; small fixed corpus and privileged simulation limit generalization. Browser and fresh-install gates remain unmet despite actual quantum/HTTP/build evidence.
+- Files: benchmarks/diagnostic-final.json, benchmarks/diagnostic-low-shot.json, benchmarks/recovery-stabilization.json, scripts/submission_demo.py, scripts/http_release_smoke.py, docs/diagnostic-findings.md, web/src/main.tsx.
+
+### D-019: Skip out-of-domain repair rotations without weakening input validation
+
+- Date / phase / commit: 2026-10-11 / recovery robustness / commit containing this entry.
+- Context: Repair search must enumerate only valid supported edits for every accepted input.
+- Symptom: A valid Rz(8π) candidate aborted edit enumeration.
+- Root cause: Unconditionally constructing angle+π/4 and angle+π/2 exceeded Gate's existing ±8π domain before any candidate was yielded.
+- Decision: Skip only angle edits outside the declared bound. Keep valid negative corrections and all existing assertions.
+- Why: tests/test_repair_boundaries.py reproduced the failure before the focused fix and passed after; the frozen corpus has no boundary-angle gate, so its candidate search is unchanged.
+- Alternatives considered: Catch all validation errors or weaken Gate bounds; rejected.
+- Consequences: Search remains bounded and incomplete; invalid edits are never proposed. Optional-Aer-absence regression also confirms reference execution remains usable and explicit Aer requests fail honestly.
+- Regression test: tests/test_repair_boundaries.py; tests/test_aer_absence.py.
+- Files: qfault/recovery.py; tests/test_repair_boundaries.py; tests/test_aer_absence.py.

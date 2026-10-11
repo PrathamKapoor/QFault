@@ -1,0 +1,4 @@
+# Optional Aer closure observed in the working local bridge; fresh install not verified.
+-r requirements-tested.txt
+qiskit-aer==0.17.2
+psutil==7.2.2

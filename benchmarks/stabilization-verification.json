@@ -1,0 +1,43 @@
+{
+  "checked_at": "2026-10-11T11:35:41.731Z",
+  "commands": [
+    {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 pytest -q -p no:cacheprovider",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "stdout": "........................................................................ [ 76%]\r\n......................                                                   [100%]\r\n============================== warnings summary ===============================\r\n..\\Quantum_Simulator\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1\r\n  C:\\Projects/Quantum_Simulator/.venv/Lib/site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\r\n    from starlette.testclient import TestClient as TestClient  # noqa\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n94 passed, 1 warning in 7.01s\r\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "command": "node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "stdout": "TypeScript check passed\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "command": "node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+      "result": {
+        "status": "fulfilled",
+        "value": {
+          "stdout": "\u001b[36mvite v8.2.2 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n✓ 15 modules transformed.\nrendering chunks...\ncomputing gzip size...\nweb/dist/index.html                   0.42 kB │ gzip:  0.30 kB\nweb/dist/assets/index-WejMZILL.css   12.81 kB │ gzip:  3.47 kB\nweb/dist/assets/index-B2eS_1kq.js   218.21 kB │ gzip: 67.95 kB\n\n\u001b[32m✓ built in 257ms\u001b[39m\n",
+          "stderr": ""
+        }
+      }
+    }
+  ],
+  "fresh_python_install": "BLOCKED: missing venv launchers and denied registry access",
+  "fresh_frontend_install": "BLOCKED: ENOTCACHED offline and EACCES online; no lockfile",
+  "browser_e2e": "BLOCKED: no browser available; no screenshots",
+  "backend_conformance": "benchmarks/backend-conformance.json",
+  "http": "benchmarks/http-stabilization.json",
+  "demo": "benchmarks/submission-demo.json",
+  "scientific_reproduction": "benchmarks/stabilization-reproduction.json",
+  "review": "Read-only independent review found two boundary defects; reproduced and fixed; no donor edits"
+}

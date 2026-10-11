@@ -30,8 +30,13 @@ def create_app(root=None):
 
     @app.get("/api/health")
     def health():
+        try:
+            import qiskit_aer
+            aer={"version":qiskit_aer.__version__,"status":"importable; select backend=aer to execute"}
+        except (ImportError,OSError) as exc:
+            aer={"status":"unavailable","error":str(exc)}
         return {"status":"ok","mode":"local simulation","qiskit":__import__("qiskit").__version__,
-                "aer":"unavailable in verified local runtime; explicit Qiskit channel fallback","signing":"unavailable"}
+                "aer":aer,"default_backend":"reference","supported_backends":["reference","aer"],"signing":"unavailable"}
 
     @app.get("/api/circuits")
     def circuits():
@@ -57,6 +62,20 @@ def create_app(root=None):
         if not path.exists(): raise HTTPException(404,"No recorded benchmark exists")
         return FileResponse(path,media_type="application/json",filename="qfault-benchmark.json")
 
+    @app.get("/api/evaluation")
+    def final_evaluation():
+        import json
+        path=Path(__file__).resolve().parents[1]/"benchmarks"/"diagnostic-final.json"
+        if not path.exists(): raise HTTPException(404,"No frozen final evaluation exists")
+        data=json.loads(path.read_bytes())
+        return {k:v for k,v in data.items() if k!="rows"}
+
+    @app.get("/api/evaluation/report")
+    def final_evaluation_report():
+        path=Path(__file__).resolve().parents[1]/"benchmarks"/"diagnostic-final.json"
+        if not path.exists(): raise HTTPException(404,"No frozen final evaluation exists")
+        return FileResponse(path,media_type="application/json",filename="qfault-frozen-evaluation.json")
+
     @app.get("/api/experiments")
     def list_experiments(): return store.list()
 
@@ -67,7 +86,7 @@ def create_app(root=None):
             result=investigate(request)
             eid=store.save(result)
             return store.load(eid)
-        except (ValueError,RuntimeError) as exc:
+        except (ValueError,RuntimeError,ImportError,OSError) as exc:
             failure={"failure_id":identifier("failure"),"created_at":timestamp(),"configuration":request.model_dump(),
                      "execution_status":"FAILED","failure_reason":str(exc)}
             failures=store.root/"failures"

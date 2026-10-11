@@ -1,24 +1,27 @@
 # Verified release boundaries
 
-Assessment date: 2026-10-11. Implementation: d1f81b669808550a81eec4519cba4462469f71ed. Evidence: benchmarks/verification.json, benchmarks/results.json, benchmarks/demo.json and benchmarks/http-smoke.json.
+Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements the preserved original benchmarks; it does not retroactively change them.
 
-| Gate | Status | Evidence / limit |
+| Gate | Status | Executed evidence / remaining limit |
 |---|---|---|
-| Local executable demo | PASS in verified workspace | CLI demo and real HTTP workflow executed |
-| Fresh installation | NOT VERIFIED | Runtime bridge required; offline isolated install not rehearsed |
-| Actual quantum core | PASS | Qiskit 2.3.1 BasicSimulator and DensityMatrix/Kraus |
-| Requested Aer scenario | UNAVAILABLE | cp311 binary incompatible with accessible cp313; explicit valid fallback |
-| Contracts and negative repair | PASS within fixed-input scope | Analytic states, rejection and phase-observability tests |
-| Evaluator-label exclusion | PASS for declared API boundary | Allowlist poisoning test; predictions frozen before truth |
-| Separate clean/noisy/faulty evaluation | PASS | 75 cases per policy, confusion matrices, honest misses |
-| Recovery | PASS for bounded selected cases | Six independently checked missing-gate repairs; no general success claim |
-| Resource enforcement | PASS | Budget rejection, shot consistency, exact calculation ledger tests |
-| Baseline comparison | PASS with negative finding | Fixed wins; threshold ties evidence with fewer shots |
-| Reproducibility | PASS locally | Three runs match scientific metrics |
-| Reporting/provenance | PASS locally | Row-level raw record paths/manifest digests; reports export actual evidence |
-| Input/security scope | PASS for localhost template API | Bounded inputs; no arbitrary code uploads; secret-pattern scan clear |
-| Integrity | PASS relative to intact manifest | Counts, malformed artifacts, review changes/deletion fail verification |
-| Visual interaction/presentation QA | NOT VERIFIED in browser | Built interface and HTTP serving pass; browser unavailable |
-| Optional QCEC/PQC/mitigation/temporal/hardware | UNAVAILABLE | Not advertised as implemented |
+| Fresh isolated Python installation | BLOCKED | LibreOffice venv launchers missing; official registry downloads denied; bridge remains |
+| Fresh frontend installation / lockfile | BLOCKED | Offline metadata ENOTCACHED, online registry EACCES; no own node_modules or lockfile |
+| Actual quantum core | PASS locally | Qiskit2.3.1 reference and Aer0.17.2 executed Bell/GHZ/QFT |
+| Aer compatibility | PASS locally | Matching cp313 Windows x64 binary;8 tests;9 paired circuit/noise cases; saved densities agree |
+| Core/API/CLI regression tests | PASS locally |94 passed,1 Starlette/httpx deprecation warning |
+| TypeScript / production build | PASS with bridge | TypeScript6.0.3 and Vite8.2.2; own dependency installation still blocked |
+| Browser E2E / responsive / console | BLOCKED | Browser discovery empty; no screenshots or E2E success claimed |
+| Original benchmark reproducibility | PASS locally |75 cases/policy and6 selected repairs match, authoritative artifacts unchanged |
+| Frozen new evaluation | PASS locally |68 cases/policy, five policies, equal ceilings; full metrics reproduced |
+| Phase evidence / global phase | PASS within declared scope | Actual complementary counts; global-phase invariance; incomplete witnesses documented |
+| Truth isolation | PASS for API boundary | Measured allowlist and poisoned phase metadata tests; no hostile-Python sandbox claim |
+| Recovery | PASS for selected bounded cases |10/12 verified,2 inconclusive;2 negative controls rejected; fresh Z/phase validation |
+| Clean false diagnosis | PASS for tested corpus |0/10 evaluator-correct cases/policy, Wilson upper27.8%; not zero population rate |
+| Cost ceilings | PASS | Reservations and shot/execution consistency; basis-gate and exact-evaluation costs retained |
+| Export / integrity | PASS relative to supplied manifest | Standalone verify-report; covered tampering fails; restoration passes; no signatures |
+| Local demo and HTTP journey | PASS |Aer healthy/fault/noise/phase/abstention; export verified; production assets served |
+| Scientific presentation | PARTIAL |Measured charts, bases, costs, negative findings in UI; browser presentation still unverified |
+| Local authorship / attribution | Checked at delivery |Requested author/committer; notices retained; no donor code copied or remote push |
+| QCEC / mitigation / ML-DSA / temporal / hardware | NOT IMPLEMENTED |Explicitly excluded from functional claims |
 
-This is a working local product with explicit scientific limits, not a claim that every submission acceptance condition is satisfied. No first-place, scientific novelty, hardware or quantum-advantage result is claimed.
+See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, browser, winning result, scientific novelty or quantum-advantage claim is made.

@@ -1,0 +1,15 @@
+{
+  "executable": "C:\\Program Files\\LibreOffice\\program\\python-core-3.13.15",
+  "python": "3.13.15 (main, Aug 23 2026, 18:28:23) [MSC v.1944 64 bit (AMD64)]",
+  "pointer_bits": 64,
+  "extension_suffix": ".cp313-win_amd64.pyd",
+  "qiskit_loaded": "2.3.1",
+  "qiskit_path": "C:\\study/projects/quanum_ml/.python_lib\\qiskit\\__init__.py",
+  "aer_loaded": "0.17.2",
+  "aer_path": "C:\\Users\\LENOVO\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\qiskit_aer",
+  "wheel_metadata": "Wheel-Version: 1.0\nGenerator: skbuild 0.18.1\nRoot-Is-Purelib: false\nTag: cp313-cp313-win_amd64\n\n",
+  "controller_binaries": [
+    "controller_wrappers.cp313-win_amd64.pyd"
+  ],
+  "fresh_install": false
+}

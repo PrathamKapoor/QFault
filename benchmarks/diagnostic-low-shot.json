@@ -1,0 +1,1341 @@
+{
+  "configuration": {
+    "base_commit": "d30535caac17fb55718ac313c3e033dabb631364",
+    "development": {
+      "circuits": [
+        [
+          "bell",
+          2
+        ],
+        [
+          "ghz",
+          3
+        ],
+        [
+          "qft",
+          3
+        ]
+      ],
+      "seeds": [
+        71
+      ]
+    },
+    "final": {
+      "circuits": [
+        [
+          "bell",
+          2
+        ],
+        [
+          "ghz",
+          4
+        ],
+        [
+          "qft",
+          2
+        ],
+        [
+          "qft",
+          4
+        ]
+      ],
+      "seeds": [
+        103,
+        211
+      ]
+    },
+    "frozen_at": "2026-10-11T10:59:54.177Z",
+    "low_shot_control": {
+      "circuits": [
+        [
+          "bell",
+          2
+        ],
+        [
+          "ghz",
+          4
+        ]
+      ],
+      "scenarios": [
+        "clean",
+        "phase"
+      ],
+      "seeds": [
+        503
+      ],
+      "shots": 64
+    },
+    "max_evaluations": 6,
+    "max_shots": 8192,
+    "policies": [
+      "fixed",
+      "threshold",
+      "random",
+      "evidence",
+      "phase"
+    ],
+    "protocol": "phase-sensitive-v1",
+    "qft_extra": [
+      "angle"
+    ],
+    "recover": false,
+    "rules": [
+      "Original benchmark is previously observed data; preserve unchanged",
+      "No tuning after opening final results",
+      "Same resource ceilings, actual costs reported; no currency conversion",
+      "Configured noise truth can be observationally invisible; retain losing cases",
+      "Phase strategy is a complementary measurement plus existing ideal-state diagnostic, not tomography",
+      "Recovery evaluated separately with full independent validation cost"
+    ],
+    "scenarios": [
+      "clean",
+      "readout",
+      "gate",
+      "remove",
+      "replace",
+      "rewire",
+      "mixed",
+      "phase"
+    ],
+    "shots": 2048
+  },
+  "configuration_digest": "7f2b01b9246870cc5d5e974a4f017dcd1af0cfcf9b213eebd0c3f939dfaa536b",
+  "created_at": "2026-10-11T11:08:22.643788+00:00",
+  "implementation_digest": "56f477144a727a09684fa47825d0620c3e74142cea1efe14ee2f8fcbccf2d4c2",
+  "limitations": [
+    "Configured noise may be invisible in task measurements; category accuracy is not detection power",
+    "Fixed circuits and few seeds; intervals are descriptive, not unseen-algorithm generalization",
+    "Phase policy still uses privileged exact ideal simulation for logical/noise attribution",
+    "All policies have equal ceilings; actual resources differ; recovery evaluated separately"
+  ],
+  "policies": {
+    "evidence": {
+      "abstention": {
+        "high": 1,
+        "low": 0.5101091635454027,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 1,
+        "successes": 4
+      },
+      "accuracy": {
+        "high": 0.4898908364545972,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0,
+        "successes": 0
+      },
+      "cases": 4,
+      "clean_false_diagnosis": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "confusion_matrix": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "INSUFFICIENT_EVIDENCE": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "INSUFFICIENT_EVIDENCE": 2
+        }
+      },
+      "evaluations": 8,
+      "executions": 8,
+      "logical_defect_recall": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "per_class_recall": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        }
+      },
+      "runtime_seconds": 0.12221460000728257,
+      "selective_accuracy": {
+        "high": null,
+        "low": null,
+        "method": "Wilson 95%",
+        "n": 0,
+        "rate": null,
+        "successes": 0
+      },
+      "shots": 512
+    },
+    "fixed": {
+      "abstention": {
+        "high": 0.8499610108478504,
+        "low": 0.15003898915214958,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0.5,
+        "successes": 2
+      },
+      "accuracy": {
+        "high": 0.8499610108478504,
+        "low": 0.15003898915214958,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0.5,
+        "successes": 2
+      },
+      "cases": 4,
+      "clean_false_diagnosis": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "confusion_matrix": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "LOGICAL_CIRCUIT_DEFECT": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "INSUFFICIENT_EVIDENCE": 2
+        }
+      },
+      "evaluations": 16,
+      "executions": 12,
+      "logical_defect_recall": {
+        "high": 1,
+        "low": 0.3423802275066532,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 1,
+        "successes": 2
+      },
+      "per_class_recall": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "high": 1,
+          "low": 0.3423802275066532,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 1,
+          "successes": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        }
+      },
+      "runtime_seconds": 0.5309703000020818,
+      "selective_accuracy": {
+        "high": 1,
+        "low": 0.3423802275066532,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 1,
+        "successes": 2
+      },
+      "shots": 4608
+    },
+    "phase": {
+      "abstention": {
+        "high": 1,
+        "low": 0.5101091635454027,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 1,
+        "successes": 4
+      },
+      "accuracy": {
+        "high": 0.4898908364545972,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0,
+        "successes": 0
+      },
+      "cases": 4,
+      "clean_false_diagnosis": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "confusion_matrix": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "INSUFFICIENT_EVIDENCE": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "INSUFFICIENT_EVIDENCE": 2
+        }
+      },
+      "evaluations": 8,
+      "executions": 8,
+      "logical_defect_recall": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "per_class_recall": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        }
+      },
+      "runtime_seconds": 0.13232430000061868,
+      "selective_accuracy": {
+        "high": null,
+        "low": null,
+        "method": "Wilson 95%",
+        "n": 0,
+        "rate": null,
+        "successes": 0
+      },
+      "shots": 512
+    },
+    "random": {
+      "abstention": {
+        "high": 1,
+        "low": 0.5101091635454027,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 1,
+        "successes": 4
+      },
+      "accuracy": {
+        "high": 0.4898908364545972,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0,
+        "successes": 0
+      },
+      "cases": 4,
+      "clean_false_diagnosis": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "confusion_matrix": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "INSUFFICIENT_EVIDENCE": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "INSUFFICIENT_EVIDENCE": 2
+        }
+      },
+      "evaluations": 8,
+      "executions": 8,
+      "logical_defect_recall": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "per_class_recall": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        }
+      },
+      "runtime_seconds": 0.12611490000563208,
+      "selective_accuracy": {
+        "high": null,
+        "low": null,
+        "method": "Wilson 95%",
+        "n": 0,
+        "rate": null,
+        "successes": 0
+      },
+      "shots": 512
+    },
+    "threshold": {
+      "abstention": {
+        "high": 1,
+        "low": 0.5101091635454027,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 1,
+        "successes": 4
+      },
+      "accuracy": {
+        "high": 0.4898908364545972,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 4,
+        "rate": 0,
+        "successes": 0
+      },
+      "cases": 4,
+      "clean_false_diagnosis": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "confusion_matrix": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "INSUFFICIENT_EVIDENCE": 2
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "INSUFFICIENT_EVIDENCE": 2
+        }
+      },
+      "evaluations": 8,
+      "executions": 8,
+      "logical_defect_recall": {
+        "high": 0.6576197724933468,
+        "low": 0,
+        "method": "Wilson 95%",
+        "n": 2,
+        "rate": 0,
+        "successes": 0
+      },
+      "per_class_recall": {
+        "LOGICAL_CIRCUIT_DEFECT": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        },
+        "NO_SIGNIFICANT_FAILURE_DETECTED": {
+          "high": 0.6576197724933468,
+          "low": 0,
+          "method": "Wilson 95%",
+          "n": 2,
+          "rate": 0,
+          "successes": 0
+        }
+      },
+      "runtime_seconds": 0.12308400000620168,
+      "selective_accuracy": {
+        "high": null,
+        "low": null,
+        "method": "Wilson 95%",
+        "n": 0,
+        "rate": null,
+        "successes": 0
+      },
+      "shots": 512
+    }
+  },
+  "rows": [
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "diagnostic_ideal_state",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 0
+        },
+        {
+          "action": "diagnostic_readout_zero",
+          "resources": {},
+          "shots": 1024
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_f7fc85d5eb624837a32b24bd3a920349",
+      "case_id": "bell-2-clean-503",
+      "evaluations": 4,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 3,
+      "experiment_id": "experiment_f7fc85d5eb624837a32b24bd3a920349",
+      "family": "bell",
+      "manifest_digest": "dbfffd4358363165f7d8802528e1da4e644be4a4cd35b8748d1d9b36932fd075",
+      "n_qubits": 2,
+      "policy": "fixed",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.38776789999974426,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 1152,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "diagnostic_ideal_state",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 0
+        },
+        {
+          "action": "diagnostic_readout_zero",
+          "resources": {},
+          "shots": 1024
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_eaed2e348cd44bed8674b81f0b39fc4f",
+      "case_id": "bell-2-phase-503",
+      "evaluations": 4,
+      "evaluator_state_infidelity": 1,
+      "executions": 3,
+      "experiment_id": "experiment_eaed2e348cd44bed8674b81f0b39fc4f",
+      "family": "bell",
+      "manifest_digest": "07f94235d534c8ae24c5a56f2401d2442d37f7734c6bc282159b2b9ecbe41289",
+      "n_qubits": 2,
+      "policy": "fixed",
+      "prediction": "LOGICAL_CIRCUIT_DEFECT",
+      "runtime_seconds": 0.04739480000716867,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 1152,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "diagnostic_ideal_state",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 0
+        },
+        {
+          "action": "diagnostic_readout_zero",
+          "resources": {},
+          "shots": 1024
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_90e99479a63c4529a0d351441bf51158",
+      "case_id": "ghz-4-clean-503",
+      "evaluations": 4,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 3,
+      "experiment_id": "experiment_90e99479a63c4529a0d351441bf51158",
+      "family": "ghz",
+      "manifest_digest": "fe77826885ddf86d53bedfd5b1b693b3ebab23197723ae3df025bc64e8abe47d",
+      "n_qubits": 4,
+      "policy": "fixed",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.0467789999966044,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 1152,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "diagnostic_ideal_state",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 0
+        },
+        {
+          "action": "diagnostic_readout_zero",
+          "resources": {},
+          "shots": 1024
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_6de08eac29b94fce978a15c078a8c541",
+      "case_id": "ghz-4-phase-503",
+      "evaluations": 4,
+      "evaluator_state_infidelity": 1,
+      "executions": 3,
+      "experiment_id": "experiment_6de08eac29b94fce978a15c078a8c541",
+      "family": "ghz",
+      "manifest_digest": "6b76641157b9b22d15c447f8dab359df6e6e47232bbee35acbbc2775f19f6f20",
+      "n_qubits": 4,
+      "policy": "fixed",
+      "prediction": "LOGICAL_CIRCUIT_DEFECT",
+      "runtime_seconds": 0.04902859999856446,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 1152,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_02cf8c78f46648d889caf7dbac73ae98",
+      "case_id": "bell-2-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_02cf8c78f46648d889caf7dbac73ae98",
+      "family": "bell",
+      "manifest_digest": "dd087e629fa98016dece19adcc6a3554f8a8c5b2caf1dcf2af4b160cc84b4fb9",
+      "n_qubits": 2,
+      "policy": "threshold",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.031986900001356844,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_648e53cced8c4f098a4c23abf4f06c55",
+      "case_id": "bell-2-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_648e53cced8c4f098a4c23abf4f06c55",
+      "family": "bell",
+      "manifest_digest": "06cedbda755352be528ad5ae9caa004984995650443cd23b5b035582540277e5",
+      "n_qubits": 2,
+      "policy": "threshold",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.02920779999840306,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_ac5b9d6bef454e40b544d47bc194af70",
+      "case_id": "ghz-4-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_ac5b9d6bef454e40b544d47bc194af70",
+      "family": "ghz",
+      "manifest_digest": "ae90b7dffca92c4818ebf4989a9189a59141c4bfb0b588c10e92b7dd0a13032b",
+      "n_qubits": 4,
+      "policy": "threshold",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.031270000006770715,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_c43a118dde3a42cfbfdd5c6141a23efa",
+      "case_id": "ghz-4-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_c43a118dde3a42cfbfdd5c6141a23efa",
+      "family": "ghz",
+      "manifest_digest": "51280e881a9ac451f14e5d153ce9793c6b42e4905a9f19611975e3922bccf133",
+      "n_qubits": 4,
+      "policy": "threshold",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.030619299999671057,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_f080a601ddaf440f970cbe90848b8529",
+      "case_id": "bell-2-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_f080a601ddaf440f970cbe90848b8529",
+      "family": "bell",
+      "manifest_digest": "19ea29d29d86d955e72b14ae1cbefe7e4190c8e70082c6c2de9af944c0060718",
+      "n_qubits": 2,
+      "policy": "random",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.02749500000209082,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_d44940c62b214c3395373b23be0d0269",
+      "case_id": "bell-2-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_d44940c62b214c3395373b23be0d0269",
+      "family": "bell",
+      "manifest_digest": "c37c319efc2b1b2c5b285d60c52c4d35ab34a5d82b6a91162c0b3ed3d5ce8404",
+      "n_qubits": 2,
+      "policy": "random",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.027544099997612648,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_e4e5734d7d784a08bd0e73c899c7fb22",
+      "case_id": "ghz-4-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_e4e5734d7d784a08bd0e73c899c7fb22",
+      "family": "ghz",
+      "manifest_digest": "704a19a38e4d564c60466742a30ddd707325ff307ff3e0ac49835dd7e2ef0441",
+      "n_qubits": 4,
+      "policy": "random",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.03382730000157608,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_07cab71ed5334726af7329c2aa993e6d",
+      "case_id": "ghz-4-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_07cab71ed5334726af7329c2aa993e6d",
+      "family": "ghz",
+      "manifest_digest": "429ca7d4434c3fffaf9fabb62dfe7c56d30293e42c5bc6112f3e31b3ae36aa04",
+      "n_qubits": 4,
+      "policy": "random",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.037248500004352536,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_12d11f6e43e1438a88ce758bb9317982",
+      "case_id": "bell-2-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_12d11f6e43e1438a88ce758bb9317982",
+      "family": "bell",
+      "manifest_digest": "4ab2a5438e778d07326ad877b36a9b399ea931ce00d01be6e58820746cf3a08f",
+      "n_qubits": 2,
+      "policy": "evidence",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.03448750000097789,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_30fa629732a043668abec406c3814de1",
+      "case_id": "bell-2-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_30fa629732a043668abec406c3814de1",
+      "family": "bell",
+      "manifest_digest": "eb422374ef130837da00d2912339c22063c6ea91e6b4a88454fccccb6853ae41",
+      "n_qubits": 2,
+      "policy": "evidence",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.026260300001013093,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_ab63897584c64a9393ae8496f5a877fd",
+      "case_id": "ghz-4-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_ab63897584c64a9393ae8496f5a877fd",
+      "family": "ghz",
+      "manifest_digest": "bc359a3b6194646577755ebdd0d13f2e4470495c1c1829fa5dcdfc585a5cd519",
+      "n_qubits": 4,
+      "policy": "evidence",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.03215650000493042,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_490339f708a34a14a5914091db2242aa",
+      "case_id": "ghz-4-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_490339f708a34a14a5914091db2242aa",
+      "family": "ghz",
+      "manifest_digest": "48b0799bef8f13f588d3539610d173483fc8645f300b655a4df8e118e17627e4",
+      "n_qubits": 4,
+      "policy": "evidence",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.029310300000361167,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_a5c8eae6ce3c4b659359ab08b52c0c53",
+      "case_id": "bell-2-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_a5c8eae6ce3c4b659359ab08b52c0c53",
+      "family": "bell",
+      "manifest_digest": "c128facebf04e282d1655dc2bfe694428a763220f28b1d169568ddce51499f6f",
+      "n_qubits": 2,
+      "policy": "phase",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.030772600002819672,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 2,
+            "gates": 2,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 3,
+            "gates": 3,
+            "qubits": 2,
+            "two_qubit_gates": 1
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_ed03dd6ed3104f538eae43570bcfae82",
+      "case_id": "bell-2-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_ed03dd6ed3104f538eae43570bcfae82",
+      "family": "bell",
+      "manifest_digest": "b94f71fde88677ef7a47c61f38f68f8549ef5734484b508604449c0569d818ed",
+      "n_qubits": 2,
+      "policy": "phase",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.03169589999743039,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_41dff09e131e422582d91f16d38796d7",
+      "case_id": "ghz-4-clean-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 3.3306690738754696e-16,
+      "executions": 2,
+      "experiment_id": "experiment_41dff09e131e422582d91f16d38796d7",
+      "family": "ghz",
+      "manifest_digest": "d2429b2c8394aefb77f10627048ba66a4ccab840549043b5b7f4ebafb6164a19",
+      "n_qubits": 4,
+      "policy": "phase",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.03558160000102362,
+      "scenario": "clean",
+      "seed": 503,
+      "shots": 128,
+      "truth": "NO_SIGNIFICANT_FAILURE_DETECTED"
+    },
+    {
+      "actions": [
+        {
+          "action": "baseline",
+          "resources": {
+            "depth": 4,
+            "gates": 4,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        },
+        {
+          "action": "observation",
+          "resources": {
+            "depth": 5,
+            "gates": 5,
+            "qubits": 4,
+            "two_qubit_gates": 3
+          },
+          "shots": 64
+        }
+      ],
+      "artifact_path": "artifacts\\diagnostic-low-shot\\investigations\\experiment_daabc3005aac4c5ca40a45936688f13f",
+      "case_id": "ghz-4-phase-503",
+      "evaluations": 2,
+      "evaluator_state_infidelity": 1,
+      "executions": 2,
+      "experiment_id": "experiment_daabc3005aac4c5ca40a45936688f13f",
+      "family": "ghz",
+      "manifest_digest": "4f67baaf3e595920ee590c93e7bcc8914fa7e08fc030e04ff7abcee5b87010ff",
+      "n_qubits": 4,
+      "policy": "phase",
+      "prediction": "INSUFFICIENT_EVIDENCE",
+      "runtime_seconds": 0.034274199999345,
+      "scenario": "phase",
+      "seed": 503,
+      "shots": 128,
+      "truth": "LOGICAL_CIRCUIT_DEFECT"
+    }
+  ],
+  "split": "low_shot_control"
+}

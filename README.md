@@ -14,12 +14,14 @@ This is working local software with real Qiskit circuits, not a mock dashboard. 
 - Analytic fixed-input state contracts, finite-shot sampling, TV disagreement bounds and explicit limitations.
 - Valid gate removal/replacement, angle changes and qubit reassignment; phase controls and mixed/noisy scenarios.
 - Analyst inputs exclude evaluator truth. Supported diagnoses include noise consistency, logical defects, mixed ambiguity and insufficient evidence.
-- Four deterministic diagnostic policies with shot/evaluation ceilings and an explicit resource ledger.
+- Five deterministic diagnostic policies with shot/evaluation ceilings and an explicit resource ledger.
 - At most 256 one-edit repair candidates. Fresh validation samples plus a separately implemented density-matrix check can verify, reject or leave a proposal inconclusive.
 - CLI, localhost FastAPI, React/TypeScript/Vite workbench, immutable JSON artifacts, hash verification, report export and append-only human review.
 - A six-scene live demo, tamper/restore demonstration and reproducible policy benchmark.
 
-Ideal sampling uses **Qiskit 2.3.1 BasicSimulator**. Gate noise uses **Qiskit DensityMatrix/Kraus**, with a classical symmetric readout channel. **Aer is unavailable in the verified environment** because its local binary targets CPython 3.11 and the accessible runtime is 3.13. This fallback is explicit throughout the execution records.
+**Qiskit 2.3.1 and Aer 0.17.2 execute locally.** Choose the reference backend (BasicSimulator / DensityMatrix-Kraus plus symmetric readout flips) or AerSimulator density_matrix with explicit gate/readout noise. Reports identify the actual backend; no requested Aer failure silently falls back. Reference remains default to preserve existing experiments. The original cp311 Aer mismatch was fixed by locating and executing a separate matching cp313 installation; see [environment audit](docs/environment-stabilization.md). Fresh isolated installation is still blocked.
+
+The phase policy adds sampled X-parity or analytic Fourier-product-basis witnesses, with basis-gate noise and resource costs. Exact logical attribution still uses privileged simulation. Fixed remains the default policy; phase is an explicit higher-cost option.
 
 ## Run now in this verified workspace
 
@@ -27,14 +29,14 @@ From C:\Projects\QFF, PowerShell:
 
 ~~~powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault circuits
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault demo
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.submission_demo --out artifacts/my-demo --backend aer
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 pytest tests -q -p no:cacheprovider
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
 ~~~
 
 Open **http://127.0.0.1:8000/**. The interface is already built locally. Stop the server with Ctrl+C when you start it yourself. It binds only localhost.
 
-The machine-specific launcher uses the existing LibreOffice Python 3.13.15 runtime and reads compatible installed packages from two existing local package directories. It sets PYTHONDONTWRITEBYTECODE and does not modify those projects. This is an environment bridge, not an isolated installation. Exact paths and limitations are in scripts/local_bootstrap.py and docs/environment.json.
+The machine-specific launcher uses the existing LibreOffice Python 3.13.15 runtime and reads compatible installed packages from existing local package directories, including only the matching Aer package from a separate user installation. It sets PYTHONDONTWRITEBYTECODE and does not modify those projects. This is an environment bridge, not an isolated installation. Exact paths and limitations are in scripts/local_bootstrap.py and docs/environment.json.
 
 To check or rebuild the interface with the verified existing tools:
 
@@ -51,7 +53,7 @@ The following is the standard installation procedure; **a fresh network installa
 
 ~~~powershell
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-tested.txt
+.venv\Scripts\python -m pip install -r requirements-aer-tested.txt
 .venv\Scripts\python -m pip install --no-deps -e .
 npm.cmd --prefix web install
 npm.cmd --prefix web run check
@@ -61,7 +63,7 @@ npm.cmd --prefix web run build
 .venv\Scripts\python -m qfault serve
 ~~~
 
-Use CPython 3.13 for the recorded dependency set. No Docker or external services are required. A portable wheel and fresh-install dependency resolution remain release tasks; no npm lockfile is claimed.
+Use CPython 3.13 for the recorded dependency set. No Docker or external services are required. Optional Aer is also declared as the project extra aer; the tested requirements file records its observed dependency versions. A portable wheel and fresh-install dependency resolution remain release tasks; no npm lockfile is claimed.
 
 ## CLI workflow
 
@@ -70,7 +72,7 @@ In a normal installed environment, use python -m qfault. Here, prefix the same a
 ~~~powershell
 python -m qfault circuits
 python -m qfault contract bell
-python -m qfault run --family bell --scenario remove --seed 7
+python -m qfault run --family bell --scenario remove --policy phase --backend aer --seed 7
 python -m qfault run --family ghz --scenario readout
 python -m qfault run --family qft --scenario angle --policy fixed
 python -m qfault run --scenario remove --max-shots 4096 --max-evaluations 2
@@ -86,6 +88,7 @@ python -m qfault analyze EXPERIMENT_ID
 python -m qfault recovery EXPERIMENT_ID
 python -m qfault verify EXPERIMENT_ID
 python -m qfault export EXPERIMENT_ID investigation-export.json
+python -m qfault verify-report investigation-export.json
 python -m qfault review EXPERIMENT_ID --reviewer PrathamKapoor --reason "Inspected validation evidence"
 ~~~
 
@@ -104,7 +107,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault dem
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault benchmark --out artifacts/new-benchmark
 ~~~
 
-The benchmark destination must not already exist; runs never overwrite prior evidence. The live demo executes healthy Bell, missing-gate repair, readout-only control, mixed GHZ, clean QFT and a phase fault under the fixed plan. It then alters a dedicated throwaway result, checks failure, restores the original bytes and checks success. Its measured record is benchmarks/demo.json.
+The benchmark destination must not already exist; runs never overwrite prior evidence. The legacy qfault demo executes healthy Bell, missing-gate repair, readout-only control, mixed GHZ, clean QFT and a phase fault under the fixed plan. It then alters a dedicated throwaway result, checks failure, restores the original bytes and checks success. Its historical measured record is benchmarks/demo.json. The new scripts.submission_demo rehearsal uses actual Aer, complementary phase evidence and fresh Z/phase repair validation; its measured output is benchmarks/submission-demo.json. Use a new destination each time. See [judging script](docs/demo.md).
 
 The frozen protocol is docs/benchmark-protocol.md. Actual raw records are under artifacts/release-benchmark/investigations/; the committed row-level summary is benchmarks/results.json. Runs under artifacts/benchmark-reproduction and artifacts/release-benchmark reproduced the scientific metrics; benchmarks/reproduction.json records the comparison. IDs, timestamps, runtimes and associated hashes are intentionally not byte-identical.
 
@@ -121,15 +124,43 @@ The fixed plan wins on category accuracy; the simple threshold ties the proposed
 
 All 6 selected Bell/GHZ missing-gate recovery trials verified (Wilson 95% interval 61.0–100%). This is a narrow six-trial corpus, not a general repair-success claim. Original distribution quality ranged from 0.4707 to 0.5000; independently sampled repaired quality ranged from 0.9941 to 0.9985. Quality means 1−TV. Each consumed 7,168 shots; Bell used 28 evaluations and GHZ 61.
 
+## Frozen diagnostic comparison
+
+The original benchmark above remains unchanged. A separate configuration was committed before implementation; development seed71 and final seeds103/211 are disjoint. The final reference-backend corpus has68 cases/policy and equal8192-shot/6-evaluation ceilings. All metrics reproduced on the current release without replacing authoritative artifacts.
+
+| Policy | Correct | Actual shots | Evaluations |
+|---|---:|---:|---:|
+| Original evidence | 34/68 | 303,104 | 184 |
+| Fixed | 58/68 | 348,160 | 272 |
+| Random | 21/68 | 303,104 | 171 |
+| Threshold | 34/68 | 278,528 | 162 |
+| Phase evidence | 66/68 | 487,424 | 328 |
+
+Phase accuracy has descriptive Wilson95% interval89.9–99.2%; fixed75.0–91.8%. Phase costs40% more shots and still misses two QFT2 angle faults; fixed catches those with unconditional exact-state checks. Zero false diagnoses among10 evaluator-correct cases has Wilson upper27.8%. No statistical superiority or unseen-algorithm guarantee is claimed. See [findings and confusion matrices](docs/diagnostic-findings.md), [measured tradeoff](benchmarks/policy-tradeoff.svg) and [raw-linked final summary](benchmarks/diagnostic-final.json).
+
+Selected recovery now covers12 missing-gate/phase trials:10 verified,2 QFT4 inconclusive, plus2 rejected negative controls. Wilson95% interval55.2–95.3% applies only to this selected corpus. Validation uses independent DensityMatrix evolution and new Z/phase samples; total11264 shots/case. The original6/6 finding remains narrow.
+
+Verified local reproduction commands (new destinations required):
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split development --out artifacts/new-development
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split final --out artifacts/new-final
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split low_shot_control --out artifacts/new-low-shot
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.evaluate_recovery --out artifacts/new-recovery
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.compare_backends --out artifacts/new-backend-check
+~~~
+
+In a normal installed environment replace the PowerShell prefix with python -m. Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation/browser checks.
+
 ## API and data
 
-Actual routes are documented at http://127.0.0.1:8000/docs. They include /api/health, /api/circuits, /api/contracts/{family}/{n}, /api/experiments, experiment detail/verification/report/review, and /api/benchmark plus its report download. Each request executes a bounded local workflow; only one investigation runs at a time in the supported single-process server.
+Actual routes are documented at http://127.0.0.1:8000/docs. They include /api/health, /api/circuits, /api/contracts/{family}/{n}, /api/experiments, experiment detail/verification/report/review, /api/benchmark plus its report download, and /api/evaluation with the frozen final report. Each request executes a bounded local workflow; only one investigation runs at a time in the supported single-process server.
 
 Artifact directories contain investigation.json, separate evaluator-only evaluation.json, manifest.json with review membership hashes and immutable review records. Original submitted circuits are never edited in place. SHA-256 checks detect covered changes relative to the manifest; there is no signed receipt or external trust anchor.
 
 ## Scientific and engineering limits
 
-- State contracts cover a single input, not full unitary equivalence. Matching counts cannot certify phases.
+- State contracts cover a single input, not full unitary equivalence. Matching counts cannot certify phases. Complementary witnesses can reveal some relative phases but remain incomplete.
 - Ideal-state diagnostic probes require privileged local simulation. Hardware tomography, MQT QCEC and IBM hardware execution are not implemented.
 - Noise attribution establishes consistency, not unique causal identification. No temporal drift detection or forecasting is implemented.
 - Measurement mitigation, ML-DSA signing and authenticated review are unavailable.

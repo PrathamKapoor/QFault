@@ -1,0 +1,26 @@
+{
+  "original": {
+    "source": "benchmarks/results.json",
+    "reproduction": "artifacts/stabilization-current-original",
+    "policy_metrics_match": true,
+    "recovery_metrics_match": true
+  },
+  "final": {
+    "source": "benchmarks/diagnostic-final.json",
+    "reproduction": "artifacts/diagnostic-final-reproduction",
+    "policy_metrics_match": true
+  },
+  "excluded_fields": [
+    "Random experiment/execution identifiers",
+    "Timestamps",
+    "Local runtime",
+    "Implementation digest after non-policy backend/reporting additions"
+  ],
+  "backend": "reference; frozen corpus unchanged",
+  "selected_recovery": {
+    "source": "benchmarks/recovery-stabilization.json",
+    "reproduction": "artifacts/recovery-reproduction",
+    "verdicts_and_costs_match": true,
+    "negative_control_verdicts_match": true
+  }
+}

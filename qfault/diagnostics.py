@@ -78,12 +78,13 @@ class DiagnosticAccess:
     Noise configuration remains in the executor. This is a software API boundary,
     not a security sandbox against adversarial Python introspection.
     """
-    def __init__(self,candidate,noise,budget,seed):
+    def __init__(self,candidate,noise,budget,seed,backend="reference"):
         self._candidate=candidate
         self._noise=noise
         self.budget=budget
         self._seed=seed
         self.records=[]
+        self._backend=backend
 
     def state_probe(self,contract,include_phase=False):
         self.budget.reserve(0,"diagnostic_ideal_state",resources(self._candidate))
@@ -96,7 +97,7 @@ class DiagnosticAccess:
     def phase_probe(self,contract,shots):
         circuit=measured_circuit(self._candidate,contract)
         self.budget.reserve(shots,"diagnostic_phase_measurement",resources(circuit))
-        record=execute(circuit,self._noise,shots,(self._seed+211)%2**32,contract_id=contract.contract_id)
+        record=execute(circuit,self._noise,shots,(self._seed+211)%2**32,contract_id=contract.contract_id,backend=self._backend)
         basis="X parity" if contract.family in {"bell","ghz"} else "analytic Fourier product basis"
         record.update(measurement_basis=basis,subject_circuit_id=self._candidate.circuit_id)
         self.records.append(record)
@@ -110,7 +111,7 @@ class DiagnosticAccess:
         shots=1024
         self.budget.reserve(shots,"diagnostic_readout_zero")
         c=Circuit(n_qubits=self._candidate.n_qubits,gates=())
-        r=execute(c,self._noise,shots,(self._seed+101)%2**32)
+        r=execute(c,self._noise,shots,(self._seed+101)%2**32,backend=self._backend)
         self.records.append(r)
         m=EvidenceCollector.collect(r,c.n_qubits)
         expected={format(i,f"0{c.n_qubits}b"):float(i==0) for i in range(2**c.n_qubits)}

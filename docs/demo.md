@@ -1,19 +1,61 @@
-# Local judging rehearsal
+# Verified judging rehearsal and recording script
 
-Start from the verified workspace using README.md commands. The built interface is served on http://127.0.0.1:8000/ by the localhost API. No credentials or network calls are needed. Browser interactions remain manually unverified; CLI and HTTP paths below were executed.
+The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. This document is a recording script; no prerecorded video or browser screenshots have been produced.
 
-Run powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault demo. The latest real output is benchmarks/demo.json; IDs resolve under artifacts/investigations.
+From C:\Projects\QFF in PowerShell:
 
-- Healthy Bell: no significant failure evidence, 4,096 shots.
-- Bell remove: logical defect; one-edit repair independently VERIFIED, 7,168 shots / 28 evaluations.
-- Bell readout: noise-consistent degradation, 5,120 shots; no automatic circuit repair.
-- GHZ mixed: mixed/ambiguous conclusion, 5,120 shots.
-- QFT clean with fixed policy: passes the fixed-input contract checks.
-- Bell phase with fixed policy: logical defect detected using the privileged simulator-state probe despite matching computational-basis probabilities; independently verified repair.
-- Dedicated integrity control: original valid, modified counts invalid, restored original bytes valid.
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
+~~~
 
-In the UI choose Bell and Missing gate, run, inspect actual counts and diagnostic evidence, then inspect recovery verification and export JSON. Use Readout noise to show the noise control and GHZ/Mixed to show ambiguity. Review requires a name and reason and creates a self-declared local decision. The benchmark tab shows the measured comparison, including the fixed policy win and threshold tie at lower cost.
+Open http://127.0.0.1:8000/. If the supplied server already owns port8000, use it rather than starting a second instance. The React production build is served by FastAPI. Browser interactions are not yet verified because no browser is available; real HTTP and CLI paths have passed.
 
-Explain the scientific boundary: all runs are simulated; contracts are fixed-input states; noise consistency is not unique causal proof; state probes are unavailable on hardware without additional measurements; the evidence policy has no demonstrated advantage. No result proves general unitary equivalence.
+Run the complete offline rehearsal in a separate terminal, using a new destination:
 
-The latest HTTP rehearsal is benchmarks/http-smoke.json. Release tests, limitations and next engineering work are recorded in handoff.md.
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.submission_demo --out artifacts/my-judging-demo --backend aer
+~~~
+
+Actual prior output: benchmarks/submission-demo.json; underlying exports and raw investigations: artifacts/submission-rehearsal. The rehearsal executed five scenarios and a throwaway tamper/restore control:
+
+| Scene | Observed conclusion | Recovery | Actual shots / evaluations |
+|---|---|---|---|
+| Healthy Bell | No significant failure detected | None | 7168 /4 |
+| Hidden missing gate | Logical circuit defect | Independently VERIFIED | 11264 /30 |
+| Readout-only noise | Noise-consistent degradation | None | 7168 /5 |
+| Relative-phase defect | Logical circuit defect | Independently VERIFIED | 11264 /25 |
+| Unfunded additional evidence | INSUFFICIENT_EVIDENCE | None | 4096 /2 |
+
+All sampled execution records identify AerSimulator/density_matrix. The original submitted circuit remains unchanged. Verification uses a separate DensityMatrix state calculation and new Z/phase measurement seeds. Human review remains pending; a simulation success does not stand in for an actual person's decision.
+
+## Three-minute narration
+
+0:00–0:25 — Problem: a successful quantum job can return the wrong result. QFAULT asks which measurements disagree with an explicit contract, which explanations remain possible, and whether an admissible recovery survives new evidence. State that this demonstration is local simulation.
+
+0:25–0:50 — Healthy computation: select Bell, clean, phase evidence, Aer. Inspect the declared state and actual counts. No significant failure is reported; that is not universal proof of correctness.
+
+0:50–1:35 — Hidden failure: select Missing gate. The evaluator keeps its mutation label separate; diagnosis consumes submitted circuit, contract and measured evidence. Show competing support labels and actual shot/evaluation costs. The one-edit proposal is a copy, not replacement by the entire trusted reference. Show independent validation and its fresh seed.
+
+1:35–2:05 — Noise control: choose Readout noise. Show the correct ideal state and noise-consistent measured disagreement, with no invented gate repair. If time permits, phase-only mutation demonstrates matching Z probabilities but disagreement in X measurements. Insufficient-budget control demonstrates honest abstention.
+
+2:05–2:30 — Integrity: export the investigation. The rehearsal's dedicated throwaway artifact verifies true, false after covered-count alteration, true after restoring original bytes. This is SHA256 integrity relative to an unsigned manifest, not ML-DSA, authenticity or proof of scientific truth.
+
+2:30–3:00 — Findings and limitations: the original evidence policy loses to fixed and is dominated by threshold on shots/accuracy. The separate frozen phase comparison reaches66/68 versus fixed58/68 with40% more shots and two missed angle faults. Fixed remains default. Across12 selected recovery cases,10 verified and2 were inconclusive. Exact attribution is privileged simulation, witnesses are incomplete, contracts cover one input, and fresh installation/browser gates remain unfinished.
+
+## CLI equivalents and export checking
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault run --family bell --scenario remove --policy phase --backend aer
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault verify-report artifacts/submission-rehearsal/hidden_logical_failure.json
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split final --out artifacts/my-final-evaluation
+~~~
+
+The existing valid export returns exit0. The deliberately tampered export at artifacts/submission-rehearsal/tampered-export.json returns exit1. Do not alter real user artifacts. All output destinations refuse overwrite.
+
+For an HTTP rehearsal with the server running:
+
+~~~powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.http_release_smoke --out artifacts/my-http-check
+~~~
+
+benchmarks/http-stabilization.json records actual201 scientific responses, valid exports, reload GETs, production-asset200s and invalid-input422s. This is not browser rendering, console, responsive-layout or download-interaction verification. A human reviewer must still inspect and operate the interface before a submission-ready claim.

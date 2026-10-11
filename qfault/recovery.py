@@ -20,6 +20,7 @@ def edit_candidates(circuit,limit=256):
             edits.append((gates[:i]+[replacement]+gates[i+1:],{"operator":"replace","index":i,"gate":replacement.model_dump(mode="json")}))
         if gate.angle is not None:
             for delta in [-pi/4,pi/4,-pi/2,pi/2]:
+                if abs(gate.angle+delta)>8*pi: continue
                 replacement=Gate(name=gate.name,qubits=gate.qubits,angle=gate.angle+delta)
                 edits.append((gates[:i]+[replacement]+gates[i+1:],{"operator":"angle","index":i,"delta":delta}))
         for pair in permutations(range(circuit.n_qubits),len(gate.qubits)):
@@ -55,7 +56,7 @@ class RecoveryPlanner:
 
 
 class IndependentVerifier:
-    def verify(self,candidate,contract,noise,shots,seed,budget,phase_validate=False):
+    def verify(self,candidate,contract,noise,shots,seed,budget,phase_validate=False,backend="reference"):
         if not budget.can(shots*(2 if phase_validate else 1),3 if phase_validate else 2):
             return {"verified_status":"INCONCLUSIVE","contract_satisfied":False,"reason":"Validation budget exhausted"}
         budget.reserve(0,"independent_density_state",resources(candidate))
@@ -64,7 +65,7 @@ class IndependentVerifier:
         target=contract.state()
         fidelity=float(np.real(np.vdot(target,density.data@target)))
         budget.reserve(shots,"independent_recovery_measurement",resources(candidate))
-        record=execute(candidate,noise,shots,seed,contract_id=contract.contract_id)
+        record=execute(candidate,noise,shots,seed,contract_id=contract.contract_id,backend=backend)
         measured=EvidenceCollector.collect(record,candidate.n_qubits)
         result=comparison(measured,probabilities(target),contract.distribution_tolerance)
         state_ok=1-fidelity<=contract.state_infidelity_tolerance
@@ -74,7 +75,7 @@ class IndependentVerifier:
         if phase_validate:
             rotated=measured_circuit(candidate,contract)
             budget.reserve(shots,"independent_phase_measurement",resources(rotated))
-            phase_record=execute(rotated,noise,shots,(seed+17)%2**32,contract_id=contract.contract_id)
+            phase_record=execute(rotated,noise,shots,(seed+17)%2**32,contract_id=contract.contract_id,backend=backend)
             phase_record.update(measurement_basis="contract phase basis",subject_circuit_id=candidate.circuit_id)
             phase_comparison=comparison(EvidenceCollector.collect(phase_record,candidate.n_qubits),measurement_probabilities(contract),contract.distribution_tolerance)
             sampled_ok=sampled_ok and phase_comparison["upper"]<=contract.distribution_tolerance

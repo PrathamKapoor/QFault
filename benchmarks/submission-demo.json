@@ -1,0 +1,87 @@
+{
+  "backend": "aer",
+  "rows": [
+    {
+      "label": "healthy",
+      "experiment_id": "experiment_f90adbedefaf434c890c0886c6f39443",
+      "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+      "recovery": null,
+      "shots": 7168,
+      "evaluations": 4,
+      "export": "artifacts\\submission-rehearsal\\healthy.json",
+      "export_sha256": "1df6dd0111589703fdb101ab081701972763dea65bb0305955aaa68223277224",
+      "verified": true,
+      "backends": [
+        "qiskit_aer.AerSimulator/density_matrix"
+      ]
+    },
+    {
+      "label": "hidden_logical_failure",
+      "experiment_id": "experiment_210d0975545e48e5b36da9c54bf51179",
+      "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+      "recovery": "VERIFIED",
+      "shots": 11264,
+      "evaluations": 30,
+      "export": "artifacts\\submission-rehearsal\\hidden_logical_failure.json",
+      "export_sha256": "5d0c22bed40087afb90d9240f1dca8d5dacd3978c9afe4359f87407bc60e720d",
+      "verified": true,
+      "backends": [
+        "qiskit_aer.AerSimulator/density_matrix"
+      ]
+    },
+    {
+      "label": "noise_control",
+      "experiment_id": "experiment_cbc0dd6872394771a8c3839fb7a6f716",
+      "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+      "recovery": null,
+      "shots": 7168,
+      "evaluations": 5,
+      "export": "artifacts\\submission-rehearsal\\noise_control.json",
+      "export_sha256": "bf7ec4c0ab3507ed6d6359207a0f8988e0887abbde12a02a13aaede8e525c9b6",
+      "verified": true,
+      "backends": [
+        "qiskit_aer.AerSimulator/density_matrix"
+      ]
+    },
+    {
+      "label": "relative_phase",
+      "experiment_id": "experiment_e1d44f86b4f746b09a5dd00c12dfd0c9",
+      "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+      "recovery": "VERIFIED",
+      "shots": 11264,
+      "evaluations": 25,
+      "export": "artifacts\\submission-rehearsal\\relative_phase.json",
+      "export_sha256": "fe526baf9b15be66004ebc28a20adbaea8784db4960a250167e50c1ba35fe3f9",
+      "verified": true,
+      "backends": [
+        "qiskit_aer.AerSimulator/density_matrix"
+      ]
+    },
+    {
+      "label": "insufficient_evidence",
+      "experiment_id": "experiment_36b9c38db4d34d11b671d37c06559fdc",
+      "diagnosis": "INSUFFICIENT_EVIDENCE",
+      "recovery": null,
+      "shots": 4096,
+      "evaluations": 2,
+      "export": "artifacts\\submission-rehearsal\\insufficient_evidence.json",
+      "export_sha256": "61d85891e92f86c4010690a9f1264842fda798a1a29dfdb5b706ce1d538b6ee9",
+      "verified": true,
+      "backends": [
+        "qiskit_aer.AerSimulator/density_matrix"
+      ]
+    }
+  ],
+  "integrity_control": {
+    "original": true,
+    "tampered": false,
+    "restored": true,
+    "experiment_id": "experiment_f33a3ac9c06a4f94949c18fd32f9fe62"
+  },
+  "limitations": [
+    "Local simulation only",
+    "Ideal attribution uses privileged exact state calculation",
+    "Unsigned hashes do not authenticate truth or author",
+    "Human review remains pending; no circuit is automatically applied"
+  ]
+}

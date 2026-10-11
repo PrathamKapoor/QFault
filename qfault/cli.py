@@ -36,7 +36,7 @@ def demo(store):
     finally: path.write_bytes(before)
     restored=store.verify(eid)["valid"]
     return {"investigations":investigations,"integrity_demonstration":{"original":original,"tampered":tampered,"restored":restored},
-            "integrity_throwaway_experiment":eid,"backend_mode":"Qiskit local simulation; Aer unavailable in tested runtime"}
+            "integrity_throwaway_experiment":eid,"backend_mode":"Qiskit reference backend; optional Aer is selected separately"}
 
 
 def main(argv=None):
@@ -51,6 +51,7 @@ def main(argv=None):
     p.add_argument("--policy",default="fixed",choices=["evidence","fixed","random","threshold","phase"])
     p.add_argument("--qubits",type=int);p.add_argument("--shots",type=int,default=2048);p.add_argument("--seed",type=int,default=42)
     p.add_argument("--max-shots",type=int,default=12000);p.add_argument("--max-evaluations",type=int,default=384)
+    p.add_argument("--backend",choices=["reference","aer"],default="reference")
     p.add_argument("--no-recovery",action="store_true")
     for name in ["inspect","analyze","recovery","verify"]:
         p=sub.add_parser(name);p.add_argument("experiment_id")
@@ -60,12 +61,18 @@ def main(argv=None):
     sub.add_parser("demo")
     p=sub.add_parser("benchmark");p.add_argument("--out",required=True)
     p=sub.add_parser("evaluate");p.add_argument("--out",required=True);p.add_argument("--split",choices=["development","final","low_shot_control"],required=True);p.add_argument("--config",default="configs/diagnostic-evaluation.json")
+    p=sub.add_parser("verify-report");p.add_argument("report_json")
     sub.add_parser("serve")
     args=parser.parse_args(argv)
     try:
         if args.command=="circuits":
             emit([{"family":f,"qubits":n,"contract_id":contract(f,n).contract_id,"circuit_id":benchmark(f,n).circuit_id} for f,n in [("bell",2),("ghz",3),("qft",3)]])
         elif args.command=="contract": emit(contract(args.family,args.qubits or (2 if args.family=="bell" else 3)).describe())
+        elif args.command=="verify-report":
+            from .storage import verify_export
+            result=verify_export(json.loads(Path(args.report_json).read_bytes()))
+            emit(result)
+            return 0 if result["valid"] else 1
         elif args.command=="serve":
             from .api import main as serve
             serve()
@@ -88,7 +95,7 @@ def main(argv=None):
             store=ArtifactStore(args.store)
             if args.command=="run":
                 result=investigate(RunRequest(family=args.family,n_qubits=args.qubits,scenario=args.scenario,policy=args.policy,
-                      shots=args.shots,seed=args.seed,max_shots=args.max_shots,max_evaluations=args.max_evaluations,recover=not args.no_recovery))
+                      shots=args.shots,seed=args.seed,max_shots=args.max_shots,max_evaluations=args.max_evaluations,recover=not args.no_recovery,backend=args.backend))
                 eid=store.save(result);emit(store.load(eid))
             elif args.command=="demo": emit(demo(store))
             elif args.command=="inspect": emit(store.load(args.experiment_id))
@@ -102,7 +109,7 @@ def main(argv=None):
                 with Path(args.destination).open("xb") as stream: stream.write(canonical(store.export(args.experiment_id)))
                 emit({"exported":args.destination})
         return 0
-    except (ValueError,OSError,RuntimeError) as exc:
+    except (ValueError,OSError,RuntimeError,ImportError) as exc:
         print(json.dumps({"status":"FAILED","error":str(exc)}),file=sys.stderr)
         return 1
 

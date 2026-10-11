@@ -102,3 +102,29 @@ class ArtifactStore:
                 "manifest":json.loads((folder/"manifest.json").read_bytes()),
                 "reviews":[json.loads(p.read_bytes()) for p in sorted(folder.glob("review_*.json"))],
                 "verification":self.verify(eid)}
+
+
+def verify_export(report):
+    """Verify an exported bundle without trusting its embedded verification result."""
+    errors=[]
+    try:
+        if not isinstance(report,dict): raise ValueError('report must be an object')
+        manifest=report['manifest']
+        if not isinstance(manifest,dict) or not isinstance(manifest.get('artifacts'),dict): raise ValueError('invalid manifest')
+        if manifest.get('algorithm')!='sha256' or manifest.get('canonicalization')!='qfault-json-v1':
+            errors.append('unsupported integrity format')
+        if set(manifest['artifacts'])!={'investigation.json','evaluation.json'}: errors.append('invalid artifact membership')
+        if report['investigation']['experiment_id']!=manifest['experiment_id']: errors.append('experiment identity mismatch')
+        for name,key in [('investigation.json','investigation'),('evaluation.json','evaluation')]:
+            if digest(report[key])!=manifest['artifacts'].get(name): errors.append('digest mismatch: '+name)
+        reviews=manifest.get('reviews',{})
+        if not isinstance(reviews,dict) or not isinstance(report['reviews'],list): raise ValueError('invalid reviews')
+        envelopes={r['record']['review_id']+'.json':r for r in report['reviews']}
+        if len(envelopes)!=len(report['reviews']) or set(envelopes)!=set(reviews): errors.append('review membership mismatch')
+        for name,envelope in envelopes.items():
+            record=envelope['record']
+            if digest(envelope)!=reviews.get(name) or digest(record)!=envelope['digest'] or record['investigation_digest']!=manifest['artifacts']['investigation.json']:
+                errors.append('review mismatch: '+name)
+    except (ValueError,TypeError,KeyError) as exc:
+        errors.append('malformed report: '+type(exc).__name__)
+    return {'valid':not errors,'errors':errors,'assurance':'Unsigned hash consistency relative to supplied manifest; no external trust anchor or scientific correctness proof'}

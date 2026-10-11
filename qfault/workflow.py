@@ -17,6 +17,7 @@ class RunRequest(Strict):
     policy: Literal["evidence","fixed","random","threshold","phase"] = "fixed"
     max_shots: int = Field(default=12000,ge=2,le=100000,strict=True)
     max_evaluations: int = Field(default=384,ge=2,le=600,strict=True)
+    backend: Literal["reference","aer"] = "reference"
     recover: bool = True
 
     @model_validator(mode="after")
@@ -69,13 +70,13 @@ def investigate(request):
     budget=ExecutionBudget(request.max_shots,request.max_evaluations)
     records=[]
     budget.reserve(request.shots,"baseline",resources(original))
-    records.append(execute(original,Noise(),request.shots,request.seed,experiment_id,spec.contract_id))
+    records.append(execute(original,Noise(),request.shots,request.seed,experiment_id,spec.contract_id,backend=request.backend))
     supervisor.transition("BASELINED")
     budget.reserve(request.shots,"observation",resources(candidate))
-    records.append(execute(candidate,noise,request.shots,request.seed,experiment_id,spec.contract_id))
+    records.append(execute(candidate,noise,request.shots,request.seed,experiment_id,spec.contract_id,backend=request.backend))
     supervisor.transition("OBSERVED")
     measured=EvidenceCollector.collect(records[-1],candidate.n_qubits)
-    access=DiagnosticAccess(candidate,noise,budget,request.seed)
+    access=DiagnosticAccess(candidate,noise,budget,request.seed,backend=request.backend)
     diagnosis=DiagnosticAnalyst().analyze(candidate,spec,measured,access,request.policy)
     for record in access.records:
         record.update(experiment_id=experiment_id,contract_id=spec.contract_id)
@@ -89,7 +90,7 @@ def investigate(request):
         if recovery["status"]=="PROPOSED":
             supervisor.transition("RECOVERY_PROPOSED")
             verification=IndependentVerifier().verify(Circuit.model_validate(recovery["candidate"]),spec,noise,
-                         request.shots,(request.seed+10007)%2**32,budget,phase_validate=request.policy=="phase")
+                         request.shots,(request.seed+10007)%2**32,budget,phase_validate=request.policy=="phase",backend=request.backend)
             verification["original_quality"]=1-diagnosis["discrepancy"]["total_variation"]
             if diagnosis.get("phase_probe") and verification.get("phase_distribution_comparison"):
                 verification["original_phase_quality"]=1-diagnosis["phase_probe"]["comparison"]["total_variation"]

@@ -157,43 +157,51 @@ def noisy_density(circuit,noise):
     return rho
 
 
-def execute(circuit,noise,shots,seed,experiment_id="standalone",contract_id=None):
+def execute(circuit,noise,shots,seed,experiment_id="standalone",contract_id=None,backend="reference"):
     if type(shots) is not int or not 1<=shots<=100000:
         raise ValueError("shots must be an integer in [1,100000]")
     if type(seed) is not int or not 0<=seed<2**32:
         raise ValueError("seed must be a uint32")
     start=perf_counter()
-    q=circuit.native()
-    if noise.depolarizing:
-        rho=noisy_density(circuit,noise)
-        rho.seed(seed)
-        counts={str(k):int(v) for k,v in rho.sample_counts(shots).items()}
-        backend="qiskit.quantum_info.DensityMatrix/Kraus"
+    aer_version=None
+    if backend=='aer':
+        from .backends import aer_counts
+        counts,aer_version=aer_counts(circuit,noise,shots,seed)
+        backend_name='qiskit_aer.AerSimulator/density_matrix'
+    elif backend=='reference':
+        q=circuit.native()
+        if noise.depolarizing:
+            rho=noisy_density(circuit,noise)
+            rho.seed(seed)
+            counts={str(k):int(v) for k,v in rho.sample_counts(shots).items()}
+            backend_name="qiskit.quantum_info.DensityMatrix/Kraus"
+        else:
+            q.measure_all()
+            result=BasicSimulator().run(q,shots=shots,seed_simulator=seed).result()
+            if not result.success: raise RuntimeError(str(result.status))
+            counts={str(k):int(v) for k,v in result.get_counts().items()}
+            backend_name="basic_simulator"
+        if noise.readout:
+            rng=np.random.default_rng(seed ^ 0x5A17)
+            changed={}
+            for bits,count in sorted(counts.items()):
+                samples=np.tile(np.array([int(b) for b in bits]),(count,1))
+                samples ^= (rng.random(samples.shape)<noise.readout).astype(int)
+                for sample in samples:
+                    key="".join(str(x) for x in sample)
+                    changed[key]=changed.get(key,0)+1
+            counts=changed
     else:
-        q.measure_all()
-        result=BasicSimulator().run(q,shots=shots,seed_simulator=seed).result()
-        if not result.success: raise RuntimeError(str(result.status))
-        counts={str(k):int(v) for k,v in result.get_counts().items()}
-        backend="basic_simulator"
-    if noise.readout:
-        rng=np.random.default_rng(seed ^ 0x5A17)
-        changed={}
-        for bits,count in sorted(counts.items()):
-            samples=np.tile(np.array([int(b) for b in bits]),(count,1))
-            samples ^= (rng.random(samples.shape)<noise.readout).astype(int)
-            for sample in samples:
-                key="".join(str(x) for x in sample)
-                changed[key]=changed.get(key,0)+1
-        counts=changed
+        raise ValueError('unsupported backend')
     if sum(counts.values())!=shots: raise RuntimeError("shot accounting mismatch")
     return {"execution_id":identifier("exec"),"experiment_id":experiment_id,
             "circuit_id":circuit.circuit_id,"contract_id":contract_id,
-            "backend_name":backend,"backend_type":"local_simulator",
+            "backend_name":backend_name,"backend_type":"local_simulator",
             "transpilation_settings":{"method":"none; explicit supported gates"},
             "noise_configuration":noise.model_dump(),"requested_shots":shots,"executed_shots":sum(counts.values()),
             "seed":seed,"input_digest":digest(circuit.model_dump(mode="json")),"output_counts":counts,
             "observable_results":{},"execution_status":"SUCCEEDED","failure_reason":None,
-            "software_versions":{p:metadata.version(p) for p in ["qiskit","numpy","scipy","pydantic"]},
+            "software_versions":{**{p:metadata.version(p) for p in ["qiskit","numpy","scipy","pydantic"]},**({"qiskit-aer":aer_version} if aer_version else {})},
             "resources":resources(circuit),"runtime_seconds":perf_counter()-start}
 
 
@@ -232,6 +240,7 @@ def measurement_rotation(spec):
     for j in range(spec.n_qubits):
         if spec.family=='qft':
             angle=-2*pi*spec.input_basis*2**j/2**spec.n_qubits
+            if abs(angle)>pi: angle=(angle+pi)%(2*pi)-pi
             gates.append(Gate(name='rz',qubits=(j,),angle=angle))
         gates.append(Gate(name='h',qubits=(j,)))
     return Circuit(n_qubits=spec.n_qubits,gates=tuple(gates))
@@ -242,5 +251,10 @@ def measurement_probabilities(spec,state=None):
     return probabilities(Statevector(target).evolve(measurement_rotation(spec).native()).data)
 
 
+class _AnalysisCircuit(Circuit):
+    """Internal candidate plus at most ten bounded measurement-basis gates."""
+    gates: tuple[Gate,...] = Field(max_length=42)
+
+
 def measured_circuit(candidate,spec):
-    return Circuit(n_qubits=candidate.n_qubits,gates=candidate.gates+measurement_rotation(spec).gates)
+    return _AnalysisCircuit(n_qubits=candidate.n_qubits,gates=candidate.gates+measurement_rotation(spec).gates)
