@@ -4,10 +4,10 @@ Status: PASS locally with installed Playwright1.62.0, pyee13.0.1, greenlet3.5.4 
 
 ## Reproduce
 
-Start the server using README commands. From C:\Projects\QFF:
+Start the server using README commands. From the repository root in an installed environment:
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/new-browser-check
+python -m scripts.browser_e2e --out artifacts/new-browser-check
 ~~~
 
 Normal environment: python -m scripts.browser_e2e --out artifacts/new-browser-check after installing the optional browser dependencies and official Playwright Chromium. That fresh installation is not verified here. The local launcher reads an existing installation without copying node_modules or changing the application interpreter's dependency selection.
@@ -33,4 +33,4 @@ JavaScript Object.keys lists integer-like bitstrings10/11 before leading-zero st
 
 ## Limits
 
-This is a local integration check with existing installed dependencies, not clean-install proof or exhaustive cross-browser/device coverage. No arbitrary JavaScript injects a fake successful experiment, no successful response is mocked, and automated tests never pose as a human approving a repair. Human review remains pending and self-declared. There is no prerecorded demo video. Fresh Python/frontend installation and npm lockfile gates remain blocked.
+This is a local integration check with existing installed dependencies, not clean-install proof or exhaustive cross-browser/device coverage. No arbitrary JavaScript injects a fake successful experiment, no successful response is mocked, and automated tests never pose as a human approving a repair. Human review remains pending and self-declared. Genuine silent browser footage now exists locally; see [video instructions](video.md). No final narrated video or public media URL is supplied. Fresh Python/frontend installation and npm lockfile gates remain blocked.

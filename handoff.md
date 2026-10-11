@@ -2,6 +2,8 @@
 
 ## 1. Current Phase
 
+Final competition/publication audit continued from clean main90503efe6576d1fcb080ef92b2c12c34f0fd050b. The user explicitly authorizes only the existing destination https://github.com/PrathamKapoor/QTrust.git; origin is now configured accordingly. GitHub connector confirms PrathamKapoor/public/push-admin and no main branch; local Git transport currently cannot connect to github.com:443. Publication is not verified. Current audit: docs/publication-audit.md and benchmarks/publication-verification.json; raw checks: artifacts/publication-audit.
+
 Release stabilization and diagnostic evidence are implemented and locally verified. Overall submission status is PARTIALLY READY: fresh isolated Python/frontend installation and the project-owned npm lockfile remain blocked. Aer now genuinely executes; the previous Aer-unavailable conclusion is superseded by D-016.
 
 Submission release continuation began at clean ee7120286de69f54609e53855a2c09d48a324b2b. npm lockfile resolution and exact ci failed in a disposable source copy; no suitable standard CPython>=3.12 was available. No elevation or speculative dependency changes. Current evidence: benchmarks/release-candidate-verification.json and docs/release-candidate.md.
@@ -26,6 +28,8 @@ Final delivery checks:99 tests pass (1 deprecation warning,12.82s); retained Typ
 
 ## 3. Files Changed
 
+Publication audit changes: README setup/identity/media wording, two relative links in docs/local-development.md, stale video wording in docs/browser-verification.md, local-only asset labels in docs/demo.md/video.md/transfer.md, and scope metadata only in scripts/http_release_smoke.py. New publication audit/verification summary plus D-029 and continuity updates. No quantum code, tests, dependency pins, frozen splits, authoritative results or license notices change.
+
 Core: qfault/quantum.py, diagnostics.py, recovery.py, workflow.py, experiments.py, storage.py, cli.py, api.py; new backends.py. Interface: web/src/main.tsx. Tests: test_phase_measurements.py, test_policy_evaluation.py, test_export_verification.py, test_aer_backend.py, test_aer_absence.py, test_measurement_boundaries.py, test_phase_truth_isolation.py, test_repair_boundaries.py. Additional release files: scripts/browser_bootstrap.py, browser_e2e.py, local_browser.ps1; tests/test_dependency_compatibility.py; requirements-browser-tested.txt; docs/browser-verification.md; benchmarks/browser-verification.json and delivery-verification.json. Tooling: scripts/audit_diagnostics.py, compare_backends.py, evaluate_recovery.py, submission_demo.py, http_release_smoke.py, plot_policy_tradeoff.py, local_bootstrap.py. Manifests: configs/diagnostic-evaluation.json, pyproject.toml optional Aer extra, requirements-aer-tested.txt. Documentation: README, decisions, flow, this handoff, docs/environment-stabilization.md, diagnostic-findings.md, methodology.md, demo.md, release-gates.md. Actual measured summaries/figure under benchmarks; raw artifacts and built frontend remain ignored.
 
 Release continuation changes: scripts/audit_release.py, scripts/browser_e2e.py, web/src/main.tsx labels, benchmarks/paired-policy-audit.json, benchmarks/release-candidate-verification.json, docs/release-candidate.md, docs/simulator-information-audit.md and current root documentation. No dependency versions replaced.
@@ -42,6 +46,8 @@ The local application is served at http://127.0.0.1:8000/ by the owned process s
 
 ## 5. Decisions Made
 
+D-029 records the exact newly authorized publication destination, full-history/presentation audit, bounded network failures and targeted non-scientific corrections. Historical no-push outcomes remain factual for those earlier sessions.
+
 D-001–012 retain the original foundation/history. D-013 records the original cp311 mismatch and failed install attempts; D-016 explicitly supersedes its Aer-unavailable outcome after locating cp313. D-014 defines complementary witnesses. D-015 freezes holdout/reserves validation and retains fixed default. D-017 adds exported-report checking and bounded internal analysis circuits. D-018 publishes all frozen negative findings. D-019 skips invalid repair angle edits rather than weakening input validation. D-020 supersedes the browser-unavailable outcome with actual Playwright evidence and UI regressions. D-021 corrects requires-python to >=3.12 from installed dependency metadata. Commits1d89eff and3039215 precede final evaluation; dffeb54 contains Aer/reporting/frozen evidence; the commit containing this update contains browser verification and installation-bound correction.
 
 D-022 records precise repeatable install blockers and keeps the normal own-manifest path distinct from the development-only fallback. D-023 documents descriptive paired outcomes, actual privileged information flow and scientific labels.
@@ -52,9 +58,11 @@ D-028 records final delivery verification, genuine picture footage/voiceover han
 
 ## 6. Requirements and Constraints
 
-Local only; no push, publication, deployment, cloud, paid API or hardware. All new author/committer identities must be PrathamKapoor <prathamkapoor027@gmail.com>, repository-local configuration only. No tool coauthors, generated authorship footers or donor writes. Preserve authoritative experiments, notices and history. No arbitrary Python uploads, paper/research/.tex files, artificial stage directories, fabricated metrics or success claims. Keep decisions/flow/handoff current. Fixed-input states are not general unitary equivalence; unsigned hashes are not PQC signatures or scientific truth.
+The earlier local-only/no-publication restriction is superseded solely by the latest explicit authorization to publish main with its existing history to https://github.com/PrathamKapoor/QTrust.git. No force push, other destination, competition submission, deployment, cloud, paid API or hardware is authorized. All new author/committer identities must be PrathamKapoor <prathamkapoor027@gmail.com>, repository-local configuration only. No tool coauthors, generated authorship footers or donor writes. Preserve authoritative experiments, notices and history. No arbitrary Python uploads, paper/research/.tex files, artificial stage directories, fabricated metrics or success claims. Keep decisions/flow/handoff current. Fixed-input states are not general unitary equivalence; unsigned hashes are not PQC signatures or scientific truth.
 
 ## 7. Testing and Verification
+
+Publication continuation:99 tests passed (1 existing Starlette/httpx warning,14.70s), retained TypeScript/build passed, nine paired conformance cases and five-scene Aer rehearsal passed. Seven actual browser workflows and four HTTP workflows pass; valid/tampered standalone CLI exits are0/1. All340 frozen manifests pass. All original/final scientific row fields and policy metrics (excluding runtime/IDs/paths/hashes) and12 recovery rows/interval reproduce unchanged; both negative controls reject. Source/history scan inspected11 commits/184 blobs/251 objects, with no selected secret-pattern/private-file findings; this is not an exhaustive guarantee. Two broken local Markdown links and stale HTTP/browser wording are corrected.
 
 Initial suite:62 passed,1 warning. Latest suite executed directly through LibreOffice python.exe -B -u scripts/local_bootstrap.py pytest -q -p no:cacheprovider:96 passed,1 Starlette/httpx deprecation warning,9.59s. Latest release output/status is benchmarks/release-candidate-verification.json; benchmarks/delivery-verification.json records the previous6.42s run; stabilization-verification.json is an earlier historical snapshot. The PowerShell launcher qfault circuits was executed again successfully. TypeScript check and Vite production build passed using the explicitly disclosed read-only donor node_modules bridge; own fresh frontend installation is not verified.
 
@@ -98,6 +106,8 @@ Final picture-cut playback:176.56 seconds,1600×1000,4414 total video frames,2 d
 
 ## 9. Unfinished Work
 
+Normal Git push/fetch/remote-SHA/public-source verification remains unverified while local Git HTTPS cannot connect. Do not recreate historical commits through the limited connector commit API, fabricate a remote SHA or bypass network policy. Final push command evidence belongs under artifacts/publication-audit.
+
 Fresh Python/frontend install and lockfile; repeat browser acceptance against that independent installation; record narration/edit/inspect the final judging video from genuine raw footage; obtain organizer eligibility/deadline/portal/deliverable confirmations. Optional stronger independent scientific validation, larger unseen-circuit corpus, phase-angle detection study and measurement-efficient selection remain separate future work. Do not silently retune frozen final cases or replace losing results.
 
 Portable transfer validation now passes: source cf23b95e747b7d061323232caf48de071cef8b15 restored from its bundle,2425 raw evidence records and39 media/demo files restore with valid package hashes/ZIP CRCs, and102-file source checkout remains clean. Evidence: artifacts/submission-delivery/transfer-verified.json. Final delivery folder artifacts/qfault-submission is generated from the final clean committed HEAD; inspect its manifest.json for exact revision and hashes. The first artifacts/transfer-validation package is a failed-restore audit and must not be submitted.
@@ -112,4 +122,4 @@ Original expected HEAD d30535c was verified. Current commits are local on main; 
 
 ## 12. Agent Instructions
 
-Read this file, decisions.md and flow.md completely before edits. Preserve working code/user changes and scientific artifacts. Inspect actual environment; do not assume Aer globally incompatible or installation/browser verified. Use matching ABI, standard package sources and local author identity; never modify global Git or donors. Keep actual output seeds/budgets/backend labels. Do not tune on final results and call them fresh generalization. Run relevant real quantum tests, preserve negative findings, update operational docs, commit locally only and report remaining blocked gates honestly.
+Read this file, decisions.md and flow.md completely before edits. Preserve working code/user changes and scientific artifacts. Inspect actual environment; do not assume Aer globally incompatible or installation/browser verified. Use matching ABI, standard package sources and local author identity; never modify global Git or donors. Keep actual output seeds/budgets/backend labels. Do not tune on final results and call them fresh generalization. Run relevant real quantum tests, preserve negative findings, update operational docs, commit under the required identity, attempt the explicitly authorized normal push only to QTrust, verify the actual remote SHA before claiming publication, and report blocked gates honestly.

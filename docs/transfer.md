@@ -1,5 +1,7 @@
 # Portable source and evidence handoff
 
+**Local-only assets:** paths beginning with `artifacts/` refer to ignored files on the originating machine or the separately transferred evidence/media archives. They are not public download links and are not included in a GitHub clone. The tracked scripts can generate new experiment records and browser footage after installation. No public video URL is supplied.
+
 QFAULT remains PARTIALLY READY. This package transfers the actual committed source and measured evidence; it does not prove a fresh installation. Official npm and PyPI DNS resolve, but one bounded HTTPS probe per source on October11 returned connect EACCES before TLS. Prior offline npm resolution lacked metadata. No registry retry, security-policy change, unofficial mirror or fabricated lockfile is part of this handoff.
 
 ## Contents and integrity

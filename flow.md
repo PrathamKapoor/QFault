@@ -63,3 +63,9 @@ Final delivery uses the unchanged investigate/API and browser workflow described
 | Session change | Actual paths | Decisions | Commit |
 |---|---|---|---|
 | Final delivery verification, genuine judging picture cut, editable narration and eligibility boundaries | README.md; docs/video.md; docs/video-timeline.json; docs/demo.md; docs/organizer-confirmations.md; docs/transfer.md; benchmarks/final-delivery-verification.json; handoff.md | D-028 | Commit containing this entry |
+
+Publication audit (D-029) leaves the quantum runtime unchanged. scripts/http_release_smoke.py now states that browser coverage is outside its scope; scripts/browser_e2e.py remains the actual browser verifier. docs/publication-audit.md distinguishes connector identity/permission from verified Git transport, and local evidence/media from public clone content. No GitHub API operation recreates historical commits.
+
+| Session change | Actual paths | Decisions | Commit |
+|---|---|---|---|
+| Exact-destination publication audit, normal setup wording, relative-link repair and honest HTTP scope | README.md; docs/publication-audit.md; docs/local-development.md; docs/browser-verification.md; docs/demo.md; docs/video.md; docs/transfer.md; scripts/http_release_smoke.py; benchmarks/publication-verification.json; handoff.md | D-029 | Commit containing this entry |

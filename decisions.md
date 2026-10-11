@@ -355,3 +355,17 @@ D-027 verification outcome: corrected source cf23b95e747b7d061323232caf48de071ce
 - Files: README.md; docs/demo.md; docs/video.md; docs/video-timeline.json; docs/organizer-confirmations.md; docs/transfer.md; benchmarks/final-delivery-verification.json; flow.md; handoff.md. Generated recordings and checks remain ignored under artifacts/final-delivery.
 
 D-028 verification outcome: corrected judging picture cut completes176.56-second normal-speed Chromium playback with4414 total frames,2 dropped,0 corrupted, no media/page errors. Representative actual decoded frames and screenshots were inspected. Narration remains unrecorded. Current proofs are benchmarks/final-delivery-verification.json and artifacts/final-delivery/judging-video-final/playback-verification.json.
+
+### D-029: Audit the existing history and prepare the exact authorized publication
+
+- Date / phase / commit: 2026-10-11 / final competition and publication audit / commit containing this entry.
+- Context: Clean main at90503efe6576d1fcb080ef92b2c12c34f0fd050b; the user now explicitly authorizes publishing existing history to https://github.com/PrathamKapoor/QTrust.git. QFAULT remains the product; QTrust is the destination repository, separate from historical Q-TRUST.
+- Decision: Preserve all history/science, configure only the selected origin and exact local identity, scan tracked files and all local Git objects, and rerun the actual quantum/build/browser/reproduction gates. Correct only public documentation and HTTP-test scope wording.
+- Why: GitHub connector verifies PrathamKapoor identity, public QTrust and push/admin permission, with no main branch returned. Local Git HTTPS transport fails to connect. One probe each to official npm/PyPI still returns EACCES, so independent installation remains unverified. No credential or security-policy workaround is used.
+- Symptom: Two development-document links fail relative resolution; HTTP summary states no browser is available despite separately passing browser acceptance; local media paths could be mistaken for public clone content.
+- Root cause: Links were written relative to the repository rather than their document; HTTP metadata retained an obsolete hard-coded environment conclusion; local-delivery instructions lacked an explicit GitHub-clone boundary.
+- Decision on correction: Resolve links relative to docs, scope HTTP metadata to what that script tests, distinguish local-only assets, and put normal installed demo/reproduction commands in README. Preserve historical audit paths, legitimate attribution and unsupported-feature warnings.
+- Alternatives considered: Recreate commits through connector APIs (cannot preserve original commit metadata through the exposed interface), replace scientific defaults, fabricate a lockfile, or claim publication from connector permission alone; rejected.
+- Consequences: Publication requires a normal verified Git push and matching remote SHA. It does not establish fresh-install readiness, narration or competition eligibility.
+- Regression test: The actual pre-fix HTTP summary fails the no-environment-inference check; after correction real HTTP workflows pass and the scope check passes. Relative-link resolution is rechecked. Existing99 tests and seven real browser workflows pass.
+- Files: README.md; docs/local-development.md; docs/browser-verification.md; docs/demo.md; docs/video.md; docs/transfer.md; scripts/http_release_smoke.py; docs/publication-audit.md; benchmarks/publication-verification.json; flow.md; handoff.md.

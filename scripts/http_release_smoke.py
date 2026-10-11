@@ -29,5 +29,5 @@ def main():
     status,_,_=call('/api/experiments',{'shots':0});assert status==422;checks.append({'invalid_shots_status':status})
     status,_,_=call('/api/contracts/bell/3');assert status==422;checks.append({'invalid_contract_status':status})
     assert rows[0]['diagnosis']=='NO_SIGNIFICANT_FAILURE_DETECTED' and rows[1]['recovery']=='VERIFIED' and rows[2]['diagnosis']=='NOISE_CONSISTENT_DEGRADATION' and rows[3]['diagnosis']=='INSUFFICIENT_EVIDENCE'
-    summary={'checks':checks,'production_assets':assets,'workflows':rows,'browser_e2e':'NOT VERIFIED; no browser available','console_render_responsive_screenshots':'NOT VERIFIED'};(root/'summary.json').write_bytes(canonical(summary));print(json.dumps(summary,indent=2))
+    summary={'checks':checks,'production_assets':assets,'workflows':rows,'browser_e2e':'NOT TESTED BY THIS HTTP SCRIPT; run scripts.browser_e2e separately','console_render_responsive_screenshots':'NOT VERIFIED'};(root/'summary.json').write_bytes(canonical(summary));print(json.dumps(summary,indent=2))
 if __name__=='__main__':main()

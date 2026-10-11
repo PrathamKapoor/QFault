@@ -1,8 +1,8 @@
-# QFAULT
+# QFAULT — Quantum Failure Analysis & Recovery Workbench
 
-**Quantum Failure Analysis & Recovery Workbench**
+Product: **QFAULT** · GitHub destination: **PrathamKapoor/QTrust**. This is separate from the historical Q-TRUST project cited below.
 
-QFAULT investigates an unexpected quantum result, separates supported logical and noise explanations, and tests a bounded repair against a declared contract.
+A Qiskit-based investigation workbench that executes simulated quantum circuits, evaluates declared behavioral contracts, diagnoses supported logical and noise-related failures, tests bounded repairs, and exports auditable experimental evidence.
 
 The one-line inference is: **“This result disagrees with the contract; here is the measured evidence, the explanations it supports, and what an independently checked recovery changed.”**
 
@@ -29,9 +29,16 @@ The phase policy adds sampled X-parity or analytic Fourier-product-basis witness
 
 ## Normal installation path
 
-**Not yet independently verified here.** A project-owned npm lockfile could not be generated: official registry connections are denied with EACCES and offline resolution lacks metadata. No clean-install readiness is claimed. On a machine with permitted official package access, use standard64-bit CPython3.13 and Node24 (24.19.0/npm11.17.0 tested). Python metadata requires3.12+, but the quantum application was executed only on3.13. No Docker or services are needed.
+**Not yet independently verified here.** A project-owned npm lockfile could not be generated: official registry connections are denied with EACCES and offline resolution lacks metadata. No clean-install readiness is claimed. On a machine with permitted official package access, use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
 
-From the repository root, PowerShell:
+Clone the selected repository, then run from its root in PowerShell:
+
+~~~powershell
+git clone https://github.com/PrathamKapoor/QTrust.git
+cd QTrust
+~~~
+
+Publication status is recorded in [the current audit](docs/publication-audit.md); these clone commands require an existing published `main`.
 
 ~~~powershell
 python -m venv .venv
@@ -56,7 +63,7 @@ The current restricted machine can use the explicitly unsupported [development b
 
 ## CLI workflow
 
-In a normal installed environment, use python -m qfault. Here, prefix the same arguments with the verified PowerShell launcher above.
+In a normal installed environment, use `python -m qfault`. The restricted-machine launcher is documented separately in [local development](docs/local-development.md).
 
 ~~~powershell
 python -m qfault circuits
@@ -92,13 +99,14 @@ Exports refuse to overwrite an existing file. Optional --store precedes the arti
 ## Demo and benchmark
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault demo
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault benchmark --out artifacts/new-benchmark
+python -m scripts.submission_demo --out artifacts/judging-demo --backend aer
+python -m qfault demo
+python -m qfault benchmark --out artifacts/new-benchmark
 ~~~
 
 The benchmark destination must not already exist; runs never overwrite prior evidence. The legacy qfault demo executes healthy Bell, missing-gate repair, readout-only control, mixed GHZ, clean QFT and a phase fault under the fixed plan. It then alters a dedicated throwaway result, checks failure, restores the original bytes and checks success. Its historical measured record is benchmarks/demo.json. The new scripts.submission_demo rehearsal uses actual Aer, complementary phase evidence and fresh Z/phase repair validation; its measured output is benchmarks/submission-demo.json. Use a new destination each time. See [judging script](docs/demo.md).
 
-The frozen protocol is docs/benchmark-protocol.md. Actual raw records are under artifacts/release-benchmark/investigations/; the committed row-level summary is benchmarks/results.json. Runs under artifacts/benchmark-reproduction and artifacts/release-benchmark reproduced the scientific metrics; benchmarks/reproduction.json records the comparison. IDs, timestamps, runtimes and associated hashes are intentionally not byte-identical.
+The frozen protocol is docs/benchmark-protocol.md. Historical raw records are local-only under artifacts/release-benchmark/investigations/ and in the separately transferred evidence archive; the committed row-level summary is benchmarks/results.json. Runs under artifacts/benchmark-reproduction and artifacts/release-benchmark reproduced the scientific metrics; benchmarks/reproduction.json records the comparison. IDs, timestamps, runtimes and associated hashes are intentionally not byte-identical.
 
 | Policy | Correct category | Total shots | Circuit evaluations |
 |---|---:|---:|---:|
@@ -129,17 +137,17 @@ Phase accuracy has descriptive Wilson95% interval89.9–99.2%; fixed75.0–91.8%
 
 Selected recovery now covers12 missing-gate/phase trials:10 verified,2 QFT4 inconclusive, plus2 rejected negative controls. Wilson95% interval55.2–95.3% applies only to this selected corpus. Validation uses independent DensityMatrix evolution and new Z/phase samples; total11264 shots/case. The original6/6 finding remains narrow.
 
-Verified local reproduction commands (new destinations required):
+Reproduction commands for an installed environment (new destinations required; locally executed through the disclosed development launcher):
 
 ~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split development --out artifacts/new-development
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split final --out artifacts/new-final
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split low_shot_control --out artifacts/new-low-shot
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.evaluate_recovery --out artifacts/new-recovery
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.compare_backends --out artifacts/new-backend-check
+python -m qfault evaluate --split development --out artifacts/new-development
+python -m qfault evaluate --split final --out artifacts/new-final
+python -m qfault evaluate --split low_shot_control --out artifacts/new-low-shot
+python -m scripts.evaluate_recovery --out artifacts/new-recovery
+python -m scripts.compare_backends --out artifacts/new-backend-check
 ~~~
 
-In a normal installed environment replace the PowerShell prefix with python -m. Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation checks and verified browser scope.
+Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation checks and verified browser scope.
 
 ## API and data
 
@@ -170,4 +178,4 @@ Operational continuity: decisions.md, flow.md and handoff.md. Reproduction evide
 
 ## Transfer and submission material
 
-[Portable transfer instructions](docs/transfer.md) cover the locally generated Git bundle and separate measured-evidence/demo archives. [Judging guide](docs/demo.md) includes timed narration and exact inputs. A genuine176.56-second silent judging capture is recorded and playback-verified; it is not a narrated final video. See the [editable voiceover/timeline and recording instructions](docs/video.md). [Organizer checklist](docs/organizer-confirmations.md) records conflicting dates and unresolved eligibility/deliverable rules. Do not submit until these are resolved.
+[Portable transfer instructions](docs/transfer.md) cover the locally generated Git bundle and separate measured-evidence/demo archives. [Judging guide](docs/demo.md) includes timed narration and exact inputs. A genuine 176.56-second silent judging capture is recorded and playback-verified locally; it is not a narrated final video. Media and historical raw artifacts are not included in a GitHub clone and have no verified public download URL. New demo records and browser recordings can be regenerated with the tracked scripts. See the [editable voiceover/timeline and recording instructions](docs/video.md). [Organizer checklist](docs/organizer-confirmations.md) records conflicting dates and unresolved eligibility/deliverable rules. Do not submit until these are resolved.

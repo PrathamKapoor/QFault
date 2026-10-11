@@ -1,5 +1,7 @@
 # Judging video and editable narration
 
+**Local-only assets:** paths beginning with `artifacts/` refer to ignored files on the originating machine or the separately transferred evidence/media archives. They are not public download links and are not included in a GitHub clone. The tracked scripts can generate new experiment records and browser footage after installation. No public video URL is supplied.
+
 This is a silent picture cut made from genuine browser interactions. No microphone narration, synthetic voice or final narrated submission video is claimed. The176.56-second,1600×1000 WebM completed normal-speed Chromium playback:4414 total frames,2 dropped,0 corrupted, no media/page errors. Representative decoded frames and the corrected comparison/recovery/noise screenshots were visually inspected. The exact voiceover below is editable; the organizer must confirm the permitted duration/format before final export.
 
 Current picture-cut path: artifacts/final-delivery/judging-video-final/video/qfault-judging-silent.webm. The original34.64-second test clip remains at artifacts/submission-delivery/browser-recording/video/browser-workflow.webm. Neither is quantum hardware footage.

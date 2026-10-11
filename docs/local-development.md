@@ -24,7 +24,7 @@ node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
 node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
 ~~~
 
-No dependencies need to be downloaded for the current local demonstration. Standalone Playwright1.62.0 with installed Chromium151.0.7922.34 now passes the real browser workflow: configured GHZ4/QFT4 and Bell runs, fault diagnosis, independent repair display, noise/abstention controls, export download/verification, refresh/history, loading, invalid-budget422 display and390px mobile layout. There are no unexpected console/page/request failures. The connected browser remains unavailable; the user's requested local Playwright fallback executed successfully. Screenshots remain local under artifacts/browser-delivery. See [browser evidence](benchmarks/browser-verification.json).
+No dependencies need to be downloaded for the current local demonstration. Standalone Playwright1.62.0 with installed Chromium151.0.7922.34 now passes the real browser workflow: configured GHZ4/QFT4 and Bell runs, fault diagnosis, independent repair display, noise/abstention controls, export download/verification, refresh/history, loading, invalid-budget422 display and390px mobile layout. There are no unexpected console/page/request failures. The connected browser remains unavailable; the user's requested local Playwright fallback executed successfully. Screenshots remain local under artifacts/browser-delivery. See [browser evidence](../benchmarks/browser-verification.json).
 
 ## Repeat the verified browser workflow
 
@@ -34,7 +34,7 @@ Keep the local server running, then execute:
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/my-browser-check
 ~~~
 
-This separate machine-specific launcher reads installed Playwright packages and uses a cached headless Chromium; it does not alter the quantum server's dependency paths. The script rejects an existing output directory and preserves actual API results, downloaded report, screenshots and a summary. See [browser QA](docs/browser-verification.md).
+This separate machine-specific launcher reads installed Playwright packages and uses a cached headless Chromium; it does not alter the quantum server's dependency paths. The script rejects an existing output directory and preserves actual API results, downloaded report, screenshots and a summary. See [browser QA](browser-verification.md).
 
 In a normal environment install the optional browser extra or requirements-browser-tested.txt, install its official Chromium with python -m playwright install chromium, and run python -m scripts.browser_e2e --out artifacts/new-browser-check. Fresh installation of those dependencies/browser is not claimed here.
 

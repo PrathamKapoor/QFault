@@ -1,0 +1,136 @@
+{
+  "assessment_date": "2026-10-11",
+  "starting_commit": "90503efe6576d1fcb080ef92b2c12c34f0fd050b",
+  "scope": "Existing implementation/history audit; no scientific changes",
+  "publication": {
+    "destination": "https://github.com/PrathamKapoor/QTrust.git",
+    "connected_account": "PrathamKapoor",
+    "visibility": "public",
+    "permissions": [
+      "admin",
+      "push"
+    ],
+    "main_search_results": [],
+    "local_git_probe": "Failed to connect to github.com:443",
+    "status": "UNVERIFIED; no matching remote main established"
+  },
+  "security": {
+    "starting_head": "90503efe6576d1fcb080ef92b2c12c34f0fd050b",
+    "tracked_files": 105,
+    "reachable_commits": "11",
+    "objects_scanned": 251,
+    "blob_count": 184,
+    "maximum_blob_bytes": 721986,
+    "secret_pattern_findings": [],
+    "sensitive_historical_paths": [],
+    "coauthor_or_generated_trailers": [],
+    "limitations": "Custom pattern scan of all local Git objects and reachable historical paths; not a guarantee of absence of every possible secret. No installed specialized scanner is assumed."
+  },
+  "tests": {
+    "python": {
+      "passed": 99,
+      "warnings": 1,
+      "seconds": 12.15,
+      "command": "LibreOffice python.exe -B -u scripts/local_bootstrap.py pytest -q -p no:cacheprovider"
+    },
+    "typescript": {
+      "exit_code": 0,
+      "command": "node scripts/check-web.mjs (explicit retained dependency override)"
+    },
+    "build": {
+      "exit_code": 0,
+      "command": "node scripts/build-web.mjs (explicit retained dependency override)"
+    },
+    "browser": {
+      "exit_code": 0,
+      "workflows": 7,
+      "unexpected_console_errors": [],
+      "page_errors": [],
+      "failed_requests": [],
+      "mobile_geometry": {
+        "width": 390,
+        "scroll": 390
+      }
+    },
+    "conformance": {
+      "exit_code": 0,
+      "paired_cases": 9,
+      "max_density_element_error": 3.3306690738754696e-16
+    },
+    "aer_demo": {
+      "exit_code": 0,
+      "scenarios": 5,
+      "integrity_control": {
+        "original": true,
+        "tampered": false,
+        "restored": true
+      }
+    },
+    "export": {
+      "valid_exit": 0,
+      "tampered_exit": 1
+    },
+    "http": {
+      "exit_code": 0,
+      "workflows": 4,
+      "scope_regression": {
+        "before": false,
+        "after": true
+      }
+    },
+    "reproduction": {
+      "original_policy_metrics": true,
+      "final_policy_metrics": true,
+      "original_all_rows": true,
+      "final_all_rows": true,
+      "recovery_all_rows": true,
+      "recovery_interval": true,
+      "negative_controls": [
+        {
+          "status": "REJECTED",
+          "label": "invalid_phase_counts_match"
+        },
+        {
+          "status": "REJECTED",
+          "label": "systematically_noisy_correct_state"
+        }
+      ]
+    },
+    "frozen_manifests": 340
+  },
+  "fresh_install": {
+    "status": "UNVERIFIED",
+    "npm_lockfile": false,
+    "npm_ci_verified": false,
+    "isolated_python_verified": false,
+    "official_source_probes": [
+      {
+        "url": "https://registry.npmjs.org/react",
+        "error": "EACCES",
+        "message": ""
+      },
+      {
+        "url": "https://pypi.org/pypi/qiskit/json",
+        "error": "EACCES",
+        "message": ""
+      }
+    ],
+    "no_repeated_download_attempts": true
+  },
+  "video": {
+    "silent_file": "artifacts/final-delivery/judging-video-final/video/qfault-judging-silent.webm",
+    "bytes": 13580390,
+    "sha256": "23bfd3492fd21a1238c0653116dbe0a56d74ff98ee6d5ee67c6239baa1845a7e",
+    "duration_seconds": 176.56,
+    "full_playback": "Existing playback proof inspected; not replayed by this publication audit",
+    "narrated": false,
+    "public_url": null
+  },
+  "limitations": [
+    "Retained dependency bridges do not establish clean installation",
+    "Small fixed-input simulation corpus with privileged state calculations",
+    "Custom pattern scan cannot guarantee absence of every possible secret",
+    "Organizer deadline and pre-existing-project/workshop-lead eligibility unresolved"
+  ],
+  "raw_evidence_directory": "artifacts/publication-audit"
+}

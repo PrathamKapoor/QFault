@@ -34,3 +34,7 @@ Current evidence: benchmarks/submission-verification.json. Retained-environment 
 Independent Python/frontend installation, own npm lockfile and browser acceptance on a clean install remain blocked, not passed. One bounded official npm/PyPI probe each still fails at connect EACCES; no further retries or security bypasses. A34.64-second silent browser recording exists and three sampled frames were inspected. Final narrated video, organizer eligibility/deadline/portal/rules and user publication/submission remain unfinished. Overall submission status remains PARTIALLY READY.
 
 Corrected transfer bundle clone and both archive restores now pass with valid hashes/CRCs and a clean exact-HEAD source copy; no dependencies were installed there. See docs/transfer.md.
+
+## Current publication audit
+
+See [publication audit](publication-audit.md) and [verification summary](../benchmarks/publication-verification.json) for fresh99-test, seven-browser, Aer/reference, original/final reproduction and security-history checks. Silent judging footage is176.56 seconds and remains local-only; narration is pending. GitHub publication is now explicitly authorized for PrathamKapoor/QTrust, but authorization/connector permission is not proof of a pushed main. Fresh dependency installation and organizer confirmation remain unresolved.

@@ -1,5 +1,7 @@
 # Verified judging rehearsal and recording script
 
+**Local-only assets:** paths beginning with `artifacts/` refer to ignored files on the originating machine or the separately transferred evidence/media archives. They are not public download links and are not included in a GitHub clone. The tracked scripts can generate new experiment records and browser footage after installation. No public video URL is supplied.
+
 The current local rehearsal uses Qiskit2.3.1 and Aer0.17.2. No cloud credentials or network calls are needed after dependencies are present. A genuine silent browser recording now exists at artifacts/submission-delivery/browser-recording/video/browser-workflow.webm. It is raw test footage, not a narrated final submission video. Actual screenshots and responses accompany it.
 
 From the repository root in PowerShell (restricted-machine development bridge only; normal installed environments use python -m):
