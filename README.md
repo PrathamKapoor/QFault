@@ -23,7 +23,30 @@ This is working local software with real Qiskit circuits, not a mock dashboard. 
 
 The phase policy adds sampled X-parity or analytic Fourier-product-basis witnesses, with basis-gate noise and resource costs. Exact logical attribution still uses privileged simulation. Fixed remains the default policy; phase is an explicit higher-cost option.
 
-## Run now in this verified workspace
+## Normal installation path
+
+**Not yet independently verified here.** A project-owned npm lockfile could not be generated: official registry connections are denied with EACCES and offline resolution lacks metadata. No clean-install readiness is claimed. On a machine with permitted official package access, use standard64-bit CPython3.13 and Node24 (24.19.0/npm11.17.0 tested). Python metadata requires3.12+, but the quantum application was executed only on3.13. No Docker or services are needed.
+
+From the repository root, PowerShell:
+
+~~~powershell
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements-browser-tested.txt
+.venv\Scripts\python -m pip install --no-deps -e .
+npm.cmd --prefix web install --package-lock-only
+npm.cmd --prefix web ci
+npm.cmd --prefix web run check
+npm.cmd --prefix web run build
+.venv\Scripts\python -m pytest tests -q
+.venv\Scripts\python -m scripts.submission_demo --out artifacts/fresh-demo --backend aer
+.venv\Scripts\python -m qfault serve
+~~~
+
+The npm resolution command must succeed and produce a complete lockfile before ci; preserve and review that generated lockfile. These are pending normal installation commands, not successful commands from this sandbox. They resolve only QFAULT's own manifests; no neighboring repository is used. There is no declared lint command. See [release attempt evidence](docs/release-candidate.md).
+
+Open http://127.0.0.1:8000/. In a second terminal install official browser assets with .venv\Scripts\python -m playwright install chromium, then run .venv\Scripts\python -m scripts.browser_e2e --out artifacts/fresh-browser. The requirements files pin the observed runtime/test/Aer/browser closure; they are not a verified isolated resolver result. Actual local success and installation failure are separated below.
+
+## Development-only fallback in this workspace
 
 From C:\Projects\QFF, PowerShell:
 
@@ -36,7 +59,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault ser
 
 Open **http://127.0.0.1:8000/**. The interface is already built locally. Stop the server with Ctrl+C when you start it yourself. It binds only localhost.
 
-The machine-specific launcher uses the existing LibreOffice Python 3.13.15 runtime and reads compatible installed packages from existing local package directories, including only the matching Aer package from a separate user installation. It sets PYTHONDONTWRITEBYTECODE and does not modify those projects. This is an environment bridge, not an isolated installation. Exact paths and limitations are in scripts/local_bootstrap.py and docs/environment.json.
+The machine-specific launcher uses the existing LibreOffice Python 3.13.15 runtime and reads compatible installed packages from existing local package directories, including only the matching Aer package from a separate user installation. It sets PYTHONDONTWRITEBYTECODE and does not modify those projects. This is an unsupported development-only environment bridge, not an isolated installation or the normal install path. Exact paths and limitations are in scripts/local_bootstrap.py and docs/environment.json.
 
 To check or rebuild the interface with the verified existing tools:
 
@@ -58,24 +81,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 sc
 This separate machine-specific launcher reads installed Playwright packages and uses a cached headless Chromium; it does not alter the quantum server's dependency paths. The script rejects an existing output directory and preserves actual API results, downloaded report, screenshots and a summary. See [browser QA](docs/browser-verification.md).
 
 In a normal environment install the optional browser extra or requirements-browser-tested.txt, install its official Chromium with python -m playwright install chromium, and run python -m scripts.browser_e2e --out artifacts/new-browser-check. Fresh installation of those dependencies/browser is not claimed here.
-
-## Standard installation on another machine
-
-The following is the standard installation procedure; **a fresh network installation was not rehearsed in this sandbox**. Direct network downloads failed. The exact observed Python dependency closure is requirements-tested.txt; frontend direct versions are in web/package.json.
-
-~~~powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-aer-tested.txt
-.venv\Scripts\python -m pip install --no-deps -e .
-npm.cmd --prefix web install
-npm.cmd --prefix web run check
-npm.cmd --prefix web run build
-.venv\Scripts\python -m pytest tests -q
-.venv\Scripts\python -m qfault demo
-.venv\Scripts\python -m qfault serve
-~~~
-
-Use CPython 3.13 for the recorded dependency set; project metadata requires3.12+ because the pinned NumPy/SciPy releases require3.12+. Only3.13 was executed for the quantum application. No Docker or external services are required. Optional Aer is also declared as the project extra aer; the tested requirements file records its observed dependency versions. A portable wheel and fresh-install dependency resolution remain release tasks; no npm lockfile is claimed.
 
 ## CLI workflow
 
@@ -148,7 +153,7 @@ The original benchmark above remains unchanged. A separate configuration was com
 | Threshold | 34/68 | 278,528 | 162 |
 | Phase evidence | 66/68 | 487,424 | 328 |
 
-Phase accuracy has descriptive Wilson95% interval89.9–99.2%; fixed75.0–91.8%. Phase costs40% more shots and still misses two QFT2 angle faults; fixed catches those with unconditional exact-state checks. Zero false diagnoses among10 evaluator-correct cases has Wilson upper27.8%. No statistical superiority or unseen-algorithm guarantee is claimed. See [findings and confusion matrices](docs/diagnostic-findings.md), [measured tradeoff](benchmarks/policy-tradeoff.svg) and [raw-linked final summary](benchmarks/diagnostic-final.json).
+Phase accuracy has descriptive Wilson95% interval89.9–99.2%; fixed75.0–91.8%. Phase costs40% more shots and still misses two QFT2 angle faults; fixed catches those with unconditional exact-state checks. Zero false diagnoses among10 evaluator-correct cases has Wilson upper27.8%. No statistical superiority or unseen-algorithm guarantee is claimed. Paired outcomes:56 both correct,10 phase-only correct,2 fixed-only correct,0 both wrong; these are descriptive, not a significance claim. See [paired raw-artifact audit](benchmarks/paired-policy-audit.json). See [findings and confusion matrices](docs/diagnostic-findings.md), [measured tradeoff](benchmarks/policy-tradeoff.svg) and [raw-linked final summary](benchmarks/diagnostic-final.json).
 
 Selected recovery now covers12 missing-gate/phase trials:10 verified,2 QFT4 inconclusive, plus2 rejected negative controls. Wilson95% interval55.2–95.3% applies only to this selected corpus. Validation uses independent DensityMatrix evolution and new Z/phase samples; total11264 shots/case. The original6/6 finding remains narrow.
 
@@ -186,5 +191,7 @@ Artifact directories contain investigation.json, separate evaluator-only evaluat
 QFAULT combines evidence/review design lessons from SAT-SA/Closure-Trace, causal-evaluation discipline from QuantumAttack, QFT convention checks from QFT-Lab and shot-versus-bias/resource lessons from Q-TRUST. These are conceptual adaptations; no donor implementation was copied. Existing mutation testing, circuit equivalence and mitigation are prior art. No novelty or quantum-advantage claim is made.
 
 See docs/reuse-inventory.md, docs/prior-art.md, docs/methodology.md and THIRD_PARTY_NOTICES.md for verified sources, revisions, licenses and dependency choices. Product code is MIT licensed.
+
+Current release checks and exact failures: [release candidate audit](docs/release-candidate.md). The required privileged calculations are mapped in [simulator information audit](docs/simulator-information-audit.md).
 
 Operational continuity: decisions.md, flow.md and handoff.md. Reproduction evidence: benchmarks/results.json, benchmarks/reproduction.json, benchmarks/demo.json and local raw artifacts.

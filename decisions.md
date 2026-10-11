@@ -259,3 +259,43 @@
 - Package: Existing numpy==2.5.2 and scipy==1.18.1; no scientific dependency replacement.
 - Why this package: Preserve executed scientific results and correct the compatibility claim to installed metadata.
 - Packages compared: Existing tested pins versus speculative older pins; existing installed uv versus missing stdlib venv launchers.
+
+### D-022: Preserve install failures rather than fabricate a locked release
+
+- Date / phase / commit: 2026-10-11 / submission reproducibility / commit containing this entry.
+- Context: Prior HEADee712028 was clean; local operation was verified but independent installs remained unverified.
+- Symptom: npm could not generate a lockfile; clean ci/check/build failed in a disposable source copy.
+- Root cause: Official registry DNS resolves but HTTPS connect returns EACCES before TLS/authentication. Offline @types/react metadata is unavailable; the configured cache is absent and the standard AppData cache is EPERM. Exact npm ci rejects the missing lockfile. The policy mechanism producing EACCES is not independently identified.
+- Decision: Keep PARTIALLY READY status; preserve the working bridges as explicitly development-only. Put one own-manifest normal installation recipe first in README, clearly unverified. Do not author integrity hashes, copy donor dependencies, change registries or elevate permissions.
+- Why: Actual online/offline resolution failed again. Standard installed CPython3.11.16 is below the pinned Python minimum; no suitable isolated application environment was available.
+- Alternatives considered: Claim bridge success as clean install, speculative package downgrade, or invented lockfile; rejected.
+- Consequences: Lockfile, clean Python/frontend install and browser acceptance on that independent build remain submission blockers. Existing local demo remains functional.
+- Regression test: Disposable npm resolution/ci/check/build failures, followed by95 passing retained-environment tests and successful retained build/browser execution.
+- Files: README.md; docs/release-candidate.md; docs/environment-stabilization.md; benchmarks/release-candidate-verification.json; handoff.md.
+- Package: No dependency added/replaced.
+- Why this package: Preserve tested scientific versions.
+- Packages compared: Existing pinned graph versus unvalidated downgrades; unavailable official online resolution versus genuinely incomplete cache.
+
+### D-023: Publish paired outcomes and expose privileged simulation clearly
+
+- Date / phase / commit: 2026-10-11 / submission evidence audit / commit containing this entry.
+- Context: Percentages alone omit paired failures, and exact-state attribution must not appear to be a hardware observable.
+- Decision: Add scripts/audit_release.py to match fixed/phase cases, validate raw manifests and export descriptive paired outcomes. Explicitly label higher-cost phase testing and the privileged simulator calculation in the existing UI; no policy or threshold changes.
+- Why:68 pairs give56 both correct,10 phase-only correct,2 fixed-only correct and0 neither; all340 raw final records pass integrity verification. Browser label regression fails before the change and full seven-workflow suite passes after it.
+- Alternatives considered: Infer statistical superiority from Wilson intervals, hide oracle access, or change defaults; rejected.
+- Consequences: Fixed remains default; phase retains higher measured cost. The developer tool still requires ideal-state simulation for attribution and repair, and hashes are unsigned consistency checks.
+- Regression test: scripts/browser_e2e.py higher-cost/privileged labels and actual full phase repair; scripts/audit_release.py fails on unmatched truth/manifest mismatch and checks actual recorded artifacts.
+- Files: scripts/audit_release.py; scripts/browser_e2e.py; web/src/main.tsx; docs/simulator-information-audit.md; docs/diagnostic-findings.md; benchmarks/paired-policy-audit.json.
+
+### D-024: Recovery reproduction writes only its exclusive output directory
+
+- Date / phase / commit: 2026-10-11 / release integrity fix / commit containing this entry.
+- Context: Final diff inspection found an authoritative recovery summary changed after --out reproduction.
+- Symptom: New experiment IDs and artifact links appeared in benchmarks/recovery-stabilization.json despite a separate requested output directory; scientific values matched.
+- Root cause: scripts/evaluate_recovery.py unconditionally wrote a second summary to that fixed repository path after writing the requested out/summary.json.
+- Decision: Remove only the implicit publication line, restore the committed original summary and retain all new reproduction evidence in its new output directory.
+- Why: A real12-case regression overwrote a sentinel benchmark and failed before the fix; afterward it preserves the exact bytes and both negative controls remain REJECTED. Full suite96 passed,1 warning.
+- Alternatives considered: Ignore metadata-only differences, weaken preservation assertions or suppress recovery runs; rejected.
+- Consequences: Reproduction cannot silently publish new results. Any future authoritative publication must be a separate explicitly reviewed operation. No scientific thresholds/results changed; prior summary is restored byte-for-byte as tracked.
+- Regression test: tests/test_recovery_output_isolation.py (observed fail, then pass; full integration suite passes).
+- Files: scripts/evaluate_recovery.py; tests/test_recovery_output_isolation.py; benchmarks/release-candidate-verification.json; docs/release-candidate.md.

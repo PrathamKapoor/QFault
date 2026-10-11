@@ -1,0 +1,363 @@
+{
+  "base_commit": "ee7120286de69f54609e53855a2c09d48a324b2b",
+  "status": "PARTIALLY READY",
+  "fresh_install": {
+    "python": "BLOCKED: no available standard CPython>=3.12; LibreOffice embedded runtime lacks usable venv launchers; PyPI connect EACCES",
+    "frontend": "BLOCKED: npm lockfile resolution online EACCES and offline ENOTCACHED; exact npm ci EUSAGE missing lockfile",
+    "npm_registry": "https://registry.npmjs.org/",
+    "proxy": null,
+    "tls_auth_not_reached": true,
+    "cache": "configured user cache absent; standard AppData cache EPERM; local cache lacks required metadata",
+    "disposable_directory": "artifacts/release-candidate/frontend",
+    "lint": "NOT AVAILABLE: no lint script declared; TypeScript check executed"
+  },
+  "existing_dependencies": {
+    "python": "3.13.15",
+    "qiskit": "2.3.1",
+    "aer": "0.17.2",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "react": "19.2.8",
+    "vite": "8.2.2",
+    "typescript": "6.0.3",
+    "tests": {
+      "stdout": "........................................................................ [ 75%]\r\n........................                                                 [100%]\r\n============================== warnings summary ===============================\r\n..\\Quantum_Simulator\\.venv\\Lib\\site-packages\\fastapi\\testclient.py:1\r\n  C:\\Projects/Quantum_Simulator/.venv/Lib/site-packages\\fastapi\\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.\r\n    from starlette.testclient import TestClient as TestClient  # noqa\r\n\r\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\r\n96 passed, 1 warning in 9.59s\r\n",
+      "stderr": ""
+    },
+    "frontend": {
+      "check": {
+        "stdout": "TypeScript check passed\n",
+        "stderr": ""
+      },
+      "build": {
+        "stdout": "\u001b[36mvite v8.2.2 \u001b[32mbuilding client environment for production...\u001b[36m\u001b[39m\ntransforming...\n✓ 15 modules transformed.\nrendering chunks...\ncomputing gzip size...\nweb/dist/index.html                   0.42 kB │ gzip:  0.30 kB\nweb/dist/assets/index-WejMZILL.css   12.81 kB │ gzip:  3.47 kB\nweb/dist/assets/index-v-LqhVjW.js   218.97 kB │ gzip: 68.19 kB\n\n\u001b[32m✓ built in 246ms\u001b[39m\n",
+        "stderr": ""
+      }
+    }
+  },
+  "reproduction": {
+    "original": {
+      "evidence": true,
+      "fixed": true,
+      "random": true,
+      "threshold": true
+    },
+    "final": {
+      "evidence": true,
+      "fixed": true,
+      "phase": true,
+      "random": true,
+      "threshold": true
+    }
+  },
+  "selected_recovery_metrics_match": true,
+  "negative_controls": [
+    {
+      "Z_comparison": {
+        "lower": 0,
+        "method": "multinomial TV concentration bound; per-comparison alpha=0.001",
+        "significant_disagreement": false,
+        "tolerance": 0.1,
+        "total_variation": 0.0166015625,
+        "uncertainty_radius": 0.04827799495651045,
+        "upper": 0.06487955745651044
+      },
+      "artifact_digest": "bc58ecc0cd26d5be5fec60fbb7a6007955c1e8f1d629282fd319e8f850d23d02",
+      "artifact_path": "artifacts\\release-candidate\\recovery\\invalid_phase_counts_match.json",
+      "evaluations": 3,
+      "name": "invalid_phase_counts_match",
+      "phase_comparison": {
+        "lower": 0.9517220050434894,
+        "method": "multinomial TV concentration bound; per-comparison alpha=0.001",
+        "significant_disagreement": true,
+        "tolerance": 0.1,
+        "total_variation": 0.9999999999999998,
+        "uncertainty_radius": 0.04827799495651045,
+        "upper": 1
+      },
+      "shots": 4096,
+      "state_fidelity": 0,
+      "status": "REJECTED"
+    },
+    {
+      "Z_comparison": {
+        "lower": 0.3760384112934894,
+        "method": "multinomial TV concentration bound; per-comparison alpha=0.001",
+        "significant_disagreement": true,
+        "tolerance": 0.1,
+        "total_variation": 0.4243164062499999,
+        "uncertainty_radius": 0.04827799495651045,
+        "upper": 0.47259440120651036
+      },
+      "artifact_digest": "0b7d8ba004322ddadae27988682676a243be0fa1cbc71aff5b0ed3069d95545f",
+      "artifact_path": "artifacts\\release-candidate\\recovery\\systematically_noisy_correct_state.json",
+      "evaluations": 3,
+      "name": "systematically_noisy_correct_state",
+      "phase_comparison": {
+        "lower": 0.3823860675434893,
+        "method": "multinomial TV concentration bound; per-comparison alpha=0.001",
+        "significant_disagreement": true,
+        "tolerance": 0.1,
+        "total_variation": 0.4306640624999998,
+        "uncertainty_radius": 0.04827799495651045,
+        "upper": 0.47894205745651025
+      },
+      "shots": 4096,
+      "state_fidelity": 0.9999999999999997,
+      "status": "REJECTED"
+    }
+  ],
+  "paired_audit": "benchmarks/paired-policy-audit.json",
+  "quantum_conformance": {
+    "cases": 9,
+    "source": "artifacts/release-candidate/conformance/summary.json"
+  },
+  "demo": {
+    "source": "artifacts/release-candidate/demo/summary.json",
+    "integrity_control": {
+      "original": true,
+      "tampered": false,
+      "restored": true,
+      "experiment_id": "experiment_577b61b6cdf94055b94fd908e4a6b78f"
+    },
+    "scenarios": [
+      {
+        "label": "healthy",
+        "experiment_id": "experiment_21417f92c217434b80642959f82e493f",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "recovery": null,
+        "shots": 7168,
+        "evaluations": 4,
+        "export": "artifacts\\release-candidate\\demo\\healthy.json",
+        "export_sha256": "1a1d3c4471d19be5186dd7b8c48256bc3a59950e89403d33ec707374db83e16b",
+        "verified": true,
+        "backends": [
+          "qiskit_aer.AerSimulator/density_matrix"
+        ]
+      },
+      {
+        "label": "hidden_logical_failure",
+        "experiment_id": "experiment_eae7a5c764304a5a9ab685e7e93bb03c",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "recovery": "VERIFIED",
+        "shots": 11264,
+        "evaluations": 30,
+        "export": "artifacts\\release-candidate\\demo\\hidden_logical_failure.json",
+        "export_sha256": "dea435fef1e02bd6b7afd1448c9c6caf6323106d21a45a003dffeb97f758c209",
+        "verified": true,
+        "backends": [
+          "qiskit_aer.AerSimulator/density_matrix"
+        ]
+      },
+      {
+        "label": "noise_control",
+        "experiment_id": "experiment_b2e9beb96e824cbb80070202e27d453f",
+        "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+        "recovery": null,
+        "shots": 7168,
+        "evaluations": 5,
+        "export": "artifacts\\release-candidate\\demo\\noise_control.json",
+        "export_sha256": "5d74371f6f505b516890c8c6b55e31b2ff721ae75484660b93271f1a00d4e1bb",
+        "verified": true,
+        "backends": [
+          "qiskit_aer.AerSimulator/density_matrix"
+        ]
+      },
+      {
+        "label": "relative_phase",
+        "experiment_id": "experiment_a3f764c4e2b4458e86bee6b0e8b44c35",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "recovery": "VERIFIED",
+        "shots": 11264,
+        "evaluations": 25,
+        "export": "artifacts\\release-candidate\\demo\\relative_phase.json",
+        "export_sha256": "eb476069c75cba4e614e8a8dafa7950759b5cad4fc74c58d9f5d2641aac7e076",
+        "verified": true,
+        "backends": [
+          "qiskit_aer.AerSimulator/density_matrix"
+        ]
+      },
+      {
+        "label": "insufficient_evidence",
+        "experiment_id": "experiment_b65ff62e4b384f57a8f66a807df03c41",
+        "diagnosis": "INSUFFICIENT_EVIDENCE",
+        "recovery": null,
+        "shots": 4096,
+        "evaluations": 2,
+        "export": "artifacts\\release-candidate\\demo\\insufficient_evidence.json",
+        "export_sha256": "7c4351a68ce158899209a2a4cbbbbe80a863a1a3aac9b6b94f377a3d3610a84b",
+        "verified": true,
+        "backends": [
+          "qiskit_aer.AerSimulator/density_matrix"
+        ]
+      }
+    ]
+  },
+  "browser": {
+    "artifact_directory": "artifacts\\release-candidate\\browser-complete",
+    "bitstrings_sorted": true,
+    "saved_configuration_restored": true,
+    "qubit_configuration_verified": true,
+    "expected_console_after_invalid": [
+      "Failed to load resource: the server responded with a status of 422 (Unprocessable Content)"
+    ],
+    "playwright": "1.62.0",
+    "browser_version": "151.0.7922.34",
+    "browser_executable": "C:\\Users\\LENOVO\\AppData\\Local\\ms-playwright\\chromium-1234\\chrome-win64\\chrome.exe",
+    "mocked_scientific_successes": false,
+    "workflows": [
+      {
+        "family": "qft",
+        "n_qubits": 4,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_09792ad06a9d477eb2bac74b050c40e0",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "ghz",
+        "n_qubits": 4,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_033bee2ab1ac4badb85ca121d8edbc60",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "clean",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_dd1f1e0792e74e5f914efd71c783c3be",
+        "diagnosis": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "actual_shots": 7168,
+        "evaluations": 4,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "remove",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_069a3484651b42a789f2eecf96f9c895",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "actual_shots": 11264,
+        "evaluations": 30,
+        "loading_observed": true,
+        "recovery": "VERIFIED"
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "readout",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_14861a6629994cf399a89041ff4fc1f0",
+        "diagnosis": "NOISE_CONSISTENT_DEGRADATION",
+        "actual_shots": 7168,
+        "evaluations": 5,
+        "loading_observed": true,
+        "recovery": null
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "phase",
+        "shots_per_execution": 2048,
+        "experiment_id": "experiment_1d154ef7d90c407292ade7926fb285d1",
+        "diagnosis": "LOGICAL_CIRCUIT_DEFECT",
+        "actual_shots": 11264,
+        "evaluations": 25,
+        "loading_observed": true,
+        "recovery": "VERIFIED"
+      },
+      {
+        "family": "bell",
+        "n_qubits": 2,
+        "scenario": "phase",
+        "shots_per_execution": 64,
+        "experiment_id": "experiment_6b1e9e554c95456b9998d727fd296e32",
+        "diagnosis": "INSUFFICIENT_EVIDENCE",
+        "actual_shots": 128,
+        "evaluations": 2,
+        "loading_observed": true,
+        "recovery": null
+      }
+    ],
+    "contract_selection": true,
+    "circuit_rendered": true,
+    "independent_recovery_display": true,
+    "download_export_verified": true,
+    "refresh_and_history_reload": true,
+    "integrity_recheck": true,
+    "frozen_comparison_display": true,
+    "mobile_geometry": {
+      "width": 390,
+      "scroll": 390
+    },
+    "positive_console_errors": [],
+    "page_errors": [],
+    "failed_requests": [],
+    "expected_invalid_http": [
+      {
+        "url": "http://127.0.0.1:8000/api/experiments",
+        "status": 422
+      }
+    ],
+    "invalid_error_display": true,
+    "screenshots": [
+      "evidence-desktop.png",
+      "recovery-desktop.png",
+      "mobile.png",
+      "invalid-input.png"
+    ],
+    "limitations": [
+      "Local installed Playwright/Chromium bridge; not fresh dependency installation",
+      "Single tested desktop/mobile sizes, not exhaustive device/browser coverage",
+      "Review remains pending; no automated test poses as human approval"
+    ]
+  },
+  "actual_commands_log": "artifacts/release-candidate/*-command.json and frontend-install.json",
+  "limitations": [
+    "All successful scientific/browser tests use existing dependency bridges, not an independent installation",
+    "Frozen reference-backend results and thresholds are unchanged",
+    "Privileged simulation is required for logical attribution and repair selection/validation; no hardware-deployability claim",
+    "No new scientific policy or circuit family was added"
+  ],
+  "export_verification": {
+    "valid_cli_exit": 0,
+    "tampered_cli_exit": 1,
+    "valid_export": "artifacts/release-candidate/demo/hidden_logical_failure.json",
+    "tampered_throwaway": "artifacts/release-candidate/tampered-export.json"
+  },
+  "recovery_output_isolation": {
+    "bug": "Runner unconditionally published to benchmarks/recovery-stabilization.json despite --out",
+    "fix": "Removed implicit publication; only exclusive output directory is written",
+    "original_restored": true,
+    "scientific_values_unchanged": true,
+    "regression": "tests/test_recovery_output_isolation.py",
+    "before_fix": "FAILED sentinel-byte equality after real12-case execution",
+    "after_fix": "1 passed; full96 passed"
+  },
+  "audit_negative_controls": [
+    {
+      "kind": "truth",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"C:\\Projects\\QFF\\scripts\\local_bootstrap.py\", line 25, in <module>\r\n    runpy.run_module(module, run_name=\"__main__\", alter_sys=True)\r\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"<frozen runpy>\", line 231, in run_module\r\n  File \"<frozen runpy>\", line 98, in _run_module_code\r\n  File \"<frozen runpy>\", line 88, in _run_code\r\n  File \"C:\\Projects\\QFF\\scripts\\audit_release.py\", line 34, in <module>\r\n    if __name__=='__main__':main()\r\n                            ~~~~^^\r\n  File \"C:\\Projects\\QFF\\scripts\\audit_release.py\", line 18, in main\r\n    if f['truth']!=p['truth']: raise ValueError('inconsistent evaluator truth')\r\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nValueError: inconsistent evaluator truth\r\n"
+    },
+    {
+      "kind": "manifest",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"C:\\Projects\\QFF\\scripts\\local_bootstrap.py\", line 25, in <module>\r\n    runpy.run_module(module, run_name=\"__main__\", alter_sys=True)\r\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"<frozen runpy>\", line 231, in run_module\r\n  File \"<frozen runpy>\", line 98, in _run_module_code\r\n  File \"<frozen runpy>\", line 88, in _run_code\r\n  File \"C:\\Projects\\QFF\\scripts\\audit_release.py\", line 34, in <module>\r\n    if __name__=='__main__':main()\r\n                            ~~~~^^\r\n  File \"C:\\Projects\\QFF\\scripts\\audit_release.py\", line 26, in main\r\n    if actual!=row['manifest_digest']: raise ValueError('manifest digest mismatch: '+row['case_id'])\r\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nValueError: manifest digest mismatch: bell-2-clean-103\r\n"
+    }
+  ]
+}

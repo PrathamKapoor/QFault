@@ -1,0 +1,430 @@
+{
+  "source": "benchmarks\\diagnostic-final.json",
+  "source_sha256": "d19e4af6b37bb6fca6ef737968ff445d407e4c95976742115fbf4e6f52e11616",
+  "matched_cases": 68,
+  "paired_counts": {
+    "both_correct": 56,
+    "fixed_only_correct": 2,
+    "phase_only_correct": 10,
+    "neither_correct": 0
+  },
+  "paired_rows": {
+    "both_correct": [
+      {
+        "case_id": "bell-2-clean-103",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "bell-2-clean-211",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "bell-2-readout-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "bell-2-readout-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "bell-2-remove-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-remove-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-replace-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-replace-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-rewire-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-rewire-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-mixed-103",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "bell-2-mixed-211",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "bell-2-phase-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "bell-2-phase-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-clean-103",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "ghz-4-clean-211",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "ghz-4-readout-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "ghz-4-readout-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "ghz-4-gate-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "ghz-4-gate-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NOISE_CONSISTENT_DEGRADATION",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "ghz-4-remove-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-remove-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-replace-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-replace-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-rewire-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-rewire-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-mixed-103",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "ghz-4-mixed-211",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "ghz-4-phase-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "ghz-4-phase-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-clean-103",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-2-clean-211",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-2-remove-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-remove-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-replace-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-replace-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-rewire-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-rewire-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-mixed-103",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "qft-2-mixed-211",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "qft-2-phase-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-2-phase-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-clean-103",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-4-clean-211",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-4-remove-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-remove-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-replace-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-replace-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-rewire-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-rewire-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-mixed-103",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "qft-4-mixed-211",
+        "truth": "MIXED_OR_AMBIGUOUS",
+        "fixed": "MIXED_OR_AMBIGUOUS",
+        "phase": "MIXED_OR_AMBIGUOUS"
+      },
+      {
+        "case_id": "qft-4-phase-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-phase-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "LOGICAL_CIRCUIT_DEFECT"
+      },
+      {
+        "case_id": "qft-4-angle-103",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-4-angle-211",
+        "truth": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      }
+    ],
+    "fixed_only_correct": [
+      {
+        "case_id": "qft-2-angle-103",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      },
+      {
+        "case_id": "qft-2-angle-211",
+        "truth": "LOGICAL_CIRCUIT_DEFECT",
+        "fixed": "LOGICAL_CIRCUIT_DEFECT",
+        "phase": "NO_SIGNIFICANT_FAILURE_DETECTED"
+      }
+    ],
+    "phase_only_correct": [
+      {
+        "case_id": "bell-2-gate-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "bell-2-gate-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-2-readout-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-2-readout-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-2-gate-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-2-gate-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-4-readout-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-4-readout-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-4-gate-103",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      },
+      {
+        "case_id": "qft-4-gate-211",
+        "truth": "NOISE_CONSISTENT_DEGRADATION",
+        "fixed": "NO_SIGNIFICANT_FAILURE_DETECTED",
+        "phase": "NOISE_CONSISTENT_DEGRADATION"
+      }
+    ],
+    "neither_correct": []
+  },
+  "verified_raw_artifacts": 340,
+  "interpretation": "Descriptive paired outcomes, not a significance or generalization claim; no scientific threshold or policy change."
+}

@@ -19,6 +19,7 @@ def main():
         expect(page.get_by_role('heading',name='Investigate. Recover. Verify.')).to_be_visible()
         expect(page.get_by_role('heading',name='Coherent Bell state')).to_be_visible()
         assert page.get_by_label('Diagnostic policy').input_value()=='fixed'
+        expect(page.get_by_label('Diagnostic policy').locator('option[value=phase]')).to_have_text('Phase-sensitive evidence · higher cost')
         page.get_by_label('Circuit family').select_option('qft');expect(page.get_by_role('heading',name='Fourier output for basis input |001⟩')).to_be_visible()
         page.get_by_label('Qubit count').select_option('4');expect(page.get_by_role('heading',name='Fourier output for basis input |0001⟩')).to_be_visible()
         page.get_by_label('Circuit family').select_option('bell')
@@ -46,6 +47,7 @@ def main():
         healthy=investigate('clean','NO_SIGNIFICANT_FAILURE_DETECTED')
         bad=investigate('remove','LOGICAL_CIRCUIT_DEFECT')
         expect(page.get_by_role('heading',name='Competing explanations')).to_be_visible()
+        expect(page.get_by_role('cell',name='Privileged simulator calculation',exact=True)).to_be_visible()
         expect(page.locator('.circuit-diagram')).to_contain_text('q_0:')
         expect(page.get_by_role('heading',name='Phase-sensitive measurements')).to_be_visible()
         assert page.locator('.distribution').first.locator('text.axis').all_text_contents()[5:9]==['00','01','10','11']
@@ -67,6 +69,7 @@ def main():
         page.get_by_role('button',name='Recheck integrity').click();expect(page.get_by_text('Artifact hashes verified',exact=True)).to_be_visible()
         page.get_by_label('Diagnostic policy').select_option('phase');page.get_by_label('Simulation backend').select_option('aer')
         noise=investigate('readout','NOISE_CONSISTENT_DEGRADATION');assert noise['recovery'] is None
+        phase_fault=investigate('phase','LOGICAL_CIRCUIT_DEFECT');assert phase_fault['recovery']['status']=='VERIFIED'
         low=investigate('phase','INSUFFICIENT_EVIDENCE',64);assert low['recovery'] is None
         page.get_by_role('tab',name='Benchmark',exact=True).click();expect(page.get_by_role('heading',name='Separate frozen final comparison')).to_be_visible();expect(page.get_by_role('cell',name='66/68',exact=True)).to_be_visible()
         page.set_viewport_size({'width':390,'height':844});page.screenshot(path=str(root/'mobile.png'),full_page=True)

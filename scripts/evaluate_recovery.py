@@ -45,5 +45,4 @@ summary={'rows':rows,'controls':controls,'verified':event_rate(sum(r['verified']
     'limitations':['Selected fixed templates and two seeds; not a general repair success rate','One-edit search capped at 256; no evaluator mutation parameters enter planner',
         'Independent implementation and fresh measurements share Qiskit; not independent-vendor unitary equivalence']}
 (out/'summary.json').write_bytes(canonical(summary))
-Path('benchmarks/recovery-stabilization.json').write_text(json.dumps(summary,indent=2),encoding='utf8')
 print(json.dumps(summary,indent=2))

@@ -38,3 +38,11 @@ The separate scripts/browser_bootstrap.py launcher loads installed Playwright fo
 | Session change | Actual paths | Decisions | Commit |
 |---|---|---|---|
 | Real browser workflow, saved configuration/qubit controls, binary plot order and interpreter requirement | scripts/browser_e2e.py; scripts/browser_bootstrap.py; web/src/main.tsx; pyproject.toml; tests/test_dependency_compatibility.py; benchmarks/delivery-verification.json | D-020–021 | Commit containing this entry |
+
+Submission audit: scripts/audit_release.py reads existing final rows, matches fixed/phase case identities and truth, compares each raw manifest SHA256 to its recorded row digest, calls ArtifactStore.verify and writes an exclusive audit file. It does not call diagnosis or tune a policy. docs/simulator-information-audit.md maps measured, derived, privileged and evaluator-only information.
+
+| Session change | Actual paths | Decisions | Commit |
+|---|---|---|---|
+| Disposable install audit, paired integrity checks and clearer scientific labels | scripts/audit_release.py; scripts/browser_e2e.py; web/src/main.tsx; docs/release-candidate.md; benchmarks/release-candidate-verification.json | D-022–023 | Commit containing this entry |
+
+scripts/evaluate_recovery.py now writes only the requested exclusive directory and its summary.json; it never implicitly republishes benchmarks/recovery-stabilization.json. D-024 and tests/test_recovery_output_isolation.py document the real-execution preservation regression.

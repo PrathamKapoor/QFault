@@ -1,6 +1,6 @@
 # Verified release boundaries
 
-Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements the preserved original benchmarks; it does not retroactively change them.
+Assessment: 2026-10-11. Status: PARTIALLY READY. Current evidence supplements the preserved original benchmarks; it does not retroactively change them.
 
 | Gate | Status | Executed evidence / remaining limit |
 |---|---|---|
@@ -8,9 +8,9 @@ Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements
 | Fresh frontend installation / lockfile | BLOCKED | Offline metadata ENOTCACHED, online registry EACCES; no own node_modules or lockfile |
 | Actual quantum core | PASS locally | Qiskit2.3.1 reference and Aer0.17.2 executed Bell/GHZ/QFT |
 | Aer compatibility | PASS locally | Matching cp313 Windows x64 binary;8 tests;9 paired circuit/noise cases; saved densities agree |
-| Core/API/CLI regression tests | PASS locally |95 passed,1 Starlette/httpx deprecation warning |
+| Core/API/CLI regression tests | PASS locally |96 passed,1 Starlette/httpx deprecation warning |
 | TypeScript / production build | PASS with bridge | TypeScript6.0.3 and Vite8.2.2; own dependency installation still blocked |
-| Browser E2E / responsive / console | PASS locally | Installed Playwright1.62.0 / Chromium151; six real scientific journeys, export verification, history/refresh, loading, desktop/mobile, expected422; no unexpected errors |
+| Browser E2E / responsive / console | PASS locally | Installed Playwright1.62.0 / Chromium151; seven real scientific journeys (including full phase-fault repair), export verification, history/refresh, loading, desktop/mobile, expected422; no unexpected errors |
 | Original benchmark reproducibility | PASS locally |75 cases/policy and6 selected repairs match, authoritative artifacts unchanged |
 | Frozen new evaluation | PASS locally |68 cases/policy, five policies, equal ceilings; full metrics reproduced |
 | Phase evidence / global phase | PASS within declared scope | Actual complementary counts; global-phase invariance; incomplete witnesses documented |
@@ -24,4 +24,4 @@ Assessment: 2026-10-11. Status: PARTIALLY COMPLETE. Current evidence supplements
 | Local authorship / attribution | Checked at delivery |Requested author/committer; notices retained; no donor code copied or remote push |
 | QCEC / mitigation / ML-DSA / temporal / hardware | NOT IMPLEMENTED |Explicitly excluded from functional claims |
 
-See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, winning result, scientific novelty or quantum-advantage claim is made. Browser success is limited to the actual recorded local Chromium checks. Current verification: benchmarks/delivery-verification.json and benchmarks/browser-verification.json; the earlier stabilization-verification.json is a historical snapshot before browser discovery.
+See docs/environment-stabilization.md for exact blockers, docs/diagnostic-findings.md for all confusion matrices and negative findings, and handoff.md for commands. No fresh installation, winning result, scientific novelty or quantum-advantage claim is made. Browser success is limited to the actual recorded local Chromium checks. Current release verification: benchmarks/release-candidate-verification.json and docs/release-candidate.md. Earlier verification: benchmarks/delivery-verification.json and benchmarks/browser-verification.json; the earlier stabilization-verification.json is a historical snapshot before browser discovery.

@@ -1,0 +1,18 @@
+# Simulator information and decision audit
+
+QFAULT is a simulation-backed quantum developer tool. Its logical attribution and repair workflow are not hardware-deployable measurements. This audit inspected qfault/workflow.py, diagnostics.py, recovery.py, quantum.py, experiments.py and storage.py at release stabilization; no decision algorithm changed.
+
+| Information | Actual source / consumer | Decision role and boundary |
+|---|---|---|
+| Observable sample data | quantum.execute → EvidenceCollector.collect → MeasuredEvidence | Allowlist contains execution_id, shots and counts. Computational, complementary and zero-state calibration experiments genuinely execute the chosen Qiskit backend. Simulated counts are not physical hardware data. |
+| Declared contract | quantum.contract / Contract.state; workflow.RunRequest | Independently analytic fixed-input target, expected probabilities and tolerances. The phase basis is derived from this declared target, never hidden mutation parameters. |
+| Derived statistics | diagnostics.comparison / total_variation / tv_radius | Empirical TV and multinomial bounds drive disagreement decisions. They are sampling bounds, not class-confidence probabilities. |
+| Privileged ideal calculation | DiagnosticAccess.state_probe → ideal_state → Qiskit Statevector | Fixed requests this whenever budget permits. Evidence/threshold request it on their discrepancy triggers; random can select calibration instead. Phase requests it after significant task-basis or calibration evidence when funded. Its ideal infidelity and candidate probabilities directly affect logical/mixed/noise attribution. It is a classical exact simulation evaluation, zero shots, explicitly charged. |
+| Privileged repair selection | RecoveryPlanner.propose → ideal_state | Searches at most256 one-edit copies against analytic target fidelity; no injected edit parameters or complete trusted-circuit replacement. This selection also requires classical simulation. |
+| Independent verification | IndependentVerifier.verify → DensityMatrix.evolve and new sampled executions | A separately implemented ideal fixed-input calculation plus fresh Z samples, and fresh complementary samples for phase recovery. Seed offsets10007/10024; validation cannot inherit the planner's score as proof. Shared Qiskit means no independent-vendor equivalence guarantee. |
+| Evaluator-only truth | workflow.scenario; experiments.evaluator_truth | Scenario/mutation/noise labels are attached after prediction_digest freezes diagnosis/recovery. Stored separately in evaluation.json. Evaluator ideal-state calculations define benchmark labels after predictions, not diagnostic features. |
+| Execution configuration | DiagnosticAccess private executor fields | Configured noise is used to execute probes, not supplied to analyst comparison features. The allowlist/poison tests check an API boundary, not adversarial Python introspection protection. |
+
+The baseline executes a trusted template but diagnosis receives the submitted candidate, contract, allowlisted observations and bounded diagnostic operations, not a trusted-circuit diff. Each candidate's actual gates remain available because this is developer tooling. No claim of black-box hardware fault identification follows.
+
+Reports retain state_probe.method and limitation, observations distinguish measured/derived records, and the ledger counts exact calculations separately from sampled executions. The UI labels its ideal diagnostic as a privileged simulator calculation and marks phase testing higher cost. Hash verification authenticates neither these scientific assumptions nor data origin; manifests are unsigned. Human review remains pending until a person records a decision.

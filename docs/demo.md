@@ -67,3 +67,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 sc
 ~~~
 
 This executed six actual UI-driven Aer investigations, including GHZ4/QFT4 configuration, healthy/faulty/noisy/insufficient Bell controls; it verified the downloaded artifact and checked a genuine budget-validation422. Screenshots and responses remain local and ignored. No mocked success or browser-state injection produces the scientific results. Current browser coverage is Chromium151 at1600px and390px, not every browser/device.
+
+## Submission release rehearsal
+
+Latest actual output is artifacts/release-candidate/demo/summary.json, with per-scene JSON exports in the same directory. The recorded seed42 and configurations remain unchanged. Latest seven-workflow browser screenshots/exports are artifacts/release-candidate/browser-complete; these include an actual successful full phase-fault recovery. Existing narration is still accurate; no video has been recorded. The release paired audit adds56 cases both fixed/phase correct,10 phase-only and2 fixed-only, without a significance claim. See docs/release-candidate.md for exact executed commands and independent-install blockers.

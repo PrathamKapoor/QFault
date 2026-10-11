@@ -2,7 +2,9 @@
 
 ## 1. Current Phase
 
-Release stabilization and diagnostic evidence are implemented and locally verified. Overall status is PARTIALLY COMPLETE: fresh isolated Python/frontend installation and the project-owned npm lockfile remain blocked. Aer now genuinely executes; the previous Aer-unavailable conclusion is superseded by D-016.
+Release stabilization and diagnostic evidence are implemented and locally verified. Overall submission status is PARTIALLY READY: fresh isolated Python/frontend installation and the project-owned npm lockfile remain blocked. Aer now genuinely executes; the previous Aer-unavailable conclusion is superseded by D-016.
+
+Submission release continuation began at clean ee7120286de69f54609e53855a2c09d48a324b2b. npm lockfile resolution and exact ci failed in a disposable source copy; no suitable standard CPython>=3.12 was available. No elevation or speculative dependency changes. Current evidence: benchmarks/release-candidate-verification.json and docs/release-candidate.md.
 
 ## 2. Work Completed
 
@@ -12,9 +14,13 @@ Committed disjoint development/final inputs before implementation. Added contrac
 
 Located a matching cp313 Aer0.17.2 installation read-only. Added optional explicit Aer adapter and CLI/API/UI backend choice while retaining reference. Executed real ideal/noisy Bell/GHZ/QFT conformance and saved-density comparisons. Added standalone report verification and boundary regression fixes. Executed Aer judging demo and actual HTTP workflows. UI presents actual bases/counts/hypotheses/costs/recovery and both original/final results. Built and checked TypeScript, generated and visually inspected a standard Matplotlib tradeoff plot. Subsequent installed Playwright/Chromium discovery enabled a real six-workflow browser E2E, downloaded-report verification and desktop/mobile screenshot inspection. Fixed plot bitstring ordering, saved configuration restoration and exposed validated qubit selection.
 
+Reproduced original/final metrics again under artifacts/release-candidate, all12 recovery scientific rows and two rejected controls. Ran nine paired conformance cases and Aer judging demo. Added a paired existing-results audit:56 both correct,10 phase-only,2 fixed-only,0 neither; all340 final raw manifests verify. Negative audit controls reject mismatched evaluator truth and modified manifest copies. Expanded actual browser to seven Aer workflows with full phase repair; clarified higher-cost phase and privileged calculation labels. Scientific code/defaults/thresholds remain unchanged.
+
 ## 3. Files Changed
 
 Core: qfault/quantum.py, diagnostics.py, recovery.py, workflow.py, experiments.py, storage.py, cli.py, api.py; new backends.py. Interface: web/src/main.tsx. Tests: test_phase_measurements.py, test_policy_evaluation.py, test_export_verification.py, test_aer_backend.py, test_aer_absence.py, test_measurement_boundaries.py, test_phase_truth_isolation.py, test_repair_boundaries.py. Additional release files: scripts/browser_bootstrap.py, browser_e2e.py, local_browser.ps1; tests/test_dependency_compatibility.py; requirements-browser-tested.txt; docs/browser-verification.md; benchmarks/browser-verification.json and delivery-verification.json. Tooling: scripts/audit_diagnostics.py, compare_backends.py, evaluate_recovery.py, submission_demo.py, http_release_smoke.py, plot_policy_tradeoff.py, local_bootstrap.py. Manifests: configs/diagnostic-evaluation.json, pyproject.toml optional Aer extra, requirements-aer-tested.txt. Documentation: README, decisions, flow, this handoff, docs/environment-stabilization.md, diagnostic-findings.md, methodology.md, demo.md, release-gates.md. Actual measured summaries/figure under benchmarks; raw artifacts and built frontend remain ignored.
+
+Release continuation changes: scripts/audit_release.py, scripts/browser_e2e.py, web/src/main.tsx labels, benchmarks/paired-policy-audit.json, benchmarks/release-candidate-verification.json, docs/release-candidate.md, docs/simulator-information-audit.md and current root documentation. No dependency versions replaced.
 
 ## 4. Current Architecture / State
 
@@ -26,13 +32,15 @@ The local application is served at http://127.0.0.1:8000/ by the owned process s
 
 D-001–012 retain the original foundation/history. D-013 records the original cp311 mismatch and failed install attempts; D-016 explicitly supersedes its Aer-unavailable outcome after locating cp313. D-014 defines complementary witnesses. D-015 freezes holdout/reserves validation and retains fixed default. D-017 adds exported-report checking and bounded internal analysis circuits. D-018 publishes all frozen negative findings. D-019 skips invalid repair angle edits rather than weakening input validation. D-020 supersedes the browser-unavailable outcome with actual Playwright evidence and UI regressions. D-021 corrects requires-python to >=3.12 from installed dependency metadata. Commits1d89eff and3039215 precede final evaluation; dffeb54 contains Aer/reporting/frozen evidence; the commit containing this update contains browser verification and installation-bound correction.
 
+D-022 records precise repeatable install blockers and keeps the normal own-manifest path distinct from the development-only fallback. D-023 documents descriptive paired outcomes, actual privileged information flow and scientific labels.
+
 ## 6. Requirements and Constraints
 
 Local only; no push, publication, deployment, cloud, paid API or hardware. All new author/committer identities must be PrathamKapoor <prathamkapoor027@gmail.com>, repository-local configuration only. No tool coauthors, generated authorship footers or donor writes. Preserve authoritative experiments, notices and history. No arbitrary Python uploads, paper/research/.tex files, artificial stage directories, fabricated metrics or success claims. Keep decisions/flow/handoff current. Fixed-input states are not general unitary equivalence; unsigned hashes are not PQC signatures or scientific truth.
 
 ## 7. Testing and Verification
 
-Initial suite:62 passed,1 warning. Latest suite executed through scripts/local.ps1 pytest -q -p no:cacheprovider:95 passed,1 Starlette/httpx deprecation warning,6.42s. Exact test/typecheck/build output and current browser status are benchmarks/delivery-verification.json; stabilization-verification.json is an earlier historical snapshot. The PowerShell launcher qfault circuits was executed again successfully. TypeScript check and Vite production build passed using the explicitly disclosed read-only donor node_modules bridge; own fresh frontend installation is not verified.
+Initial suite:62 passed,1 warning. Latest suite executed directly through LibreOffice python.exe -B -u scripts/local_bootstrap.py pytest -q -p no:cacheprovider:96 passed,1 Starlette/httpx deprecation warning,9.59s. Latest release output/status is benchmarks/release-candidate-verification.json; benchmarks/delivery-verification.json records the previous6.42s run; stabilization-verification.json is an earlier historical snapshot. The PowerShell launcher qfault circuits was executed again successfully. TypeScript check and Vite production build passed using the explicitly disclosed read-only donor node_modules bridge; own fresh frontend installation is not verified.
 
 Verified commands from repository root (new output destinations required):
 
@@ -54,11 +62,17 @@ Original results reproduce47/75 evidence,66/75 fixed,23/75 random,47/75 threshol
 
 Phase final uses487424 shots/328 evaluations versus fixed348160/272; phase misses both QFT2 angle cases. No false diagnosis among10 evaluator-correct cases (Wilson upper27.8%). Low-shot phase abstains4/4. Selected recovery10/12 verified (Wilson55.2–95.3%), two QFT4 inconclusive; two invalid/noisy proposals rejected. Recovery reproduction retains these outcomes. Actual Aer conformance: nine paired circuit/noise cases, density errors<=3.34e-16, sampled TV<=0.0188. Actual Aer demo has healthy/fault/noise/phase/abstention and true/false/true integrity control. HTTP checks cover page/assets, contracts, both measured summaries, four201 workflows, reloads, valid exports and invalid422 requests. Standalone valid export exits0; tampered export exits1. Actual installed Playwright1.62.0/Chromium151.0.7922.34 E2E passes six Aer workflows (QFT4/GHZ4/Bell clean, Bell remove/readout/low-shot phase), fresh repair display, report download/hash verification, history/settings restoration, loading states and expected invalid422. Zero unexpected console/page/request errors. Mobile390px has no horizontal page overflow; local screenshots are artifacts/browser-delivery. No automated human approval.
 
+Current seven-workflow browser output: artifacts/release-candidate/browser-complete. No unexpected console/page/request errors; actual full phase repair added. Commands/logs: docs/release-candidate.md. Current original/final reproduction compares every policy metric excluding runtime and matches; selected recovery rows retain all quality/cost fields. scripts.audit_release --out artifacts/new-audit checks frozen paired predictions and raw artifact manifests. Fresh-install checks remain failures, separate from retained-environment successes.
+
+D-024 fixes the recovery runner unconditionally overwriting its fixed published summary despite --out. Original tracked bytes restored; new sentinel regression failed before, passes after. Full96 tests pass. All new recovery artifacts remain separately retained.
+
 ## 8. Known Issues / Risks
 
 LibreOffice Python3.13.15 lacks venvlauncher.exe/venvwlauncher.exe. Python package network access fails EACCES/connection errors; npm online registry fails EACCES and offline metadata ENOTCACHED. The ignored partial .venv has no usable interpreter; do not treat it as an install. No package-lock.json or own node_modules could be generated/installed. Connected-browser discovery is empty, but installed standalone Playwright successfully executes Chromium. Installed uv0.12.5 also failed to create isolation from embedded LibreOffice Python; discovered complete CPython3.11.16 is below the pinned NumPy/SciPy >=3.12 requirement. Partial .venv-isolated and .venv-isolated-retry remain ignored. Exact attempts are docs/environment-stabilization.md.
 
 Current runtime is a machine-specific read-only bridge, not a clean installation. Qiskit2.3.1/NumPy2.5.2/SciPy1.18.1 plus Aer0.17.2 are actually loaded; only Aer is imported from the separate cp313 user package to avoid contaminating other versions. Frontend React19.2.8, Vite8.2.2, TypeScript6.0.3 were checked/built. Fresh transitive resolution remains unknown. Exact-state attribution is privileged; complementary witnesses are incomplete; small repeated-template intervals are descriptive. Four-qubit QFT validation can remain inconclusive at2048 shots. No QCEC, mitigation, temporal forecasting, ML-DSA signing or hardware execution exists. Persistence can retain partial directories after crashes; verification fails closed. Review identity is not authenticated.
+
+Current install details: official npm/PyPI DNS resolves, connect EACCES precedes TLS/auth; no proxy configured. Configured npm cache absent, standard AppData cache EPERM, local metadata ENOTCACHED. Standard CPython3.11.16 probe interpreter is isolated but its venv creation command timed out; it cannot satisfy>=3.12 pins and is not a QFAULT install. No complete usable dependency cache was established. Disposable source/partial probe retained under artifacts/release-candidate.
 
 ## 9. Unfinished Work
 
@@ -70,7 +84,7 @@ On an unrestricted machine, use normal CPython3.13, install the tested manifests
 
 ## 11. Critical Context
 
-Original expected HEAD d30535c was verified. Current commits are local on main; inspect git log/status for exact delivery HEAD. Authoritative old summaries remain unchanged. New holdout was frozen before implementation; final results were opened once without tuning, then reproduced. Raw directories include artifacts/stabilization-original, stabilization-current-original, diagnostic-development, diagnostic-final, diagnostic-final-reproduction, diagnostic-low-shot, recovery-stabilization, recovery-reproduction, backend-conformance, submission-rehearsal, http-stabilization and browser-delivery. These are ignored but retained locally. Normal fresh-machine commands are documented as unverified installation instructions. No donor implementation copied; prior reuse inventory/THIRD_PARTY_NOTICES remain valid. Deadline supplied by user: October12,2026; not independently reinterpreted as a winning outcome.
+Original expected HEAD d30535c was verified. Current commits are local on main; inspect git log/status for exact delivery HEAD. Authoritative old summaries remain unchanged. New holdout was frozen before implementation; final results were opened once without tuning, then reproduced. Latest raw evidence is artifacts/release-candidate (original/final/recovery/conformance/demo/browser-complete plus exact failed-install logs). Raw directories also include artifacts/stabilization-original, stabilization-current-original, diagnostic-development, diagnostic-final, diagnostic-final-reproduction, diagnostic-low-shot, recovery-stabilization, recovery-reproduction, backend-conformance, submission-rehearsal, http-stabilization and browser-delivery. These are ignored but retained locally. Normal fresh-machine commands are documented as unverified installation instructions. No donor implementation copied; prior reuse inventory/THIRD_PARTY_NOTICES remain valid. Deadline supplied by user: October12,2026; not independently reinterpreted as a winning outcome.
 
 ## 12. Agent Instructions
 
