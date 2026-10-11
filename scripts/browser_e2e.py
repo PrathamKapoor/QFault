@@ -17,7 +17,7 @@ def main():
         page.on('pageerror',lambda err:page_errors.append(str(err)))
         page.on('requestfailed',lambda req:failed_requests.append({'url':req.url,'failure':req.failure}))
         page.on('response',lambda response:http_errors.append({'url':response.url,'status':response.status}) if response.status>=400 else None)
-        page.goto('http://127.0.0.1:8000/',wait_until='networkidle')
+        page.goto('http://127.0.0.1:8000/#/investigation',wait_until='networkidle')
         expect(page.get_by_role('heading',name='Investigate. Recover. Verify.')).to_be_visible()
         expect(page.get_by_role('heading',name='Coherent Bell state')).to_be_visible()
         assert page.get_by_label('Diagnostic policy').input_value()=='fixed'
@@ -32,6 +32,7 @@ def main():
                 page.get_by_role('button',name='Run investigation').click()
                 loading=page.get_by_role('button',name='Executing Qiskit').is_disabled() if page.get_by_role('button',name='Executing Qiskit').count() else False
             r=response.value;assert r.status==201;data=r.json();assert data['diagnosis']['category']==expected_category
+            expect(page).to_have_url('http://127.0.0.1:8000/#/experiments/'+data['experiment_id'])
             expect(page.get_by_role('heading',name={'NO_SIGNIFICANT_FAILURE_DETECTED':'No significant failure detected','LOGICAL_CIRCUIT_DEFECT':'Logical circuit defect','NOISE_CONSISTENT_DEGRADATION':'Noise-consistent degradation','INSUFFICIENT_EVIDENCE':'Insufficient evidence'}[expected_category],exact=True)).to_be_visible()
             expect(page.get_by_role('heading',name='Expected vs. observed',exact=True)).to_be_visible()
             assert sum(e['executed_shots'] for e in data['executions'])==data['cost']['shots']
@@ -51,6 +52,7 @@ def main():
         bad=investigate('remove','LOGICAL_CIRCUIT_DEFECT')
         expect(page.get_by_role('heading',name='Competing explanations')).to_be_visible()
         expect(page.get_by_role('cell',name='Privileged simulator calculation',exact=True)).to_be_visible()
+        page.get_by_text('Inspect Qiskit circuit text',exact=True).click()
         expect(page.locator('.circuit-diagram')).to_contain_text('q_0:')
         expect(page.get_by_role('heading',name='Phase-sensitive measurements')).to_be_visible()
         assert page.locator('.distribution').first.locator('text.axis').all_text_contents()[5:9]==['00','01','10','11']
@@ -65,7 +67,8 @@ def main():
         page.get_by_role('tab',name='Report',exact=True).click()
         with page.expect_download() as download_info:page.get_by_role('link',name='Export investigation JSON').click()
         download=download_info.value;download.save_as(root/'investigation-export.json');report=json.loads((root/'investigation-export.json').read_bytes());assert verify_export(report)['valid'];assert report['investigation']['experiment_id']==bad['experiment_id']
-        page.reload(wait_until='networkidle');expect(page.get_by_role('heading',name='Start with a quantum circuit')).to_be_visible()
+        page.reload(wait_until='networkidle');expect(page.get_by_role('heading',name='Logical circuit defect',exact=True)).to_be_visible()
+        expect(page.locator('.tabs>span')).to_have_text(bad['experiment_id'][-12:])
         page.locator('.history button').filter(has_text=bad['experiment_id'][-10:]).click();expect(page.get_by_role('heading',name='Logical circuit defect',exact=True)).to_be_visible()
         expect(page.get_by_label('Diagnostic policy')).to_have_value('phase')
         expect(page.get_by_label('Simulation backend')).to_have_value('aer')

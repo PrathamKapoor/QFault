@@ -29,7 +29,7 @@ The phase policy adds sampled X-parity or analytic Fourier-product-basis witness
 
 ## Normal installation path
 
-**Not yet independently verified here.** A project-owned npm lockfile could not be generated: official registry connections are denied with EACCES and offline resolution lacks metadata. No clean-install readiness is claimed. On a machine with permitted official package access, use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
+**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. Fresh isolated Python installation remains unverified; local quantum execution still uses the disclosed bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
 
 Clone the selected repository, then run from its root in PowerShell:
 
@@ -44,7 +44,6 @@ Publication status is recorded in [the current audit](docs/publication-audit.md)
 python -m venv .venv
 .venv\Scripts\python -m pip install -r requirements-browser-tested.txt
 .venv\Scripts\python -m pip install --no-deps -e .
-npm.cmd --prefix web install --package-lock-only
 npm.cmd --prefix web ci
 npm.cmd --prefix web run check
 npm.cmd --prefix web run build
@@ -53,13 +52,13 @@ npm.cmd --prefix web run build
 .venv\Scripts\python -m qfault serve
 ~~~
 
-The npm resolution command must succeed and produce a complete lockfile before ci; preserve and review that generated lockfile. These are pending normal installation commands, not successful commands from this sandbox. They resolve only QFAULT's own manifests; no neighboring repository is used. There is no declared lint command. See [release attempt evidence](docs/release-candidate.md).
+The frontend commands above were executed successfully with the committed lockfile and QFAULT's own dependencies. Python installation commands remain the normal installation path, not a successful isolated installation claim. There is no declared lint command. Historical installation failures are retained in [release attempt evidence](docs/release-candidate.md); current frontend evidence is in [frontend verification](docs/frontend-verification.md).
 
 Open http://127.0.0.1:8000/. In a second terminal install official browser assets with .venv\Scripts\python -m playwright install chromium, then run .venv\Scripts\python -m scripts.browser_e2e --out artifacts/fresh-browser. The requirements files pin the observed runtime/test/Aer/browser closure; they are not a verified isolated resolver result. Actual local success and installation failure are separated below.
 
 ## Existing-machine fallback
 
-The current restricted machine can use the explicitly unsupported [development bridge](docs/local-development.md). It is separate from the normal install path above and cannot establish fresh-install success.
+This machine uses the explicitly unsupported Python/browser [development bridge](docs/local-development.md). Frontend builds now use project-owned npm dependencies. The Python bridge cannot establish fresh isolated Python installation.
 
 ## CLI workflow
 
@@ -164,7 +163,7 @@ Artifact directories contain investigation.json, separate evaluator-only evaluat
 - Repair is bounded and incomplete; no successful candidate is guaranteed. Validation can reject an ideal repair under noise or remain inconclusive.
 - The small benchmark repeats fixed circuits at three seeds. Its Wilson intervals are descriptive; unseen-circuit generalization and statistical superiority are unestablished.
 - A crash during multi-file persistence can leave a partial directory; verification reports it incomplete. Mid-investigation failure checkpointing is limited to API failure records, not every intermediate quantum result.
-- The supported server is localhost-only, one process. Source/evidence transfer is verified; isolated installation and npm lockfile validation remain unfinished. Browser coverage is limited to the tested Chromium desktop/mobile sizes.
+- The supported server is localhost-only, one process. Source/evidence transfer and frontend npm ci are verified; isolated Python installation remains unfinished. Browser coverage is limited to tested Chromium desktop/tablet/mobile sizes.
 
 ## Sources and documents
 
@@ -175,6 +174,12 @@ See docs/reuse-inventory.md, docs/prior-art.md, docs/methodology.md and THIRD_PA
 Current release checks and exact failures: [release candidate audit](docs/release-candidate.md). The required privileged calculations are mapped in [simulator information audit](docs/simulator-information-audit.md).
 
 Operational continuity: decisions.md, flow.md and handoff.md. Reproduction evidence: benchmarks/results.json, benchmarks/reproduction.json, benchmarks/demo.json and local raw artifacts.
+
+## Cinematic frontend and workbench
+
+The entry stages React Bits Hyperspeed and TechText before an original reflective WebGL ribbon sculpture and restrained MoltenMetal atmosphere. Enter Workbench reframes the sculpture and uses PixelSwap with static transition surfaces. Reduced-motion, skip and explicit WebGL fallback paths are available. The bright workspace retains the existing real quantum APIs, report integrity and frozen scientific results.
+
+Open `/` for the landing, `/#/workbench` for the overview or `/#/investigation` to configure a run. Saved experiments use `/#/experiments/<experiment_id>`; hash routes support refresh without a second server. See [source rights](docs/frontend-sources.md) and [executed frontend checks](docs/frontend-verification.md).
 
 ## Transfer and submission material
 

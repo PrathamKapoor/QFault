@@ -1,5 +1,25 @@
 # QFAULT engineering handoff
 
+## Current frontend handoff — 2026-10-12 (supersedes historical environment/UI status below)
+
+Started from clean `main` at `ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3`. This assignment makes local commits only under `PrathamKapoor <prathamkapoor027@gmail.com>`; no collaborator, co-author, history rewrite or remote push. The commit containing this entry is the frontend delivery; use `git log -1` for its exact SHA rather than embedding a self-referential hash.
+
+Implemented a staged React Bits Hyperspeed/TechText entry, original intertwined reflective Three.js ribbon sculpture and mark, restrained MoltenMetal, left reframe/access composition and static-only PixelSwap. Bright SAT-SA-inspired overview/sidebar/history/methodology and investigation surfaces retain real FastAPI controls, measurements, ambiguity, independent recovery, exports, integrity and human review. Hash routes support direct access and refresh. One workspace retains drafts across home navigation; request generation guards reject stale selected-run responses and shared errors stay visible. Backend/science/frozen results are unchanged.
+
+Changed files: web entry/App/main, components/branding/landing/effects/quantum/Overview, workbench CSS, favicon/index, package manifest/lockfile and TypeScript entry checker; existing browser runner adapts to the new entry and expandable circuit text. Added cinematic, saved-navigation and inspection browser runners. Source rights and verification are in docs/frontend-sources.md, docs/licenses/react-bits.md and docs/frontend-verification.md; README/local-development, THIRD_PARTY_NOTICES, decisions D-030 and flow describe the new lifecycle. Mental.ai/Vantage are design references only because no clear reuse license was found. React Bits terms are retained.
+
+Official npm access now succeeds: genuine lockfile, clean npm ci, TypeScript and production build passed with QFAULT-owned web/node_modules. This supersedes earlier frontend-registry/lockfile blockers. The Python and Playwright bridges remain disclosed; fresh isolated Python installation is not verified. 99 Python tests pass with one existing warning; seven actual Aer browser workflows, navigation regressions and cinematic/responsive/fallback acceptance pass. Exact commands, screenshots, observations and limits are in docs/frontend-verification.md. The shared Three chunk warning and ~6.8s fresh headless entry measurement remain known limits, with immediate reduced-motion/direct-workbench paths. No FPS or hardware performance claim.
+
+Manual inspection URL: **http://127.0.0.1:8000/**; direct overview **http://127.0.0.1:8000/#/workbench**. Startup from `C:\Projects\QFF`:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
+```
+
+The final delivery procedure restarts this integrated server after the commit using hidden persistent Start-Process, verifies HTTP/assets/landing/transition/workbench and a real Aer repair, and leaves it running. Final parent/server PID, command, URL and logs are recorded in ignored `.local/frontend-inspection.json`; logs are `.local/inspection-server.log` and `.local/inspection-server-error.log`. Final actual smoke records/captures are under ignored `artifacts/frontend-inspection/`. These machine-specific records are the authority for whether the process is still alive; this document is not a process monitor. No additional Vite server or deployment is required.
+
+Remaining checks: manual aesthetic review on the user's GPU/browser, wider hardware/browser performance profiling and optional further startup optimization. Existing scientific limitations and unrecorded human narration/competition-rule questions are preserved in historical sections below; no new authentication or hardware capability was added.
+
 ## 1. Current Phase
 
 Final competition/publication audit continued from clean main90503efe6576d1fcb080ef92b2c12c34f0fd050b. The user explicitly authorizes only the existing destination https://github.com/PrathamKapoor/QTrust.git; origin is now configured accordingly. GitHub connector confirms PrathamKapoor/public/push-admin and no main branch; local Git transport currently cannot connect to github.com:443. The authorized normal push of27ed91f and subsequent fetch/ls-remote failed with exit128 (cannot connect to github.com:443). Post-attempt connector search finds no main and README retrieval reports an empty repository. No remote SHA/upstream or successful publication exists. Current audit: docs/publication-audit.md and benchmarks/publication-verification.json; raw checks: artifacts/publication-audit.

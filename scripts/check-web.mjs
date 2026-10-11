@@ -10,7 +10,7 @@ const options = { noEmit: true, strict: true, target: ts.ScriptTarget.ES2022,
     react: [path.join(modules,'@types/react/index.d.ts')],
     'react-dom/client': [path.join(modules,'@types/react-dom/client.d.ts')]
   }};
-const program = ts.createProgram([path.join(root,'src/main.tsx'),path.join(root,'src/styles.d.ts')], options);
+const program = ts.createProgram([path.join(root,'src/entry.tsx'),path.join(root,'src/styles.d.ts')], options);
 const errors = ts.getPreEmitDiagnostics(program);
 for (const e of errors) console.error(ts.flattenDiagnosticMessageText(e.messageText,'\n'));
 console.log(errors.length ? String(errors.length)+' TypeScript errors' : 'TypeScript check passed');

@@ -55,3 +55,7 @@ SOFTWARE.
 ## Installed libraries
 
 Qiskit is Apache-2.0 licensed; NumPy and SciPy use BSD licenses; React, TypeScript, Vite, Pydantic, FastAPI, Uvicorn, pytest and httpx retain their upstream package licenses. Dependencies are installed separately rather than vendored. React production notices are retained by the normal Vite bundle.
+
+## Cinematic frontend (2026-10-12)
+
+React Bits Hyperspeed, MoltenMetal, TechText and PixelSwap are adapted within QFAULT. Copyright (c) 2026 David Haz. They are governed by the retained MIT + Commons Clause terms in docs/licenses/react-bits.md, not the root MIT license alone. See docs/frontend-sources.md for exact revisions and modifications. Three.js and OGL are separately installed MIT dependencies. Mental.ai and Vantage informed original implementations; no unlicensed donor code was copied.
