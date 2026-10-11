@@ -1,0 +1,100 @@
+{
+  "protocol": "phase-sensitive-v1",
+  "frozen_at": "2026-10-11T10:59:54.177Z",
+  "base_commit": "d30535caac17fb55718ac313c3e033dabb631364",
+  "policies": [
+    "fixed",
+    "threshold",
+    "random",
+    "evidence",
+    "phase"
+  ],
+  "shots": 2048,
+  "max_shots": 8192,
+  "max_evaluations": 6,
+  "recover": false,
+  "development": {
+    "circuits": [
+      [
+        "bell",
+        2
+      ],
+      [
+        "ghz",
+        3
+      ],
+      [
+        "qft",
+        3
+      ]
+    ],
+    "seeds": [
+      71
+    ]
+  },
+  "final": {
+    "circuits": [
+      [
+        "bell",
+        2
+      ],
+      [
+        "ghz",
+        4
+      ],
+      [
+        "qft",
+        2
+      ],
+      [
+        "qft",
+        4
+      ]
+    ],
+    "seeds": [
+      103,
+      211
+    ]
+  },
+  "scenarios": [
+    "clean",
+    "readout",
+    "gate",
+    "remove",
+    "replace",
+    "rewire",
+    "mixed",
+    "phase"
+  ],
+  "qft_extra": [
+    "angle"
+  ],
+  "low_shot_control": {
+    "shots": 64,
+    "seeds": [
+      503
+    ],
+    "circuits": [
+      [
+        "bell",
+        2
+      ],
+      [
+        "ghz",
+        4
+      ]
+    ],
+    "scenarios": [
+      "clean",
+      "phase"
+    ]
+  },
+  "rules": [
+    "Original benchmark is previously observed data; preserve unchanged",
+    "No tuning after opening final results",
+    "Same resource ceilings, actual costs reported; no currency conversion",
+    "Configured noise truth can be observationally invisible; retain losing cases",
+    "Phase strategy is a complementary measurement plus existing ideal-state diagnostic, not tomography",
+    "Recovery evaluated separately with full independent validation cost"
+  ]
+}
