@@ -8,6 +8,10 @@ The one-line inference is: **“This result disagrees with the contract; here is
 
 This is working local software with real Qiskit circuits, not a mock dashboard. All execution is simulated. No IBM hardware, paid service, external model, deployment or quantum-advantage claim is involved.
 
+Qiskit is central: native quantum circuits produce the sampled execution evidence, while Aer and the reference simulator execute the controlled noise scenarios. The judging demonstration follows healthy Bell preparation → hidden logical fault → evidence → bounded recovery → fresh verification, then noise/abstention and report integrity. See the [verified demo guide](docs/demo.md).
+
+In the frozen 68-case simulation evaluation, phase-sensitive testing classified 66/68 correctly versus fixed 58/68, using 40% more shots. Selected recovery verified 10/12 trials, with two inconclusive. These are finite controlled experiments, not hardware reliability guarantees. Exact attribution uses privileged simulator state; contracts cover a fixed input, witnesses are incomplete, and unsigned hashes establish consistency rather than truth.
+
 ## Implemented
 
 - Bell, GHZ and small QFT templates; 2–5 qubits, Bell restricted to two.
@@ -166,4 +170,4 @@ Operational continuity: decisions.md, flow.md and handoff.md. Reproduction evide
 
 ## Transfer and submission material
 
-[Portable transfer instructions](docs/transfer.md) cover the locally generated Git bundle and separate measured-evidence/demo archives. [Judging guide](docs/demo.md) includes timed narration and exact inputs. A genuine silent browser clip exists; it is not a narrated final video. [Organizer checklist](docs/organizer-confirmations.md) records conflicting dates and unresolved eligibility/deliverable rules. Do not submit until these are resolved.
+[Portable transfer instructions](docs/transfer.md) cover the locally generated Git bundle and separate measured-evidence/demo archives. [Judging guide](docs/demo.md) includes timed narration and exact inputs. A genuine176.56-second silent judging capture is recorded and playback-verified; it is not a narrated final video. See the [editable voiceover/timeline and recording instructions](docs/video.md). [Organizer checklist](docs/organizer-confirmations.md) records conflicting dates and unresolved eligibility/deliverable rules. Do not submit until these are resolved.

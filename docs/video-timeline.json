@@ -1,0 +1,73 @@
+{
+  "format": "QFAULT editable voiceover plan v1",
+  "clip": "../artifacts/final-delivery/judging-video-final/video/qfault-judging-silent.webm",
+  "narration_recorded": false,
+  "timing": "Elapsed UI-capture seconds; allow initial page-load lead-in. Not a frame-accurate editor-native project. Last end must match decoded clip duration, not encoder finalization wall time. Last scene end is clamped to the measured176.56-second video duration; the raw capture log includes encoder finalization time.",
+  "scenes": [
+    {
+      "scene": "Problem and contract",
+      "start_seconds": 0,
+      "voiceover": "A successful quantum job can return the wrong result. QFAULT is a Qiskit-based investigation workbench. We declare expected circuit behavior, collect simulated quantum execution evidence, evaluate explanations and test a bounded recovery. This entire demonstration runs locally; it is not physical quantum hardware.",
+      "hold_seconds": 15,
+      "end_seconds": 15.98
+    },
+    {
+      "scene": "Healthy Bell execution",
+      "start_seconds": 15.98,
+      "voiceover": "Here is a two-qubit Bell circuit, executed by Qiskit Aer. The actual counts agree with the fixed-input contract within the supported checks. QFAULT reports no significant failure. That is scoped evidence, not a universal proof of correctness. Phase-sensitive testing is explicitly the higher-cost option.",
+      "hold_seconds": 20,
+      "end_seconds": 37.43
+    },
+    {
+      "scene": "Observable hidden fault",
+      "start_seconds": 37.43,
+      "voiceover": "A valid controlled gate removal changes the required behavior. The evaluator keeps its mutation label separate from diagnosis. The measured distribution disagrees with the contract, and competing explanations are recorded rather than replaced by an unexplained confidence percentage.",
+      "hold_seconds": 15,
+      "end_seconds": 52.49
+    },
+    {
+      "scene": "Evidence and simulator boundary",
+      "start_seconds": 52.49,
+      "voiceover": "These diagnostic calculations also use privileged ideal simulator state. They are labeled separately from sampled counts. This makes QFAULT a simulation-backed developer tool; it does not establish hardware-deployable causal attribution.",
+      "hold_seconds": 12,
+      "end_seconds": 64.77
+    },
+    {
+      "scene": "Bounded recovery and independent verification",
+      "start_seconds": 64.77,
+      "voiceover": "The planner proposes one admissible edit on a copy, preserving the original circuit. Fresh samples and a separate density-matrix calculation verify this selected recovery. The full investigation costs eleven thousand two hundred sixty-four shots. This is bounded fixed-input validation, not complete unitary equivalence or general fault repair.",
+      "hold_seconds": 25,
+      "end_seconds": 91.16
+    },
+    {
+      "scene": "Noise-only control",
+      "start_seconds": 91.16,
+      "voiceover": "Now the logical circuit is valid but readout noise affects the observations. QFAULT reports noise-consistent degradation and does not invent a missing-gate repair. Consistency with a noise model does not uniquely identify a physical cause.",
+      "hold_seconds": 18,
+      "end_seconds": 110.47
+    },
+    {
+      "scene": "Insufficient evidence",
+      "start_seconds": 110.47,
+      "voiceover": "With only sixty-four shots per execution, the additional diagnostic evidence cannot be funded. QFAULT abstains after one hundred twenty-eight total shots and two evaluations. It does not turn insufficient evidence into a confident diagnosis.",
+      "hold_seconds": 15,
+      "end_seconds": 125.96
+    },
+    {
+      "scene": "Frozen accuracy and cost comparison",
+      "start_seconds": 125.96,
+      "voiceover": "In the frozen sixty-eight-case simulation evaluation, fixed correctly classifies fifty-eight cases and phase-sensitive testing sixty-six. Phase uses forty percent more shots and misses two QFT angle faults. Ten of twelve selected recovery trials verify; two remain inconclusive. These small controlled results are not universal reliability guarantees.",
+      "hold_seconds": 27,
+      "end_seconds": 153.67
+    },
+    {
+      "scene": "Auditable record and limitations",
+      "start_seconds": 153.67,
+      "voiceover": "The exported record binds the circuit, measurements, diagnosis and verification. Separate executed controls reject a covered alteration to a disposable copy. These are unsigned integrity checks, not signatures or proof of scientific truth. Human review remains pending. QFAULT makes the evidence and limits inspectable.",
+      "hold_seconds": 22,
+      "end_seconds": 176.56
+    }
+  ],
+  "duration_seconds": 176.56,
+  "capture_source_commit": "a73fc0a600b97a7b53a41bf4d9d2bb5d951f10f9"
+}

@@ -339,3 +339,19 @@
 - Files: scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; flow.md; handoff.md; benchmarks/submission-verification.json.
 
 D-027 verification outcome: corrected source cf23b95e747b7d061323232caf48de071cef8b15 bundles/clones successfully. SHA256/size/CRC checks and guarded extraction restore2425 raw records plus39 demo files without overwriting source. Independent local source copy remains clean at exact HEAD; this is not isolated-install validation. Actual evidence: artifacts/submission-delivery/transfer-verified.json.
+
+### D-028: Deliver real judging footage and keep compliance gates explicit
+
+- Date / phase / commit: 2026-10-11 / final delivery only / commit containing this entry.
+- Context: Starting HEADa73fc0a600b97a7b53a41bf4d9d2bb5d951f10f9 and clean main were verified. Product behavior is frozen; no algorithms, policies, thresholds, splits, dependency versions or UI code are changed.
+- Decision: Reverify the existing tests, TypeScript/build, Aer demo, seven browser workflows, frozen raw manifests, exported report/tamper rejection and existing bundle/archives. Create genuine slower judging footage and editable narration/timeline documents. Do not repeat blocked package downloads or claim independent installation/narration/eligibility.
+- Why:99 tests pass with1 existing deprecation warning; current demo and browser exercise real Aer. All340 frozen manifests pass. Valid/tampered export exit codes are0/1. The original34.64-second clip completes normal-speed Chromium playback with866 video frames, no dropped/corrupted frames and no media errors.
+- Symptom: A first slow recording's benchmark hold showed the older75-case table while the final68-case results remained below the viewport.
+- Root cause: Minimal scroll-into-view made the final heading visible but did not align the complete final table/chart; full-page screenshot handling did not guarantee the desired recorded viewport.
+- Decision on framing: Correct only the delivery capture: explicitly align the final comparison and retain viewport screenshots. Actual decoded corrected-video frames show the intended table/chart. Keep the earlier camera draft as a labeled ignored audit, not the delivered picture cut.
+- Alternatives considered: Alter app layout/results, invent terminal footage, synthesize successful measurements or call silent footage a narrated final video; rejected.
+- Consequences: Exact voiceover and manual recording steps are provided; a person must record/approve narration. The provisional event page also schedules prompt release22 October18:00 IST and teams of2–4, while conflicting deadlines and workshop-lead/pre-existing-project eligibility remain unresolved. No claim of compliant submission is made.
+- Regression test: Existing99-test suite and seven actual browser workflows pass without modification. Genuine video-frame inspection verifies capture framing; no product bug or scientific assertion is weakened.
+- Files: README.md; docs/demo.md; docs/video.md; docs/video-timeline.json; docs/organizer-confirmations.md; docs/transfer.md; benchmarks/final-delivery-verification.json; flow.md; handoff.md. Generated recordings and checks remain ignored under artifacts/final-delivery.
+
+D-028 verification outcome: corrected judging picture cut completes176.56-second normal-speed Chromium playback with4414 total frames,2 dropped,0 corrupted, no media/page errors. Representative actual decoded frames and screenshots were inspected. Narration remains unrecorded. Current proofs are benchmarks/final-delivery-verification.json and artifacts/final-delivery/judging-video-final/playback-verification.json.

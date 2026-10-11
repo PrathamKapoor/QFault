@@ -1,0 +1,119 @@
+{
+  "fresh_python_install": "NOT VERIFIED; no supported independent environment available",
+  "fresh_frontend_install": "NOT VERIFIED; existing npm EACCES/ENOTCACHED blocker respected, no retry",
+  "lockfile": "ABSENT; not fabricated",
+  "normal_commands": "docs/transfer.md",
+  "tests": {
+    "passed": 99,
+    "warning": 1,
+    "seconds": 12.82,
+    "output": "artifacts/final-delivery/tests-command.json"
+  },
+  "frontend": {
+    "check": "PASSED retained development bridge",
+    "build": "PASSED retained development bridge",
+    "browser": "PASSED seven real Aer workflows",
+    "output": "artifacts/final-delivery/browser/summary.json"
+  },
+  "demo": {
+    "backend": "qiskit_aer.AerSimulator/density_matrix",
+    "output": "artifacts/final-delivery/demo/summary.json",
+    "healthy": true,
+    "logical_repair": "VERIFIED",
+    "noise_control": true,
+    "phase_repair": "VERIFIED",
+    "insufficient_evidence": true,
+    "integrity_control": [
+      true,
+      false,
+      true
+    ]
+  },
+  "frozen_results": {
+    "source": "benchmarks/diagnostic-final.json",
+    "fixed": {
+      "correct": 58,
+      "n": 68,
+      "shots": 348160
+    },
+    "phase": {
+      "correct": 66,
+      "n": 68,
+      "shots": 487424
+    },
+    "shot_overhead_fraction": 0.4,
+    "selected_recovery": {
+      "verified": 10,
+      "n": 12,
+      "inconclusive": 2
+    },
+    "raw_manifests_verified": 340,
+    "audit": "artifacts/final-delivery/frozen-audit.json",
+    "scientific_parameters_changed": false
+  },
+  "exports": {
+    "valid_exit": 0,
+    "tampered_exit": 1,
+    "output": "artifacts/final-delivery/export-verification.json"
+  },
+  "starting_package": {
+    "head": "a73fc0a600b97a7b53a41bf4d9d2bb5d951f10f9",
+    "hashes_crc_bundle": "PASSED",
+    "evidence": "artifacts/final-delivery/starting-package-verification.json"
+  },
+  "original_clip_playback": {
+    "duration_seconds": 34.64,
+    "ended": true,
+    "total_frames": 866,
+    "dropped": 0,
+    "corrupted": 0,
+    "output": "artifacts/final-delivery/playback-verification.json"
+  },
+  "competition": {
+    "controlling_deadline": "UNCONFIRMED",
+    "team_rule": "Public page says two to four; roster confirmation pending",
+    "prompt_release": "Public provisional program says2026-10-22 18:00 IST",
+    "pre_existing_project_permission": "UNCONFIRMED",
+    "workshop_lead_eligibility": "UNCONFIRMED",
+    "rules": "docs/organizer-confirmations.md"
+  },
+  "narration": "NOT RECORDED; exact editable script in docs/video.md",
+  "scope": "Local simulation developer tool; privileged ideal attribution, incomplete fixed-input witnesses, unsigned integrity; no hardware or general reliability claim",
+  "commands": {
+    "tests": "LibreOffice python.exe -B -u scripts/local_bootstrap.py pytest -q -p no:cacheprovider",
+    "typescript": "node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+    "build": "node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules",
+    "browser": "LibreOffice python.exe -B -u scripts/browser_bootstrap.py scripts.browser_e2e --out artifacts/final-delivery/browser",
+    "demo": "LibreOffice python.exe -B -u scripts/local_bootstrap.py scripts.submission_demo --out artifacts/final-delivery/demo --backend aer",
+    "frozen_integrity": "LibreOffice python.exe -B -u scripts/local_bootstrap.py scripts.audit_release --out artifacts/final-delivery/frozen-audit.json",
+    "valid_export": "qfault verify-report artifacts/final-delivery/demo/hidden_logical_failure.json",
+    "tamper_control": "qfault verify-report artifacts/final-delivery/demo/tampered-report.json",
+    "scope": "All executed in retained local dependency environment; not independent installation"
+  },
+  "picture_cut": {
+    "file": "artifacts/final-delivery/judging-video-final/video/qfault-judging-silent.webm",
+    "bytes": 13580390,
+    "dimensions": [
+      1600,
+      1000
+    ],
+    "kind": "Genuine continuous browser recording, silent; no mocked scientific success",
+    "narration_recorded": false,
+    "editable_script": "docs/video.md",
+    "editable_timeline": "docs/video-timeline.json",
+    "draft_framing_issue": "Old comparison remained in view; corrected capture explicitly aligns final comparison and uses viewport screenshots",
+    "playback": {
+      "status": "PASSED full normal-speed Chromium playback",
+      "duration_seconds": 176.56,
+      "total_frames": 4414,
+      "dropped_frames": 2,
+      "corrupted_frames": 0,
+      "media_error": null,
+      "page_errors": [],
+      "output": "artifacts/final-delivery/judging-video-final/playback-verification.json",
+      "visual_inspection": "Representative decoded frames plus recovery/noise/final-comparison screenshots inspected"
+    }
+  },
+  "status": "PARTIALLY READY",
+  "final_package": "artifacts/qfault-final-delivery/manifest.json; generated after clean commit"
+}

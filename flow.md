@@ -56,3 +56,10 @@ Optional browser recording: scripts/browser_e2e.py:main passes --record-video to
 |---|---|---|---|
 | Verified source/evidence transfer and normal-install handoff | scripts/package_submission.py; tests/test_transfer.py; docs/transfer.md; README.md | D-025 | Commit containing this entry |
 | Genuine optional browser recording and organizer/narration guide | scripts/browser_e2e.py; docs/demo.md; docs/organizer-confirmations.md; benchmarks/submission-verification.json | D-026 | Commit containing this entry |
+
+
+Final delivery uses the unchanged investigate/API and browser workflow described above. Genuine judging footage records Bell clean/remove/readout/low-shot phase interactions, the existing Recovery/Report tabs and the frozen final comparison. docs/video-timeline.json and docs/video.md are editing/voiceover instructions, not diagnostic inputs. No narration is generated. Normal-speed Chromium playback checks the real video from beginning to end; package_submission.main binds the final committed source and referenced real media/evidence archives. No installation, external publication or eligibility decision is implied.
+
+| Session change | Actual paths | Decisions | Commit |
+|---|---|---|---|
+| Final delivery verification, genuine judging picture cut, editable narration and eligibility boundaries | README.md; docs/video.md; docs/video-timeline.json; docs/demo.md; docs/organizer-confirmations.md; docs/transfer.md; benchmarks/final-delivery-verification.json; handoff.md | D-028 | Commit containing this entry |
