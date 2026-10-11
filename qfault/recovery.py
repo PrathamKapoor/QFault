@@ -3,7 +3,7 @@ from itertools import permutations
 from math import pi
 import numpy as np
 from qiskit.quantum_info import DensityMatrix
-from .quantum import Circuit,Gate,ideal_state,execute,resources,probabilities
+from .quantum import Circuit,Gate,ideal_state,execute,resources,probabilities,measured_circuit,measurement_probabilities
 from .diagnostics import EvidenceCollector,comparison
 
 
@@ -39,10 +39,10 @@ def edit_candidates(circuit,limit=256):
 
 
 class RecoveryPlanner:
-    def propose(self,candidate,contract,budget):
+    def propose(self,candidate,contract,budget,reserved_validation_shots=0,reserved_validation_evaluations=0):
         attempted=0
         for changed,edit in edit_candidates(candidate):
-            if not budget.can(): break
+            if not budget.can(reserved_validation_shots,1+reserved_validation_evaluations): break
             budget.reserve(0,"repair_candidate_state",resources(changed))
             attempted+=1
             infidelity=float(max(0.,1-abs(np.vdot(contract.state(),ideal_state(changed)))**2))
@@ -55,8 +55,8 @@ class RecoveryPlanner:
 
 
 class IndependentVerifier:
-    def verify(self,candidate,contract,noise,shots,seed,budget):
-        if not budget.can(shots,2):
+    def verify(self,candidate,contract,noise,shots,seed,budget,phase_validate=False):
+        if not budget.can(shots*(2 if phase_validate else 1),3 if phase_validate else 2):
             return {"verified_status":"INCONCLUSIVE","contract_satisfied":False,"reason":"Validation budget exhausted"}
         budget.reserve(0,"independent_density_state",resources(candidate))
         # Different evolution implementation from planner's Statevector; analytic expected state.
@@ -69,11 +69,24 @@ class IndependentVerifier:
         result=comparison(measured,probabilities(target),contract.distribution_tolerance)
         state_ok=1-fidelity<=contract.state_infidelity_tolerance
         sampled_ok=result["upper"]<=contract.distribution_tolerance
-        rejected=(not state_ok) or result["significant_disagreement"]
+        phase_record=None
+        phase_comparison=None
+        if phase_validate:
+            rotated=measured_circuit(candidate,contract)
+            budget.reserve(shots,"independent_phase_measurement",resources(rotated))
+            phase_record=execute(rotated,noise,shots,(seed+17)%2**32,contract_id=contract.contract_id)
+            phase_record.update(measurement_basis="contract phase basis",subject_circuit_id=candidate.circuit_id)
+            phase_comparison=comparison(EvidenceCollector.collect(phase_record,candidate.n_qubits),measurement_probabilities(contract),contract.distribution_tolerance)
+            sampled_ok=sampled_ok and phase_comparison["upper"]<=contract.distribution_tolerance
+        rejected=(not state_ok) or result["significant_disagreement"] or bool(phase_comparison and phase_comparison["significant_disagreement"])
         status="VERIFIED" if state_ok and sampled_ok else "REJECTED" if rejected else "INCONCLUSIVE"
-        return {"verified_status":status,"contract_satisfied":status=="VERIFIED",
+        answer={"verified_status":status,"contract_satisfied":status=="VERIFIED",
                 "validation_method":"Independent Qiskit DensityMatrix fixed-input fidelity plus fresh sampled counts",
-                "validation_seed":seed,"additional_shots":shots,"additional_evaluations":2,
+                "validation_seed":seed,"additional_shots":shots*(2 if phase_validate else 1),"additional_evaluations":3 if phase_validate else 2,
                 "state_fidelity":fidelity,"distribution_comparison":result,"execution":record,
                 "candidate_quality":1-result["total_variation"],"uncertainty":result["uncertainty_radius"],
                 "unitary_equivalence":"NOT_CHECKED","hardware_performance":"NOT_MEASURED"}
+
+        if phase_validate:
+            answer.update(phase_execution=phase_record,phase_distribution_comparison=phase_comparison)
+        return answer

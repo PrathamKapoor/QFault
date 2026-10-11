@@ -14,7 +14,7 @@ class RunRequest(Strict):
     scenario: Literal["clean","readout","gate","remove","replace","angle","rewire","mixed","phase"] = "clean"
     shots: int = Field(default=2048,ge=1,le=10000,strict=True)
     seed: int = Field(default=42,ge=0,lt=2**32,strict=True)
-    policy: Literal["evidence","fixed","random","threshold"] = "evidence"
+    policy: Literal["evidence","fixed","random","threshold","phase"] = "fixed"
     max_shots: int = Field(default=12000,ge=2,le=100000,strict=True)
     max_evaluations: int = Field(default=384,ge=2,le=600,strict=True)
     recover: bool = True
@@ -83,17 +83,25 @@ def investigate(request):
     supervisor.transition("DIAGNOSED")
     recovery=None
     if request.recover and diagnosis["category"]=="LOGICAL_CIRCUIT_DEFECT":
-        recovery=RecoveryPlanner().propose(candidate,spec,budget)
+        recovery=RecoveryPlanner().propose(candidate,spec,budget,
+                    reserved_validation_shots=2*request.shots if request.policy=="phase" else 0,
+                    reserved_validation_evaluations=3 if request.policy=="phase" else 0)
         if recovery["status"]=="PROPOSED":
             supervisor.transition("RECOVERY_PROPOSED")
             verification=IndependentVerifier().verify(Circuit.model_validate(recovery["candidate"]),spec,noise,
-                         request.shots,(request.seed+10007)%2**32,budget)
+                         request.shots,(request.seed+10007)%2**32,budget,phase_validate=request.policy=="phase")
             verification["original_quality"]=1-diagnosis["discrepancy"]["total_variation"]
+            if diagnosis.get("phase_probe") and verification.get("phase_distribution_comparison"):
+                verification["original_phase_quality"]=1-diagnosis["phase_probe"]["comparison"]["total_variation"]
+                verification["candidate_phase_quality"]=1-verification["phase_distribution_comparison"]["total_variation"]
             recovery["verification"]=verification
             recovery["status"]=verification["verified_status"]
             if "execution" in verification:
                 verification["execution"].update(experiment_id=experiment_id,contract_id=spec.contract_id)
                 records.append(verification["execution"])
+            if "phase_execution" in verification:
+                verification["phase_execution"].update(experiment_id=experiment_id,contract_id=spec.contract_id)
+                records.append(verification["phase_execution"])
             supervisor.transition("VERIFICATION_COMPLETED")
     supervisor.transition("AWAITING_HUMAN_REVIEW")
     result={"schema_version":1,"experiment_id":experiment_id,"created_at":timestamp(),
@@ -107,7 +115,7 @@ def investigate(request):
         "observation_id":identifier("observation"),"experiment_id":experiment_id,"subject_id":r["circuit_id"],
         "kind":"measured","observation_type":"quantum_counts","severity":"informational",
         "evidence_references":[r["execution_id"]],"measured_values":r["output_counts"],"comparison_values":None,
-        "uncertainty":{"shots":r["executed_shots"]},"method":r["backend_name"],"method_version":"1",
+        "uncertainty":{"shots":r["executed_shots"]},"measurement_basis":r.get("measurement_basis","computational Z"),"method":r["backend_name"],"method_version":"1",
         "limitations":["Simulated finite-shot measurements"],"created_at":timestamp()} for r in records]
     result["observations"].append({
         "observation_id":identifier("observation"),"experiment_id":experiment_id,"subject_id":candidate.circuit_id,

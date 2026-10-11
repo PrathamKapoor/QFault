@@ -48,7 +48,7 @@ def main(argv=None):
     p=sub.add_parser("run")
     p.add_argument("--family",default="bell",choices=["bell","ghz","qft"])
     p.add_argument("--scenario",default="clean",choices=["clean","readout","gate","remove","replace","angle","rewire","mixed","phase"])
-    p.add_argument("--policy",default="evidence",choices=["evidence","fixed","random","threshold"])
+    p.add_argument("--policy",default="fixed",choices=["evidence","fixed","random","threshold","phase"])
     p.add_argument("--qubits",type=int);p.add_argument("--shots",type=int,default=2048);p.add_argument("--seed",type=int,default=42)
     p.add_argument("--max-shots",type=int,default=12000);p.add_argument("--max-evaluations",type=int,default=384)
     p.add_argument("--no-recovery",action="store_true")
@@ -59,6 +59,7 @@ def main(argv=None):
     p=sub.add_parser("verify-repair");p.add_argument("circuit_json");p.add_argument("--family",required=True,choices=["bell","ghz","qft"]);p.add_argument("--shots",type=int,default=2048);p.add_argument("--seed",type=int,default=10007)
     sub.add_parser("demo")
     p=sub.add_parser("benchmark");p.add_argument("--out",required=True)
+    p=sub.add_parser("evaluate");p.add_argument("--out",required=True);p.add_argument("--split",choices=["development","final","low_shot_control"],required=True);p.add_argument("--config",default="configs/diagnostic-evaluation.json")
     sub.add_parser("serve")
     args=parser.parse_args(argv)
     try:
@@ -68,6 +69,10 @@ def main(argv=None):
         elif args.command=="serve":
             from .api import main as serve
             serve()
+        elif args.command=="evaluate":
+            from .experiments import compare_policies
+            result=compare_policies(json.loads(Path(args.config).read_bytes()),args.out,args.split)
+            emit({"destination":args.out,"split":args.split,"policies":result["policies"]})
         elif args.command=="benchmark":
             from .experiments import benchmark_run
             result=benchmark_run(args.out)

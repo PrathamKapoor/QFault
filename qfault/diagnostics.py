@@ -3,7 +3,7 @@ from math import log, sqrt
 from dataclasses import dataclass, field
 import numpy as np
 from pydantic import Field
-from .quantum import Strict, Circuit, Noise, ideal_state, probabilities, execute, resources
+from .quantum import Strict, Circuit, Noise, ideal_state, probabilities, execute, resources, measured_circuit, measurement_probabilities
 
 
 class MeasuredEvidence(Strict):
@@ -85,12 +85,26 @@ class DiagnosticAccess:
         self._seed=seed
         self.records=[]
 
-    def state_probe(self,contract):
+    def state_probe(self,contract,include_phase=False):
         self.budget.reserve(0,"diagnostic_ideal_state",resources(self._candidate))
         state=ideal_state(self._candidate)
         return {"infidelity":float(max(0.,1-abs(np.vdot(contract.state(),state))**2)),
-                "probabilities":probabilities(state),"method":"Qiskit Statevector exact local calculation",
+                "probabilities":probabilities(state),
+                "phase_probabilities":measurement_probabilities(contract,state) if include_phase else None,"method":"Qiskit Statevector exact local calculation",
                 "limitation":"Privileged simulator operation; unavailable as a direct hardware measurement"}
+
+    def phase_probe(self,contract,shots):
+        circuit=measured_circuit(self._candidate,contract)
+        self.budget.reserve(shots,"diagnostic_phase_measurement",resources(circuit))
+        record=execute(circuit,self._noise,shots,(self._seed+211)%2**32,contract_id=contract.contract_id)
+        basis="X parity" if contract.family in {"bell","ghz"} else "analytic Fourier product basis"
+        record.update(measurement_basis=basis,subject_circuit_id=self._candidate.circuit_id)
+        self.records.append(record)
+        measured=EvidenceCollector.collect(record,circuit.n_qubits)
+        return {"basis":basis,"execution_id":record["execution_id"],
+                "comparison":comparison(measured,measurement_probabilities(contract),contract.distribution_tolerance),
+                "expected_probabilities":measurement_probabilities(contract),"measured":measured.model_dump(),
+                "limitation":"Complementary contract witness, not informationally complete tomography; basis gates also experience configured gate noise"}
 
     def readout_probe(self):
         shots=1024
@@ -105,6 +119,7 @@ class DiagnosticAccess:
 
 class DiagnosticAnalyst:
     def analyze(self,candidate,contract,measured,access,policy="evidence"):
+        if policy=="phase": return self.analyze_phase(candidate,contract,measured,access)
         expected=probabilities(contract.state())
         discrepancy=comparison(measured,expected,contract.distribution_tolerance)
         significant=discrepancy["significant_disagreement"]
@@ -152,3 +167,51 @@ class DiagnosticAnalyst:
                     "State diagnostics cover one declared input, not full unitary equivalence",
                     "Measurement-triggered plans can miss phase-only faults",
                     "At most ten TV comparisons; union bound failure probability <=0.01 per investigation"]}
+
+
+    def analyze_phase(self,candidate,contract,measured,access):
+        discrepancy=comparison(measured,probabilities(contract.state()),contract.distribution_tolerance)
+        phase=None
+        calibration=None
+        state=None
+        residual=None
+        phase_residual=None
+        if measured.shots>=128 and access.budget.can(min(2048,measured.shots)):
+            phase=access.phase_probe(contract,min(2048,measured.shots))
+        if phase is not None and access.budget.can(1024):
+            calibration=access.readout_probe()
+        failure=discrepancy["significant_disagreement"] or bool(phase and phase["comparison"]["significant_disagreement"])
+        calibration_failure=bool(calibration and calibration["significant_disagreement"])
+        if phase is not None and (failure or calibration_failure) and access.budget.can():
+            state=access.state_probe(contract,include_phase=True)
+            residual=comparison(measured,state["probabilities"],contract.distribution_tolerance)
+            phase_residual=comparison(MeasuredEvidence.model_validate(phase["measured"]),state["phase_probabilities"],contract.distribution_tolerance)
+        logical=bool(state and state["infidelity"]>contract.state_infidelity_tolerance)
+        noise=calibration_failure or bool(residual and residual["significant_disagreement"]) or bool(phase_residual and phase_residual["significant_disagreement"])
+        if phase is None or ((failure or calibration_failure) and state is None):
+            category="INSUFFICIENT_EVIDENCE"
+            reason="Required complementary measurement or logical/noise discrimination was not funded; no confident attribution."
+        elif logical and noise:
+            category="MIXED_OR_AMBIGUOUS"
+            reason="Ideal fixed-input defect and independently measured noise-consistent evidence both remain supported."
+        elif logical:
+            category="LOGICAL_CIRCUIT_DEFECT"
+            reason="A contract-basis witness triggered an ideal-state check that confirms a fixed-input logical defect."
+        elif noise or failure:
+            category="NOISE_CONSISTENT_DEGRADATION"
+            reason="Ideal state satisfies the contract; sampled circuit or calibration evidence supports execution noise. Calibration alone need not imply degraded task output."
+        else:
+            category="NO_SIGNIFICANT_FAILURE_DETECTED"
+            reason="No significant disagreement in the sampled computational and contract bases; untested defects remain possible."
+        refs=[measured.execution_id]+[r["execution_id"] for r in access.records]
+        return {"category":category,"reason":reason,"policy":"phase","discrepancy":discrepancy,
+                "phase_probe":phase,"state_probe":state,"state_infidelity":None if state is None else state["infidelity"],
+                "readout_probe":calibration,"candidate_distribution_comparison":residual,"phase_candidate_comparison":phase_residual,
+                "hypotheses":[{"hypothesis":"logical fixed-input defect","support":"supported" if logical else "not established"},
+                    {"hypothesis":"execution noise","support":"supported" if noise else "not established"},
+                    {"hypothesis":"sampling uncertainty or unmeasured defect","support":"not excluded"}],
+                "evidence_references":refs,"confidence":None,"confidence_semantics":"No calibrated class probability claimed",
+                "limitations":["Contract witnesses are not full tomography or unitary equivalence",
+                    "Ideal-state attribution still requires privileged simulation",
+                    "Calibration identifies noise consistency, not unique physical cause or necessarily task degradation",
+                    "At most ten TV comparisons; per-comparison alpha=0.001; global phase is unobservable"]}

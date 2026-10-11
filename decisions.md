@@ -137,3 +137,41 @@
 - Consequences: Supersedes D-006's lack of review-deletion detection relative to an intact manifest. Replacing or rolling back the unsigned manifest remains undetectable without an external anchor. Old local experimental reviews without membership hashes are reported invalid; no silent migration.
 - Regression test: tests/test_artifact_corruption.py (six malformed-artifact cases and deleted-review case).
 - Files: qfault/storage.py, qfault/api.py, tests/test_artifact_corruption.py.
+
+### D-013: Diagnose Aer as a local ABI mismatch, not Python 3.13 incompatibility
+
+- Date / phase / commit: 2026-10-11 / release stabilization / stabilization commit containing this entry.
+- Context: Official Aer 0.17.2 provides cp313 Windows x64 wheels; the previous bridge loaded donor package paths.
+- Symptom: ModuleNotFoundError for qiskit_aer.backends.controller_wrappers.
+- Root cause: Verified donor WHEEL tag cp311-cp311-win_amd64 and controller_wrappers.cp311-win_amd64.pyd, while accessible Python requires .cp313-win_amd64.pyd. Why that older wheel was originally installed is unknown.
+- Decision: Retain the executed reference backend and document the exact mismatch. Do not claim an Aer adapter passed. Attempt fresh venv and official package access before changing dependencies.
+- Why: LibreOffice venv creation actually failed on missing venvlauncher.exe/venvwlauncher.exe; official PyPI requests failed EACCES/connection errors. npm registry requests also failed EACCES and offline resolution ENOTCACHED.
+- Alternatives considered: Copying donor binaries/node_modules, inventing a lockfile, or claiming all Python 3.13 Aer wheels incompatible; rejected.
+- Consequences: Fresh Python/frontend installs and Aer execution remain blocked in this environment. The partial .venv is ignored, not usable. No donor installations are modified.
+- Regression test: ABI metadata and failing import/venv/registry probes recorded in docs/environment-stabilization.md.
+- Files: docs/environment-stabilization.md, README.md, handoff.md.
+- Package: No dependency added or replaced.
+- Why this package: Preserve the verified existing Qiskit runtime until isolated packages can be installed.
+- Packages compared: Official qiskit-aer 0.17.2 cp313 wheel versus local cp311 wheel; fresh npm resolution versus donor dependency bridge.
+
+### D-014: Contract-defined complementary measurements and a separate policy
+
+- Date / phase / commit: 2026-10-11 / diagnostic evidence / stabilization commit containing this entry.
+- Context: Original evaluation reproduced exactly. Z-only measurement triggers miss relative-phase defects; some fixed-policy calibration evidence is collected but ignored in the category decision.
+- Decision: Preserve all four original policies. Add phase policy using actual X-all-qubit measurements for Bell/GHZ and analytic Fourier product-phase cancellation followed by H for QFT. Only significant sampled or calibration evidence triggers the existing exact logical/noise discrimination. Calibration-only noise consistency explicitly does not imply task-output degradation.
+- Why: Genuine additional measurements address observability; opaque ML or relabeling the original benchmark would not. Global phase leaves probabilities unchanged.
+- Alternatives considered: Trusted-circuit diff, classifier using fault labels, changing old thresholds, and claiming tomography; rejected.
+- Consequences: Extra shots and basis gates are charged and noisy. Witnesses are incomplete, attribution still uses privileged simulation, and unfunded evidence abstains. Original benchmark remains authoritative and unchanged.
+- Regression test: tests/test_phase_measurements.py; nine feature tests failed before implementation, then passed; global-phase and negative repair controls also pass.
+- Files: qfault/quantum.py, qfault/diagnostics.py, qfault/workflow.py, tests/test_phase_measurements.py.
+
+### D-015: Freeze holdout and preserve independent validation resources
+
+- Date / phase / commit: 2026-10-11 / evaluation and recovery / stabilization commit containing this entry.
+- Context: The existing 75-case benchmark is observed data, and recovery needs samples independent from selection.
+- Decision: Commit configs/diagnostic-evaluation.json before implementation; separate development seed 71 from final seeds 103/211, including GHZ4 and QFT2/4. Match 8,192-shot/6-evaluation ceilings across five policies. For phase recovery, reserve two fresh measurement executions and one density-state check before candidate search. Keep fixed as default before opening final results.
+- Why: Development phase policy 25/25 versus fixed 22/25 uses more shots/evaluations; this does not establish general superiority or justify hiding the best existing baseline.
+- Alternatives considered: Tune on old/final results, ignore basis-gate cost, exhaust validation budget, switch defaults using final accuracy alone; rejected.
+- Consequences: All final cases and losing outcomes must be published without tuning. Separate computational-basis and phase-basis recovery qualities prevent a phase repair from looking unchanged solely because Z counts match.
+- Regression test: tests/test_policy_evaluation.py; reservation/default regressions in tests/test_phase_measurements.py, each observed failing before fix.
+- Files: configs/diagnostic-evaluation.json (frozen commit 1d89eff), qfault/experiments.py, qfault/recovery.py, qfault/cli.py, benchmarks/diagnostic-development.json.

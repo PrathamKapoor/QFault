@@ -101,3 +101,46 @@ def benchmark_run(destination):
     (out/"summary.json").write_bytes(canonical(summary))
     (out/"summary.sha256").write_text(digest(summary),encoding="ascii")
     return summary
+
+
+def compare_policies(config,destination,split):
+    """Execute a prespecified split; evaluator labels are consulted after freeze."""
+    out=Path(destination)
+    out.mkdir(parents=True,exist_ok=False)
+    store=ArtifactStore(out/'investigations')
+    settings=config[split]
+    shots=settings.get('shots',config['shots'])
+    rows=[]
+    for policy in config['policies']:
+        for family,n in settings['circuits']:
+            scenarios=settings.get('scenarios',config['scenarios'])+(config.get('qft_extra',[]) if family=='qft' else [])
+            for scenario in scenarios:
+                for seed in settings['seeds']:
+                    request=RunRequest(family=family,n_qubits=n,scenario=scenario,policy=policy,seed=seed,
+                        shots=shots,max_shots=config['max_shots'],max_evaluations=config['max_evaluations'],recover=False)
+                    result=investigate(request)
+                    assert result['prediction_digest']==digest({'diagnosis':result['diagnosis'],'recovery':result['recovery']})
+                    truth,infidelity=evaluator_truth(result)
+                    eid=store.save(result)
+                    rows.append({'case_id':f'{family}-{n}-{scenario}-{seed}','policy':policy,'family':family,'n_qubits':n,
+                        'scenario':scenario,'seed':seed,'truth':truth,'prediction':result['diagnosis']['category'],
+                        'evaluator_state_infidelity':infidelity,'shots':result['cost']['shots'],
+                        'evaluations':result['cost']['evaluations'],'executions':result['cost']['circuit_executions'],
+                        'runtime_seconds':result['cost']['runtime_seconds'],'experiment_id':eid,
+                        'actions':result['cost']['actions'],'artifact_path':str(out/'investigations'/eid),
+                        'manifest_digest':digest(store.export(eid)['manifest'])})
+    policies={p:summarize([r for r in rows if r['policy']==p]) for p in config['policies']}
+    for p,metrics in policies.items():
+        metrics.update(executions=sum(r['executions'] for r in rows if r['policy']==p),
+                       runtime_seconds=sum(r['runtime_seconds'] for r in rows if r['policy']==p))
+    result={'configuration':config,'configuration_digest':digest(config),'split':split,'created_at':timestamp(),
+            'implementation_digest':digest({p.name:p.read_text(encoding='utf8') for p in Path(__file__).parent.glob('*.py')}),
+            'policies':policies,'rows':rows,
+            'limitations':['Configured noise may be invisible in task measurements; category accuracy is not detection power',
+                'Fixed circuits and few seeds; intervals are descriptive, not unseen-algorithm generalization',
+                'Phase policy still uses privileged exact ideal simulation for logical/noise attribution',
+                'All policies have equal ceilings; actual resources differ; recovery evaluated separately']}
+    (out/'configuration.json').write_bytes(canonical(config))
+    (out/'summary.json').write_bytes(canonical(result))
+    (out/'summary.sha256').write_text(digest(result),encoding='ascii')
+    return result

@@ -219,3 +219,28 @@ def mutate(circuit,operator,index,seed):
            "original_circuit_id":circuit.circuit_id,"result_digest":digest(changed.model_dump(mode="json")),
            "original_gate":gate.model_dump(mode="json")}
     return changed,truth
+
+
+def measurement_rotation(spec):
+    """Contract-defined local analysis basis; never depends on injected truth.
+
+    Bell/GHZ: measure X on every qubit (even parity for positive GHZ).
+    QFT basis input k: cancel each analytic product phase, then measure X.
+    Global phase cancels in every probability.
+    """
+    gates=[]
+    for j in range(spec.n_qubits):
+        if spec.family=='qft':
+            angle=-2*pi*spec.input_basis*2**j/2**spec.n_qubits
+            gates.append(Gate(name='rz',qubits=(j,),angle=angle))
+        gates.append(Gate(name='h',qubits=(j,)))
+    return Circuit(n_qubits=spec.n_qubits,gates=tuple(gates))
+
+
+def measurement_probabilities(spec,state=None):
+    target=spec.state() if state is None else state
+    return probabilities(Statevector(target).evolve(measurement_rotation(spec).native()).data)
+
+
+def measured_circuit(candidate,spec):
+    return Circuit(n_qubits=candidate.n_qubits,gates=candidate.gates+measurement_rotation(spec).gates)
