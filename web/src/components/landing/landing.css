@@ -26,3 +26,17 @@
 @media(max-width:1100px) and (min-width:801px){.landing-copy{left:7%;width:86%;gap:5%}.landing-copy h2{font-size:40px}.landing-actions{gap:15px}.enter-button{gap:20px}.hero-composition{left:7%;right:5%}}
 @media(max-width:800px){.hero-composition{top:112px;bottom:auto;height:440px;left:7%;right:7%}.hero-brand.word-plane{font-size:22.5vw;top:52%}.hero-composition .sculpture{inset:-5% -5% -2% 12%}.hero-eyebrow{font-size:10px}.landing-copy{top:590px;left:7%;width:86%;max-width:none;display:block;transform:none}.landing-copy h2{font-size:40px;margin-bottom:20px}.landing-copy h2 br{display:none}.landing-copy h2 span{margin-left:9px}.landing-description{max-width:530px;font-size:14px;margin-bottom:22px}.landing-actions{gap:24px}.simulation-label{font-size:9px}.landing--reframe .hero-composition{transform:translate(-18%,-50px) scale(.8)}.landing--reframe .landing-copy{transform:translateX(-30px)}}
 @media(max-width:480px){.hero-composition{top:108px;height:305px;left:7%;right:7%}.hero-brand.word-plane{font-size:23.3vw;top:55%;letter-spacing:-.07em}.hero-eyebrow{font-size:9px;letter-spacing:1.2px}.hero-composition .sculpture{inset:8% -5% 0 5%}.landing-copy{top:450px;width:86%}.landing-copy h2{font-size:35px;letter-spacing:-1.5px;margin-bottom:19px}.landing-copy h2 br{display:block}.landing-copy h2 span{margin-left:0}.landing-description{font-size:13px;line-height:1.75;margin-bottom:24px}.landing-actions{gap:16px}.simulation-label{font-size:8px;margin-top:22px}.landing-hero{min-height:820px}.landing-vignette{background:linear-gradient(0deg,#050507 10%,#050507c0 45%,transparent 65%,#05050740)}}
+
+/* A tall double spiral occupies the title's central depth plane. Copy has its
+   own lower-left safe region; the workbench handoff rules remain unchanged. */
+.hero-composition{top:120px;bottom:65px;left:7%;right:5%}
+.hero-brand.word-plane{top:32%;font-size:clamp(120px,19.7vw,350px)}
+.hero-composition .sculpture{inset:-9% 14% -3% 12%}
+.landing-copy{top:59%;width:42%;max-width:610px;display:block}
+.landing-copy h2{font-size:clamp(36px,3.2vw,60px);margin-bottom:19px}
+.landing-description{font-size:14px;max-width:440px;margin-bottom:23px}
+.landing-actions{gap:24px}
+@media(min-width:1800px){.hero-composition{top:140px;bottom:70px}.landing-copy{top:60%;width:38%}.landing-copy h2{font-size:60px}.landing-description{font-size:16px}}
+@media(max-width:1100px) and (min-width:801px){.landing-copy{width:47%;top:57%}.landing-copy h2{font-size:36px}.landing-actions{gap:16px}.landing-description{font-size:13px}}
+@media(max-width:800px){.hero-composition{top:112px;height:460px;bottom:auto;left:7%;right:7%}.hero-brand.word-plane{top:45%;font-size:22.5vw}.hero-composition .sculpture{inset:-4% -3% -3% 20%}.landing-copy{top:595px;width:86%;max-width:none}.landing-copy h2{font-size:40px}.landing-copy h2 br{display:block}.landing-copy h2 span{margin-left:0}.landing-description{font-size:14px;max-width:500px}}
+@media(max-width:480px){.hero-composition{top:105px;height:320px}.hero-brand.word-plane{top:47%;font-size:23.3vw}.hero-composition .sculpture{inset:-3% -8% -4% 12%}.landing-copy{top:440px;width:86%}.landing-copy h2{font-size:35px}.landing-description{font-size:13px}.landing-actions{gap:16px}}

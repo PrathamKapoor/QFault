@@ -46,7 +46,9 @@ def main():
         expect(page.locator('.pixel-swap[data-transitioning="true"]')).to_be_attached();page.screenshot(path=str(out/'pixel-swap.png'))
         page.clock.resume()
         expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_focused()
-        expect(page.locator('.overview[data-ready="true"]')).to_be_attached()
+        # Four genuine API requests feed this flag. Match the landing suite's
+        # data budget under software GL; keep actual readiness mandatory.
+        expect(page.locator('.overview[data-ready="true"]')).to_be_attached(timeout=30000)
         assert page.locator('.sculpture canvas').count()==0
         page.screenshot(path=str(out/'workbench.png'),full_page=True)
         page.get_by_role('button',name='New Investigation',exact=True).first.click()
@@ -61,8 +63,8 @@ def main():
             page.wait_for_timeout(1000)
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             page.screenshot(path=str(out/f'landing-{w}.png'))
-            page.goto('http://127.0.0.1:8000/#/workbench');expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_visible()
-            expect(page.locator('.overview[data-ready="true"]')).to_be_attached()
+            page.goto('http://127.0.0.1:8000/#/workbench');expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_visible(timeout=30000)
+            expect(page.locator('.overview[data-ready="true"]')).to_be_attached(timeout=30000)
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             page.screenshot(path=str(out/f'workbench-{w}.png'),full_page=True)
         reduced=browser.new_context(reduced_motion='reduce',viewport={'width':1440,'height':900});r=reduced.new_page();r.goto('http://127.0.0.1:8000/')

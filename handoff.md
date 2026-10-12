@@ -1,6 +1,14 @@
 # QFAULT engineering handoff
 
-## Hero art direction correction — 2026-10-12 (current)
+## DNA-like centerpiece correction — 2026-10-12 (current)
+
+Starting state: clean main at e9827eab18cbcca7a28f3de3283a079099d4b7fe. The user rejected the diagonal sculpture and explicitly requested a tall DNA-like black-chrome spiral woven through the wordmark. This supersedes earlier hero acceptance descriptions. Only landing geometry, matching fallback, reflection/texture tuning, foreground glyph selection and hero layout change. Workbench, transition state/timers/PixelSwap, backend, scientific artifacts, below-hero content and dependencies are preserved. No remote push, collaborators or co-author trailers.
+
+Two dominant helical ribbon sweeps, two fine companion paths and a violet filament now rise through the central title stage. Copy/actions sit together lower-left. Baseline, first reconstruction and refined captures were opened; the first reconstruction was corrected for excessive rightward placement and foreground-letter occlusion. Five-size landing/transition checks pass in artifacts/helix-review, with no page/console errors. Reference rights, construction and limitations: docs/helix-hero.md; decision D-033; flow.md. Remaining verification and final running-process details are recorded below after execution. User visual approval remains pending.
+
+Final TypeScript/build pass; 99 Python tests pass with Starlette/httpx and unwritable-cache warnings. Seven actual Aer workflows pass in artifacts/helix-science-final, including verified recovery, abstention, export/integrity, history and invalid budgets. Cinematic/reduced-motion/WebGL-fallback/direct-route/refresh/back-forward checks pass in artifacts/helix-motion-verified. Both static/fallback captures were opened. Three earlier cinematic attempts and one science attempt exposed default five-second async waits; explicit 30-second budgets now cover actual API completion/lazy workbench mounting without removing correctness assertions. Details and commands: docs/helix-hero.md. Fresh-context hero-phase observation:4.546s; existing shared Three.js size warning remains. Final persistent inspection setup follows after commit/restart.
+
+## Hero art direction correction — 2026-10-12 (historical)
 
 Started clean main at463c1970922c7f2ba620cd431b7a3023a2782914. The user rejected the previous isolated oval hero; earlier visual acceptance statements do not constitute approval. This correction affects only hero art, matching fallback, visual browser checks and engineering documentation. The workbench, PixelSwap implementation/state/timers, backend, below-hero sections and frozen scientific results remain unchanged. No new dependency, collaborator, co-author, history rewrite or remote push. Local commits use PrathamKapoor <prathamkapoor027@gmail.com>.
 

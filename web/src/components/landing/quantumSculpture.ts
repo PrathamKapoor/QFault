@@ -1,14 +1,17 @@
 import * as THREE from 'three';
 
-// Original open sweeps: two broad ribbons, two secondary reflective paths and
-// one filament. Each path has a distinct silhouette and deliberate depth.
+// Original sculptural double helix. Companion paths follow the same rising
+// flow rather than enclosing a volume; there are no rings, rungs or core.
 type Point = [number, number, number];
-const paths: Point[][] = [
-  [[-2.7,-1.1,-.3],[-2,-.9,.2],[-1.2,.4,.45],[-.2,.8,-.5],[.65,.2,-.3],[1.4,.8,.5],[2.6,1.65,.1]],
-  [[-2.5,-1.45,.4],[-1.6,-.6,-.4],[-.5,-.65,-.1],[.4,.45,.65],[.2,1.35,.1],[1.1,1.6,-.3],[2.3,1.85,-.2]],
-  [[-2.6,-.8,-.7],[-1.6,.25,-.5],[-.7,.55,.7],[.5,-.05,.4],[1.8,.9,-.4],[2.55,1.5,-.3]],
-  [[-2.2,-1.3,.1],[-1.7,-.25,.6],[-.3,-.9,.35],[.8,.4,-.6],[1.5,1.4,.25],[2.4,1.7,.35]]
-];
+function spiral(index:number):Point[]{
+  return Array.from({length:101},(_,i)=>{
+    const t=i/100,phase=index%2*Math.PI+(index>1?.24:0);
+    const angle=t*Math.PI*2*1.48+phase+.2;
+    const radius=.86+.29*Math.sin(t*Math.PI)+.045*Math.sin(t*9+phase)+(index>1?.19:0);
+    return [Math.cos(angle)*radius+.12*Math.sin(t*4), (t-.5)*6.1, Math.sin(angle)*radius*.88] as Point;
+  });
+}
+const paths=[0,1,2,3].map(spiral);
 function sweep(points: Point[], index: number, low: boolean) {
   const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, 'centripetal');
   const steps = low ? 150 : 260, sides = 20;
@@ -17,11 +20,11 @@ function sweep(points: Point[], index: number, low: boolean) {
     const u = i / steps, center = curve.getPointAt(u), tangent = curve.getTangentAt(u);
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
     const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
-    const twist = .85 * Math.sin(u * Math.PI * 2 + index * 1.1) + index * .45;
+    const twist = .48 * Math.sin(u * Math.PI * 3 + index * .8) + .3;
     normal.applyAxisAngle(tangent, twist); binormal.applyAxisAngle(tangent, twist);
     const taper = .08 + .92 * Math.pow(Math.sin(u * Math.PI), .32);
-    const width = (index < 2 ? .19 + .11 * Math.pow(Math.sin(u * Math.PI * 1.4 + index * .6),2) : .065 + .012 * index) * taper;
-    const thickness = (index < 2 ? .035 : .029) * taper;
+    const width = (index < 2 ? .23 + .10 * Math.pow(Math.sin(u * Math.PI * 1.4 + index * .6),2) : .045) * taper;
+    const thickness = (index < 2 ? .038 : .018) * taper;
     for (let j = 0; j <= sides; j++) {
       const a = j / sides * Math.PI * 2;
       const v = center.clone().addScaledVector(normal, Math.cos(a) * width).addScaledVector(binormal, Math.sin(a) * thickness);
@@ -53,7 +56,7 @@ export function createQuantumSculpture(canvas:HTMLCanvasElement,reduced:boolean,
   const studio=new THREE.Scene();studio.background=new THREE.Color('#020204');
   const panels:[Point,number,number,Point][]=[
     [[-3,4,4],6,1.1,[5,5,5.3]],[[4,1,2],.5,7,[4.5,4.6,5]],
-    [[0,-4,2],7,.65,[1.1,1.15,1.3]],[[-2,0,5],4,4,[.65,.67,.74]],
+    [[0,-4,2],7,.65,[1.1,1.15,1.3]],[[-2,0,5],4,4,[1.15,1.18,1.3]],
     [[3,2,-4],4,.5,[.5,.28,1.1]],[[-4,-1,-2],.4,5,[.15,.26,.6]]
   ];
   for(const [position,w,h,color] of panels){const panel=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(...color),side:THREE.DoubleSide}));panel.position.set(...position);panel.lookAt(0,0,0);studio.add(panel);}
@@ -65,17 +68,17 @@ export function createQuantumSculpture(canvas:HTMLCanvasElement,reduced:boolean,
   for(let y=0;y<128;y++)for(let x=0;x<512;x++){
     // Longitudinal brushing with fine, deterministic variation across the ribbon.
     const line=Math.sin(y*19.731)*.6+Math.sin(y*7.17)*.4;
-    const n=Math.round(190+line*30+Math.sin(x*.12+y*3.7)*5);
+    const n=Math.round(195+line*12+Math.sin(x*.12+y*3.7)*3);
     data.set([n,n,n,255],(y*512+x)*4);
   }
   const grain=new THREE.DataTexture(data,512,128);grain.wrapS=grain.wrapT=THREE.RepeatWrapping;grain.needsUpdate=true;
   grain.magFilter=THREE.LinearFilter;grain.minFilter=THREE.LinearMipmapLinearFilter;grain.generateMipmaps=true;
   grain.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
   const tones=['#454752','#383a45','#4b4d58','#3d3e4b'];
-  paths.forEach((points,i)=>group.add(new THREE.Mesh(sweep(points,i,low),new THREE.MeshPhysicalMaterial({color:tones[i],metalness:1,roughness:i===1?.32:.28,roughnessMap:grain,bumpMap:grain,bumpScale:.0005,anisotropy:.35,anisotropyRotation:0,clearcoat:.22,clearcoatRoughness:.24,envMapIntensity:1.35}))));
+  paths.forEach((points,i)=>group.add(new THREE.Mesh(sweep(points,i,low),new THREE.MeshPhysicalMaterial({color:tones[i],metalness:1,roughness:i===1?.32:.28,roughnessMap:grain,bumpMap:grain,bumpScale:.00015,anisotropy:.35,anisotropyRotation:0,clearcoat:.22,clearcoatRoughness:.24,envMapIntensity:1.35}))));
   const filament=new THREE.CatmullRomCurve3(paths[1].map(([x,y,z])=>new THREE.Vector3(x-.07,y+.03,z-.06)));
   group.add(new THREE.Mesh(new THREE.TubeGeometry(filament,low?90:150,.008,6,false),new THREE.MeshStandardMaterial({color:'#74668f',metalness:.65,roughness:.35,emissive:'#6d4cc9',emissiveIntensity:.45})));
-  group.rotation.set(.05,.13,-.08);scene.add(group);group.updateMatrixWorld(true);
+  group.rotation.set(.05,.13,-.29);scene.add(group);group.updateMatrixWorld(true);
   const bounds=new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
   const key=new THREE.DirectionalLight('#eeeef4',1.8);key.position.set(-3,4,5);scene.add(key);
   const rim=new THREE.DirectionalLight('#8e77c8',.3);rim.position.set(4,1,-3);scene.add(rim);

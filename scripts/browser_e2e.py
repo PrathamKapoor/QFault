@@ -39,7 +39,9 @@ def main():
             assert all(e['backend_name']=='qiskit_aer.AerSimulator/density_matrix' for e in data['executions'])
             assert data['candidate']['n_qubits']==int(page.get_by_label('Qubit count').input_value())
             row={'family':data['configuration']['family'],'n_qubits':data['candidate']['n_qubits'],'scenario':scenario,'shots_per_execution':shots,'experiment_id':data['experiment_id'],'diagnosis':expected_category,'actual_shots':data['cost']['shots'],'evaluations':data['cost']['evaluations'],'loading_observed':loading,'recovery':(data['recovery'] or {}).get('status')};rows.append(row)
-            expect(page.get_by_role('button',name='Run investigation')).to_be_enabled()
+            # Completion includes the real history refresh and verification
+            # requests, not just the experiment POST response.
+            expect(page.get_by_role('button',name='Run investigation')).to_be_enabled(timeout=30000)
             expect(page.get_by_text('Artifact hashes verified',exact=True)).to_be_visible()
             (root/(data['experiment_id']+'.json')).write_text(json.dumps(data,indent=2),encoding='utf8')
             if args.record_video: page.wait_for_timeout(2000)  # Genuine reading hold in silent raw footage.

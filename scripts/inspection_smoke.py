@@ -19,7 +19,7 @@ def main():
         page.wait_for_timeout(1100);page.screenshot(path=str(out/'landing-desktop.png'))
         page.get_by_role('button',name='Enter Workbench',exact=True).click()
         expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_focused()
-        expect(page.locator('.overview[data-ready="true"]')).to_be_attached()
+        expect(page.locator('.overview[data-ready="true"]')).to_be_attached(timeout=30000)
         page.screenshot(path=str(out/'workbench-desktop.png'),full_page=True)
         page.get_by_role('button',name='New Investigation',exact=True).first.click()
         page.get_by_label('Simulation backend').select_option('aer')
