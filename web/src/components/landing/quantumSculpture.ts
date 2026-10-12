@@ -1,39 +1,44 @@
 import * as THREE from 'three';
 
-// Original open sweeps: two broad ribbons, three fine reflective paths and
+// Original open sweeps: two broad ribbons, two secondary reflective paths and
 // one filament. Each path has a distinct silhouette and deliberate depth.
 type Point = [number, number, number];
 const paths: Point[][] = [
-  [[-.2,1.9,-.35],[-1.15,1.5,-.1],[-1.35,.5,.15],[-.7,-.2,.65],[.85,-.65,.45],[1.1,-1.5,-.2],[.3,-1.9,-.5]],
-  [[.25,1.8,-.6],[1.2,1.35,.05],[1.25,.4,.4],[.35,-.15,-.25],[-.85,-.65,-.5],[-1,-1.45,-.2],[-.1,-1.8,.1]],
-  [[.05,1.85,-.5],[-1.6,1,-.4],[-1.6,-.5,.4],[-.55,-1.75,.2],[.35,-1.9,-.3]],
-  [[.2,1.7,-.3],[1.5,1,.15],[.8,.1,-.8],[-.4,-.6,-.35],[-.6,-1.75,.1]],
-  [[-.35,1.75,.1],[-.9,.9,.8],[0,.25,.9],[1.4,-.4,-.05],[.75,-1.65,-.7]]
+  [[-2.7,-1.1,-.3],[-2,-.9,.2],[-1.2,.4,.45],[-.2,.8,-.5],[.65,.2,-.3],[1.4,.8,.5],[2.6,1.65,.1]],
+  [[-2.5,-1.45,.4],[-1.6,-.6,-.4],[-.5,-.65,-.1],[.4,.45,.65],[.2,1.35,.1],[1.1,1.6,-.3],[2.3,1.85,-.2]],
+  [[-2.6,-.8,-.7],[-1.6,.25,-.5],[-.7,.55,.7],[.5,-.05,.4],[1.8,.9,-.4],[2.55,1.5,-.3]],
+  [[-2.2,-1.3,.1],[-1.7,-.25,.6],[-.3,-.9,.35],[.8,.4,-.6],[1.5,1.4,.25],[2.4,1.7,.35]]
 ];
 function sweep(points: Point[], index: number, low: boolean) {
   const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, 'centripetal');
-  const steps = low ? 110 : 190, sides = 12;
+  const steps = low ? 150 : 260, sides = 20;
   const vertices: number[] = [], indices: number[] = [], uv: number[] = [];
   for (let i = 0; i <= steps; i++) {
     const u = i / steps, center = curve.getPointAt(u), tangent = curve.getTangentAt(u);
     const normal = new THREE.Vector3(-tangent.y, tangent.x, 0).normalize();
     const binormal = new THREE.Vector3().crossVectors(tangent, normal).normalize();
-    const twist = .28 * Math.sin(u * Math.PI * 2 + index * .7);
+    const twist = .85 * Math.sin(u * Math.PI * 2 + index * 1.1) + index * .45;
     normal.applyAxisAngle(tangent, twist); binormal.applyAxisAngle(tangent, twist);
     const taper = .08 + .92 * Math.pow(Math.sin(u * Math.PI), .32);
-    const width = (index < 2 ? .105 + .025 * Math.sin(u * Math.PI) : .026 + .006 * index) * taper;
-    const thickness = (index < 2 ? .016 : .018) * taper;
+    const width = (index < 2 ? .19 + .11 * Math.pow(Math.sin(u * Math.PI * 1.4 + index * .6),2) : .065 + .012 * index) * taper;
+    const thickness = (index < 2 ? .035 : .029) * taper;
     for (let j = 0; j <= sides; j++) {
       const a = j / sides * Math.PI * 2;
       const v = center.clone().addScaledVector(normal, Math.cos(a) * width).addScaledVector(binormal, Math.sin(a) * thickness);
-      vertices.push(v.x, v.y, v.z); uv.push(u * 12, j / sides);
-      if (i < steps && j < sides) {const k = i * (sides + 1) + j;indices.push(k,k+sides+1,k+1,k+1,k+sides+1,k+sides+2);}
+      vertices.push(v.x, v.y, v.z); uv.push(u, j / sides);
+      if (i < steps && j < sides) {const k = i * (sides + 1) + j;indices.push(k,k+1,k+sides+1,k+1,k+sides+2,k+sides+1);}
     }
   }
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));
   geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
-  geometry.setIndex(indices);geometry.computeVertexNormals();return geometry;
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  // Join duplicate vertices at the profile seam for continuous surface shading.
+  const normals=geometry.getAttribute('normal');
+  for(let i=0;i<=steps;i++){const a=i*(sides+1),b=a+sides;
+    const n=new THREE.Vector3().fromBufferAttribute(normals,a).add(new THREE.Vector3().fromBufferAttribute(normals,b)).normalize();
+    normals.setXYZ(a,n.x,n.y,n.z);normals.setXYZ(b,n.x,n.y,n.z);}
+  return geometry;
 }
 export function createQuantumSculpture(canvas:HTMLCanvasElement,reduced:boolean,onFailure:()=>void){
   const context=canvas.getContext('webgl2',{alpha:true,antialias:true,powerPreference:'low-power'});
@@ -45,28 +50,35 @@ export function createQuantumSculpture(canvas:HTMLCanvasElement,reduced:boolean,
   const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(32,1,.1,40),group=new THREE.Group();
   // Dark chrome reflects a dark studio with broad neutral cards, narrow silver
   // strips, and a much dimmer violet rim. No emissive purple body material.
-  const studio=new THREE.Scene();studio.background=new THREE.Color('#101016');
+  const studio=new THREE.Scene();studio.background=new THREE.Color('#020204');
   const panels:[Point,number,number,Point][]=[
-    [[-3,3,4],4.8,6,[3.5,3.5,3.7]],[[3,1,3],.9,7,[4.5,4.5,4.8]],
-    [[0,-4,3],6,1.4,[1.7,1.8,2]],[[0,0,5],6,5,[.3,.32,.36]],
-    [[3,2,-4],3,.7,[.48,.28,.9]],[[-4,-1,-2],.6,5,[.18,.3,.55]]
+    [[-3,4,4],6,1.1,[5,5,5.3]],[[4,1,2],.5,7,[4.5,4.6,5]],
+    [[0,-4,2],7,.65,[1.1,1.15,1.3]],[[-2,0,5],4,4,[.65,.67,.74]],
+    [[3,2,-4],4,.5,[.5,.28,1.1]],[[-4,-1,-2],.4,5,[.15,.26,.6]]
   ];
   for(const [position,w,h,color] of panels){const panel=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({color:new THREE.Color(...color),side:THREE.DoubleSide}));panel.position.set(...position);panel.lookAt(0,0,0);studio.add(panel);}
   const pmrem=new THREE.PMREMGenerator(renderer),environment=pmrem.fromScene(studio,.045,.1,20,{size:low?64:128});
   scene.environment=environment.texture;pmrem.dispose();
   studio.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();(o.material as THREE.Material).dispose();}});
   // Fine deterministic roughness variation, without scratches or noisy albedo.
-  const data=new Uint8Array(64*64*4);
-  for(let i=0;i<64*64;i++){const n=225+Math.round(9*Math.sin(i*12.9898));data.set([n,n,n,255],i*4);}
-  const grain=new THREE.DataTexture(data,64,64);grain.wrapS=grain.wrapT=THREE.RepeatWrapping;grain.needsUpdate=true;
-  const tones=['#4f535e','#717580','#707581','#414752','#9a9faa'];
-  paths.forEach((points,i)=>group.add(new THREE.Mesh(sweep(points,i,low),new THREE.MeshPhysicalMaterial({color:tones[i],metalness:1,roughness:i===1?.26:.22,roughnessMap:grain,clearcoat:.3,clearcoatRoughness:.2,envMapIntensity:1.05}))));
-  const filament=new THREE.CatmullRomCurve3(paths[0].map(([x,y,z])=>new THREE.Vector3(x+.075,y,z-.035)));
+  const data=new Uint8Array(512*128*4);
+  for(let y=0;y<128;y++)for(let x=0;x<512;x++){
+    // Longitudinal brushing with fine, deterministic variation across the ribbon.
+    const line=Math.sin(y*19.731)*.6+Math.sin(y*7.17)*.4;
+    const n=Math.round(190+line*30+Math.sin(x*.12+y*3.7)*5);
+    data.set([n,n,n,255],(y*512+x)*4);
+  }
+  const grain=new THREE.DataTexture(data,512,128);grain.wrapS=grain.wrapT=THREE.RepeatWrapping;grain.needsUpdate=true;
+  grain.magFilter=THREE.LinearFilter;grain.minFilter=THREE.LinearMipmapLinearFilter;grain.generateMipmaps=true;
+  grain.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());
+  const tones=['#454752','#383a45','#4b4d58','#3d3e4b'];
+  paths.forEach((points,i)=>group.add(new THREE.Mesh(sweep(points,i,low),new THREE.MeshPhysicalMaterial({color:tones[i],metalness:1,roughness:i===1?.32:.28,roughnessMap:grain,bumpMap:grain,bumpScale:.0005,anisotropy:.35,anisotropyRotation:0,clearcoat:.22,clearcoatRoughness:.24,envMapIntensity:1.35}))));
+  const filament=new THREE.CatmullRomCurve3(paths[1].map(([x,y,z])=>new THREE.Vector3(x-.07,y+.03,z-.06)));
   group.add(new THREE.Mesh(new THREE.TubeGeometry(filament,low?90:150,.008,6,false),new THREE.MeshStandardMaterial({color:'#74668f',metalness:.65,roughness:.35,emissive:'#6d4cc9',emissiveIntensity:.45})));
-  group.rotation.set(.05,.13,-.12);scene.add(group);group.updateMatrixWorld(true);
+  group.rotation.set(.05,.13,-.08);scene.add(group);group.updateMatrixWorld(true);
   const bounds=new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
   const key=new THREE.DirectionalLight('#eeeef4',1.8);key.position.set(-3,4,5);scene.add(key);
-  const rim=new THREE.DirectionalLight('#8e77c8',.55);rim.position.set(4,1,-3);scene.add(rim);
+  const rim=new THREE.DirectionalLight('#8e77c8',.3);rim.position.set(4,1,-3);scene.add(rim);
   let raf=0,visible=true,alive=true,paused=false,px=0,py=0,sx=0,sy=0,last=0;
   const draw=(now:number)=>{raf=0;if(!alive||!visible||document.hidden||paused)return;
     if(now-last>32||reduced){last=now;const t=reduced?0:now*.001;sx+=(px-sx)*.03;sy+=(py-sy)*.03;

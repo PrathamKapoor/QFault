@@ -1,5 +1,14 @@
 # QFAULT engineering handoff
 
+## Hero art direction correction — 2026-10-12 (current)
+
+Started clean main at463c1970922c7f2ba620cd431b7a3023a2782914. The user rejected the previous isolated oval hero; earlier visual acceptance statements do not constitute approval. This correction affects only hero art, matching fallback, visual browser checks and engineering documentation. The workbench, PixelSwap implementation/state/timers, backend, below-hero sections and frozen scientific results remain unchanged. No new dependency, collaborator, co-author, history rewrite or remote push. Local commits use PrathamKapoor <prathamkapoor027@gmail.com>.
+
+The hero now shares two identical per-letter word planes with a diagonal black-chrome ribbon sculpture. Two variable-width major paths, two secondary paths and a fine violet filament replace the oval trajectories. Outward winding, seamless profile normals, filtered UV brushing and physical anisotropy refine the material. Neutral strip/fill reflections replace broad silver patches; MoltenMetal props create darker, finer folds. Decorative art captions are removed. The requested copy/actions remain unobstructed below the shared stage; the existing leftward handoff is framed for this new composition. Details and actual comparison: docs/hero-art-direction.md; decision D-032; flow.md.
+
+Baseline and iterative captures were opened. The first pass was rejected internally for dark/coarse surfaces and word-plane alignment, followed by neutral-fill/texture/letter corrections. TypeScript/build and99 Python tests pass (one existing warning). Final landing/cinematic/saved-navigation suites and all seven actual Aer browser workflows pass. All five viewport captures, isolated background/metal, reduced-motion hero, fallback, reframe and workbench were opened. Evidence: artifacts/hero-art-delivery, hero-art-motion, hero-art-science and hero-art-navigation.json; commands/results/limits in docs/hero-art-direction.md. Fresh headless hero-phase observation4.833s; shared Three size warning remains. Existing server PID17868/session74655 served verification; the post-commit inspection restart is recorded below when actually verified. This handoff does not claim user aesthetic approval.
+
+
 ## Landing recovery handoff — 2026-10-12 (current; supersedes earlier landing acceptance)
 
 Started from clean main at c5fb023a5bbf53a9790548731eebae9b2df7101a. The user rejected the previous landing and approved retaining the workbench/transition. This change rebuilds only landing art, public composition and MoltenMetal rendering. No App/main/workbench CSS, backend, methodology or frozen benchmark artifacts changed. Local Git identity is PrathamKapoor <prathamkapoor027@gmail.com>; no push, collaborator, co-author or history rewrite.
