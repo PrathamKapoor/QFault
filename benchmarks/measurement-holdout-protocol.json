@@ -1,0 +1,34 @@
+{
+  "name": "measurement-boundary-holdout-20261013",
+  "status": "prespecified before implementation and execution",
+  "starting_commit": "f36665616c2aee95a7b82e764adcf290b9e05468",
+  "seeds": [1201, 3253],
+  "circuits": [["bell", 2], ["ghz", 3], ["qft", 3]],
+  "conditions": [
+    {"name": "clean", "scenario": "clean"},
+    {"name": "missing_gate", "scenario": "remove"},
+    {"name": "relative_phase", "scenario": "phase"},
+    {"name": "readout_low", "scenario": "readout", "readout": 0.04},
+    {"name": "readout_high", "scenario": "readout", "readout": 0.18},
+    {"name": "gate_low", "scenario": "gate", "depolarizing": 0.02},
+    {"name": "gate_high", "scenario": "gate", "depolarizing": 0.16},
+    {"name": "mixed", "scenario": "mixed", "readout": 0.08}
+  ],
+  "qft_extra": [
+    {"name": "small_angle", "scenario": "angle", "angle_delta": 0.08},
+    {"name": "larger_angle", "scenario": "angle", "angle_delta": 0.7853981633974483}
+  ],
+  "policies": ["measurement_z", "measurement_complementary", "simulator_fixed", "simulator_phase"],
+  "backend": "aer",
+  "shots": 2048,
+  "max_shots": 8192,
+  "max_evaluations": 6,
+  "recover": false,
+  "metrics": ["per_class_recall", "confusion_matrix", "strict_attribution_accuracy", "abstention", "clean_false_diagnosis", "supported_discrepancy", "shots", "additional_shots", "evaluations", "executions", "runtime_seconds", "all_failure_cases"],
+  "measurement_abstentions": ["MIXED_OR_AMBIGUOUS", "INSUFFICIENT_EVIDENCE", "UNSUPPORTED"],
+  "simulator_abstentions": ["INSUFFICIENT_EVIDENCE", "UNSUPPORTED"],
+  "truth": "Evaluator-only fixed-input infidelity and configured-noise category, evaluated after prediction digest freeze; configured noise need not be observable",
+  "success": "Strict attribution requires exact category match and a non-abstaining prediction; discrepancy detection is reported separately, never called causal attribution",
+  "paired_analysis": "Descriptive paired correctness and resource differences only; repeated templates/seeds do not justify independent-circuit inferential claims",
+  "limits": ["52 cases per policy, all retained", "Known Bell/GHZ/QFT architectures with new seeds/noise/angle settings, not unseen-architecture generalization", "No tuning or seed replacement after first run", "No hardware execution", "Measurement-only recovery disabled"]
+}
