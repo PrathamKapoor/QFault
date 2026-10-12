@@ -1,5 +1,18 @@
 # QFAULT engineering handoff
 
+## Landing recovery handoff — 2026-10-12 (current; supersedes earlier landing acceptance)
+
+Started from clean main at c5fb023a5bbf53a9790548731eebae9b2df7101a. The user rejected the previous landing and approved retaining the workbench/transition. This change rebuilds only landing art, public composition and MoltenMetal rendering. No App/main/workbench CSS, backend, methodology or frozen benchmark artifacts changed. Local Git identity is PrathamKapoor <prathamkapoor027@gmail.com>; no push, collaborator, co-author or history rewrite.
+
+Actual baseline, causes and two visual correction rounds: docs/landing-recovery.md. Changes: Landing.tsx and landing.css separate readable copy from a 46%-width art stage, provide complete workflow/capability/frozen-evidence sections and functioning public navigation; quantumSculpture.ts/Sculpture.tsx replace the knot with original thinner open ribbons/strands, neutral chrome reflections and matching static fallback; MoltenMetal.tsx fixes first-frame defaults, visible atmosphere and static mobile/reduced-motion rendering. The existing reframe timing/PixelSwap/workbench are preserved. scripts/landing_recovery_e2e.py adds real visual/keyboard/anchor/viewport regression checks. decisions D-031, flow and frontend-sources document the implementation and rights.
+
+Verified: TypeScript and production build pass; 99 Python tests pass (one existing warning); seven real Aer browser workflows pass including two independently verified repairs, abstention, noise, export, integrity, history, binary order, frozen benchmarks and invalid422. Landing, cinematic and saved-navigation checks pass across all five requested sizes, keyboard entry, reduced motion, forced no-WebGL, route refresh/back/forward, API failure and renderer cleanup. Captures under artifacts/landing-rebuild-final, landing-rebuild-cinematic and landing-rebuild-science were opened and inspected. All generated evidence remains ignored/local.
+
+No new dependencies or source copied from unlicensed references. Existing project-owned npm dependencies/lockfile were used; no fresh installation claimed this recovery. Python/Playwright retain the disclosed bridge. Fresh headless hero-phase observation: 4.234s; navigation duration103ms, not FPS/GPU timing. Shared Three548.53kB warning remains. User aesthetic approval and hardware/browser profiling remain manual checks.
+
+Inspection URL: http://127.0.0.1:8000/; workbench: http://127.0.0.1:8000/#/workbench. Correct integrated launcher from C:\Projects\QFF: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve`. The pre-existing PID10032/session63723 served the rebuilt production bundle throughout verification. After the implementation commit, restart that owned server in a new persistent session, run inspection_smoke once and record the actual process/final smoke below. This paragraph records the pre-restart state, not a promise of successful final startup.
+
+
 ## Current frontend handoff — 2026-10-12 (supersedes historical environment/UI status below)
 
 Started from clean `main` at `ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3`. This assignment makes local commits only under `PrathamKapoor <prathamkapoor027@gmail.com>`; no collaborator, co-author, history rewrite or remote push. The commit containing this entry is the frontend delivery; use `git log -1` for its exact SHA rather than embedding a self-referential hash.

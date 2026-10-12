@@ -29,6 +29,7 @@ export interface MoltenMetalProps {
   backgroundColor?: string;
   lightMode?: boolean;
   className?: string;
+  animated?: boolean;
 }
 
 const hexToRgb = (hex: string): [number, number, number] => {
@@ -176,6 +177,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
   opacity = 1.0,
   backgroundColor = '#FFFFFF',
   lightMode = false,
+  animated = true,
   className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -186,13 +188,14 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
 
     const probe = document.createElement('canvas');
     if (!probe.getContext('webgl2')) return;
-    probe.getContext('webgl2')?.getExtension('WEBGL_lose_context')?.loseContext();
+
     const renderer = new Renderer({
+      canvas: probe,
       webgl: 2,
       alpha: true,
       premultipliedAlpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 1)
+      dpr: Math.min(window.devicePixelRatio || 1, innerWidth < 768 ? .65 : .8)
     });
 
     const gl = renderer.gl;
@@ -210,27 +213,27 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
       uniforms: {
         iTime: { value: 0 },
         iResolution: { value: new Float32Array([1, 1]) },
-        uSpeed: { value: 0.35 },
-        uScale: { value: 4 },
-        uDetail: { value: 3 },
-        uGlow: { value: 1.6 },
-        uCoreSize: { value: 0.1 },
-        uSwirl: { value: 1 },
-        uFold: { value: -0.2 },
-        uBlackPoint: { value: 0.05 },
-        uBrightness: { value: 1.3 },
-        uColorMode: { value: 0 },
-        uGrain: { value: 1 },
-        uGrainIntensity: { value: 0.05 },
-        uOpacity: { value: 1.0 },
+        uSpeed: { value: speed },
+        uScale: { value: scale },
+        uDetail: { value: detail },
+        uGlow: { value: glow },
+        uCoreSize: { value: coreSize },
+        uSwirl: { value: swirl },
+        uFold: { value: fold },
+        uBlackPoint: { value: blackPoint },
+        uBrightness: { value: brightness },
+        uColorMode: { value: colorModeToFloat(colorMode) },
+        uGrain: { value: grain ? 1 : 0 },
+        uGrainIntensity: { value: grainIntensity },
+        uOpacity: { value: opacity },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
-        uMouseStrength: { value: 0.3 },
-        uEnableMouse: { value: true },
-        uColor1: { value: new Float32Array([1, 1, 1]) },
-        uColor2: { value: new Float32Array([1, 1, 1]) },
-        uColor3: { value: new Float32Array([1, 1, 1]) },
-        uBackgroundColor: { value: new Float32Array([1, 1, 1]) },
-        uLightMode: { value: false }
+        uMouseStrength: { value: mouseStrength },
+        uEnableMouse: { value: mouseInteraction },
+        uColor1: { value: new Float32Array(hexToRgb(color1)) },
+        uColor2: { value: new Float32Array(hexToRgb(color2)) },
+        uColor3: { value: new Float32Array(hexToRgb(color3)) },
+        uBackgroundColor: { value: new Float32Array(hexToRgb(backgroundColor)) },
+        uLightMode: { value: lightMode }
       }
     });
 
@@ -246,6 +249,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
       res[0] = gl.drawingBufferWidth;
       res[1] = gl.drawingBufferHeight;
       renderer.render({ scene: mesh });
+      canvas.dataset.rendered = "true";
     };
 
     const ro = new ResizeObserver(setSize);
@@ -272,7 +276,10 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     let isPageVisible = !document.hidden;
     const t0 = performance.now();
 
+    let last = 0;
     const loop = (t: number) => {
+      if(t-last<33){raf=requestAnimationFrame(loop);return;}
+      last=t;
       program.uniforms.iTime.value = (t - t0) * 0.001;
       currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0]);
       currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1]);
@@ -284,7 +291,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     };
 
     const tryStart = () => {
-      if (isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
+      if (animated && isVisible && isPageVisible && raf === 0) raf = requestAnimationFrame(loop);
     };
     const tryStop = () => {
       if (raf !== 0) {
@@ -323,7 +330,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
       gl.deleteProgram(program.program);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, []);
+  }, [animated]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -332,6 +339,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     if (!ctx) return;
     const u = ctx.program.uniforms;
 
+    u.uLightMode.value = lightMode;
     u.uSpeed.value = speed;
     u.uScale.value = scale;
     u.uDetail.value = detail;
@@ -366,6 +374,7 @@ const MoltenMetal: React.FC<MoltenMetalProps> = ({
     u.uBackgroundColor.value[0] = bg[0];
     u.uBackgroundColor.value[1] = bg[1];
     u.uBackgroundColor.value[2] = bg[2];
+    ctx.renderer.render({ scene: ctx.mesh });
   }, [
     color1,
     color2,
