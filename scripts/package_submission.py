@@ -3,7 +3,7 @@ import argparse,hashlib,json,subprocess,zipfile
 from pathlib import Path
 from qfault.storage import ArtifactStore
 
-SOURCES=['results.json','diagnostic-final.json','diagnostic-development.json','diagnostic-low-shot.json','recovery-stabilization.json','backend-conformance.json','submission-demo.json']
+SOURCES=['results.json','diagnostic-final.json','diagnostic-development.json','diagnostic-low-shot.json','recovery-stabilization.json','backend-conformance.json','submission-demo.json','measurement-boundary-holdout-20261013.json']
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 
@@ -27,7 +27,7 @@ def collect_evidence(repo,summaries):
     def visit(value):
         if isinstance(value,dict):
             for key in ['artifact_path','artifact','export']:
-                if isinstance(value.get(key),str):add(value[key],value.get('manifest_digest') or value.get('artifact_digest') or value.get('export_sha256') or value.get('sha256'))
+                if isinstance(value.get(key),str):add(value[key],value.get('manifest_digest') or value.get('manifest_sha256') or value.get('artifact_digest') or value.get('export_sha256') or value.get('sha256'))
             for child in value.values():visit(child)
         elif isinstance(value,list):
             for child in value:visit(child)

@@ -42,6 +42,9 @@ def main():
             expect(page.get_by_role('button',name='Freeze prediction')).to_be_enabled()
             before=(context.request.get('http://127.0.0.1:8000/api/challenges/'+cid+'/report')).json()
             private_absent(before);assert verify_export(before)['valid']
+            expect(page.get_by_role('heading',name='Measurement ledger')).to_be_visible()
+            records=before['documents']['observed']['measurements']+before['documents']['diagnosed']['diagnostic_measurements']
+            assert sum(r['executed_shots'] for r in records)==before['documents']['diagnosed']['cost']['shots']
             with page.expect_download() as download:page.get_by_role('link',name='Export current record').click()
             download.value.save_as(root/(mode+'-pre-reveal.json'))
             assert verify_export(json.loads((root/(mode+'-pre-reveal.json')).read_bytes()))['valid']
@@ -63,6 +66,20 @@ def main():
             assert replay['state']=='OBSERVED'
             page.go_back();expect(page.get_by_role('heading',name='Evaluator truth · revealed after freeze')).to_be_visible()
             page.go_forward();expect(page.get_by_role('button',name='Run diagnosis')).to_be_visible()
+        # A declared deterministic test fixture exercises recovery UI. It is not
+        # passed off as an unpredictable demonstration or a successful pool rate.
+        fixture=context.request.post('http://127.0.0.1:8000/api/challenges',data={'seed':1,'diagnostic_mode':'simulator_assisted','recover':True}).json()
+        private_absent(fixture)
+        page.goto('http://127.0.0.1:8000/#/challenges/'+fixture['challenge_id'])
+        page.get_by_role('button',name='Run diagnosis').click()
+        expect(page.get_by_role('heading',name='Bounded recovery and independent verification')).to_be_visible()
+        page.screenshot(path=str(root/'blind-recovery.png'),full_page=True)
+        pre=context.request.get('http://127.0.0.1:8000/api/challenges/'+fixture['challenge_id']+'/report').json()
+        private_absent(pre);assert verify_export(pre)['valid']
+        assert pre['documents']['diagnosed']['recovery']['verification']['verified_status']=='VERIFIED'
+        page.get_by_role('button',name='Freeze prediction').click()
+        page.get_by_role('button',name='Reveal evaluator truth').click()
+        expect(page.get_by_role('heading',name='Evaluator truth · revealed after freeze')).to_be_visible()
         page.set_viewport_size({'width':390,'height':844});page.goto('http://127.0.0.1:8000/#/challenge')
         expect(page.get_by_label('Circuit family')).to_be_visible()
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
@@ -73,7 +90,7 @@ def main():
         assert not console,console
         browser.close()
     (root/'summary.json').write_text(json.dumps({'rows':rows,'page_errors':errors,'console_errors':console,
-        'keyboard_freeze':True,'refresh':True,'history_navigation':True,'pre_reveal_export':True,'mobile_no_overflow':True,'invalid_budget':True},indent=2))
+        'keyboard_freeze':True,'refresh':True,'history_navigation':True,'pre_reveal_export':True,'blind_verified_recovery':True,'mobile_no_overflow':True,'invalid_budget':True},indent=2))
 
 
 if __name__=='__main__':main()

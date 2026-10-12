@@ -36,6 +36,8 @@ def test_all_pre_reveal_routes_and_order(tmp_path,mode):
     assert client.post(url+'/freeze').status_code==409
     assert client.post(url+'/replay').status_code==409
     assert client.post(url+'/diagnose').status_code==200
+    diagnosed=client.get(url).json()
+    assert sum(r['executed_shots'] for r in diagnosed['measurements']+diagnosed['diagnostic_measurements'])==diagnosed['cost']['shots']
     for path in [url,'/api/challenges',url+'/report',url+'/verification','/api/experiments']:
         payload=client.get(path).json();assert_private_absent(payload)
     report=client.get(url+'/report').json()
@@ -134,3 +136,26 @@ def test_history_and_saved_view_reads_can_arrive_together(tmp_path,monkeypatch):
         release.set()
         assert history.result().status_code==200
         assert saved.result().status_code==200
+
+
+def test_execution_error_does_not_disclose_private_configuration(tmp_path,monkeypatch):
+    import qfault.challenge as challenge
+    def failed(*args):raise RuntimeError('private scenario=phase seed=999')
+    monkeypatch.setattr(challenge,'observe',failed)
+    response=TestClient(create_app(tmp_path)).post('/api/challenges',json={})
+    assert response.status_code==422
+    assert 'scenario=phase' not in response.text and 'seed=999' not in response.text
+
+
+def test_blind_recovery_projection_and_independent_verification(tmp_path):
+    client=TestClient(create_app(tmp_path))
+    r=start(client,seed=1,diagnostic_mode='simulator_assisted',recover=True)
+    url='/api/challenges/'+r['challenge_id']
+    diagnosed=client.post(url+'/diagnose').json()
+    assert_private_absent(diagnosed)
+    assert diagnosed['recovery']['verification']['verified_status']=='VERIFIED'
+    assert 'privileged simulator' in diagnosed['recovery']['capability_mode']
+    client.post(url+'/freeze')
+    revealed=client.post(url+'/reveal').json()
+    assert revealed['reveal']['evaluation_truth']['scenario']=='remove'
+    assert revealed['reveal']['comparison']['category_match']

@@ -1,0 +1,571 @@
+{
+  "scope": "Continued project development; user removed competition eligibility and presentation work",
+  "protocol_commit": "3dbf423e9d9b133e57738e7ee65236a5a75aa744",
+  "diagnostic_freeze_commit": "f7a832be853faa263280cc6fe08fddd2becc275f",
+  "public_main_verified": "ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3",
+  "local_main_preserved": "f36665616c2aee95a7b82e764adcf290b9e05468",
+  "branch": "hardening/blind-measurement",
+  "independent_install": {
+    "python": "CPython 3.13.2 isolated .local/repro-python; pip install -e .[aer,dev,browser] and pip check passed",
+    "frontend": "Independent archived f7a832b npm ci/check/build passed with own node_modules and real lockfile",
+    "node": "24.19.0",
+    "npm": "12.0.2",
+    "bridge_used": false,
+    "browser_assets": "Existing cached Chromium; no fresh download claim"
+  },
+  "python_tests": {
+    "passed": 122,
+    "warning": "Starlette/httpx deprecation",
+    "output": "artifacts/hardening-release/final-tests.txt"
+  },
+  "aer_conformance": {
+    "combinations": 9,
+    "summary": "artifacts/hardening-conformance-20261013/summary.json"
+  },
+  "frontend": {
+    "typescript": "passed final source",
+    "production_build": "passed final source",
+    "remaining_warning": "Existing Three.js chunk 548.54 kB",
+    "remote_ci": "Configured; not run on GitHub"
+  },
+  "scientific_reproduction": {
+    "reproductions": [
+      {
+        "name": "original",
+        "source": "benchmarks/results.json",
+        "reproduction": "artifacts/hardening-original-reproduction/summary.json",
+        "rows": 300,
+        "scientific_fields_match": true
+      },
+      {
+        "name": "final",
+        "source": "benchmarks/diagnostic-final.json",
+        "reproduction": "artifacts/hardening-final-reproduction/summary.json",
+        "rows": 340,
+        "scientific_fields_match": true
+      },
+      {
+        "name": "recovery",
+        "source": "benchmarks/recovery-stabilization.json",
+        "reproduction": "artifacts/hardening-recovery-reproduction/summary.json",
+        "rows": 12,
+        "scientific_fields_match": true
+      }
+    ],
+    "ignored_provenance_and_runtime_fields": [
+      "artifact_digest",
+      "artifact_path",
+      "created_at",
+      "experiment_id",
+      "export_sha256",
+      "implementation_digest",
+      "manifest_digest",
+      "runtime_seconds"
+    ],
+    "float_tolerance": 1e-12,
+    "frozen_summary_files_unchanged": 23
+  },
+  "evidence_transfer": {
+    "verified_files": 3049,
+    "source_summaries": [
+      "results.json",
+      "diagnostic-final.json",
+      "diagnostic-development.json",
+      "diagnostic-low-shot.json",
+      "recovery-stabilization.json",
+      "backend-conformance.json",
+      "submission-demo.json",
+      "measurement-boundary-holdout-20261013.json"
+    ],
+    "holdout_rows_verified": 208,
+    "holdout_budgets_and_shot_ledger": true
+  },
+  "holdout": {
+    "result": "benchmarks/measurement-boundary-holdout-20261013.json",
+    "policies": {
+      "measurement_complementary": {
+        "abstention": {
+          "n": 52,
+          "rate": 0.38461538461538464,
+          "successes": 20
+        },
+        "additional_shots": 159744,
+        "all_failure_cases": [
+          "bell2/missing_gate/1201",
+          "bell2/missing_gate/3253",
+          "bell2/relative_phase/1201",
+          "bell2/relative_phase/3253",
+          "bell2/readout_low/1201",
+          "bell2/readout_low/3253",
+          "bell2/gate_low/1201",
+          "bell2/gate_low/3253",
+          "bell2/gate_high/1201",
+          "bell2/gate_high/3253",
+          "bell2/mixed/1201",
+          "bell2/mixed/3253",
+          "ghz3/missing_gate/1201",
+          "ghz3/missing_gate/3253",
+          "ghz3/relative_phase/1201",
+          "ghz3/relative_phase/3253",
+          "ghz3/readout_low/1201",
+          "ghz3/readout_low/3253",
+          "ghz3/gate_low/1201",
+          "ghz3/gate_low/3253",
+          "ghz3/gate_high/1201",
+          "ghz3/gate_high/3253",
+          "ghz3/mixed/1201",
+          "ghz3/mixed/3253",
+          "qft3/missing_gate/1201",
+          "qft3/missing_gate/3253",
+          "qft3/relative_phase/1201",
+          "qft3/relative_phase/3253",
+          "qft3/readout_low/1201",
+          "qft3/readout_low/3253",
+          "qft3/gate_low/1201",
+          "qft3/gate_low/3253",
+          "qft3/gate_high/1201",
+          "qft3/gate_high/3253",
+          "qft3/mixed/1201",
+          "qft3/mixed/3253"
+        ],
+        "cases": 52,
+        "clean_false_diagnosis": {
+          "n": 10,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "confusion_matrix": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "MIXED_OR_AMBIGUOUS": 12
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "MIXED_OR_AMBIGUOUS": 2,
+            "NOISE_CONSISTENT_DEGRADATION": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "MIXED_OR_AMBIGUOUS": 6,
+            "NOISE_CONSISTENT_DEGRADATION": 6,
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 12
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 10
+          }
+        },
+        "evaluations": 208,
+        "executions": 208,
+        "per_class_recall": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "n": 12,
+            "rate": 0.0,
+            "successes": 0
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "n": 6,
+            "rate": 0.0,
+            "successes": 0
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "n": 24,
+            "rate": 0.25,
+            "successes": 6
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "n": 10,
+            "rate": 1.0,
+            "successes": 10
+          }
+        },
+        "runtime_seconds": 3.912781299906783,
+        "selective_accuracy": {
+          "n": 32,
+          "rate": 0.5,
+          "successes": 16
+        },
+        "shots": 372736,
+        "strict_attribution": {
+          "n": 52,
+          "rate": 0.3076923076923077,
+          "successes": 16
+        },
+        "supported_discrepancy": {
+          "n": 52,
+          "rate": 0.5769230769230769,
+          "successes": 30
+        }
+      },
+      "measurement_z": {
+        "abstention": {
+          "n": 52,
+          "rate": 0.15384615384615385,
+          "successes": 8
+        },
+        "additional_shots": 53248,
+        "all_failure_cases": [
+          "bell2/missing_gate/1201",
+          "bell2/missing_gate/3253",
+          "bell2/relative_phase/1201",
+          "bell2/relative_phase/3253",
+          "bell2/readout_low/1201",
+          "bell2/readout_low/3253",
+          "bell2/gate_low/1201",
+          "bell2/gate_low/3253",
+          "bell2/gate_high/1201",
+          "bell2/gate_high/3253",
+          "bell2/mixed/1201",
+          "bell2/mixed/3253",
+          "ghz3/missing_gate/1201",
+          "ghz3/missing_gate/3253",
+          "ghz3/relative_phase/1201",
+          "ghz3/relative_phase/3253",
+          "ghz3/readout_low/1201",
+          "ghz3/readout_low/3253",
+          "ghz3/gate_low/1201",
+          "ghz3/gate_low/3253",
+          "ghz3/gate_high/1201",
+          "ghz3/gate_high/3253",
+          "ghz3/mixed/1201",
+          "ghz3/mixed/3253",
+          "qft3/missing_gate/1201",
+          "qft3/missing_gate/3253",
+          "qft3/relative_phase/1201",
+          "qft3/relative_phase/3253",
+          "qft3/readout_low/1201",
+          "qft3/readout_low/3253",
+          "qft3/gate_low/1201",
+          "qft3/gate_low/3253",
+          "qft3/gate_high/1201",
+          "qft3/gate_high/3253",
+          "qft3/mixed/1201",
+          "qft3/mixed/3253"
+        ],
+        "cases": 52,
+        "clean_false_diagnosis": {
+          "n": 10,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "confusion_matrix": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "MIXED_OR_AMBIGUOUS": 4,
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 8
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "MIXED_OR_AMBIGUOUS": 2,
+            "NOISE_CONSISTENT_DEGRADATION": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "MIXED_OR_AMBIGUOUS": 2,
+            "NOISE_CONSISTENT_DEGRADATION": 6,
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 16
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 10
+          }
+        },
+        "evaluations": 156,
+        "executions": 156,
+        "per_class_recall": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "n": 12,
+            "rate": 0.0,
+            "successes": 0
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "n": 6,
+            "rate": 0.0,
+            "successes": 0
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "n": 24,
+            "rate": 0.25,
+            "successes": 6
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "n": 10,
+            "rate": 1.0,
+            "successes": 10
+          }
+        },
+        "runtime_seconds": 3.160738700069487,
+        "selective_accuracy": {
+          "n": 44,
+          "rate": 0.36363636363636365,
+          "successes": 16
+        },
+        "shots": 266240,
+        "strict_attribution": {
+          "n": 52,
+          "rate": 0.3076923076923077,
+          "successes": 16
+        },
+        "supported_discrepancy": {
+          "n": 52,
+          "rate": 0.2692307692307692,
+          "successes": 14
+        }
+      },
+      "simulator_fixed": {
+        "abstention": {
+          "n": 52,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "additional_shots": 53248,
+        "all_failure_cases": [
+          "bell2/readout_low/1201",
+          "bell2/readout_low/3253",
+          "bell2/gate_low/1201",
+          "bell2/gate_low/3253",
+          "bell2/gate_high/1201",
+          "bell2/gate_high/3253",
+          "bell2/mixed/1201",
+          "bell2/mixed/3253",
+          "ghz3/readout_low/1201",
+          "ghz3/readout_low/3253",
+          "ghz3/gate_low/1201",
+          "ghz3/gate_low/3253",
+          "qft3/readout_low/1201",
+          "qft3/readout_low/3253",
+          "qft3/readout_high/1201",
+          "qft3/readout_high/3253",
+          "qft3/gate_low/1201",
+          "qft3/gate_low/3253",
+          "qft3/gate_high/1201",
+          "qft3/gate_high/3253"
+        ],
+        "cases": 52,
+        "clean_false_diagnosis": {
+          "n": 10,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "confusion_matrix": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "LOGICAL_CIRCUIT_DEFECT": 12
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "LOGICAL_CIRCUIT_DEFECT": 2,
+            "MIXED_OR_AMBIGUOUS": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "NOISE_CONSISTENT_DEGRADATION": 6,
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 18
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 10
+          }
+        },
+        "evaluations": 208,
+        "executions": 156,
+        "per_class_recall": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "n": 12,
+            "rate": 1.0,
+            "successes": 12
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "n": 6,
+            "rate": 0.6666666666666666,
+            "successes": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "n": 24,
+            "rate": 0.25,
+            "successes": 6
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "n": 10,
+            "rate": 1.0,
+            "successes": 10
+          }
+        },
+        "runtime_seconds": 4.229626100015594,
+        "selective_accuracy": {
+          "n": 52,
+          "rate": 0.6153846153846154,
+          "successes": 32
+        },
+        "shots": 266240,
+        "strict_attribution": {
+          "n": 52,
+          "rate": 0.6153846153846154,
+          "successes": 32
+        },
+        "supported_discrepancy": {
+          "n": 52,
+          "rate": 0.2692307692307692,
+          "successes": 14
+        }
+      },
+      "simulator_phase": {
+        "abstention": {
+          "n": 52,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "additional_shots": 159744,
+        "all_failure_cases": [
+          "bell2/readout_low/1201",
+          "bell2/readout_low/3253",
+          "bell2/gate_low/1201",
+          "bell2/gate_low/3253",
+          "bell2/mixed/1201",
+          "bell2/mixed/3253",
+          "ghz3/readout_low/1201",
+          "ghz3/readout_low/3253",
+          "ghz3/gate_low/1201",
+          "ghz3/gate_low/3253",
+          "qft3/readout_low/1201",
+          "qft3/readout_low/3253",
+          "qft3/gate_low/1201",
+          "qft3/gate_low/3253"
+        ],
+        "cases": 52,
+        "clean_false_diagnosis": {
+          "n": 10,
+          "rate": 0.0,
+          "successes": 0
+        },
+        "confusion_matrix": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "LOGICAL_CIRCUIT_DEFECT": 12
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "LOGICAL_CIRCUIT_DEFECT": 2,
+            "MIXED_OR_AMBIGUOUS": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "NOISE_CONSISTENT_DEGRADATION": 12,
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 12
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "NO_SIGNIFICANT_FAILURE_DETECTED": 10
+          }
+        },
+        "evaluations": 238,
+        "executions": 208,
+        "per_class_recall": {
+          "LOGICAL_CIRCUIT_DEFECT": {
+            "n": 12,
+            "rate": 1.0,
+            "successes": 12
+          },
+          "MIXED_OR_AMBIGUOUS": {
+            "n": 6,
+            "rate": 0.6666666666666666,
+            "successes": 4
+          },
+          "NOISE_CONSISTENT_DEGRADATION": {
+            "n": 24,
+            "rate": 0.5,
+            "successes": 12
+          },
+          "NO_SIGNIFICANT_FAILURE_DETECTED": {
+            "n": 10,
+            "rate": 1.0,
+            "successes": 10
+          }
+        },
+        "runtime_seconds": 5.7138605000509415,
+        "selective_accuracy": {
+          "n": 52,
+          "rate": 0.7307692307692307,
+          "successes": 38
+        },
+        "shots": 372736,
+        "strict_attribution": {
+          "n": 52,
+          "rate": 0.7307692307692307,
+          "successes": 38
+        },
+        "supported_discrepancy": {
+          "n": 52,
+          "rate": 0.5769230769230769,
+          "successes": 30
+        }
+      }
+    },
+    "execution_errors": 0,
+    "wall_seconds": 25.69246990000829,
+    "retuned_after_holdout": false
+  },
+  "browser": {
+    "ordinary": "artifacts/hardening-browser-existing/summary.json",
+    "blind": {
+      "rows": [
+        {
+          "mode": "measurement_only",
+          "challenge_id": "challenge_8673abdd7ce44891b7df1b4622c25e9d",
+          "comparison": {
+            "attribution_abstained": true,
+            "category_match": false,
+            "frozen_prediction": "MIXED_OR_AMBIGUOUS"
+          },
+          "verification": {
+            "valid": true,
+            "errors": [],
+            "assurance": "Unsigned hash consistency and recorded ordering; not secrecy from a local server administrator or an external timestamp proof"
+          }
+        },
+        {
+          "mode": "simulator_assisted",
+          "challenge_id": "challenge_0e073ce8b3214b05898402f74fee84c1",
+          "comparison": {
+            "attribution_abstained": false,
+            "category_match": true,
+            "frozen_prediction": "LOGICAL_CIRCUIT_DEFECT"
+          },
+          "verification": {
+            "valid": true,
+            "errors": [],
+            "assurance": "Unsigned hash consistency and recorded ordering; not secrecy from a local server administrator or an external timestamp proof"
+          }
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [],
+      "keyboard_freeze": true,
+      "refresh": true,
+      "history_navigation": true,
+      "pre_reveal_export": true,
+      "blind_verified_recovery": true,
+      "mobile_no_overflow": true,
+      "invalid_budget": true
+    },
+    "responsive_landing": "artifacts/hardening-cinematic/summary.json",
+    "mobile_result": "artifacts/hardening-blind-browser-final-ledger/mobile-result.json",
+    "inspection": {
+      "http_status": 200,
+      "landing_webgl": true,
+      "workbench_loaded": true,
+      "experiment_id": "experiment_c6357ca2f6f648f48cb63ab1ac415628",
+      "backend": "aer",
+      "recovery": "VERIFIED",
+      "page_errors": [],
+      "console_errors": [],
+      "failed_requests": []
+    },
+    "screenshots_opened": true
+  },
+  "running_app": {
+    "url": "http://127.0.0.1:8000/",
+    "challenge_url": "http://127.0.0.1:8000/#/challenge",
+    "command": ".local/repro-python/Scripts/python.exe -m qfault serve",
+    "server_pid": 46112,
+    "terminal_session": 1448,
+    "http_status": 200
+  },
+  "no_push": true,
+  "no_collaborators": true,
+  "author_committer": "PrathamKapoor <prathamkapoor027@gmail.com>",
+  "limitations": [
+    "Local simulation, no hardware result",
+    "No measurement-only unique logical attribution or recovery",
+    "Configured low noise can be below measurement sensitivity",
+    "Known template parameters, not unseen architectures",
+    "Unsigned hashes, no administrator secrecy or external timestamp",
+    "Single-process local server; interrupted writes fail closed",
+    "No new judging recording per user scope",
+    "Remote CI unverified"
+  ]
+}

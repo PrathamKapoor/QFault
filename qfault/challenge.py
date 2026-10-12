@@ -14,6 +14,10 @@ from .evidence import canonical,digest,identifier,timestamp
 STEPS={'observed':'OBSERVED','diagnosed':'DIAGNOSED','freeze':'FROZEN','reveal':'REVEALED'}
 
 
+class ChallengeConflict(RuntimeError):
+    """Safe participant-facing state errors, never executor exception text."""
+
+
 class ChallengeRequest(Strict):
     family: Literal['bell','ghz','qft']='bell'
     n_qubits: int | None=Field(default=None,ge=2,le=5,strict=True)
@@ -106,6 +110,7 @@ class BlindChallenges:
         result={**docs['observed'],'state':bundle['state'],'diagnosis':None,'recovery':None}
         if 'diagnosed' in docs:
             result.update({k:docs['diagnosed'][k] for k in ('diagnosis','recovery','cost')})
+            result['diagnostic_measurements']=docs['diagnosed'].get('diagnostic_measurements',[])
         for key in ('freeze','reveal'):
             if key in docs:result[key]=docs[key]
         result['integrity']=verify_challenge_export(bundle)
@@ -136,7 +141,7 @@ class BlindChallenges:
         return self.get(cid)
 
     def diagnose(self,cid):
-        if self._checked(cid)['state']!='OBSERVED':raise RuntimeError('Diagnosis already completed; prediction cannot be replaced')
+        if self._checked(cid)['state']!='OBSERVED':raise ChallengeConflict('Diagnosis already completed; prediction cannot be replaced')
         folder=self.folder(cid);setup=json.loads((folder/'setup-private.json').read_bytes())
         result=investigate(RunRequest.model_validate(setup['request']),initial_records=setup['records'])
         eid=self.private.save(result)
@@ -147,13 +152,14 @@ class BlindChallenges:
         self._public(folder,'diagnosed',{'challenge_id':cid,'state':'DIAGNOSED','sequence':2,'created_at':timestamp(),
             'observation_digest':digest(self._checked(cid)['documents']['observed']),
             'engine_prediction_digest':result['prediction_digest'],
+            'diagnostic_measurements':[measurement_view(r) for r in result['executions'][2:]],
             'diagnosis':diagnosis_view(result['diagnosis']),'recovery':recovery_view(result['recovery']),'cost':cost})
         return self.get(cid)
 
     def freeze(self,cid):
         bundle=self._checked(cid)
         if bundle['state'] in {'FROZEN','REVEALED'}:return self.get(cid)
-        if bundle['state']!='DIAGNOSED':raise RuntimeError('Run diagnosis before freezing')
+        if bundle['state']!='DIAGNOSED':raise ChallengeConflict('Run diagnosis before freezing')
         self._public(self.folder(cid),'freeze',{'challenge_id':cid,'state':'FROZEN','sequence':3,
             'created_at':timestamp(),'prediction_digest':digest(bundle['documents']['diagnosed'])})
         return self.get(cid)
@@ -165,7 +171,7 @@ class BlindChallenges:
     def reveal(self,cid):
         bundle=self._checked(cid)
         if bundle['state']=='REVEALED':return self.get(cid)
-        if bundle['state']!='FROZEN':raise RuntimeError('Freeze the prediction before revealing evaluator truth')
+        if bundle['state']!='FROZEN':raise ChallengeConflict('Freeze the prediction before revealing evaluator truth')
         from .experiments import evaluator_truth
         exported=self._private_result(cid)
         if not exported['verification']['valid']:raise ValueError('private investigation integrity check failed')
@@ -186,7 +192,7 @@ class BlindChallenges:
         return self.get(cid)
 
     def replay(self,cid):
-        if self._checked(cid)['state']!='REVEALED':raise RuntimeError('Reveal before replaying the recorded configuration')
+        if self._checked(cid)['state']!='REVEALED':raise ChallengeConflict('Reveal before replaying the recorded configuration')
         setup=json.loads((self.folder(cid)/'setup-private.json').read_bytes())
         return self.start(ChallengeRequest.model_validate({**setup['challenge_request'],'seed':setup['selection_seed']}),replay_of=cid)
 

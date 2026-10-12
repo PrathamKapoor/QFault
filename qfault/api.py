@@ -22,15 +22,15 @@ def create_app(root=None):
     app=FastAPI(title="QFAULT",version="0.1.0")
     store=ArtifactStore(root or os.environ.get("QFAULT_ARTIFACTS","artifacts/investigations"))
     lock=threading.Lock()
-    from .challenge import BlindChallenges,ChallengeRequest
+    from .challenge import BlindChallenges,ChallengeRequest,ChallengeConflict
     challenges=BlindChallenges(store.root)
 
     def challenge_action(action,*args,wait=False):
         if not lock.acquire(blocking=wait):raise HTTPException(409,'An investigation is already running')
         try:return action(*args)
         except FileNotFoundError:raise HTTPException(404,'Challenge not found')
-        except RuntimeError as exc:raise HTTPException(409,str(exc))
-        except (ValueError,KeyError,OSError,ImportError):raise HTTPException(422,'Invalid, unavailable or corrupt challenge; no truth was disclosed')
+        except ChallengeConflict as exc:raise HTTPException(409,str(exc))
+        except (RuntimeError,ValueError,KeyError,OSError,ImportError):raise HTTPException(422,'Invalid, unavailable or corrupt challenge; no truth was disclosed')
         finally:lock.release()
 
     @app.post('/api/challenges',status_code=201)

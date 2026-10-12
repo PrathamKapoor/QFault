@@ -32,3 +32,76 @@ Only the public diagnosis/cost/observation chain is freeze-bound; private predic
 ## Verification before holdout
 
 119 tests, independent pip check, nine real Aer/reference conformance combinations, deterministic Aer Bell smoke, CLI Aer healthy/fault/phase/recovery/noise/abstention and tamper/restore checks, TypeScript/build, seven existing Aer browser workflows and both new blind browser capability flows pass. New browser evidence is under artifacts/hardening-blind-browser-final; desktop configuration/reveal and mobile form images were visually inspected. CI configuration is present but remote execution is unverified. Existing browser scripts contain a historical bridge limitation string; this invocation actually used .local/repro-python and reports its own installed Playwright version. Browser assets were already cached locally; this is not a fresh Chromium download claim.
+
+
+## Executed holdout and final boundaries
+
+The first and only untouched run used frozen implementation f7a832be853faa263280cc6fe08fddd2becc275f after protocol commit 3dbf423e9d9b133e57738e7ee65236a5a75aa744. All 208 runs completed. Measurement Z and complementary strict category scores are both 16/52; complementary detects more discrepancies (30/52 versus 14/52) and appropriately abstains more (20/52 versus 8/52). Simulator fixed/phase score 32/52 and 38/52. The stronger witness costs 40% more shots. See measurement-holdout-findings.md for all matrices, per-class recall, costs, failures and descriptive paired outcomes. No diagnostic/recovery tuning followed these results.
+
+Final boundary fixes redact executor errors (only ChallengeConflict supplies safe 409 text), bind transferred holdout manifest_sha256 references, and project all raw additional measurement counts through measurement_view. They change transport/evidence access, not diagnostic decisions. Participant counts can now reconcile every charged shot before reveal; actual hidden circuits, seeds and noise metadata remain private. Existing earlier challenge documents lacking the additional count projection still restore, without rewriting their frozen hashes.
+
+Simulator-assisted challenges use the existing phase policy; ordinary investigations retain their existing defaults. Blind runtime_seconds measures the resumed investigate call and excludes the earlier observe call; shot/execution accounting includes both. The normal, non-resumed holdout run-time measurements include initial execution. No exact GPU/FPS or hardware throughput claim is made.
+
+The app is a local, single-worker laboratory. In-process locking supplies coherent reads and rejects duplicate mutations; it is not a distributed transaction mechanism. Interrupted writes fail closed under manifest checks and may require manual record inspection. No authenticated secrecy, external time anchor, hardware execution, measured recovery selection, custom-circuit diagnosis or unseen-architecture generalization is implemented.
+
+The user explicitly removed eligibility/presentation work: no new submission, judging video or narration was produced. Existing CLI demo scripts were used only as real regression checks. No push occurred.
+
+
+## Changed files
+
+- `.github/workflows/checks.yml`
+- `.gitignore`
+- `README.md`
+- `benchmarks/development-hardening-verification.json`
+- `benchmarks/measurement-boundary-holdout-20261013.json`
+- `benchmarks/measurement-holdout-protocol.json`
+- `decisions.md`
+- `docs/measurement-holdout-findings.md`
+- `docs/publication-audit.md`
+- `docs/release-gates.md`
+- `docs/scientific-hardening.md`
+- `flow.md`
+- `handoff.md`
+- `qfault/api.py`
+- `qfault/challenge.py`
+- `qfault/cli.py`
+- `qfault/measurement.py`
+- `qfault/storage.py`
+- `qfault/workflow.py`
+- `scripts/aer_smoke.py`
+- `scripts/blind_challenge_e2e.py`
+- `scripts/measurement_holdout.py`
+- `scripts/package_submission.py`
+- `tests/test_blind_challenge.py`
+- `tests/test_holdout_protocol.py`
+- `tests/test_measurement_only.py`
+- `tests/test_transfer.py`
+- `web/src/challenge.css`
+- `web/src/components/BlindChallenge.tsx`
+- `web/src/components/landing/Landing.tsx`
+- `web/src/main.tsx`
+
+## Executed command index
+
+All Python commands below ran with .local/repro-python/Scripts/python.exe, a normal isolated CPython installation, not scripts/local.ps1.
+
+- python -m pip install -e ".[aer,dev,browser]"; python -m pip check
+- python -m pytest tests -q -p no:cacheprovider (122 passed)
+- python -m scripts.aer_smoke
+- python -m scripts.compare_backends --out artifacts/hardening-conformance-20261013
+- python -m scripts.submission_demo --out artifacts/hardening-cli-regression --backend aer (existing scientific regression only)
+- python -m qfault benchmark --out artifacts/hardening-original-reproduction
+- python -m qfault evaluate --split final --out artifacts/hardening-final-reproduction
+- python -m scripts.evaluate_recovery --out artifacts/hardening-recovery-reproduction
+- python -m scripts.measurement_holdout --out artifacts/measurement-boundary-holdout-20261013
+- npm.cmd --prefix .local/hardening-source/web ci; run check; run build (independent archived implementation)
+- npm.cmd --prefix web run check; npm.cmd --prefix web run build (final source)
+- python -m scripts.browser_e2e --out artifacts/hardening-browser-existing
+- python -m scripts.blind_challenge_e2e --out artifacts/hardening-blind-browser-final-ledger
+- python -m scripts.workspace_navigation_e2e --out artifacts/hardening-workspace-navigation
+- python -m scripts.cinematic_e2e --out artifacts/hardening-cinematic
+- python -m scripts.http_release_smoke --out artifacts/hardening-http
+- python -m scripts.inspection_smoke --out artifacts/hardening-final-inspection
+- python -m qfault verify-report artifacts/hardening-blind-browser-final/measurement_only-pre-reveal.json and measurement_only-revealed.json
+
+All new output directories are exclusive. Existing browser scripts have historical bridge strings in limitations; the actual invocation here used isolated CPython, installed Playwright 1.62.0 and cached Chromium 151.0.7922.34. Do not treat a cached browser as a fresh browser download. Source and evidence collector checks are separately recorded in artifacts/hardening-release, including all 3049 referenced raw files and unchanged historical hashes.

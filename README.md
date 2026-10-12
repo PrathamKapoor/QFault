@@ -8,7 +8,7 @@ The one-line inference is: **“This result disagrees with the contract; here is
 
 This is working local software with real Qiskit circuits, not a mock dashboard. All execution is simulated. No IBM hardware, paid service, external model, deployment or quantum-advantage claim is involved.
 
-Qiskit is central: native quantum circuits produce the sampled execution evidence, while Aer and the reference simulator execute the controlled noise scenarios. The judging demonstration follows healthy Bell preparation → hidden logical fault → evidence → bounded recovery → fresh verification, then noise/abstention and report integrity. See the [verified demo guide](docs/demo.md).
+Qiskit is central: native quantum circuits produce the sampled execution evidence, while Aer and the reference simulator execute the controlled noise scenarios. The investigation path connects observed discrepancy, evidence, bounded recovery and fresh verification. Blind Challenge withholds injected configuration until a persisted prediction freeze; ordinary controlled-scenario demonstrations remain labelled as such.
 
 In the frozen 68-case simulation evaluation, phase-sensitive testing classified 66/68 correctly versus fixed 58/68, using 40% more shots. Selected recovery verified 10/12 trials, with two inconclusive. These are finite controlled experiments, not hardware reliability guarantees. Exact attribution uses privileged simulator state; contracts cover a fixed input, witnesses are incomplete, and unsigned hashes establish consistency rather than truth.
 
@@ -17,6 +17,8 @@ In the frozen 68-case simulation evaluation, phase-sensitive testing classified 
 Open `/#/challenge` to execute a server-selected hidden scenario. Observe measurements, run diagnosis, persist a frozen prediction, then reveal evaluator truth. API responses, challenge history and downloads exclude hidden configuration before reveal. Saved `/#/challenges/<challenge_id>` routes restore the recorded state; revealed cases can be replayed deterministically. This is a controlled local interface, not secrecy from the server administrator.
 
 Measurement-only mode receives target-contract expectations, finite-shot counts and bounded complementary/calibration measurements. It cannot access the faulty state, injected metadata or evaluator truth. A discrepancy is not unique causal attribution: gate noise and logical defects can remain ambiguous. Recovery is disabled in this mode. Simulator-assisted diagnosis and recovery are explicitly labelled as privileged. See [capability and API boundaries](docs/scientific-hardening.md).
+
+The separately prespecified [measurement-boundary holdout](docs/measurement-holdout-findings.md) completed 208 real Aer runs. Complementary measurements improve discrepancy detection but retain causal ambiguity. Simulator-assisted phase diagnosis scores 38/52 versus fixed 32/52 at 40% more shots on this new set; this does not replace the frozen 68-case result. All failures and abstentions are retained.
 
 ## Implemented
 
@@ -35,7 +37,7 @@ The phase policy adds sampled X-parity or analytic Fourier-product-basis witness
 
 ## Normal installation path
 
-**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. On 2026-10-13 a fresh isolated CPython 3.13 environment installed `.[aer,dev,browser]` from `pyproject.toml`; tests and actual Aer conformance passed independently of the bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
+**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. On 2026-10-13 a fresh isolated CPython 3.13 environment installed `.[aer,dev,browser]` from `pyproject.toml`; tests and actual Aer conformance passed independently of the bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0 tested; current hardening checks use npm 12.0.2). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
 
 Clone the selected repository, then run from its root in PowerShell:
 
@@ -177,7 +179,7 @@ Artifact directories contain investigation.json, separate evaluator-only evaluat
 - Repair is bounded and incomplete; no successful candidate is guaranteed. Validation can reject an ideal repair under noise or remain inconclusive.
 - The small benchmark repeats fixed circuits at three seeds. Its Wilson intervals are descriptive; unseen-circuit generalization and statistical superiority are unestablished.
 - A crash during multi-file persistence can leave a partial directory; verification reports it incomplete. Mid-investigation failure checkpointing is limited to API failure records, not every intermediate quantum result.
-- The supported server is localhost-only, one process. Source/evidence transfer and frontend npm ci are verified; isolated Python installation remains unfinished. Browser coverage is limited to tested Chromium desktop/tablet/mobile sizes.
+- The supported server is localhost-only, one process. Source/evidence transfer, isolated CPython installation and independent frontend npm ci are verified. Browser coverage is limited to tested Chromium desktop/tablet/mobile sizes.
 
 ## Sources and documents
 
