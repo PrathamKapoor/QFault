@@ -1,3 +1,7 @@
+# Current project-development update (2026-10-13)
+
+Canonical repository: https://github.com/PrathamKapoor/QFault. Public main was verified at ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3; local main is preserved at f36665616c2aee95a7b82e764adcf290b9e05468. New work is isolated on hardening/blind-measurement with both snapshot tags retained. No push is authorized for this work. The user has dropped competition eligibility and presentation work; this is continued project development. Independent Python/npm installs have now succeeded; see scientific-hardening.md for current evidence. The dated audit below is historical.
+
 # Publication audit
 
 Assessment: 2026-10-11. Starting source:90503efe6576d1fcb080ef92b2c12c34f0fd050b, clean main. Product QFAULT; selected repository PrathamKapoor/QTrust. Publication is **FAILED / environment-blocked**: the connected GitHub account is PrathamKapoor, the destination is public with push/admin permission and no main branch returned, but local Git HTTPS cannot connect to github.com:443. The authorized normal git push -u origin main and subsequent fetch/ls-remote each exited128 because Git could not connect. Connector recheck still returns no main, and README retrieval returns404: This repository is empty. No remote SHA or upstream branch exists to verify. A normal push from a permitted environment and matching remote SHA remain required. No force push or reconstruction of historical commits is authorized.

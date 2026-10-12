@@ -1,3 +1,7 @@
+# Current development verification (2026-10-13)
+
+Independent CPython installation and a separate npm ci have now succeeded. The project-owned npm lockfile is legitimate and already existed locally. New scientific work is on hardening/blind-measurement; main and public snapshots are protected. CI configuration is supplied but has not been run on GitHub, and no passing badge is claimed. Competition eligibility/presentation are outside the current user scope. See scientific-hardening.md for capability boundaries and current evidence. The records below describe historical release assessments.
+
 # Verified release boundaries
 
 Assessment: 2026-10-11. Status: PARTIALLY READY. Current evidence supplements the preserved original benchmarks; it does not retroactively change them.

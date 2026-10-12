@@ -19,12 +19,16 @@ class RunRequest(Strict):
     max_evaluations: int = Field(default=384,ge=2,le=600,strict=True)
     backend: Literal["reference","aer"] = "reference"
     recover: bool = True
+    diagnostic_mode: Literal['simulator_assisted','measurement_only'] = 'simulator_assisted'
+    measurement_plan: Literal['z_only','complementary'] = 'complementary'
 
     @model_validator(mode="after")
     def valid(self):
         contract(self.family,self.n_qubits or (2 if self.family=="bell" else 3))
         if self.max_shots<2*self.shots: raise ValueError("budget must fund baseline and observation")
         if self.scenario=="angle" and self.family!="qft": raise ValueError("angle scenario requires QFT")
+        if self.diagnostic_mode=='measurement_only' and self.recover:
+            raise ValueError('measurement-only recovery is unsupported; set recover=False')
         return self
 
 
@@ -61,26 +65,56 @@ def scenario(request):
     return original,candidate,noise,truth
 
 
-def investigate(request):
-    start=perf_counter()
-    original,candidate,noise,truth=scenario(request)
+def observe(request,prepared=None):
+    """Execute the common baseline and observation, without running diagnosis."""
+    original,candidate,noise,_=prepared if prepared is not None else scenario(request)
     spec=contract(request.family,candidate.n_qubits)
-    experiment_id=identifier("experiment")
+    eid=identifier('experiment')
+    return [execute(original,Noise(),request.shots,request.seed,eid,spec.contract_id,backend=request.backend),
+            execute(candidate,noise,request.shots,request.seed,eid,spec.contract_id,backend=request.backend)]
+
+
+def investigate(request,*,initial_records=None,prepared=None):
+    start=perf_counter()
+    original,candidate,noise,truth=prepared if prepared is not None else scenario(request)
+    spec=contract(request.family,candidate.n_qubits)
+    records=list(initial_records) if initial_records is not None else observe(request,(original,candidate,noise,truth))
+    if len(records)!=2 or any(r['executed_shots']!=request.shots or r['contract_id']!=spec.contract_id for r in records):
+        raise ValueError('invalid initial observation records')
+    if records[0]['circuit_id']!=original.circuit_id or records[1]['circuit_id']!=candidate.circuit_id or records[0]['experiment_id']!=records[1]['experiment_id']:
+        raise ValueError('initial observations do not match this experiment')
+    experiment_id=records[0]['experiment_id']
     supervisor=Supervisor()
     budget=ExecutionBudget(request.max_shots,request.max_evaluations)
-    records=[]
     budget.reserve(request.shots,"baseline",resources(original))
-    records.append(execute(original,Noise(),request.shots,request.seed,experiment_id,spec.contract_id,backend=request.backend))
     supervisor.transition("BASELINED")
     budget.reserve(request.shots,"observation",resources(candidate))
-    records.append(execute(candidate,noise,request.shots,request.seed,experiment_id,spec.contract_id,backend=request.backend))
     supervisor.transition("OBSERVED")
     measured=EvidenceCollector.collect(records[-1],candidate.n_qubits)
-    access=DiagnosticAccess(candidate,noise,budget,request.seed,backend=request.backend)
-    diagnosis=DiagnosticAnalyst().analyze(candidate,spec,measured,access,request.policy)
-    for record in access.records:
+    if request.diagnostic_mode=='measurement_only':
+        from .measurement import MeasurementOnlyAnalyst,MeasurementPort
+        from .quantum import measured_circuit
+        diagnostic_records=[]
+        def sample(basis,shots):
+            if basis=='complementary':
+                circuit=measured_circuit(candidate,spec);offset=211
+            elif basis=='readout_control':
+                circuit=Circuit(n_qubits=candidate.n_qubits,gates=());offset=101
+            else: raise ValueError('unsupported measurement action')
+            budget.reserve(shots,'measured_'+basis,resources(circuit))
+            record=execute(circuit,noise,shots,(request.seed+offset)%2**32,backend=request.backend)
+            record['measurement_basis']=basis
+            diagnostic_records.append(record)
+            return EvidenceCollector.collect(record,candidate.n_qubits)
+        diagnosis=MeasurementOnlyAnalyst().analyze(spec,measured,MeasurementPort(sample,budget.can),request.measurement_plan)
+    else:
+        access=DiagnosticAccess(candidate,noise,budget,request.seed,backend=request.backend)
+        diagnosis=DiagnosticAnalyst().analyze(candidate,spec,measured,access,request.policy)
+        diagnosis['capability_mode']='simulator_assisted'
+        diagnostic_records=access.records
+    for record in diagnostic_records:
         record.update(experiment_id=experiment_id,contract_id=spec.contract_id)
-    records.extend(access.records)
+    records.extend(diagnostic_records)
     supervisor.transition("DIAGNOSED")
     recovery=None
     if request.recover and diagnosis["category"]=="LOGICAL_CIRCUIT_DEFECT":

@@ -22,6 +22,44 @@ def create_app(root=None):
     app=FastAPI(title="QFAULT",version="0.1.0")
     store=ArtifactStore(root or os.environ.get("QFAULT_ARTIFACTS","artifacts/investigations"))
     lock=threading.Lock()
+    from .challenge import BlindChallenges,ChallengeRequest
+    challenges=BlindChallenges(store.root)
+
+    def challenge_action(action,*args,wait=False):
+        if not lock.acquire(blocking=wait):raise HTTPException(409,'An investigation is already running')
+        try:return action(*args)
+        except FileNotFoundError:raise HTTPException(404,'Challenge not found')
+        except RuntimeError as exc:raise HTTPException(409,str(exc))
+        except (ValueError,KeyError,OSError,ImportError):raise HTTPException(422,'Invalid, unavailable or corrupt challenge; no truth was disclosed')
+        finally:lock.release()
+
+    @app.post('/api/challenges',status_code=201)
+    def start_challenge(request:ChallengeRequest):return challenge_action(challenges.start,request)
+
+    @app.get('/api/challenges')
+    def challenge_history():return challenge_action(challenges.list,wait=True)
+
+    @app.get('/api/challenges/{cid}')
+    def get_challenge(cid:str):return challenge_action(challenges.get,cid,wait=True)
+
+    @app.post('/api/challenges/{cid}/diagnose')
+    def diagnose_challenge(cid:str):return challenge_action(challenges.diagnose,cid)
+
+    @app.post('/api/challenges/{cid}/freeze')
+    def freeze_challenge(cid:str):return challenge_action(challenges.freeze,cid)
+
+    @app.post('/api/challenges/{cid}/reveal')
+    def reveal_challenge(cid:str):return challenge_action(challenges.reveal,cid)
+
+    @app.post('/api/challenges/{cid}/replay',status_code=201)
+    def replay_challenge(cid:str):return challenge_action(challenges.replay,cid)
+
+    @app.get('/api/challenges/{cid}/report')
+    def challenge_report(cid:str):
+        return JSONResponse(challenge_action(challenges.export,cid,wait=True),headers={'Content-Disposition':f'attachment; filename="{cid}.json"'})
+
+    @app.get('/api/challenges/{cid}/verification')
+    def challenge_verification(cid:str):return challenge_action(challenges.export,cid,wait=True)['verification']
 
     def existing(eid):
         try: return store.load(eid)

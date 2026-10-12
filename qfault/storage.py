@@ -106,6 +106,8 @@ class ArtifactStore:
 
 def verify_export(report):
     """Verify an exported bundle without trusting its embedded verification result."""
+    if isinstance(report,dict) and report.get('kind')=='blind_challenge':
+        return verify_challenge_export(report)
     errors=[]
     try:
         if not isinstance(report,dict): raise ValueError('report must be an object')
@@ -128,3 +130,31 @@ def verify_export(report):
     except (ValueError,TypeError,KeyError) as exc:
         errors.append('malformed report: '+type(exc).__name__)
     return {'valid':not errors,'errors':errors,'assurance':'Unsigned hash consistency relative to supplied manifest; no external trust anchor or scientific correctness proof'}
+
+
+def verify_challenge_export(report):
+    """Check participant documents and their freeze/reveal chain independently."""
+    errors=[]
+    steps={'observed':'OBSERVED','diagnosed':'DIAGNOSED','freeze':'FROZEN','reveal':'REVEALED'}
+    try:
+        if report['kind']!='blind_challenge' or report['manifest']['algorithm']!='sha256':raise ValueError('format')
+        state=report['state'];names=list(steps)[:list(steps.values()).index(state)+1]
+        docs=report['documents'];hashes=report['manifest']['artifacts']
+        if set(docs)!=set(names) or set(hashes)!=set(names):errors.append('challenge document membership mismatch')
+        previous=''
+        for sequence,name in enumerate(names,1):
+            value=docs[name]
+            if digest(value)!=hashes.get(name):errors.append('digest mismatch: '+name)
+            if value['challenge_id']!=report['challenge_id'] or value['sequence']!=sequence or value['state']!=steps[name]:errors.append('challenge ordering mismatch')
+            if value['created_at']<previous:errors.append('challenge timestamp ordering mismatch')
+            previous=value['created_at']
+        if 'diagnosed' in docs and docs['diagnosed']['observation_digest']!=digest(docs['observed']):errors.append('observation binding mismatch')
+        if 'freeze' in docs and docs['freeze']['prediction_digest']!=digest(docs['diagnosed']):errors.append('frozen prediction mismatch')
+        if 'reveal' in docs and docs['reveal']['prediction_digest']!=docs['freeze']['prediction_digest']:errors.append('reveal binding mismatch')
+        if 'revealed_investigation' in report:
+            if state!='REVEALED' or not verify_export(report['revealed_investigation'])['valid']:errors.append('invalid revealed investigation')
+            internal=report['revealed_investigation']['investigation']
+            if internal['prediction_digest']!=docs['diagnosed']['engine_prediction_digest'] or internal['prediction_digest']!=digest({'diagnosis':internal['diagnosis'],'recovery':internal['recovery']}):
+                errors.append('revealed prediction binding mismatch')
+    except (KeyError,TypeError,ValueError,AttributeError):errors.append('malformed challenge report')
+    return {'valid':not errors,'errors':errors,'assurance':'Unsigned hash consistency and recorded ordering; not secrecy from a local server administrator or an external timestamp proof'}

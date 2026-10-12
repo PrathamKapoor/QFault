@@ -1,6 +1,6 @@
 # QFAULT — Quantum Failure Analysis & Recovery Workbench
 
-Product: **QFAULT** · GitHub destination: **PrathamKapoor/QTrust**. This is separate from the historical Q-TRUST project cited below.
+Product: **QFAULT** · GitHub destination: **PrathamKapoor/QFault**. This is separate from the historical Q-TRUST project cited below.
 
 A Qiskit-based investigation workbench that executes simulated quantum circuits, evaluates declared behavioral contracts, diagnoses supported logical and noise-related failures, tests bounded repairs, and exports auditable experimental evidence.
 
@@ -11,6 +11,12 @@ This is working local software with real Qiskit circuits, not a mock dashboard. 
 Qiskit is central: native quantum circuits produce the sampled execution evidence, while Aer and the reference simulator execute the controlled noise scenarios. The judging demonstration follows healthy Bell preparation → hidden logical fault → evidence → bounded recovery → fresh verification, then noise/abstention and report integrity. See the [verified demo guide](docs/demo.md).
 
 In the frozen 68-case simulation evaluation, phase-sensitive testing classified 66/68 correctly versus fixed 58/68, using 40% more shots. Selected recovery verified 10/12 trials, with two inconclusive. These are finite controlled experiments, not hardware reliability guarantees. Exact attribution uses privileged simulator state; contracts cover a fixed input, witnesses are incomplete, and unsigned hashes establish consistency rather than truth.
+
+## Blind Challenge and diagnostic capabilities
+
+Open `/#/challenge` to execute a server-selected hidden scenario. Observe measurements, run diagnosis, persist a frozen prediction, then reveal evaluator truth. API responses, challenge history and downloads exclude hidden configuration before reveal. Saved `/#/challenges/<challenge_id>` routes restore the recorded state; revealed cases can be replayed deterministically. This is a controlled local interface, not secrecy from the server administrator.
+
+Measurement-only mode receives target-contract expectations, finite-shot counts and bounded complementary/calibration measurements. It cannot access the faulty state, injected metadata or evaluator truth. A discrepancy is not unique causal attribution: gate noise and logical defects can remain ambiguous. Recovery is disabled in this mode. Simulator-assisted diagnosis and recovery are explicitly labelled as privileged. See [capability and API boundaries](docs/scientific-hardening.md).
 
 ## Implemented
 
@@ -23,27 +29,27 @@ In the frozen 68-case simulation evaluation, phase-sensitive testing classified 
 - CLI, localhost FastAPI, React/TypeScript/Vite workbench, immutable JSON artifacts, hash verification, report export and append-only human review.
 - A six-scene live demo, tamper/restore demonstration and reproducible policy benchmark.
 
-**Qiskit 2.3.1 and Aer 0.17.2 execute locally.** Choose the reference backend (BasicSimulator / DensityMatrix-Kraus plus symmetric readout flips) or AerSimulator density_matrix with explicit gate/readout noise. Reports identify the actual backend; no requested Aer failure silently falls back. Reference remains default to preserve existing experiments. The original cp311 Aer mismatch was fixed by locating and executing a separate matching cp313 installation; see [environment audit](docs/environment-stabilization.md). Fresh isolated installation is still blocked.
+**Qiskit 2.3.1 and Aer 0.17.2 execute locally.** Choose the reference backend (BasicSimulator / DensityMatrix-Kraus plus symmetric readout flips) or AerSimulator density_matrix with explicit gate/readout noise. Reports identify the actual backend; no requested Aer failure silently falls back. Reference remains default to preserve existing experiments. The original cp311 Aer mismatch was fixed by locating and executing a separate matching cp313 installation; see [environment audit](docs/environment-stabilization.md). Independent CPython 3.13 installation now passes; see [scientific hardening](docs/scientific-hardening.md).
 
 The phase policy adds sampled X-parity or analytic Fourier-product-basis witnesses, with basis-gate noise and resource costs. Exact logical attribution still uses privileged simulation. Fixed remains the default policy; phase is an explicit higher-cost option.
 
 ## Normal installation path
 
-**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. Fresh isolated Python installation remains unverified; local quantum execution still uses the disclosed bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
+**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. On 2026-10-13 a fresh isolated CPython 3.13 environment installed `.[aer,dev,browser]` from `pyproject.toml`; tests and actual Aer conformance passed independently of the bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0/npm 11.17.0 tested). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
 
 Clone the selected repository, then run from its root in PowerShell:
 
 ~~~powershell
-git clone https://github.com/PrathamKapoor/QTrust.git
-cd QTrust
+git clone https://github.com/PrathamKapoor/QFault.git
+cd QFault
 ~~~
 
 Publication status is recorded in [the current audit](docs/publication-audit.md); these clone commands require an existing published `main`.
 
 ~~~powershell
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-browser-tested.txt
-.venv\Scripts\python -m pip install --no-deps -e .
+.venv\Scripts\python -m pip install -e ".[aer,dev,browser]"
+.venv\Scripts\python -m pip check
 npm.cmd --prefix web ci
 npm.cmd --prefix web run check
 npm.cmd --prefix web run build
@@ -52,13 +58,21 @@ npm.cmd --prefix web run build
 .venv\Scripts\python -m qfault serve
 ~~~
 
-The frontend commands above were executed successfully with the committed lockfile and QFAULT's own dependencies. Python installation commands remain the normal installation path, not a successful isolated installation claim. There is no declared lint command. Historical installation failures are retained in [release attempt evidence](docs/release-candidate.md); current frontend evidence is in [frontend verification](docs/frontend-verification.md).
+The frontend commands above were executed successfully with the committed lockfile and QFAULT's own dependencies. The same Python installation path has now succeeded in a new normal environment; historical failure records remain historical. There is no declared lint command. Historical installation failures are retained in [release attempt evidence](docs/release-candidate.md); current frontend evidence is in [frontend verification](docs/frontend-verification.md).
 
 Open http://127.0.0.1:8000/. In a second terminal install official browser assets with .venv\Scripts\python -m playwright install chromium, then run .venv\Scripts\python -m scripts.browser_e2e --out artifacts/fresh-browser. The requirements files pin the observed runtime/test/Aer/browser closure; they are not a verified isolated resolver result. Actual local success and installation failure are separated below.
 
 ## Existing-machine fallback
 
-This machine uses the explicitly unsupported Python/browser [development bridge](docs/local-development.md). Frontend builds now use project-owned npm dependencies. The Python bridge cannot establish fresh isolated Python installation.
+The historical Python/browser [development bridge](docs/local-development.md) remains documented as a fallback. Current checks use normal isolated CPython and project-owned npm dependencies; the bridge is not required.
+
+For an explicitly measurement-only ordinary run:
+
+~~~powershell
+python -m qfault run --scenario phase --backend aer --diagnostic-mode measurement_only --measurement-plan complementary --no-recovery
+~~~
+
+This controlled phase example should establish a complementary-basis discrepancy and retain causal ambiguity, not claim a unique repair.
 
 ## CLI workflow
 

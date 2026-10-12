@@ -53,6 +53,8 @@ def main(argv=None):
     p.add_argument("--max-shots",type=int,default=12000);p.add_argument("--max-evaluations",type=int,default=384)
     p.add_argument("--backend",choices=["reference","aer"],default="reference")
     p.add_argument("--no-recovery",action="store_true")
+    p.add_argument('--diagnostic-mode',choices=['simulator_assisted','measurement_only'],default='simulator_assisted')
+    p.add_argument('--measurement-plan',choices=['z_only','complementary'],default='complementary')
     for name in ["inspect","analyze","recovery","verify"]:
         p=sub.add_parser(name);p.add_argument("experiment_id")
     p=sub.add_parser("export");p.add_argument("experiment_id");p.add_argument("destination")
@@ -95,7 +97,8 @@ def main(argv=None):
             store=ArtifactStore(args.store)
             if args.command=="run":
                 result=investigate(RunRequest(family=args.family,n_qubits=args.qubits,scenario=args.scenario,policy=args.policy,
-                      shots=args.shots,seed=args.seed,max_shots=args.max_shots,max_evaluations=args.max_evaluations,recover=not args.no_recovery,backend=args.backend))
+                      shots=args.shots,seed=args.seed,max_shots=args.max_shots,max_evaluations=args.max_evaluations,recover=not args.no_recovery,backend=args.backend,
+                      diagnostic_mode=args.diagnostic_mode,measurement_plan=args.measurement_plan))
                 eid=store.save(result);emit(store.load(eid))
             elif args.command=="demo": emit(demo(store))
             elif args.command=="inspect": emit(store.load(args.experiment_id))
