@@ -1,0 +1,138 @@
+{
+ "backends": [
+  "reference (primary)",
+  "aer (replication)"
+ ],
+ "budgets": {
+  "ample": {
+   "alpha_total": 0.01,
+   "batch_shots": 1024,
+   "max_evaluations": 40,
+   "max_looks": 4,
+   "max_shots": 32768
+  },
+  "tight": {
+   "alpha_total": 0.01,
+   "batch_shots": 1024,
+   "max_evaluations": 24,
+   "max_looks": 4,
+   "max_shots": 12288
+  }
+ },
+ "case_counts": {
+  "development": 196,
+  "holdout": 414
+ },
+ "catalog_version": "pauli-expansion-v1",
+ "development_note": "Development split was run once (196 cases); no policy change followed it.",
+ "diagnostic_mode": "measurement_only",
+ "environments": {
+  "gate_noise": {
+   "depolarizing": 0.05,
+   "readout": 0.0
+  },
+  "ideal": {
+   "depolarizing": 0.0,
+   "readout": 0.0
+  },
+  "readout": {
+   "depolarizing": 0.0,
+   "readout": 0.04
+  }
+ },
+ "exclusions": "none; failed or aborted runs are reported",
+ "fidelity_tolerance": 0.2,
+ "frozen_before_holdout_execution": true,
+ "metrics": {
+  "confirmation": "NO_SIGNIFICANT_DISCREPANCY among clean_correct cases",
+  "cost": "shots, circuit evaluations, basis gates, local runtime",
+  "coverage": "effective fidelity inside [L,U]; defined only without gate noise",
+  "detection": "SIGNIFICANT_DISCREPANCY among logical_violation cases (ideal fidelity < 1 - tolerance)",
+  "false_alarm": "SIGNIFICANT_DISCREPANCY among clean_correct cases (ideal environment, ideal fidelity >= threshold)",
+  "paired": "per-case baseline minus adaptive_witness, bootstrap 95% (2000 resamples, seed 20261013)",
+  "width": "U - L of the final measured fidelity bound"
+ },
+ "policies": [
+  "fixed",
+  "random",
+  "complementary_schedule",
+  "coefficient_weighted",
+  "adaptive_witness"
+ ],
+ "policy_version": "witness-policy-v1",
+ "protocol": "target-witness-v1",
+ "source_sha256": {
+  "qfault/lab.py": "df1a13a68dd490a9d3d1a0925e819fbcf46b3a06bef405952947057f6cb4fa17",
+  "qfault/target.py": "17a08ea6c552ad73ff7431432992657fdfb974de26268f3c0dd6f7065fa831d3",
+  "qfault/target_corpus.py": "f7f83da14b8931defaed73fd61e63982ab5d5f41202fa637ac84d5e688a9f42f",
+  "scripts/evaluate_target.py": "d3f8a5c916b97ff16899e22a7ab99f092f0660d008acafa20584a7b254a189f1"
+ },
+ "splits": {
+  "development": {
+   "families": [
+    [
+     "ghz",
+     3
+    ],
+    [
+     "line_graph",
+     3
+    ],
+    [
+     "complex_product",
+     2
+    ],
+    [
+     "rotation_entangler",
+     2
+    ],
+    [
+     "inverse_echo",
+     2
+    ]
+   ],
+   "seeds": [
+    301,
+    302
+   ]
+  },
+  "holdout": {
+   "families": [
+    [
+     "ghz",
+     4
+    ],
+    [
+     "star_graph",
+     4
+    ],
+    [
+     "clifford_mix",
+     3
+    ],
+    [
+     "complex_product",
+     3
+    ],
+    [
+     "rotation_entangler",
+     3
+    ],
+    [
+     "inverse_echo",
+     3
+    ],
+    [
+     "line_graph",
+     2
+    ]
+   ],
+   "seeds": [
+    7101,
+    7102,
+    7103
+   ]
+  }
+ },
+ "stopping": "decision reached / look limit / shot or evaluation budget / no informative action (adaptive only)"
+}
