@@ -138,3 +138,8 @@ Before observation, `recover` now uses `ExecutionBudget.can` to reserve the orig
 ## Landing hero (D041)
 
 `App` renders `Landing` at `/`; `Landing` renders `MentalHero` (components/hero) with `instant` from sessionStorage `qfault-intro`. `MentalHero` sets `entry--live` on the first frame (letters assemble), `entry--hero-live` after 2000 ms (0 ms when instant or reduced motion), and lazily mounts `Grainient` and `NeuralStage`; `NeuralStage` calls `createNeuralSculpture` (falls back to `createSignalStructure` when WebGL is unavailable) and destroys it on unmount. Enter Workbench -> `Landing.enter` -> phase `reframe` (MentalHero `handover` -> `entry--split`, workspace-access panel) -> 470 ms -> phase `swap` (PixelSwap) -> `navigate('/workbench')`; reduced motion navigates immediately.
+
+
+## Local server startup (D042)
+
+`python -m qfault serve [--port N]` -> `cli.main` -> `api.main(port)`: probe-binds 127.0.0.1:port (exit 2 with a message if taken), prints URL and PID, then `uvicorn.run("qfault.api:app", host="127.0.0.1", port=port)`. `create_app` reads `QFAULT_ARTIFACTS` (default artifacts/investigations) and serves `web/dist` if present, otherwise `/` returns 503 with build instructions. CI and `scripts/release_smoke.py` use the same entry point.

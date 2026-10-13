@@ -1,5 +1,15 @@
 # QFAULT engineering handoff
 
+## Release engineering — 2026-10-13 (current)
+
+Local commits on `hardening/blind-measurement` above published `main` 24f4e61; **not pushed** (needs explicit authorization). See D042.
+
+Done: CI on checkout/setup-python/setup-node v7, ubuntu-24.04, read-only permissions, lock-based install, plus a browser-smoke job (unvalidated on GitHub until pushed); `requirements.lock` (uv-compiled, pip-consumed) verified by fresh installs on Windows 3.13.2 and Linux 3.13.15; product README with genuine screenshots (docs/media, scripts/capture_readme_media.py); docs/release-history.md; dated banners on historical docs; `qfault serve --port` with fail-fast port check and PID; committed frozen counterfactual summary; lab UI recovery wording corrected.
+
+Server: launch with `.local\release-audit-python\Scripts\python.exe -m qfault serve` from C:\Projects\QFF (or the README quick start). The shell-reported PID is the venv launcher; the printed PID is the interpreter. Cause of the earlier unexpected exit is undetermined (no crash events, no log).
+
+Next: after authorization, push and confirm both CI jobs on GitHub; then consider Ubuntu 26 runner testing.
+
 ## MENTAL.AI hero transplant — 2026-10-13 (current)
 
 Landing hero replaced by the MENTAL.AI entry composition transplanted from C:\Projects\DE (read-only, clean) with the authors' permission as confirmed by the owner; see docs/hero-transplant.md and D041. Science, API, benchmarks and schemas unchanged. Checkpoint tag before the change: checkpoint/pre-mental-hero-transplant (f7642ac).
