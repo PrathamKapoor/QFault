@@ -11,3 +11,14 @@
 .lab-timeline{display:grid;gap:.75rem;margin:0;padding-left:1.25rem}
 .lab pre{overflow-x:auto;max-width:100%}
 @media(max-width:640px){.lab-row,.lab-grid{grid-template-columns:1fr}}
+.lab-wrap{overflow-wrap:anywhere;word-break:break-word}
+.lab-warn{color:#b03a2e}
+.lab-privileged{border:1px dashed var(--accent);border-radius:6px;padding:.5rem .75rem}
+.lab .table-scroll{max-width:100%;overflow-x:auto}
+.lab td input{min-width:5.5rem;width:100%}
+.lab button,.lab .button,.lab select,.lab input{min-height:2.25rem}
+.lab .text-button{min-width:2.25rem}
+@media(max-width:480px){.lab-body{padding:.75rem}.lab-gates li{flex:1 1 100%;display:flex;gap:.25rem;align-items:center;justify-content:space-between}}
+.lab{overflow-wrap:anywhere}
+.lab-body>*{min-width:0}
+.lab table{overflow-wrap:normal;min-width:30rem}
