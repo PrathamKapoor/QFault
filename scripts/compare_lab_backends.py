@@ -30,10 +30,10 @@ def main():
         p["shots_equal"] += x["shots"] == y["shots"]
         p["shot_diff_sum"] += y["shots"] - x["shots"]
         p["runtime_a"] += x["runtime_seconds"]; p["runtime_b"] += y["runtime_seconds"]
-        if x["category"] != y["category"] or x["attribution"] != y["attribution"]:
+        if x["category"] != y["category"] or x.get("attribution") != y.get("attribution"):
             disagreements.append({"case_id": k[0], "policy": k[1], "truth_class": x["truth_class"],
-                                  "a": [x["category"], x["attribution"], x["shots"]],
-                                  "b": [y["category"], y["attribution"], y["shots"]]})
+                                  "a": [x["category"], x.get("attribution"), x["shots"]],
+                                  "b": [y["category"], y.get("attribution"), y["shots"]]})
     by_class = {}
     for d in disagreements:
         by_class[d["truth_class"]] = by_class.get(d["truth_class"], 0) + 1
