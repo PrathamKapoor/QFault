@@ -1,5 +1,17 @@
 # QFAULT engineering handoff
 
+## Custom circuit laboratory delivery — 2026-10-13 (current)
+
+Branch hardening/blind-measurement on top of cd897ac. Added `qfault/lab.py`, `qfault/lab_corpus.py`, API routes `/api/lab/*`, web `CustomLab` at `/#/lab`, `scripts/evaluate_lab.py`, `tests/test_lab.py`, `docs/custom-circuit-lab.md`, D036. Nothing pushed; commits are authored solely by PrathamKapoor <prathamkapoor027@gmail.com>.
+
+Tests: `.local/repro-python/Scripts/python.exe -m pytest -q` -> 176 passed (122 existing + 54 new). `npm run check` and `npm run build` pass. Real Aer HTTP investigations (faulty, correct, readout-noise cluster state) completed and verified; browser checks of editor, feasibility, result timeline and the legacy workbench were performed.
+
+Findings: adaptive planning ties the fixed and complementary schedules and only beats random selection (docs/custom-circuit-lab.md). 3/42 holdout faults are undetected; 12/45 correct circuits stay INSUFFICIENT at 10240 shots. Measurement-only never gives a unique logical attribution.
+
+Limits: simulation only; no target-state contract; no measured recovery; no gate localization; claims are witnesses, not correctness proofs.
+
+Next: target-state contracts with global-phase-safe witnesses; policies that can exploit differing measurement costs; Aer-backed holdout rerun. Running app: http://127.0.0.1:8000/ , custom route http://127.0.0.1:8000/#/lab , started with `.local/repro-python/Scripts/python.exe -m qfault serve` from C:\Projects\QFF.
+
 ## Scientific development delivery — 2026-10-13 (current)
 
 The user explicitly removed competition eligibility and presentation work. This is continuing project development. No new judging footage, narration, competition submission or remote push was produced. Workbench/landing/Pixel Swap and scientific benchmark artifacts are preserved; the only landing change is the canonical GitHub link.
