@@ -235,9 +235,17 @@ def create_app(root=None):
 app=create_app()
 
 
-def main():
-    import uvicorn
-    uvicorn.run("qfault.api:app",host="127.0.0.1",port=8000)
+def main(port=8000):
+    """Serve on localhost only. Fails fast with a clear message if the port is already taken."""
+    import socket,sys,uvicorn
+    probe=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+    try: probe.bind(("127.0.0.1",port))
+    except OSError:
+        print(f"QFAULT cannot start: 127.0.0.1:{port} is already in use. Stop the other server or pass --port.",file=sys.stderr)
+        raise SystemExit(2)
+    finally: probe.close()
+    print(f"QFAULT serving http://127.0.0.1:{port}/ (pid {__import__('os').getpid()}); Ctrl+C stops it.",flush=True)
+    uvicorn.run("qfault.api:app",host="127.0.0.1",port=port)
 
 
 if __name__=="__main__": main()

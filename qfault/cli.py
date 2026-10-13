@@ -64,7 +64,7 @@ def main(argv=None):
     p=sub.add_parser("benchmark");p.add_argument("--out",required=True)
     p=sub.add_parser("evaluate");p.add_argument("--out",required=True);p.add_argument("--split",choices=["development","final","low_shot_control"],required=True);p.add_argument("--config",default="configs/diagnostic-evaluation.json")
     p=sub.add_parser("verify-report");p.add_argument("report_json")
-    sub.add_parser("serve")
+    p=sub.add_parser("serve");p.add_argument("--port",type=int,default=8000,help="localhost port (default 8000)")
     args=parser.parse_args(argv)
     try:
         if args.command=="circuits":
@@ -77,7 +77,7 @@ def main(argv=None):
             return 0 if result["valid"] else 1
         elif args.command=="serve":
             from .api import main as serve
-            serve()
+            serve(args.port)
         elif args.command=="evaluate":
             from .experiments import compare_policies
             result=compare_policies(json.loads(Path(args.config).read_bytes()),args.out,args.split)
