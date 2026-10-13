@@ -26,7 +26,8 @@ def create_app(root=None):
     challenges=BlindChallenges(store.root)
 
     def challenge_action(action,*args,wait=False):
-        if not lock.acquire(blocking=wait):raise HTTPException(409,'An investigation is already running')
+        # Reads (history/report) hold the lock briefly; mutations wait for them rather than racing to 409.
+        if not lock.acquire(timeout=-1 if wait else 30):raise HTTPException(409,'An investigation is already running')
         try:return action(*args)
         except FileNotFoundError:raise HTTPException(404,'Challenge not found')
         except ChallengeConflict as exc:raise HTTPException(409,str(exc))

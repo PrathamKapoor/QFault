@@ -159,3 +159,17 @@ def test_blind_recovery_projection_and_independent_verification(tmp_path):
     revealed=client.post(url+'/reveal').json()
     assert revealed['reveal']['evaluation_truth']['scenario']=='remove'
     assert revealed['reveal']['comparison']['category_match']
+
+
+def test_start_waits_for_concurrent_history_read(tmp_path,monkeypatch):
+    """Regression: page-load history GET held the lock and made Start return 409 (flaky browser e2e)."""
+    import threading,time
+    from qfault.challenge import BlindChallenges
+    original=BlindChallenges.list
+    def slow(self):
+        time.sleep(1.0);return original(self)
+    monkeypatch.setattr(BlindChallenges,'list',slow)
+    client=TestClient(create_app(tmp_path))
+    reader=threading.Thread(target=lambda:client.get('/api/challenges'));reader.start();time.sleep(.2)
+    assert client.post('/api/challenges',json={'seed':5,'backend':'reference'}).status_code==201
+    reader.join()
