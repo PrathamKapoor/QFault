@@ -58,4 +58,8 @@ Qiskit is Apache-2.0 licensed; NumPy and SciPy use BSD licenses; React, TypeScri
 
 ## Cinematic frontend (2026-10-12)
 
-React Bits Hyperspeed, MoltenMetal, TechText and PixelSwap are adapted within QFAULT. Copyright (c) 2026 David Haz. They are governed by the retained MIT + Commons Clause terms in docs/licenses/react-bits.md, not the root MIT license alone. See docs/frontend-sources.md for exact revisions and modifications. Three.js and OGL are separately installed MIT dependencies. Mental.ai and Vantage informed original implementations; no unlicensed donor code was copied.
+React Bits PixelSwap (and, since D041, Grainient) are adapted within QFAULT; Hyperspeed, MoltenMetal and TechText were removed from the landing in D041. Copyright (c) 2026 David Haz. They are governed by the retained MIT + Commons Clause terms in docs/licenses/react-bits.md, not the root MIT license alone. See docs/frontend-sources.md for exact revisions and modifications. Three.js and OGL are separately installed MIT dependencies. Mental.ai and Vantage informed original implementations; no unlicensed donor code was copied.
+
+## MENTAL.AI landing hero (2026-10-13, D041)
+
+The landing hero in web/src/components/hero (neural.ts, studioEnv.ts, engine.ts, NeuralStage.tsx, Wordmark.tsx, motion.ts, entry.css, hero-base.css, MentalHero.tsx) is transplanted from the MENTAL.AI web client (https://github.com/shreshthgod/mental.ai), authored by shreshthgod and PrathamKapoor. The repository has no license file; it is reused in QFAULT with the permission of its authors, as confirmed by the QFAULT owner (a MENTAL.AI co-author) on 2026-10-13. This permission does not extend to third parties. Grainient inside that folder is React Bits code under docs/licenses/react-bits.md. Inter Variable font files (5.3.0) are redistributed under the SIL Open Font License 1.1 (web/src/components/hero/fonts/OFL-1.1-Inter.txt). Details: docs/hero-transplant.md.

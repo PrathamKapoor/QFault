@@ -1,5 +1,13 @@
 # QFAULT engineering handoff
 
+## MENTAL.AI hero transplant — 2026-10-13 (current)
+
+Landing hero replaced by the MENTAL.AI entry composition transplanted from C:\Projects\DE (read-only, clean) with the authors' permission as confirmed by the owner; see docs/hero-transplant.md and D041. Science, API, benchmarks and schemas unchanged. Checkpoint tag before the change: checkpoint/pre-mental-hero-transplant (f7642ac).
+
+Verification: `.local/release-audit-python/Scripts/python.exe -m pytest -q` 243 passed; `npm run check` passed; `npm run build` passed; browser suites browser_e2e, blind_challenge_e2e, workspace_navigation_e2e, lab_e2e (real Aer), counterfactual_e2e, cinematic_e2e (rewritten), landing_recovery_e2e (rewritten) all exit 0. Visual evidence in artifacts/hero-transplant (git-ignored): reference/, qfault/, qfault-before/, qfault-transition/, preserved/.
+
+Open: human visual approval; taller wordmark is an inherent consequence of six glyphs; the reference resting split layout is used only during Enter Workbench. Server: http://127.0.0.1:8000/ via `.local\release-audit-python\Scripts\python.exe -m qfault serve`.
+
 ## Target-state witness delivery — 2026-10-13 (current)
 
 Branch hardening/blind-measurement (local main f366656 unchanged; nothing pushed). Commits authored and committed by PrathamKapoor <prathamkapoor027@gmail.com>; `git -c safe.directory=C:/Projects/QFF` is still needed per command because .git is owned by another Windows account.
