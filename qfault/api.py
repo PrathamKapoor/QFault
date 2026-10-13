@@ -2,7 +2,7 @@
 import os
 import threading
 from pathlib import Path
-from fastapi import FastAPI,HTTPException
+from fastapi import Depends,FastAPI,HTTPException
 from fastapi.responses import FileResponse,JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
@@ -113,6 +113,51 @@ def create_app(root=None):
         path=Path(__file__).resolve().parents[1]/"benchmarks"/"diagnostic-final.json"
         if not path.exists(): raise HTTPException(404,"No frozen final evaluation exists")
         return FileResponse(path,media_type="application/json",filename="qfault-frozen-evaluation.json")
+
+    from .lab import LabRequest,investigate_lab,feasibility
+    from .lab_corpus import cases as lab_cases
+    from fastapi import Request
+
+    async def bounded(request:Request):
+        if int(request.headers.get("content-length") or 0)>65536: raise HTTPException(413,"Request body exceeds 64 KiB")
+
+    @app.get("/api/lab/examples")
+    def lab_examples():
+        picks={}
+        for c in lab_cases("development"):
+            if c["environment"]=="ideal" and c["modification"] in {"clean","remove_last"} and c["seed"]==101:
+                picks[c["family"]+"-"+c["modification"]]=c
+        return [{"id":k,"title":v["circuit"]["name"],"circuit":v["circuit"],"contract":v["contract"],
+                 "provenance":"Contract declared from the reference design by exact Qiskit evaluation, not from this candidate"}
+                for k,v in picks.items()]
+
+    @app.post("/api/lab/validate",dependencies=[Depends(bounded)])
+    def lab_validate(request:LabRequest):
+        return {"valid":True,"circuit_id":request.circuit.circuit_id,"executed_subject":request.circuit.subject().model_dump(mode="json"),
+                "circuit_diagram":str(request.circuit.subject().native().draw(output="text")),
+                "feasibility":feasibility(request.circuit,request.contract,request),
+                "conventions":"Bitstrings/Pauli strings use Qiskit order: leftmost character = highest qubit"}
+
+    def run_lab(request):
+        if not lock.acquire(blocking=False): raise HTTPException(409,"An investigation is already running")
+        try:
+            return store.load(store.save(investigate_lab(request)))
+        except (ValueError,RuntimeError,ImportError,OSError) as exc:
+            failure={"failure_id":identifier("failure"),"created_at":timestamp(),"configuration":request.model_dump(mode="json"),
+                     "execution_status":"FAILED","failure_reason":str(exc)}
+            failures=store.root/"failures";failures.mkdir(exist_ok=True)
+            (failures/(failure["failure_id"]+".json")).write_bytes(canonical(failure))
+            raise HTTPException(422,"Investigation failed; error preserved in local failure artifact")
+        finally: lock.release()
+
+    @app.post("/api/lab/investigations",status_code=201,dependencies=[Depends(bounded)])
+    def lab_investigate(request:LabRequest): return run_lab(request)
+
+    @app.post("/api/lab/investigations/{eid}/replay",status_code=201)
+    def lab_replay(eid:str):
+        original=existing(eid)
+        if original.get("investigation_kind")!="custom_circuit": raise HTTPException(422,"Not a custom-circuit investigation")
+        return run_lab(LabRequest.model_validate(original["replay"]["request"]))
 
     @app.get("/api/experiments")
     def list_experiments(): return store.list()
