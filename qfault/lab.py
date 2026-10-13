@@ -18,6 +18,8 @@ from scipy.optimize import linprog
 from .quantum import Strict, Gate, Circuit, Noise, execute, resources
 from .diagnostics import ExecutionBudget, EvidenceCollector, tv_radius
 from .evidence import digest, identifier, timestamp
+from .target import (TargetStateContract, TARGET_POLICIES, CATALOG_VERSION, POLICY_VERSION, catalog,
+                     bounds, decide, marginal_gains, fidelity)
 
 PROB_SUM_TOLERANCE = 1e-6
 CONTROL_TOLERANCE = 0.10
@@ -115,7 +117,7 @@ class DistributionContract(Strict):
         return self
 
 
-Contract = Annotated[Union[PauliContract, DistributionContract], Field(discriminator="kind")]
+Contract = Annotated[Union[PauliContract, DistributionContract, TargetStateContract], Field(discriminator="kind")]
 
 
 def _interval(o):
@@ -154,6 +156,9 @@ def check_pair(circuit, contract):
     if isinstance(contract, PauliContract):
         if len(contract.observables[0].pauli) != n:
             raise ValueError("Pauli observable length must equal n_qubits")
+    elif isinstance(contract, TargetStateContract):
+        if contract.n_qubits != n:
+            raise ValueError("target amplitude count must equal 2**n_qubits")
     elif len(next(iter(contract.expected_probabilities))) != n:
         raise ValueError("outcome key length must equal n_qubits")
 
@@ -162,22 +167,34 @@ def _setting_for(pauli, n):
     return "".join(c for c in pauli)  # same Qiskit order; I means unconstrained
 
 
+def group_paulis(labels):
+    """Greedy qubit-wise-commuting grouping in the given order. Returns [(pattern, [labels])]."""
+    groups = []
+    for need in labels:
+        for g in groups:
+            if all(a == "*" or b == "I" or a == b for a, b in zip(g[0], need)):
+                g[0] = "".join(b if a == "*" and b != "I" else a for a, b in zip(g[0], need))
+                g[1].append(need)
+                break
+        else:
+            groups.append(["".join("*" if c == "I" else c for c in need), [need]])
+    return groups
+
+
 def plan(n, contract):
     """Claims and qubit-wise-commuting measurement groups (greedy, declared order)."""
     claims, groups = [], []
-    if isinstance(contract, PauliContract):
+    if isinstance(contract, TargetStateContract):
+        cat = catalog(contract.amplitudes)
+        claims.append({"claim_id": "target:fidelity", "kind": "target_fidelity", "threshold": contract.threshold,
+                       "tolerance": contract.fidelity_tolerance})
+        groups = [{"pattern": pat, "claims": [], "terms": members} for pat, members in group_paulis([t for t, _ in cat["terms"]])]
+    elif isinstance(contract, PauliContract):
         for o in contract.observables:
             claims.append({"claim_id": "obs:" + o.pauli, "kind": "pauli_expectation", "pauli": o.pauli,
                            "expected": o.expected, "tolerance": o.tolerance})
-            need = _setting_for(o.pauli, n)
-            for g in groups:
-                if all(a == "*" or b == "I" or a == b for a, b in zip(g["pattern"], need)):
-                    g["pattern"] = "".join(b if a == "*" and b != "I" else a for a, b in zip(g["pattern"], need))
-                    g["claims"].append(claims[-1]["claim_id"])
-                    break
-            else:
-                groups.append({"pattern": "".join("*" if c == "I" else c for c in need),
-                               "claims": [claims[-1]["claim_id"]]})
+        groups = [{"pattern": pat, "claims": ["obs:" + m for m in members]}
+                  for pat, members in group_paulis([_setting_for(o.pauli, n) for o in contract.observables])]
     else:
         claims.append({"claim_id": "dist:" + contract.basis, "kind": "distribution", "basis": contract.basis,
                        "tolerance": contract.tolerance})
@@ -195,6 +212,8 @@ def alpha_slot(n_claims, looks, alpha_total):
 
 
 def feasibility(circuit, contract, request):
+    if isinstance(contract, TargetStateContract):
+        return target_feasibility(contract, request)
     claims, groups = plan(circuit.n_qubits, contract)
     slot = alpha_slot(len(claims), request.max_looks, request.alpha_total)
     claim_shots = request.max_shots - request.batch_shots
@@ -226,7 +245,8 @@ class LabRequest(Strict):
     circuit: CustomCircuit
     contract: Contract
     diagnostic_mode: Literal["measurement_only", "simulator_assisted"] = "measurement_only"
-    policy: Literal["adaptive", "fixed", "random", "complementary_schedule"] = "adaptive"
+    policy: Literal["adaptive", "fixed", "random", "complementary_schedule", "adaptive_witness",
+                    "coefficient_weighted"] = "adaptive"
     backend: Literal["reference", "aer"] = "reference"
     environment: Noise = Noise()
     batch_shots: int = Field(default=1024, ge=64, le=10000, strict=True)
@@ -236,9 +256,23 @@ class LabRequest(Strict):
     alpha_total: float = Field(default=0.01, gt=1e-6, le=0.1)
     seed: int = Field(default=42, ge=0, lt=2 ** 32, strict=True)
 
+    @model_validator(mode="before")
+    @classmethod
+    def default_policy(cls, data):
+        if isinstance(data, dict) and "policy" not in data:
+            kind = data.get("contract", {}).get("kind") if isinstance(data.get("contract"), dict) else None
+            if kind == "target_state":
+                data = {**data, "policy": "adaptive_witness"}
+        return data
+
     @model_validator(mode="after")
     def valid(self):
         check_pair(self.circuit, self.contract)
+        target = isinstance(self.contract, TargetStateContract)
+        if target and self.policy not in TARGET_POLICIES:
+            raise ValueError(f"target_state contracts support policies {TARGET_POLICIES}")
+        if not target and self.policy in {"adaptive_witness", "coefficient_weighted"}:
+            raise ValueError("witness policies require a target_state contract")
         if self.max_shots < 2 * self.batch_shots:
             raise ValueError("budget must fund one claim batch and one reserved control batch")
         return self
@@ -248,6 +282,8 @@ def exact_expectations(circuit, contract):
     """PRIVILEGED simulator operation: exact ideal values of the declared claims."""
     state = Statevector.from_instruction(circuit.subject().native())
     n = circuit.n_qubits
+    if isinstance(contract, TargetStateContract):
+        return {"target:fidelity": fidelity(contract.vector(), state)}
     if isinstance(contract, PauliContract):
         return {"obs:" + o.pauli: float(np.real(state.expectation_value(Pauli(o.pauli)))) for o in contract.observables}
     rotated = state.evolve(basis_rotation(contract.basis * n, n).native())
@@ -403,8 +439,157 @@ class _Port:
         record.update(measurement_setting=setting or "readout_control", lab_label=label)
         self._records.append(record)
         evidence = EvidenceCollector.collect(record, circuit.n_qubits)
-        return {"counts": evidence.counts, "shots": evidence.shots, "execution_id": evidence.execution_id,
+        return {"counts": evidence.counts, "shots": evidence.shots, "execution_id": evidence.execution_id, "seed": seed,
                 "backend": record["backend_name"]}
+
+
+def _target_groups(contract, policy):
+    cat = catalog(contract.amplitudes)
+    _, groups = plan(cat["n"], contract)
+    weight = dict(cat["terms"])
+    for g in groups:
+        g["coefficient_mass"] = sum(abs(weight[t]) for t in g["terms"])
+    order = list(groups)
+    if policy == "coefficient_weighted":
+        order.sort(key=lambda g: -g["coefficient_mass"])
+    elif policy == "complementary_schedule":
+        order.sort(key=lambda g: sum(c != "Z" for c in g["setting"]))
+    return cat, groups, order
+
+
+def target_feasibility(contract, request):
+    cat, groups, order = _target_groups(contract, "coefficient_weighted")
+    slot = alpha_slot(len(cat["terms"]), request.max_looks, request.alpha_total)
+    claim_shots = request.max_shots - request.batch_shots
+    affordable = max(0, min(claim_shots // request.batch_shots, request.max_evaluations - 1))
+    looks = {g["group_id"]: 0 for g in groups}
+    for _ in range(affordable):  # best case: round robin, heaviest groups first, all estimates at target
+        open_ = [g for g in order if looks[g["group_id"]] < request.max_looks]
+        if not open_:
+            break
+        looks[min(open_, key=lambda g: looks[g["group_id"]])["group_id"]] += 1
+    target = dict(cat["terms"])
+    est, rad = {}, {}
+    for g in groups:
+        if looks[g["group_id"]]:
+            for t in g["terms"]:
+                est[t], rad[t] = target[t], hoeffding_radius(looks[g["group_id"]] * request.batch_shots, slot)
+    L, U = bounds(cat, est, rad)
+    ok = L >= contract.threshold
+    return {"claims": [{"claim_id": "target:fidelity", "kind": "target_fidelity", "threshold": contract.threshold,
+                        "tolerance": contract.fidelity_tolerance, "supported": True, "best_case_lower": L,
+                        "best_case_radius": None, "confirmable_within_tolerance": ok,
+                        "note": None if ok else "Even if every affordable witness matched the target exactly, the "
+                        "measured lower bound could not reach the threshold; only violations are detectable."}],
+            "groups": groups, "alpha_per_interval": slot, "alpha_total": request.alpha_total,
+            "claim_shots_available": claim_shots, "reserved_control_shots": request.batch_shots,
+            "catalog": {"version": CATALOG_VERSION, "terms": len(cat["terms"]), "groups": len(groups),
+                        "stabilizer_target": cat["stabilizer"], "omitted_terms": cat["omitted_count"],
+                        "omitted_abs_bound": cat["omitted_abs_bound"], "looks_affordable": affordable},
+            "limitations": ["Measured witnesses bound fidelity; they do not certify the state unless the lower bound clears the threshold",
+                            "Bounds assume i.i.d. shots and count readout/basis-gate noise as part of the observed state",
+                            "Violations do not identify a faulty gate or distinguish logic from noise",
+                            "One declared input state only; not unitary equivalence"]}
+
+
+class _FidelityClaim:
+    def __init__(self, contract):
+        self.claim = {"claim_id": "target:fidelity", "kind": "target_fidelity", "threshold": contract.threshold,
+                      "tolerance": contract.fidelity_tolerance}
+        self.status, self.lower, self.upper, self.shots, self.looks = "UNRESOLVED", 0., 1., 0, 0
+        self.terms_measured, self.terms_total = 0, 0
+
+    @property
+    def resolved(self):
+        return self.status != "UNRESOLVED"
+
+    def report(self):
+        return {**self.claim, "status": self.status, "estimate": None, "uncertainty_radius": None,
+                "interval": [self.lower, self.upper], "lower": self.lower, "upper": self.upper,
+                "shots": self.shots, "looks": self.looks, "terms_measured": self.terms_measured,
+                "terms_total": self.terms_total, "evidence_label": "MEASUREMENT_DERIVED_WITNESS"}
+
+
+def run_witness_policy(contract, contract_id, port, request):
+    """Select witness groups for a target-state claim. Receives the target and a measurement port only."""
+    from .target import point_estimate
+    cat, groups, order = _target_groups(contract, request.policy)
+    thr, b = contract.threshold, request.batch_shots
+    slot = alpha_slot(len(cat["terms"]), request.max_looks, request.alpha_total)
+    counts = {g["group_id"]: {} for g in groups}
+    shots = {g["group_id"]: 0 for g in groups}
+    looks = {g["group_id"]: 0 for g in groups}
+    est, rad = {}, {}
+    claim = _FidelityClaim(contract); claim.terms_total = len(cat["terms"])
+    cap_shots, cap_evals = request.max_shots - b, request.max_evaluations - 1
+    rng = random.Random(request.seed ^ 0xA11CE)
+    ledger, stop = [], None
+    while True:
+        claim.lower, claim.upper = bounds(cat, est, rad)
+        claim.status = decide(claim.lower, claim.upper, thr)
+        if claim.resolved:
+            stop = ("ALL_CLAIMS_RESOLVED", "The measured fidelity bound cleared or fell below the threshold at the corrected error level."); break
+        open_groups = [g for g in order if looks[g["group_id"]] < request.max_looks]
+        if not open_groups:
+            stop = ("LOOK_LIMIT_REACHED", "Every witness group has used its prespecified looks."); break
+        if port.used_shots + b > cap_shots:
+            stop = ("SHOT_BUDGET_EXHAUSTED", "Remaining shots (after the reserved control batch) cannot fund another batch; not scientific certainty."); break
+        if port.used_evaluations + 1 > cap_evals:
+            stop = ("EVALUATION_BUDGET_EXHAUSTED", "No circuit evaluation remains after the reserved control."); break
+        if request.policy == "adaptive_witness":
+            radii = [hoeffding_radius(shots[g["group_id"]] + b, slot) for g in open_groups]
+            gains, direction = marginal_gains(cat, est, rad, [g["terms"] for g in open_groups], radii, thr)
+            scored = [((p, q, -g["basis_gates"], -i), g, p, q) for i, (g, (p, q)) in enumerate(zip(open_groups, gains))]
+            key, pick, primary, secondary = max(scored, key=lambda s: s[0])
+            if primary <= 1e-12 and secondary <= 1e-12:
+                stop = ("NO_INFORMATIVE_ACTION", "No admissible witness is projected to tighten the decision-relevant bound."); break
+            reason = (f"Plug-in fidelity {point_estimate(cat, est):.3f} vs threshold {thr:.3f}: aiming to {direction}. "
+                      f"Projected bound improvement {primary:.4f} (other side {secondary:.4f}) over {len(open_groups)} open group(s); "
+                      "heuristic proxy, not information gain.")
+        elif request.policy == "random":
+            pick = rng.choice(open_groups)
+            reason = "Uniform random choice among groups with remaining looks, independent of evidence."
+        else:
+            pick = min(open_groups, key=lambda g: looks[g["group_id"]])
+            reason = {"fixed": "Predetermined round-robin in catalog order.",
+                      "coefficient_weighted": "Predetermined round-robin, largest target coefficient mass first.",
+                      "complementary_schedule": "Predetermined round-robin, fewest non-Z basis letters first."}[request.policy] + " Independent of evidence."
+        gid = pick["group_id"]
+        ev = port.measure(pick["setting"], b, "witness:" + gid)
+        looks[gid] += 1
+        shots[gid] += ev["shots"]
+        for k, v in ev["counts"].items():
+            counts[gid][k] = counts[gid].get(k, 0) + v
+        for t in pick["terms"]:
+            est[t] = parity_expectation(counts[gid], shots[gid], t)
+            rad[t] = hoeffding_radius(shots[gid], slot)
+        claim.shots += ev["shots"]; claim.looks += 1; claim.terms_measured = len(est)
+        L, U = bounds(cat, est, rad)
+        target = dict(cat["terms"])
+        ledger.append({"action_id": f"action{len(ledger)}", "execution_id": ev["execution_id"], "seed": ev["seed"],
+                       "target_contract_id": contract_id,
+                       "measurement_specification": {"group_id": gid, "setting": pick["setting"], "claims": ["target:fidelity"],
+                                                      "pauli_terms": pick["terms"], "look": looks[gid]},
+                       "reason_selected": reason, "selection_policy": request.policy, "policy_version": POLICY_VERSION,
+                       "shots_requested": b, "shots_executed": ev["shots"], "circuit_evaluations": 1,
+                       "basis_gates": pick["basis_gates"], "execution_backend": ev["backend"],
+                       "derived_expectations": {t: {"estimate": est[t], "radius": rad[t], "target": target[t]} for t in pick["terms"]},
+                       "observed_result": {"target:fidelity": {"status": decide(L, U, thr), "estimate": None, "bounds": [L, U]}},
+                       "uncertainty": {"target:fidelity": (U - L) / 2},
+                       "remaining_budget": {"shots": request.max_shots - port.used_shots,
+                                            "evaluations": request.max_evaluations - port.used_evaluations}})
+    discrepancies = [{"pauli": t, "estimate": est[t], "radius": rad[t], "target": a}
+                     for t, a in cat["terms"] if t in est and abs(est[t] - a) - rad[t] > 0]
+    evidence = {"label": "MEASUREMENT_DERIVED_WITNESS", "fidelity_bound": [claim.lower, claim.upper],
+                "threshold": thr, "status": claim.status, "catalog_version": CATALOG_VERSION,
+                "terms_measured": len(est), "terms_total": len(cat["terms"]), "stabilizer_target": cat["stabilizer"],
+                "unmeasured_terms": [t for t, _ in cat["terms"] if t not in est][:64],
+                "witness_discrepancies": discrepancies,
+                "witness_discrepancy_note": "A measured Pauli term outside its interval departs from the ideal target; the "
+                                            "fidelity tolerance may still permit it. Only the bound decides the contract.",
+                "bound_method": "intersection of Pauli-expansion (|b|<=1 and purity Cauchy-Schwarz), stabilizer-projector "
+                                "(stabilizer targets) and Fuchs-van de Graaf bounds; simultaneous on the union-bound coverage event"}
+    return {"target:fidelity": claim}, ledger, stop, slot, evidence
 
 
 def investigate_lab(request, truth=None):
@@ -418,7 +603,13 @@ def investigate_lab(request, truth=None):
     budget = ExecutionBudget(request.max_shots, request.max_evaluations)
     records = []
     port = _Port(subject, request.environment, budget, request.backend, request.seed, records)
-    states, ledger, stop, slot = run_policy(claims, groups, n, expected, port, request)
+    contract_id = "contract_" + digest(request.contract.model_dump(mode="json"))[:20]
+    is_target = isinstance(contract, TargetStateContract)
+    target_evidence = None
+    if is_target:
+        states, ledger, stop, slot, target_evidence = run_witness_policy(contract, contract_id, port, request)
+    else:
+        states, ledger, stop, slot = run_policy(claims, groups, n, expected, port, request)
     violated = [s for s in states.values() if s.status == "VIOLATED"]
     unresolved = [s for s in states.values() if not s.resolved]
     control = None
@@ -436,6 +627,14 @@ def investigate_lab(request, truth=None):
         exact = exact_expectations(circuit, contract)
         privileged.append({"operation": "exact_expectations", "method": "Qiskit Statevector of the submitted circuit",
                            "note": "Simulator-only; not obtainable by sampling or on hardware"})
+        if is_target:
+            from .quantum import noisy_density
+            rho = noisy_density(subject, Noise(depolarizing=request.environment.depolarizing))
+            target_evidence["exact"] = {"label": "SIMULATOR_ASSISTED_EXACT_STATE",
+                "ideal_fidelity": exact["target:fidelity"],
+                "gate_noise_state_fidelity": fidelity(contract.vector(), rho),
+                "note": "Privileged. Ideal = noiseless submitted circuit. Gate-noise state applies the configured "
+                        "depolarizing channel per gate; readout error is not a state property and is excluded."}
     # --- assessment: detection, attribution, localization, recovery are separate verdicts
     if violated:
         category = "SIGNIFICANT_DISCREPANCY"
@@ -451,6 +650,10 @@ def investigate_lab(request, truth=None):
         ideal_violation = []
         for c in claims:
             v = exact[c["claim_id"]]
+            if c["kind"] == "target_fidelity":
+                if v < c["threshold"]:
+                    ideal_violation.append(c["claim_id"])
+                continue
             d = v if c["kind"] == "distribution" else abs(v - c["expected"])
             if d > c["tolerance"]:
                 ideal_violation.append(c["claim_id"])
@@ -491,13 +694,16 @@ def investigate_lab(request, truth=None):
               "circuit": circuit.model_dump(mode="json"), "circuit_id": circuit.circuit_id,
               "executed_subject": subject.model_dump(mode="json"),
               "circuit_diagram": str(subject.native().draw(output="text")),
-              "contract": {**request.contract.model_dump(mode="json"), "family": "custom",
-                           "contract_id": "contract_" + digest(request.contract.model_dump(mode="json"))[:20]},
+              "contract": {**request.contract.model_dump(mode="json"), "family": "custom", "contract_id": contract_id},
+              "target_evidence": target_evidence,
               "feasibility": feas, "claims": [s.report() for s in states.values()],
               "action_ledger": ledger, "executions": records, "diagnosis": diagnosis, "recovery": recovery,
               "privileged_operations": privileged, "cost": cost,
-              "statistical_design": {"method": "Hoeffding (Pauli) / Weissman TV (distribution) intervals on a prespecified "
-                                     "per-group shot grid {b,2b,...,Kb}; union bound over claims x looks plus one control",
+              "statistical_design": {"method": ("Hoeffding intervals for every catalog Pauli term on a prespecified per-group shot grid "
+                                     "{b,2b,...,Kb}; union bound over terms x looks plus one control; fidelity bounds are "
+                                     "deterministic functions of those intervals" if is_target else
+                                     "Hoeffding (Pauli) / Weissman TV (distribution) intervals on a prespecified "
+                                     "per-group shot grid {b,2b,...,Kb}; union bound over claims x looks plus one control"),
                                      "alpha_total": request.alpha_total, "alpha_per_interval": slot,
                                      "looks_per_group": request.max_looks, "batch_shots": request.batch_shots,
                                      "validity": "Error rate for any false violation/confirmation <= alpha_total under i.i.d. shots; "
