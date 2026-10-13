@@ -22,7 +22,7 @@ Before any observation, reserve two complete fresh schedules. Screening cannot s
 
 Fresh verification requires **both** candidate upper loss ≤ 1 and original lower loss > candidate upper loss. A definite violation or worsening rejects; otherwise abstain. Contradictory intervals cannot verify. The fresh original is essential: the initial discrepancy was itself selected evidence.
 
-Assumptions: stationary independent shots and trustworthy declared expectations. Pauli/target interpretations additionally require calibrated measurement channels; arbitrary basis-dependent errors need not correspond to one underlying state. The zero-state readout control detects some readout inconsistencies and vetoes repair proposals; it does not calibrate every state or diagnose gate noise. Bounds do not protect against unknown drift or model bias. “Verified” covers the declared operational contract and input under these assumptions, not universal state certification or unitary equivalence.
+Assumptions: stationary independent shots and trustworthy declared expectations. The error guarantee is per investigation, conditional on the fixed request and outcome-independent shot validity; arbitrarily many separate investigations do not have one shared familywise guarantee. Pauli/target interpretations additionally require calibrated measurement channels; arbitrary basis-dependent errors need not correspond to one underlying state. The zero-state readout control detects some readout inconsistencies and vetoes repair proposals; it does not calibrate every state or diagnose gate noise. Bounds do not protect against unknown drift or model bias. “Verified” covers the declared operational contract and input under these assumptions, not universal state certification or unitary equivalence.
 
 ## Bounds, persistence and interface
 
@@ -34,11 +34,25 @@ In Custom Circuit Laboratory, **Measured recovery** takes the currently edited o
 
 ## Evaluation and provenance
 
-Development: 31 cases × 5 policies, seed 113. Conservative and point ranking both verified 8/31; conservative made 0/14 noise-control proposals, point ranking 2/14 (both rejected). First-admissible verified 2, random 1. These are development observations, not holdout claims. An adversarial test then added a contradictory-interval guard before the holdout freeze; development raw evidence is preserved.
+Development: 31 cases × 5 policies, seed 113. Conservative and point ranking both verified 8/31; conservative made 0/14 noise-control proposals, point ranking 2/14 (both rejected). First-admissible verified 2, random 1. These were available for method development and are not holdout claims. An adversarial test then added a contradictory-interval guard before the final protocol freeze; development raw evidence is preserved.
 
 `configs/counterfactual-protocol.json` freezes 62 cases, seeds 731/1297, all requests, scientific source digests, policies, budgets and metrics before holdout execution. `scripts.evaluate_counterfactual` refuses a changed source or corpus and requires committed scientific sources/protocol. Baselines share the same candidate pool, screening schedule and budget ceilings; first/random still incur the shared screening cost, so this compares selection quality rather than their cheapest possible implementations. No-repair deliberately saves the screening/confirmation cost. Existing privileged first-valid recovery is not advertised as an information-matched comparator.
 
-Cases cover Bell, GHZ, QFT, graph/cluster, product, Clifford and non-Clifford target designs; logical phase interventions, clean/readout/gate-noise controls, incomplete distributions, ambiguous repairs and insufficient budgets. This is a bounded design corpus, not evidence of arbitrary architecture generalization. All outcomes, errors, alternative repairing loci and costs are retained. Final holdout findings will be appended after execution; no tuning on those outcomes is permitted.
+Cases cover Bell, GHZ, QFT, graph/cluster, product, Clifford and non-Clifford target designs; logical phase interventions, clean/readout/gate-noise controls, incomplete distributions, ambiguous repairs and insufficient budgets. This is a bounded design corpus, not evidence of arbitrary architecture generalization. All outcomes, errors, alternative repairing loci and costs are retained. All 310 runs completed from committed revision `5034972c3129c18f4f990dfae9993d71086db2fd`; the source and corpus digests matched the freeze, all 310 artifact manifests verified, and there were no evaluation errors.
+
+| Policy | Verified / 62 | Rejected | Inconclusive incl. budget | Proposals | Noise-only proposals / 28 | Shots | Executions |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| No repair | 0 | 0 | 11 | 0 | 0 | 374,784 | 183 |
+| First admissible | 4 | 17 | 11 | 21 | 5 | 1,980,416 | 869 |
+| Random admissible | 3 | 18 | 11 | 21 | 5 | 1,980,416 | 869 |
+| Point discrepancy | 16 | 5 | 11 | 21 | 5 | 1,980,416 | 869 |
+| Conservative interval | 16 | 0 | 16 | 16 | 0 | 1,890,304 | 847 |
+
+Every policy left all 14 clean cases without a proposal. All 14 readout-noise cases abstained on the readout control. Gate-noise cases caused 0 conservative proposals; point and first-admissible each proposed 5 across 14 gate-noise cases and fresh verification rejected all five. The conservative method did not beat point discrepancy in the number of verified repairs; both verified 16/62. It made five fewer total proposals, used 90,112 fewer shots (about 4.5%), had no rejected repairs, and abstained more often (16 versus 11). This is a small finite matched-candidate comparison, not inferential evidence of population superiority.
+
+Conservative ranking contained the injected locus in the plausible set for all 14/14 logical interventions and 2/2 deliberately ambiguous cases; that does not mean it isolated the location. It verified 13/14 logical interventions at the injected position and one at a different position; both ambiguous cases verified a behavior-restoring edit while neither selected primary edit matched the evaluator's designated repeated-gate position. Under the conservative policy, the evaluator therefore counted three selected primary edits at a different designated locus: one non-ambiguous behavior-restoring alternative and two ambiguous cases. For both ambiguous cases, the reported equivalent-edit set includes the designated position; the primary edit is not evidence against that equivalent locus. Unique causal claims: zero. The incomplete Bell distribution control missed both phase-only faults as expected; the low-budget cases abstained. No universal causal localization is established.
+
+Per-class status tables, descriptive confusion matrices, all 310 immutable investigation artifacts, source digests and every row are in `artifacts/recovery-holdout/summary.json` and its `investigations/` directory (ignored local artifacts). The data show a practical tradeoff: conservative bounds avoided fresh false repairs in this corpus at higher abstention, while the point baseline reached the same repair count with five rejected interventions.
 
 ## Historical target evaluation traceability
 
