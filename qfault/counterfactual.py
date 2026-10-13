@@ -105,10 +105,12 @@ def recover(request: RecoveryRequest):
         return measure
 
     try:
-        # Protect confirmation before spending even the first screening shot.
-        if budget.can(reserve+groups*request.screen_shots,reserve_evals+groups):
-            by_shots=max(0,(request.max_shots-reserve-groups*request.screen_shots)//max(1,groups*request.screen_shots))
-            by_evals=max(0,(request.max_evaluations-reserve_evals-groups)//max(1,groups))
+        # Protect confirmation AND a possible readout control before observation.
+        # Otherwise a large screen batch can exhaust the control budget after
+        # observation even though the initial confirmation-only preflight passed.
+        if budget.can(reserve+(groups+1)*request.screen_shots,reserve_evals+groups+1):
+            by_shots=max(0,(request.max_shots-reserve-(groups+1)*request.screen_shots)//max(1,groups*request.screen_shots))
+            by_evals=max(0,(request.max_evaluations-reserve_evals-groups-1)//max(1,groups))
             screen_limit=min(request.max_candidates,by_shots,by_evals)
             original = observer.observe(measure_for(request.circuit,'observation'),request.screen_shots,slot,request.max_groups)
             status = 'NO_REPAIR_NEEDED' if original['loss_interval'][1]<=1 else 'INSUFFICIENT_EVIDENCE'

@@ -178,6 +178,17 @@ def test_reserve_and_no_samples_reused():
     assert not phases.get('screening',set()) & phases.get('verification_candidate',set())
 
 
+def test_readout_control_cannot_overrun_a_tight_confirmation_reserve():
+    from qfault.counterfactual import recover
+    # Valid request: one large screen batch fits, but a possible control plus
+    # fresh confirmation does not. Abstain before spending rather than fail
+    # inside ExecutionBudget.reserve after observation.
+    r = recover(request(screen_shots=10000, verification_shots=64, max_shots=10128))
+    assert r['status'] == 'INSUFFICIENT_BUDGET'
+    assert r['selected_candidate'] is None
+    assert r['cost']['shots'] == 0
+
+
 def test_incomplete_contract_can_miss_a_phase_fault():
     from qfault.counterfactual import recover
     r=request('measurement_distribution').model_dump(mode='json')
