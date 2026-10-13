@@ -15,7 +15,7 @@ def main():
         page.on('requestfailed',lambda r:failed.append(r.url))
         response=page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
         expect(page.locator('[data-phase="hero"]')).to_be_attached(timeout=20000)
-        expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=20000)
+        expect(page.locator('.entry__stage canvas[data-engine="webgl"]')).to_be_attached(timeout=20000)
         page.wait_for_timeout(1100);page.screenshot(path=str(out/'landing-desktop.png'))
         page.get_by_role('button',name='Enter Workbench',exact=True).click()
         expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_focused()
