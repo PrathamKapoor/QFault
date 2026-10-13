@@ -1,5 +1,17 @@
 # QFAULT engineering handoff
 
+## Target-state witness delivery — 2026-10-13 (current)
+
+Branch hardening/blind-measurement (local main f366656 unchanged; nothing pushed). Commits authored and committed by PrathamKapoor <prathamkapoor027@gmail.com>; `git -c safe.directory=C:/Projects/QFF` is still needed per command because .git is owned by another Windows account.
+
+Done: target-state contracts (`qfault/target.py`), witness runner and feasibility in `qfault/lab.py`, UI target editor and evidence views at `/#/lab`, `scripts/lab_e2e.py` (desktop + 390/375/360 px), challenge-lock race fix, Aer replication of the 117-case holdout (`benchmarks/custom-lab-holdout-10240-aer.json`, `custom-lab-holdout-backend-agreement.json`), frozen protocol `configs/target-witness-protocol.json`, development and holdout results (`benchmarks/target-witness-*.json`). Methodology and findings: docs/target-state-witnesses.md; D037.
+
+Tests: `python -m pytest -q` 211 passed. Browser: browser_e2e, blind_challenge_e2e, cinematic_e2e, landing_recovery_e2e, workspace_navigation_e2e, lab_e2e all exit 0 against the live server (outputs in .local/e2e-final). `npm run check`/`build` pass.
+
+Findings: bounds covered the effective fidelity in 165/165 defined holdout cases per policy with no false alarms; adaptive_witness is not uniformly better than fixed/coefficient-weighted orders (worse at the tight budget, slightly better at the ample one), better than random and complementary. The dense non-Clifford target always abstains.
+
+Next: cost-aware batch sizing per group and a projection that does not assume unmeasured terms equal the target; stronger bounds for non-stabilizer targets (e.g. positivity-constrained SDP with verified solver tolerances). Server: http://127.0.0.1:8000/ , lab http://127.0.0.1:8000/#/lab , `.local/repro-python/Scripts/python.exe -m qfault serve` from C:\Projects\QFF.
+
 ## Custom circuit laboratory delivery — 2026-10-13 (current)
 
 Branch hardening/blind-measurement on top of cd897ac. Added `qfault/lab.py`, `qfault/lab_corpus.py`, API routes `/api/lab/*`, web `CustomLab` at `/#/lab`, `scripts/evaluate_lab.py`, `tests/test_lab.py`, `docs/custom-circuit-lab.md`, D036. Nothing pushed; commits are authored solely by PrathamKapoor <prathamkapoor027@gmail.com>.

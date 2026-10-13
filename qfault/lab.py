@@ -684,8 +684,8 @@ def investigate_lab(request, truth=None):
                  "confidence": None, "confidence_semantics": "No class probability claimed; intervals only",
                  "limitations": feas["limitations"]}
     recovery = {"status": "UNSUPPORTED",
-                "reason": "No recovery class is validated for contracts without a declared target state; "
-                          "measurement-only repair selection is not implemented."}
+                "reason": "No recovery class is validated for custom-circuit contracts (including target states); "
+                          "repair selection from measurements is not implemented."}
     cost = {**budget.report(), "circuit_executions": len(records),
             "exact_state_evaluations": sum(a["shots"] == 0 for a in budget.actions),
             "basis_gates": sum(a["basis_gates"] for a in ledger), "runtime_seconds": perf_counter() - start}
