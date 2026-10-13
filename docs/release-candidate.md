@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-11/12 submission release candidate). Its PARTIALLY READY status and installation failures predate the independent installation and locked-dependency release. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Submission release candidate checks
 
 Status: PARTIALLY READY. Base HEADee7120286de69f54609e53855a2c09d48a324b2b was clean on main. No scientific algorithm, threshold, default or authoritative result was changed. This release cannot yet claim independent installation.

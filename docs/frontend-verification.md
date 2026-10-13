@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). Verification of the earlier cinematic frontend, replaced in D041; the workbench and PixelSwap transition it describes remain. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Cinematic frontend verification — 2026-10-12
 
 This is frontend verification of the existing scientific product. No backend, frozen benchmark, policy, tolerance or scientific artifact was modified. Generated screenshots/raw API records remain local under ignored `artifacts/`; they are not public clone assets.

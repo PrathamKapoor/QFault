@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-11). Earlier installation investigation; the supported path is now the hashed `requirements.lock` in the README. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Installation and Aer investigation
 
 Date: 2026-10-11. Base commit d30535caac17fb55718ac313c3e033dabb631364, initially clean. Existing suite reran: 62 passed, one Starlette/httpx warning. Original benchmark at artifacts/stabilization-original exactly matches committed policy metrics and selected recovery outcomes.

@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). Competition video plan; the recording is a local asset and is not published. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Judging video and editable narration
 
 **Local-only assets:** paths beginning with `artifacts/` refer to ignored files on the originating machine or the separately transferred evidence/media archives. They are not public download links and are not included in a GitHub clone. The tracked scripts can generate new experiment records and browser footage after installation. No public video URL is supplied.

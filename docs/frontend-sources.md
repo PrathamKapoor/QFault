@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). Hyperspeed, TechText and MoltenMetal were removed in D041; PixelSwap and React Bits terms still apply. Current hero provenance: [hero transplant](hero-transplant.md). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Cinematic frontend sources and licensing
 
 Inspected on 2026-10-12. Reference checkouts remain ignored under `.local/references`; unrelated application code is not vendored.

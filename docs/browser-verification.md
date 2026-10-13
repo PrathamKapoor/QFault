@@ -1,3 +1,5 @@
+> **Historical record** . Browser verification at an earlier release; current suites are listed in [handoff.md](../handoff.md). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Executed browser verification
 
 Status: PASS locally with installed Playwright1.62.0, pyee13.0.1, greenlet3.5.4 and Chromium151.0.7922.34. The unavailable connected-browser runtime is not evidence that installed headless browser testing is impossible. The user requested Playwright; the separate local fallback successfully executed the real application.

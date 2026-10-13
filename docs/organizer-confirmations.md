@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-11). Competition eligibility questions; competition work was later removed from scope. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Organizer confirmations required
 
 Checked2026-10-11 against the [event website](https://qiskitfallfestmpstme.in/). Its competition table lists12 October for Stage1; its provisional program lists23 October23:59 IST for hackathon submission. Pratham Kapoor appears as a workshop lead. The linked [Unstop listing](https://unstop.com/hackathons/qiskit-fall-fest-mukesh-patel-school-of-technology-management-and-engineering-nmims-mumbai-1748182) returned no readable rules to the browser tool. No controlling deadline or individual eligibility was established. The same official page specifies teams of two to four and schedules prompt release for22 October2026 at18:00 IST. It does not establish permission to submit this substantially pre-existing project.

@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). Superseded by D033 and D041 ([hero transplant](hero-transplant.md)). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Hero art direction correction
 
 The starting state is clean main at `463c1970922c7f2ba620cd431b7a3023a2782914`. The user rejected that hero. This document records the correction; it does not claim user approval. Only the hero, sculpture, fallback and its visual checks change. The workbench, transition engine, backend and scientific artifacts remain outside this change.

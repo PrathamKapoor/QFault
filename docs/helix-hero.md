@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). The double-spiral hero was replaced in D041 ([hero transplant](hero-transplant.md)). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # QFAULT double-spiral hero correction
 
 The user rejected the diagonal ribbon composition at e9827eab18cbcca7a28f3de3283a079099d4b7fe and explicitly requested a DNA-like centerpiece. This supersedes the earlier preference for non-helical open paths. The workbench, PixelSwap implementation and timing, backend contracts, scientific artifacts and lower-page sections are preserved.

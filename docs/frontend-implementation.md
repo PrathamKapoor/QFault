@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). Describes the earlier cinematic entry (Hyperspeed, TechText, MoltenMetal, original ribbon sculpture), replaced by the transplanted hero in D041 ([hero transplant](hero-transplant.md)). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Cinematic frontend implementation
 
 The supplied directive is the approved design specification. Preserve the existing scientific engine and React/Vite application. Add a bounded, skippable entry, an original reflective ribbon sculpture, and a light scientific shell. Hash routes retain static FastAPI hosting and refresh safety.

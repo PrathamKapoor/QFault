@@ -1,3 +1,5 @@
+> **Note** Capability boundaries recorded 2026-10-13. Since then, measured counterfactual recovery was added as a separate Custom Circuit Laboratory action ([measured recovery](counterfactual-recovery.md)); ordinary measurement-only diagnosis still does not repair. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Scientific hardening and submission boundary
 
 ## Snapshot and eligibility

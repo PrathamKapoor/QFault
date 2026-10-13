@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-13). Describes verification while work was still on a development branch; later work was published to `main`. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Current development verification (2026-10-13)
 
 Independent CPython installation and a separate npm ci have now succeeded. The project-owned npm lockfile is legitimate and already existed locally. New scientific work is on hardening/blind-measurement; main and public snapshots are protected. CI configuration is supplied but has not been run on GitHub, and no passing badge is claimed. Competition eligibility/presentation are outside the current user scope. See scientific-hardening.md for capability boundaries and current evidence. The records below describe historical release assessments.

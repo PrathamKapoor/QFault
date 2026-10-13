@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-13, before publication). Its statements that pushing was not authorized and that public main was behind development are superseded: development history was published to `main` on 2026-10-13 (24f4e61, CI passing). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Current project-development update (2026-10-13)
 
 Canonical repository: https://github.com/PrathamKapoor/QFault. Public main was verified at ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3; local main is preserved at f36665616c2aee95a7b82e764adcf290b9e05468. New work is isolated on hardening/blind-measurement with both snapshot tags retained. No push is authorized for this work. The user has dropped competition eligibility and presentation work; this is continued project development. Independent Python/npm installs have now succeeded; see scientific-hardening.md for current evidence. The dated audit below is historical.

@@ -1,3 +1,5 @@
+> **Historical record** . Machine-specific fallback that is no longer needed; follow the README quick start. Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Existing machine development fallback
 
 Unsupported for independent installation. This file preserves the verified local commands and machine-specific provenance; normal users should follow README. No donor package directory is modified.

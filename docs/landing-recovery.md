@@ -1,3 +1,5 @@
+> **Historical record** (2026-10-12). An earlier landing design, superseded by D032, D033 and finally D041 ([hero transplant](hero-transplant.md)). Current status: see the repository [README](../README.md) and [release history](release-history.md).
+
 # Landing recovery — 2026-10-12
 
 This recovery starts from clean main at `c5fb023a5bbf53a9790548731eebae9b2df7101a`. It supersedes the previous landing's visual-acceptance claim. The workbench, PixelSwap component, backend, contracts, diagnostic policies and frozen benchmark artifacts are unchanged.

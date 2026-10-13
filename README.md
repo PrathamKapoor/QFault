@@ -1,202 +1,147 @@
 # QFAULT — Quantum Failure Analysis & Recovery Workbench
 
-Product: **QFAULT** · GitHub destination: **PrathamKapoor/QFault**. This is separate from the historical Q-TRUST project cited below.
+A Qiskit-based laboratory for investigating quantum circuit discrepancies, testing bounded circuit repairs, and verifying results with measured evidence.
 
-A Qiskit-based investigation workbench that executes simulated quantum circuits, evaluates declared behavioral contracts, diagnoses supported logical and noise-related failures, tests bounded repairs, and exports auditable experimental evidence.
+![QFAULT landing page](docs/media/qfault-hero.jpg)
 
-The one-line inference is: **“This result disagrees with the contract; here is the measured evidence, the explanations it supports, and what an independently checked recovery changed.”**
+QFAULT runs small quantum circuits (2–5 qubits) on local Qiskit simulators, compares what is measured with a declared behavioral contract, and reports what the evidence does and does not establish:
 
-This is working local software with real Qiskit circuits, not a mock dashboard. All execution is simulated. No IBM hardware, paid service, external model, deployment or quantum-advantage claim is involved.
+**quantum observations → contract discrepancy → evidence-aware diagnosis → bounded intervention → fresh verification → auditable report**
 
-Qiskit is central: native quantum circuits produce the sampled execution evidence, while Aer and the reference simulator execute the controlled noise scenarios. The investigation path connects observed discrepancy, evidence, bounded recovery and fresh verification. Blind Challenge withholds injected configuration until a persisted prediction freeze; ordinary controlled-scenario demonstrations remain labelled as such.
+Everything is simulated (Qiskit reference simulators and Qiskit Aer). QFAULT makes no hardware, quantum-advantage or universal-verification claims; finite-shot uncertainty, abstentions and negative results are reported alongside successes.
 
-In the frozen 68-case simulation evaluation, phase-sensitive testing classified 66/68 correctly versus fixed 58/68, using 40% more shots. Selected recovery verified 10/12 trials, with two inconclusive. These are finite controlled experiments, not hardware reliability guarantees. Exact attribution uses privileged simulator state; contracts cover a fixed input, witnesses are incomplete, and unsigned hashes establish consistency rather than truth.
+## Quick start
 
-## Blind Challenge and diagnostic capabilities
+Requirements: 64-bit **CPython 3.13** and **Node.js 24** (tested: Python 3.13.2 on Windows 11, Python 3.13.15 on Ubuntu 26.04 under WSL2, Node 24.19.0). macOS has not been tested.
 
-Open `/#/challenge` to execute a server-selected hidden scenario. Observe measurements, run diagnosis, persist a frozen prediction, then reveal evaluator truth. API responses, challenge history and downloads exclude hidden configuration before reveal. Saved `/#/challenges/<challenge_id>` routes restore the recorded state; revealed cases can be replayed deterministically. This is a controlled local interface, not secrecy from the server administrator.
+Windows PowerShell:
 
-Measurement-only mode receives target-contract expectations, finite-shot counts and bounded complementary/calibration measurements. It cannot access the faulty state, injected metadata or evaluator truth. A discrepancy is not unique causal attribution: gate noise and logical defects can remain ambiguous. Recovery is disabled in this mode. Simulator-assisted diagnosis and recovery are explicitly labelled as privileged. See [capability and API boundaries](docs/scientific-hardening.md).
-
-The separately prespecified [measurement-boundary holdout](docs/measurement-holdout-findings.md) completed 208 real Aer runs. Complementary measurements improve discrepancy detection but retain causal ambiguity. Simulator-assisted phase diagnosis scores 38/52 versus fixed 32/52 at 40% more shots on this new set; this does not replace the frozen 68-case result. All failures and abstentions are retained.
-
-## Implemented
-
-- Bell, GHZ and small QFT templates; 2–5 qubits, Bell restricted to two.
-- Analytic fixed-input state contracts, finite-shot sampling, TV disagreement bounds and explicit limitations.
-- Valid gate removal/replacement, angle changes and qubit reassignment; phase controls and mixed/noisy scenarios.
-- Analyst inputs exclude evaluator truth. Supported diagnoses include noise consistency, logical defects, mixed ambiguity and insufficient evidence.
-- Five deterministic diagnostic policies with shot/evaluation ceilings and an explicit resource ledger.
-- At most 256 one-edit repair candidates. Fresh validation samples plus a separately implemented density-matrix check can verify, reject or leave a proposal inconclusive.
-- CLI, localhost FastAPI, React/TypeScript/Vite workbench, immutable JSON artifacts, hash verification, report export and append-only human review.
-- A six-scene live demo, tamper/restore demonstration and reproducible policy benchmark.
-
-**Qiskit 2.3.1 and Aer 0.17.2 execute locally.** Choose the reference backend (BasicSimulator / DensityMatrix-Kraus plus symmetric readout flips) or AerSimulator density_matrix with explicit gate/readout noise. Reports identify the actual backend; no requested Aer failure silently falls back. Reference remains default to preserve existing experiments. The original cp311 Aer mismatch was fixed by locating and executing a separate matching cp313 installation; see [environment audit](docs/environment-stabilization.md). Independent CPython 3.13 installation now passes; see [scientific hardening](docs/scientific-hardening.md).
-
-The phase policy adds sampled X-parity or analytic Fourier-product-basis witnesses, with basis-gate noise and resource costs. Exact logical attribution still uses privileged simulation. Fixed remains the default policy; phase is an explicit higher-cost option.
-
-## Normal installation path
-
-**Frontend installation verified on 2026-10-12:** official npm access succeeded, the project-owned lockfile was generated, and `npm ci`, TypeScript checking and production build passed using `web/node_modules`. On 2026-10-13 a fresh isolated CPython 3.13 environment installed `.[aer,dev,browser]` from `pyproject.toml`; tests and actual Aer conformance passed independently of the bridge. Use standard 64-bit CPython 3.13 and Node 24 (24.19.0 tested; current hardening checks use npm 12.0.2). Python metadata requires 3.12+, but the quantum application was executed only on 3.13. No Docker or services are needed.
-
-Clone the selected repository, then run from its root in PowerShell:
-
-~~~powershell
+```powershell
 git clone https://github.com/PrathamKapoor/QFault.git
 cd QFault
-~~~
-
-Publication status is recorded in [the current audit](docs/publication-audit.md); these clone commands require an existing published `main`.
-
-~~~powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -e ".[aer,dev,browser]"
-.venv\Scripts\python -m pip check
-npm.cmd --prefix web ci
-npm.cmd --prefix web run check
-npm.cmd --prefix web run build
-.venv\Scripts\python -m pytest tests -q
-.venv\Scripts\python -m scripts.submission_demo --out artifacts/fresh-demo --backend aer
+py -3.13 -m venv .venv
+.venv\Scripts\python -m pip install --require-hashes -r requirements.lock
+.venv\Scripts\python -m pip install --no-deps -e .
+npm --prefix web ci
+npm --prefix web run build
 .venv\Scripts\python -m qfault serve
-~~~
+```
 
-The frontend commands above were executed successfully with the committed lockfile and QFAULT's own dependencies. The same Python installation path has now succeeded in a new normal environment; historical failure records remain historical. There is no declared lint command. Historical installation failures are retained in [release attempt evidence](docs/release-candidate.md); current frontend evidence is in [frontend verification](docs/frontend-verification.md).
+Linux (bash):
 
-Open http://127.0.0.1:8000/. In a second terminal install official browser assets with .venv\Scripts\python -m playwright install chromium, then run .venv\Scripts\python -m scripts.browser_e2e --out artifacts/fresh-browser. The requirements files pin the observed runtime/test/Aer/browser closure; they are not a verified isolated resolver result. Actual local success and installation failure are separated below.
+```bash
+git clone https://github.com/PrathamKapoor/QFault.git && cd QFault
+python3.13 -m venv .venv
+.venv/bin/python -m pip install --require-hashes -r requirements.lock
+.venv/bin/python -m pip install --no-deps -e .
+npm --prefix web ci && npm --prefix web run build
+.venv/bin/python -m qfault serve
+```
 
-## Existing-machine fallback
+Open <http://127.0.0.1:8000/>. The server binds to localhost only; use `qfault serve --port 8001` if 8000 is taken. The frontend must be built (`npm --prefix web run build`) before the server can serve it.
 
-The historical Python/browser [development bridge](docs/local-development.md) remains documented as a fallback. Current checks use normal isolated CPython and project-owned npm dependencies; the bridge is not required.
+### A first real investigation
 
-For an explicitly measurement-only ordinary run:
+In a second terminal (same virtual environment):
 
-~~~powershell
-python -m qfault run --scenario phase --backend aer --diagnostic-mode measurement_only --measurement-plan complementary --no-recovery
-~~~
-
-This controlled phase example should establish a complementary-basis discrepancy and retain causal ambiguity, not claim a unique repair.
-
-## CLI workflow
-
-In a normal installed environment, use `python -m qfault`. The restricted-machine launcher is documented separately in [local development](docs/local-development.md).
-
-~~~powershell
-python -m qfault circuits
-python -m qfault contract bell
+```powershell
 python -m qfault run --family bell --scenario remove --policy phase --backend aer --seed 7
-python -m qfault run --family ghz --scenario readout
-python -m qfault run --family qft --scenario angle --policy fixed
-python -m qfault run --scenario remove --max-shots 4096 --max-evaluations 2
-~~~
+python -m qfault export EXPERIMENT_ID bell-remove.json      # EXPERIMENT_ID: the "experiment_id" field of the run output
+python -m qfault verify-report bell-remove.json
+```
 
-The last command demonstrates budget-driven abstention. RunRequest validates families, bounds, noise scenarios and budgets before execution. No arbitrary Python uploads are executed.
+This executes a Bell circuit with a removed gate on Qiskit Aer, diagnoses it with phase-sensitive evidence, proposes and independently verifies a bounded repair, then exports and checks the hash-consistent report. In the browser, **Enter Workbench → Custom Circuit** lets you submit your own circuit and contract.
 
-A run prints its real experiment_id. Use that value in the following commands (replace EXPERIMENT_ID):
+### Verify the installation
 
-~~~powershell
-python -m qfault inspect EXPERIMENT_ID
-python -m qfault analyze EXPERIMENT_ID
-python -m qfault recovery EXPERIMENT_ID
-python -m qfault verify EXPERIMENT_ID
-python -m qfault export EXPERIMENT_ID investigation-export.json
-python -m qfault verify-report investigation-export.json
-python -m qfault review EXPERIMENT_ID --reviewer PrathamKapoor --reason "Inspected validation evidence"
-~~~
+```powershell
+.venv\Scripts\python -m pip check
+.venv\Scripts\python -m pytest tests -q            # requires the built frontend
+.venv\Scripts\python -m scripts.aer_smoke
+```
 
-analyze and recovery inspect the recorded decisions; they do not silently rerun experiments. The run command performs diagnosis and optional recovery. verify-repair independently tests a validated structured Circuit JSON file:
+Optional browser checks need Chromium: `python -m playwright install chromium`, start the server, then `python -m scripts.release_smoke`.
 
-~~~powershell
-python -m qfault verify-repair candidate.json --family bell --shots 2048 --seed 10007
-~~~
+## What QFAULT does
 
-Exports refuse to overwrite an existing file. Optional --store precedes the artifact command, for example python -m qfault --store artifacts/custom demo.
+| Capability | What it actually does |
+|---|---|
+| **Template investigations** | Bell, GHZ and QFT circuits with injected logical faults and gate/readout noise; five diagnostic policies under explicit shot and evaluation budgets. |
+| **Custom Circuit Laboratory** | Validated JSON circuits (no arbitrary code) with declared contracts: Z/X/Y measurement distributions, Pauli expectations or a pure target state. Real basis-change measurements, union-bounded finite-shot intervals and an adaptive evidence planner. |
+| **Target-state witnesses** | Measured Pauli witnesses give a *conservative fidelity bound*; exact fidelity is shown only in the explicitly labelled simulator-assisted mode. |
+| **Measurement-only vs simulator-assisted** | Measurement-only analysis sees sampled counts and the declared contract, never the candidate state. Simulator-assisted analysis may use privileged exact-state calculations and is labelled as such. |
+| **Blind Challenge** | Executes a hidden server-selected scenario, persists a frozen prediction, then reveals evaluator truth. A controlled local exercise, not secrecy from the server operator. |
+| **Measured counterfactual recovery** | Tests bounded one-edit changes to a custom circuit by measurement, ranks them conservatively, and confirms a selected edit on fresh samples. An improving edit is not proof of where the original fault was. |
+| **Auditable records** | Immutable JSON investigation records, replay and exports with SHA-256 manifests. These are consistency checks, not signatures or authentication. |
 
-## Demo and benchmark
+![Custom Circuit Laboratory showing a measured discrepancy](docs/media/custom-circuit-lab.jpg)
 
-~~~powershell
-python -m scripts.submission_demo --out artifacts/judging-demo --backend aer
-python -m qfault demo
-python -m qfault benchmark --out artifacts/new-benchmark
-~~~
+### Diagnosis and recovery modes
 
-The benchmark destination must not already exist; runs never overwrite prior evidence. The legacy qfault demo executes healthy Bell, missing-gate repair, readout-only control, mixed GHZ, clean QFT and a phase fault under the fixed plan. It then alters a dedicated throwaway result, checks failure, restores the original bytes and checks success. Its historical measured record is benchmarks/demo.json. The new scripts.submission_demo rehearsal uses actual Aer, complementary phase evidence and fresh Z/phase repair validation; its measured output is benchmarks/submission-demo.json. Use a new destination each time. See [judging script](docs/demo.md).
+- **Measurement-only diagnosis** can establish a contract discrepancy but generally cannot separate a logical defect from gate or readout noise; it reports that ambiguity instead of guessing.
+- **Simulator-assisted recovery** (template workflow) proposes one-edit repairs using privileged exact-state calculations and validates them with fresh samples plus an independent density-matrix check.
+- **Measured counterfactual recovery** (Custom Circuit Laboratory → *Measured recovery*) uses only measurements to screen candidate edits, reserves budget for an independent fresh confirmation, and verifies only when the candidate's upper loss bound clears the declared contract *and* beats the freshly measured original. An ordinary laboratory investigation does not attempt repair by itself.
+- **Causal fault localization is not established** by any mode: a contract-restoring edit identifies an intervention, not the original cause.
 
-The frozen protocol is docs/benchmark-protocol.md. Historical raw records are local-only under artifacts/release-benchmark/investigations/ and in the separately transferred evidence archive; the committed row-level summary is benchmarks/results.json. Runs under artifacts/benchmark-reproduction and artifacts/release-benchmark reproduced the scientific metrics; benchmarks/reproduction.json records the comparison. IDs, timestamps, runtimes and associated hashes are intentionally not byte-identical.
+![Measured counterfactual recovery](docs/media/measured-recovery.jpg)
 
-| Policy | Correct category | Total shots | Circuit evaluations |
-|---|---:|---:|---:|
-| Evidence-triggered | 47/75 | 343,040 | 220 |
-| Fixed plan | 66/75 | 384,000 | 300 |
-| Random admissible | 23/75 | 343,040 | 196 |
-| Simple threshold | 47/75 | 307,200 | 186 |
+## Scientific evidence
 
-Evidence-triggered accuracy is 62.7% (descriptive Wilson 95% interval 51.4–72.7%); fixed-plan accuracy is 88.0% (78.7–93.6%). Random abstained on 24/75 cases. No false positive occurred on the 12 evaluator-defined correct cases per policy (95% upper bound 24.2%); nine are explicitly clean scenarios, three are equivalent mutations. This does not establish a zero population false-positive rate.
+Results come from frozen, prespecified simulation evaluations. Denominators are the evaluated cases; intervals in the linked reports are descriptive.
 
-The fixed plan wins on category accuracy; the simple threshold ties the proposed policy using fewer shots. **The proposed policy has no demonstrated superiority.** Measurement-triggered diagnosis misses phase-only and other distribution-preserving faults. Configured noise can be invisible under a uniform QFT output distribution.
+| Evaluation | Result | Source |
+|---|---|---|
+| Template diagnosis (68 cases per policy, frozen) | Phase-sensitive 66/68 correct vs fixed 58/68, using 40% more shots; two QFT angle faults missed | [findings](docs/diagnostic-findings.md), [summary](benchmarks/diagnostic-final.json) |
+| Measurement-only holdout (52 cases per policy) | Complementary measurements raised supported-discrepancy detection from 14/52 to 30/52, but strict category successes stayed 16/52 — more detection, no unique causes | [findings](docs/measurement-holdout-findings.md), [data](benchmarks/measurement-boundary-holdout-20261013.json) |
+| Custom laboratory (117-case holdout) | New circuit families and Pauli contracts work; the adaptive planner tied simple schedules and only beat random selection; reference and Aer agree on 113/117 categories per policy | [methodology](docs/custom-circuit-lab.md), [data](benchmarks/custom-lab-holdout-10240.json) |
+| Target-state witnesses (414-case holdout) | Bounds contained the true fidelity in 165/165 checkable cases with no false alarms; dense non-Clifford targets stayed unconfirmed; adaptive selection was not uniformly better than fixed orders | [methodology](docs/target-state-witnesses.md), [data](benchmarks/target-witness-holdout.json) |
+| Measured recovery (62-case holdout, 5 policies) | Conservative policy verified 16/62 overall (16/21 measurement-detected eligible cases), with 0 rejected repairs and 0 proposals on 28 noise controls; point ranking also verified 16/62 but made 5 rejected proposals | [methodology](docs/counterfactual-recovery.md), [data](benchmarks/counterfactual-recovery-holdout.json) |
 
-All 6 selected Bell/GHZ missing-gate recovery trials verified (Wilson 95% interval 61.0–100%). This is a narrow six-trial corpus, not a general repair-success claim. Original distribution quality ranged from 0.4707 to 0.5000; independently sampled repaired quality ranged from 0.9941 to 0.9985. Quality means 1−TV. Each consumed 7,168 shots; Bell used 28 evaluations and GHZ 61.
+These are bounded design corpora on simulators. They do not establish performance on arbitrary circuits, hardware reliability, or statistical superiority of any policy.
 
-## Frozen diagnostic comparison
+## Architecture
 
-The original benchmark above remains unchanged. A separate configuration was committed before implementation; development seed71 and final seeds103/211 are disjoint. The final reference-backend corpus has68 cases/policy and equal8192-shot/6-evaluation ceilings. All metrics reproduced on the current release without replacing authoritative artifacts.
+- `qfault/` — Python package: circuits, contracts and simulation (`quantum.py`), diagnosis (`diagnostics.py`, `measurement.py`), custom laboratory and target witnesses (`lab.py`, `target.py`), recovery (`recovery.py`, `counterfactual.py`, `interventions.py`), evidence storage (`storage.py`, `evidence.py`), FastAPI server (`api.py`) and CLI (`cli.py`).
+- `web/` — React/TypeScript/Vite workbench served by the API from `web/dist`.
+- `benchmarks/`, `configs/` — frozen evaluation protocols and committed result summaries.
+- `scripts/` — evaluation, reproduction and browser verification scripts.
+- `docs/` — methodology, findings and historical release records. Runtime call flow: [flow.md](flow.md); design decisions: [decisions.md](decisions.md).
 
-| Policy | Correct | Actual shots | Evaluations |
-|---|---:|---:|---:|
-| Original evidence | 34/68 | 303,104 | 184 |
-| Fixed | 58/68 | 348,160 | 272 |
-| Random | 21/68 | 303,104 | 171 |
-| Threshold | 34/68 | 278,528 | 162 |
-| Phase evidence | 66/68 | 487,424 | 328 |
+The API is documented at <http://127.0.0.1:8000/docs> while the server runs. One investigation executes at a time in the single local process.
 
-Phase accuracy has descriptive Wilson95% interval89.9–99.2%; fixed75.0–91.8%. Phase costs40% more shots and still misses two QFT2 angle faults; fixed catches those with unconditional exact-state checks. Zero false diagnoses among10 evaluator-correct cases has Wilson upper27.8%. No statistical superiority or unseen-algorithm guarantee is claimed. Paired outcomes:56 both correct,10 phase-only correct,2 fixed-only correct,0 both wrong; these are descriptive, not a significance claim. See [paired raw-artifact audit](benchmarks/paired-policy-audit.json). See [findings and confusion matrices](docs/diagnostic-findings.md), [measured tradeoff](benchmarks/policy-tradeoff.svg) and [raw-linked final summary](benchmarks/diagnostic-final.json).
+## Reproducibility
 
-Selected recovery now covers12 missing-gate/phase trials:10 verified,2 QFT4 inconclusive, plus2 rejected negative controls. Wilson95% interval55.2–95.3% applies only to this selected corpus. Validation uses independent DensityMatrix evolution and new Z/phase samples; total11264 shots/case. The original6/6 finding remains narrow.
+- `requirements.lock` is a hashed, universal lock generated from `pyproject.toml` (which remains authoritative) for CPython 3.13 with the `aer`, `dev` and `browser` extras. Regenerate with `uv pip compile pyproject.toml --extra aer --extra dev --extra browser --universal --python-version 3.13 --generate-hashes -o requirements.lock`; installing from it needs only pip.
+- `web/package-lock.json` pins the frontend; use `npm ci`.
+- Each frozen evaluation documents its protocol, seeds and reproduction command in the linked methodology file. New runs must use a new output directory; committed results are never overwritten.
+- CI ([checks.yml](.github/workflows/checks.yml)) installs from the lock, builds the frontend, runs the full test suite and an Aer smoke test, and runs a Chromium release smoke against a live server.
 
-Reproduction commands for an installed environment (new destinations required; locally executed through the disclosed development launcher):
+## Limitations
 
-~~~powershell
-python -m qfault evaluate --split development --out artifacts/new-development
-python -m qfault evaluate --split final --out artifacts/new-final
-python -m qfault evaluate --split low_shot_control --out artifacts/new-low-shot
-python -m scripts.evaluate_recovery --out artifacts/new-recovery
-python -m scripts.compare_backends --out artifacts/new-backend-check
-~~~
+- Simulation only; no IBM or other hardware execution.
+- Contracts describe one declared input state, not full unitary equivalence. Measured witnesses are incomplete; Z-basis distributions cannot see relative phases.
+- Exact attribution and exact fidelity require privileged simulation and are labelled.
+- Shots are assumed independent and identically distributed; intervals are conservative union bounds, not calibrated probabilities.
+- Repair search is bounded (one edit, capped candidates) and may abstain; verified edits are not causal localization.
+- Hash manifests detect inconsistent edits relative to the manifest; they are not signed and anyone who rewrites both data and manifest can rehash.
+- Local, single-process server bound to 127.0.0.1.
 
-Optional plotting: install a compatible Matplotlib (3.10.3 executed here) and run python scripts/plot_policy_tradeoff.py. Plotting is not a runtime dependency. See [release gates](docs/release-gates.md) for incomplete installation checks and verified browser scope.
+## Troubleshooting
 
-## API and data
+| Symptom | Cause and fix |
+|---|---|
+| `GET /` returns 503 "Build the web interface…" | `web/dist` is missing: run `npm --prefix web ci` and `npm --prefix web run build`. |
+| `QFAULT cannot start: 127.0.0.1:8000 is already in use` | Another server holds the port: stop it or use `qfault serve --port 8001`. |
+| `No module named qfault` or wrong versions | Use the virtual environment's interpreter (`.venv\Scripts\python`) from the repository root. |
+| Aer backend unavailable | The `aer` extra is missing; reinstall from `requirements.lock`. |
+| Hash mismatch during `pip install` | Use CPython 3.13; the lock is generated for 3.13. |
+| Playwright cannot launch Chromium | Run `python -m playwright install chromium` (on Linux, `--with-deps` installs system libraries). |
+| Investigation rejected with 422 | Request failed validation or the shot/evaluation budget cannot fund it; the response explains which. |
 
-Actual routes are documented at http://127.0.0.1:8000/docs. They include /api/health, /api/circuits, /api/contracts/{family}/{n}, /api/experiments, experiment detail/verification/report/review, /api/benchmark plus its report download, and /api/evaluation with the frozen final report. Each request executes a bounded local workflow; only one investigation runs at a time in the supported single-process server.
+## Documentation
 
-Artifact directories contain investigation.json, separate evaluator-only evaluation.json, manifest.json with review membership hashes and immutable review records. Original submitted circuits are never edited in place. SHA-256 checks detect covered changes relative to the manifest; there is no signed receipt or external trust anchor.
+[Custom laboratory](docs/custom-circuit-lab.md) · [Target-state witnesses](docs/target-state-witnesses.md) · [Measured recovery](docs/counterfactual-recovery.md) · [Capability boundaries](docs/scientific-hardening.md) · [Methodology](docs/methodology.md) · [Benchmark protocol](docs/benchmark-protocol.md) · [Release history and earlier README](docs/release-history.md)
 
-## Scientific and engineering limits
+## License and attributions
 
-- State contracts cover a single input, not full unitary equivalence. Matching counts cannot certify phases. Complementary witnesses can reveal some relative phases but remain incomplete.
-- Ideal-state diagnostic probes require privileged local simulation. Hardware tomography, MQT QCEC and IBM hardware execution are not implemented.
-- Noise attribution establishes consistency, not unique causal identification. No temporal drift detection or forecasting is implemented.
-- Measurement mitigation, ML-DSA signing and authenticated review are unavailable.
-- Repair is bounded and incomplete; no successful candidate is guaranteed. Validation can reject an ideal repair under noise or remain inconclusive.
-- The small benchmark repeats fixed circuits at three seeds. Its Wilson intervals are descriptive; unseen-circuit generalization and statistical superiority are unestablished.
-- A crash during multi-file persistence can leave a partial directory; verification reports it incomplete. Mid-investigation failure checkpointing is limited to API failure records, not every intermediate quantum result.
-- The supported server is localhost-only, one process. Source/evidence transfer, isolated CPython installation and independent frontend npm ci are verified. Browser coverage is limited to tested Chromium desktop/tablet/mobile sizes.
-
-## Sources and documents
-
-QFAULT combines evidence/review design lessons from SAT-SA/Closure-Trace, causal-evaluation discipline from QuantumAttack, QFT convention checks from QFT-Lab and shot-versus-bias/resource lessons from Q-TRUST. These are conceptual adaptations; no donor implementation was copied. Existing mutation testing, circuit equivalence and mitigation are prior art. No novelty or quantum-advantage claim is made.
-
-See docs/reuse-inventory.md, docs/prior-art.md, docs/methodology.md and THIRD_PARTY_NOTICES.md for verified sources, revisions, licenses and dependency choices. Product code is MIT licensed.
-
-Current release checks and exact failures: [release candidate audit](docs/release-candidate.md). The required privileged calculations are mapped in [simulator information audit](docs/simulator-information-audit.md).
-
-Operational continuity: decisions.md, flow.md and handoff.md. Reproduction evidence: benchmarks/results.json, benchmarks/reproduction.json, benchmarks/demo.json and local raw artifacts.
-
-## Cinematic frontend and workbench
-
-The entry stages React Bits Hyperspeed and TechText before an original reflective WebGL ribbon sculpture and restrained MoltenMetal atmosphere. Enter Workbench reframes the sculpture and uses PixelSwap with static transition surfaces. Reduced-motion, skip and explicit WebGL fallback paths are available. The bright workspace retains the existing real quantum APIs, report integrity and frozen scientific results.
-
-Open `/` for the landing, `/#/workbench` for the overview or `/#/investigation` to configure a run. Saved experiments use `/#/experiments/<experiment_id>`; hash routes support refresh without a second server. See [source rights](docs/frontend-sources.md) and [executed frontend checks](docs/frontend-verification.md).
-
-## Transfer and submission material
-
-[Portable transfer instructions](docs/transfer.md) cover the locally generated Git bundle and separate measured-evidence/demo archives. [Judging guide](docs/demo.md) includes timed narration and exact inputs. A genuine 176.56-second silent judging capture is recorded and playback-verified locally; it is not a narrated final video. Media and historical raw artifacts are not included in a GitHub clone and have no verified public download URL. New demo records and browser recordings can be regenerated with the tracked scripts. See the [editable voiceover/timeline and recording instructions](docs/video.md). [Organizer checklist](docs/organizer-confirmations.md) records conflicting dates and unresolved eligibility/deliverable rules. Do not submit until these are resolved.
+QFAULT's own code is MIT licensed ([LICENSE](LICENSE)). Third-party portions keep their own terms; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). In particular, the landing hero is transplanted from the MENTAL.AI web client with its authors' permission (as confirmed by the QFAULT owner; see [hero transplant](docs/hero-transplant.md)) and is **not** covered by QFAULT's MIT license grant; React Bits components follow [their license](docs/licenses/react-bits.md); Inter is distributed under the SIL Open Font License 1.1.
