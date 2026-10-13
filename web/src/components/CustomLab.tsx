@@ -126,7 +126,7 @@ export default function CustomLab({page,navigate}:{page:string;navigate:(r:strin
    <ul><li><strong>Detection:</strong> {label(d.detection.status)}{d.detection.violated_claims.length>0&&<> — violated: <span className="mono">{d.detection.violated_claims.join(', ')}</span></>}{d.detection.unresolved_claims.length>0&&<> — unresolved: <span className="mono">{d.detection.unresolved_claims.join(', ')}</span></>}</li>
     <li><strong>Attribution:</strong> {label(d.attribution.status)}. {d.attribution.statement}</li>
     <li><strong>Localization:</strong> {label(d.localization.status)}. {d.localization.statement}</li>
-    <li><strong>Recovery:</strong> {label(result.recovery.status)} — {result.recovery.reason}</li>
+    <li><strong>Recovery:</strong> not attempted by this investigation. A measured counterfactual edit search with fresh verification is a separate action (Measured recovery). <span className="small muted">Recorded engine note: {label(result.recovery.status)} — {result.recovery.reason}</span></li>
     <li><strong>Stop:</strong> {label(d.stop.code)} — {d.stop.reason}</li></ul>
    <p>{result.cost.shots} / {result.cost.max_shots} shots · {result.cost.evaluations} / {result.cost.max_evaluations} evaluations · {result.cost.circuit_executions} circuit executions · {result.cost.exact_state_evaluations} privileged exact-state evaluations · {result.cost.basis_gates} basis gates.</p>
    {result.privileged_operations.length>0?<p><strong>Privileged simulator operation used:</strong> {result.privileged_operations.map((p:Data)=>p.operation+' ('+p.note+')').join('; ')}</p>:<p>No privileged simulator operation was used.</p>}
