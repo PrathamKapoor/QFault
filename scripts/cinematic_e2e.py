@@ -14,7 +14,7 @@ def main():
         # Freeze browser time for genuine captures of short-lived states. This
         # controls timers, not pixels/content; no scientific response is mocked.
         page.clock.install(time=0);page.clock.pause_at(1000)
-        page.goto('http://127.0.0.1:8000/',wait_until='networkidle')
+        page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'),wait_until='networkidle')
         page.clock.run_for(50)
         expect(page.get_by_role('heading',name='QFAULT',exact=True)).to_be_attached()
         for phase,advance in [('hyperspeed',350),('techtext',150),('hero',350)]:
@@ -57,17 +57,17 @@ def main():
         page.go_forward();expect(page.get_by_label('Circuit family')).to_be_visible()
         page.reload();expect(page.get_by_label('Circuit family')).to_be_visible()
         for w,h in [(1920,1080),(1440,900),(1366,768),(768,1024),(390,844)]:
-            page.set_viewport_size({'width':w,'height':h});page.goto('http://127.0.0.1:8000/')
+            page.set_viewport_size({'width':w,'height':h});page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
             expect(page.locator('[data-phase="hero"]')).to_be_attached()
             expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=15000)
             page.wait_for_timeout(1000)
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             page.screenshot(path=str(out/f'landing-{w}.png'))
-            page.goto('http://127.0.0.1:8000/#/workbench');expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_visible(timeout=30000)
+            page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/workbench'));expect(page.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_visible(timeout=30000)
             expect(page.locator('.overview[data-ready="true"]')).to_be_attached(timeout=30000)
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             page.screenshot(path=str(out/f'workbench-{w}.png'),full_page=True)
-        reduced=browser.new_context(reduced_motion='reduce',viewport={'width':1440,'height':900});r=reduced.new_page();r.goto('http://127.0.0.1:8000/')
+        reduced=browser.new_context(reduced_motion='reduce',viewport={'width':1440,'height':900});r=reduced.new_page();r.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
         expect(r.locator('[data-phase="hero"]')).to_be_attached()
         expect(r.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=15000)
         expect(r.locator('.metal-atmosphere canvas[data-rendered="true"]')).to_be_attached(timeout=15000)
@@ -76,13 +76,13 @@ def main():
         expect(r.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_focused()
         fallback=browser.new_context(reduced_motion='reduce')
         fallback.add_init_script("const original=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type,...args){return /webgl/.test(type)?null:original.call(this,type,...args)}")
-        f=fallback.new_page();f.goto('http://127.0.0.1:8000/');expect(f.locator('.sculpture-fallback')).to_be_visible()
+        f=fallback.new_page();f.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'));expect(f.locator('.sculpture-fallback')).to_be_visible()
         f.screenshot(path=str(out/'webgl-fallback.png'));f.get_by_role('button',name='Enter Workbench',exact=True).click()
         expect(f.get_by_role('heading',name='Quantum investigation intelligence.')).to_be_focused()
         # Separate unscreenshoted measurement; graphics captures can stall software GL.
         context.close();reduced.close();fallback.close()
         perf=browser.new_context();timed=perf.new_page();start=time.perf_counter()
-        timed.goto('http://127.0.0.1:8000/',wait_until='domcontentloaded')
+        timed.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'),wait_until='domcontentloaded')
         expect(timed.locator('[data-phase="hero"]')).to_be_attached(timeout=15000)
         observations.append({'fresh_context_hero_seconds':round(time.perf_counter()-start,3),
             'navigation':timed.evaluate('performance.getEntriesByType("navigation")[0].toJSON()')})

@@ -24,23 +24,23 @@ def main():
         context=browser.new_context(viewport={'width':1440,'height':900},reduced_motion='reduce',accept_downloads=True)
         page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
         page.on('console',lambda m:console.append(m.text) if m.type=='error' else None)
-        page.goto('http://127.0.0.1:8000/#/workbench')
+        page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/workbench'))
         page.get_by_role('link',name='Blind Challenge',exact=True).click()
         expect(page.get_by_role('heading',name='Blind quantum investigation.')).to_be_focused()
         page.screenshot(path=str(root/'challenge-configuration.png'),full_page=True)
         for mode in ['measurement_only','simulator_assisted']:
-            page.goto('http://127.0.0.1:8000/#/challenge')
+            page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/challenge'))
             page.get_by_label('Diagnostic capabilities').select_option(mode)
             if mode=='simulator_assisted':page.get_by_label('Recovery',exact=True).select_option('true')
             with page.expect_response(lambda r:r.url.endswith('/api/challenges') and r.request.method=='POST') as started:
                 page.get_by_role('button',name='Start Blind Challenge').click()
             r=started.value.json();assert started.value.status==201;private_absent(r)
-            cid=r['challenge_id'];expect(page).to_have_url('http://127.0.0.1:8000/#/challenges/'+cid)
+            cid=r['challenge_id'];expect(page).to_have_url((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/challenges/')+cid)
             expect(page.get_by_role('button',name='Run diagnosis')).to_be_visible()
             page.screenshot(path=str(root/(mode+'-observed.png')),full_page=True)
             page.get_by_role('button',name='Run diagnosis').click()
             expect(page.get_by_role('button',name='Freeze prediction')).to_be_enabled()
-            before=(context.request.get('http://127.0.0.1:8000/api/challenges/'+cid+'/report')).json()
+            before=(context.request.get((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/api/challenges/')+cid+'/report')).json()
             private_absent(before);assert verify_export(before)['valid']
             expect(page.get_by_role('heading',name='Measurement ledger')).to_be_visible()
             records=before['documents']['observed']['measurements']+before['documents']['diagnosed']['diagnostic_measurements']
@@ -54,7 +54,7 @@ def main():
             page.screenshot(path=str(root/(mode+'-frozen.png')),full_page=True)
             page.get_by_role('button',name='Reveal evaluator truth').click()
             expect(page.get_by_role('heading',name='Evaluator truth · revealed after freeze')).to_be_visible()
-            exported=context.request.get('http://127.0.0.1:8000/api/challenges/'+cid+'/report').json()
+            exported=context.request.get((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/api/challenges/')+cid+'/report').json()
             assert verify_export(exported)['valid'];assert exported['state']=='REVEALED'
             (root/(mode+'-revealed.json')).write_text(json.dumps(exported,indent=2))
             page.screenshot(path=str(root/(mode+'-revealed.png')),full_page=True)
@@ -62,25 +62,25 @@ def main():
             rows.append({'mode':mode,'challenge_id':cid,'comparison':exported['documents']['reveal']['comparison'],'verification':verify_export(exported)})
             page.get_by_role('button',name='Replay recorded challenge').click()
             expect(page.get_by_role('button',name='Run diagnosis')).to_be_visible()
-            replay=context.request.get('http://127.0.0.1:8000/api/challenges').json()[0]
+            replay=context.request.get((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/api/challenges')).json()[0]
             assert replay['state']=='OBSERVED'
             page.go_back();expect(page.get_by_role('heading',name='Evaluator truth · revealed after freeze')).to_be_visible()
             page.go_forward();expect(page.get_by_role('button',name='Run diagnosis')).to_be_visible()
         # A declared deterministic test fixture exercises recovery UI. It is not
         # passed off as an unpredictable demonstration or a successful pool rate.
-        fixture=context.request.post('http://127.0.0.1:8000/api/challenges',data={'seed':1,'diagnostic_mode':'simulator_assisted','recover':True}).json()
+        fixture=context.request.post((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/api/challenges'),data={'seed':1,'diagnostic_mode':'simulator_assisted','recover':True}).json()
         private_absent(fixture)
-        page.goto('http://127.0.0.1:8000/#/challenges/'+fixture['challenge_id'])
+        page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/challenges/')+fixture['challenge_id'])
         page.get_by_role('button',name='Run diagnosis').click()
         expect(page.get_by_role('heading',name='Bounded recovery and independent verification')).to_be_visible()
         page.screenshot(path=str(root/'blind-recovery.png'),full_page=True)
-        pre=context.request.get('http://127.0.0.1:8000/api/challenges/'+fixture['challenge_id']+'/report').json()
+        pre=context.request.get((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/api/challenges/')+fixture['challenge_id']+'/report').json()
         private_absent(pre);assert verify_export(pre)['valid']
         assert pre['documents']['diagnosed']['recovery']['verification']['verified_status']=='VERIFIED'
         page.get_by_role('button',name='Freeze prediction').click()
         page.get_by_role('button',name='Reveal evaluator truth').click()
         expect(page.get_by_role('heading',name='Evaluator truth · revealed after freeze')).to_be_visible()
-        page.set_viewport_size({'width':390,'height':844});page.goto('http://127.0.0.1:8000/#/challenge')
+        page.set_viewport_size({'width':390,'height':844});page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/challenge'))
         expect(page.get_by_label('Circuit family')).to_be_visible()
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         page.screenshot(path=str(root/'challenge-mobile.png'),full_page=True)

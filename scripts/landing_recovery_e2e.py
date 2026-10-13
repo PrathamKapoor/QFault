@@ -13,7 +13,7 @@ def main():
         context.add_init_script("sessionStorage.setItem('qfault-intro','1')")
         page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
         page.on('console',lambda m:console.append(m.text) if m.type=='error' else None)
-        page.goto('http://127.0.0.1:8000/',wait_until='networkidle')
+        page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'),wait_until='networkidle')
         expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=20000)
         page.wait_for_timeout(1200)
         page.screenshot(path=str(out/'hero-1440.png'))
@@ -32,7 +32,7 @@ def main():
         assert page.locator('.hero-field-label,.sculpture-caption').count()==0
         expect(page.get_by_role('heading',name='How QFAULT works')).to_be_visible()
         for w,h in [(1920,1080),(1440,900),(1366,768),(768,1024),(390,844)]:
-            page.set_viewport_size({'width':w,'height':h});page.goto('http://127.0.0.1:8000/')
+            page.set_viewport_size({'width':w,'height':h});page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
             expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=20000)
             page.wait_for_timeout(1000)
             for selector in ['.landing-nav','.hero-brand.word-back','.landing-copy h2','.landing-description','.landing-actions .enter-button','.landing-actions .research-button']:
@@ -40,7 +40,7 @@ def main():
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             button=page.locator('.landing-actions .enter-button');assert button.evaluate('(e)=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2))}')
             page.screenshot(path=str(out/f'hero-{w}.png'))
-        page.set_viewport_size({'width':1440,'height':900});page.goto('http://127.0.0.1:8000/')
+        page.set_viewport_size({'width':1440,'height':900});page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
         expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=20000)
         page.wait_for_timeout(1000)
         detail=page.add_style_tag(content='.word-plane,.hero-eyebrow,.landing-nav,.landing-copy{visibility:hidden!important}')

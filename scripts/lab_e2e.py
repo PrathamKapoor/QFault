@@ -10,7 +10,7 @@ from pathlib import Path
 from playwright.sync_api import expect, sync_playwright
 from qfault.storage import verify_export
 
-BASE = "http://127.0.0.1:8000"
+BASE = (__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '')
 S = 1 / sqrt(2)
 BELL = {"schema_version": 1, "name": "Bell pair", "n_qubits": 2, "input": {"kind": "computational_basis", "bitstring": "00"},
         "gates": [{"name": "h", "qubits": [0]}, {"name": "cx", "qubits": [0, 1]}]}

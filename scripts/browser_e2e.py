@@ -17,7 +17,7 @@ def main():
         page.on('pageerror',lambda err:page_errors.append(str(err)))
         page.on('requestfailed',lambda req:failed_requests.append({'url':req.url,'failure':req.failure}))
         page.on('response',lambda response:http_errors.append({'url':response.url,'status':response.status}) if response.status>=400 else None)
-        page.goto('http://127.0.0.1:8000/#/investigation',wait_until='networkidle')
+        page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/investigation'),wait_until='networkidle')
         expect(page.get_by_role('heading',name='Investigate. Recover. Verify.')).to_be_visible()
         expect(page.get_by_role('heading',name='Coherent Bell state')).to_be_visible()
         assert page.get_by_label('Diagnostic policy').input_value()=='fixed'
@@ -32,7 +32,7 @@ def main():
                 page.get_by_role('button',name='Run investigation').click()
                 loading=page.get_by_role('button',name='Executing Qiskit').is_disabled() if page.get_by_role('button',name='Executing Qiskit').count() else False
             r=response.value;assert r.status==201;data=r.json();assert data['diagnosis']['category']==expected_category
-            expect(page).to_have_url('http://127.0.0.1:8000/#/experiments/'+data['experiment_id'])
+            expect(page).to_have_url((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/#/experiments/')+data['experiment_id'])
             expect(page.get_by_role('heading',name={'NO_SIGNIFICANT_FAILURE_DETECTED':'No significant failure detected','LOGICAL_CIRCUIT_DEFECT':'Logical circuit defect','NOISE_CONSISTENT_DEGRADATION':'Noise-consistent degradation','INSUFFICIENT_EVIDENCE':'Insufficient evidence'}[expected_category],exact=True)).to_be_visible()
             expect(page.get_by_role('heading',name='Expected vs. observed',exact=True)).to_be_visible()
             assert sum(e['executed_shots'] for e in data['executions'])==data['cost']['shots']

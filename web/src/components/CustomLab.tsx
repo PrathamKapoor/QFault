@@ -1,5 +1,6 @@
 import React,{useEffect,useMemo,useState} from 'react';
 import Circuit from './quantum/Circuit';
+import MeasuredRecovery from './MeasuredRecovery';
 type Data=Record<string,any>;
 type Gate={name:string;qubits:number[];angle?:number};
 const GATES=['h','x','z','s','rx','ry','rz','cx','cz','cp','swap'];
@@ -50,7 +51,7 @@ export default function CustomLab({page,navigate}:{page:string;navigate:(r:strin
  const [examples,setExamples]=useState<Data[]>([]),[checked,setChecked]=useState<Data|null>(null),[result,setResult]=useState<Data|null>(null),[integrity,setIntegrity]=useState<Data|null>(null);
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[draft,setDraft]=useState<Gate>({name:'h',qubits:[0]});
  useEffect(()=>{api('/api/lab/examples').then(setExamples).catch(()=>{})},[]);
- useEffect(()=>{if(!id){setResult(null);return}let live=true;setError('');Promise.all([api('/api/experiments/'+id),api('/api/experiments/'+id+'/verification')]).then(([r,v])=>{if(live){setResult(r);setIntegrity(v)}}).catch(e=>live&&setError(e.message));return()=>{live=false}},[id]);
+ useEffect(()=>{if(!id||page.startsWith('/lab/recovery')){setResult(null);return}let live=true;setError('');Promise.all([api('/api/experiments/'+id),api('/api/experiments/'+id+'/verification')]).then(([r,v])=>{if(live){setResult(r);setIntegrity(v)}}).catch(e=>live&&setError(e.message));return()=>{live=false}},[id]);
  const body=useMemo(()=>({circuit,contract,diagnostic_mode:mode,policy,backend,environment:{readout,depolarizing:depol},batch_shots:batch,max_shots:maxShots,max_evaluations:maxEval,max_looks:looks,seed}),[circuit,contract,mode,policy,backend,readout,depol,batch,maxShots,maxEval,looks,seed]);
  const syncCircuit=(c:Data)=>{setCircuit(c);setCircuitText(JSON.stringify(c,null,1));setChecked(null)};
  const syncContract=(c:Data)=>{setContract(c);setContractText(JSON.stringify(c,null,1));setChecked(null)};
@@ -63,7 +64,9 @@ export default function CustomLab({page,navigate}:{page:string;navigate:(r:strin
  async function replay(){setBusy(true);setError('');try{const r=await api('/api/lab/investigations/'+id+'/replay',{});navigate('/lab/'+r.experiment_id)}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
  const n=circuit.n_qubits||3;
  const d=result?.diagnosis;
+ if(page.startsWith('/lab/recovery'))return <MeasuredRecovery page={page} circuit={circuit} contract={contract} environment={{readout,depolarizing:depol}} backend={backend} navigate={navigate}/>;
  return <div className="lab">
+  <button className="button secondary" onClick={()=>{if(result){syncCircuit(result.circuit);syncContract(result.configuration.contract);setReadout(result.configuration.environment.readout);setDepol(result.configuration.environment.depolarizing);setBackend(result.configuration.backend)}navigate('/lab/recovery')}}>Measured recovery →</button>
   <p>Supply a validated structured circuit and an <strong>independently declared</strong> contract. QFAULT executes real Qiskit measurements, chooses further measurements under a strict budget, and reports what the evidence can and cannot establish. Bit and Pauli strings use Qiskit order: the leftmost character is the highest qubit.</p>
   {error&&<div className="error" role="alert">{error}</div>}
   {!id&&<>

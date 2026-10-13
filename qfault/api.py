@@ -154,6 +154,29 @@ def create_app(root=None):
     @app.post("/api/lab/investigations",status_code=201,dependencies=[Depends(bounded)])
     def lab_investigate(request:LabRequest): return run_lab(request)
 
+    from .counterfactual import RecoveryRequest,recover
+
+    def run_recovery(request):
+        if not lock.acquire(blocking=False): raise HTTPException(409,"An investigation is already running")
+        try: return store.load(store.save(recover(request)))
+        except (ValueError,RuntimeError,ImportError,OSError) as exc:
+            failure={"failure_id":identifier("failure"),"created_at":timestamp(),
+                     "configuration":request.model_dump(mode="json"),"execution_status":"FAILED",
+                     "failure_reason":str(exc),"investigation_kind":"counterfactual_recovery"}
+            failures=store.root/'failures';failures.mkdir(exist_ok=True)
+            (failures/(failure['failure_id']+'.json')).write_bytes(canonical(failure))
+            raise HTTPException(422,"Recovery execution failed; failure recorded, no verified repair claimed") from exc
+        finally: lock.release()
+
+    @app.post('/api/lab/recoveries',status_code=201,dependencies=[Depends(bounded)])
+    def measured_recovery(request:RecoveryRequest): return run_recovery(request)
+
+    @app.post('/api/lab/recoveries/{eid}/replay',status_code=201)
+    def replay_recovery(eid:str):
+        original=existing(eid)
+        if original.get('investigation_kind')!='counterfactual_recovery': raise HTTPException(422,'Not a measured recovery')
+        return run_recovery(RecoveryRequest.model_validate(original['replay']['request']))
+
     @app.post("/api/lab/investigations/{eid}/replay",status_code=201)
     def lab_replay(eid:str):
         original=existing(eid)

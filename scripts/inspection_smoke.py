@@ -13,7 +13,7 @@ def main():
         page=context.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
         page.on('console',lambda m:console.append(m.text) if m.type=='error' else None)
         page.on('requestfailed',lambda r:failed.append(r.url))
-        response=page.goto('http://127.0.0.1:8000/')
+        response=page.goto((__import__('os').environ.get('QFAULT_BASE_URL','http://127.0.0.1:8000') + '/'))
         expect(page.locator('[data-phase="hero"]')).to_be_attached(timeout=20000)
         expect(page.locator('.sculpture canvas[data-rendered="true"]')).to_be_attached(timeout=20000)
         page.wait_for_timeout(1100);page.screenshot(path=str(out/'landing-desktop.png'))
