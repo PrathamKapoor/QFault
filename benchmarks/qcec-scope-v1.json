@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "task": "two-qubit full-reference unitary equivalence scope demonstration",
+  "oracle_scope": {
+    "qcec_access": "complete trusted reference and candidate circuit descriptions",
+    "equivalence_relation": "full-unitary equivalence up to global phase",
+    "comparison_to_qfault": "stronger oracle; not an equal-information performance or repair comparison",
+    "interpretation_access": "privileged exact Statevector for zero input; no measured QFAULT run",
+    "shots": 0,
+    "fault_localization_or_repair_evaluated": false
+  },
+  "created_utc": "2026-10-15T18:45:36.635813+00:00",
+  "environment": {
+    "python": "3.13.2",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "mqt.qcec": "3.11.0",
+      "mqt.core": "3.11.0",
+      "qiskit": "2.5.2",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "rustworkx": "0.18.1",
+      "dill": "0.4.1",
+      "stevedore": "5.9.1",
+      "typing-extensions": "4.16.0",
+      "nanobind-backend": "1.0.0"
+    }
+  },
+  "source": {
+    "script_path": "scripts/compare_qcec_scope.py",
+    "script_sha256": "6fdb47bd524f47760b3c9e1e9c3ab37e48db45a4f866382e78a21ceac7c1ab4d",
+    "qcec_release": "3.11.0",
+    "qcec_release_source_commit": "844a67c94159ae97d1c4cc01501fbdd98a84a730"
+  },
+  "checker_options": {
+    "method": "construction",
+    "parallel": false,
+    "timeout": 5
+  },
+  "reference_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];",
+  "reference_sha256": "e249a9217a1b139d11a0faf6fa9e852539aa830e2e318b9a6f414afb1035bee5",
+  "cases": [
+    {
+      "case": "identity_pair_inserted",
+      "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\nx q[1];\nx q[1];",
+      "candidate_sha256": "31e35e1b4892698bfa1a02da3f9aa2cfea4606970352c2bef7eb91038204e4a6",
+      "expected_equivalence": "equivalent",
+      "equivalence": "equivalent",
+      "checker_verdicts": [
+        {
+          "checker": "decision_diagram_construction",
+          "equivalence": "equivalent"
+        }
+      ],
+      "zero_input_z_distribution_equal": true,
+      "zero_input_state_fidelity": 0.9999999999999996
+    },
+    {
+      "case": "cx_removed",
+      "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];",
+      "candidate_sha256": "f788d3610c7f5242d673c1f51f2693fa5c2187212a662d21dd91f9db93779318",
+      "expected_equivalence": "not_equivalent",
+      "equivalence": "not_equivalent",
+      "checker_verdicts": [
+        {
+          "checker": "decision_diagram_construction",
+          "equivalence": "not_equivalent"
+        }
+      ],
+      "zero_input_z_distribution_equal": false,
+      "zero_input_state_fidelity": 0.2499999999999999
+    },
+    {
+      "case": "relative_phase_z_appended",
+      "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\nz q[0];",
+      "candidate_sha256": "37c2cd67d15260624a9444af273be677c37d6096b5e765c687ddc05b1281e8cc",
+      "expected_equivalence": "not_equivalent",
+      "equivalence": "not_equivalent",
+      "checker_verdicts": [
+        {
+          "checker": "decision_diagram_construction",
+          "equivalence": "not_equivalent"
+        }
+      ],
+      "zero_input_z_distribution_equal": true,
+      "zero_input_state_fidelity": 0.0
+    },
+    {
+      "case": "initial_z_invisible_on_zero_input",
+      "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nz q[0];\nh q[0];\ncx q[0],q[1];",
+      "candidate_sha256": "c5db2fbfced60fcd9acb8e5a889841a8b1179d08e74dd1770a0025e73a33a77d",
+      "expected_equivalence": "not_equivalent",
+      "equivalence": "not_equivalent",
+      "checker_verdicts": [
+        {
+          "checker": "decision_diagram_construction",
+          "equivalence": "not_equivalent"
+        }
+      ],
+      "zero_input_z_distribution_equal": true,
+      "zero_input_state_fidelity": 0.9999999999999996
+    }
+  ],
+  "expected_verdicts_matched": 4,
+  "digest_definition": "SHA-256 of UTF-8 JSON with sort_keys=True and separators=(',',':'), excluding payload_sha256",
+  "payload_sha256": "96bf2d8bacf0c632a38318f6a377c0ed27d1945ddf790e419e80f94632976aec"
+}

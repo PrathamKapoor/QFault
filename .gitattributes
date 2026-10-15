@@ -1,0 +1,3 @@
+# Preserve upstream source and licence bytes for frozen checksum verification.
+benchmarks/external/qasmbench/** -text
+*.gz binary
