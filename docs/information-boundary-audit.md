@@ -52,7 +52,38 @@ Adaptive laboratory stopping is valid on the prespecified grid of at most K look
 
 Counterfactual recovery allocates `alpha_total/((C+3)*M+1)`: original plus up to C screening candidates, fresh original and frozen selected candidate, and one readout control. Conditional coverage of fresh samples survives candidate selection because verification samples were unused during selection. A verified repair requires candidate upper loss `<=1` and original lower loss greater than candidate upper loss. These statements assume independent stationary shots and properly calibrated measurement channels; deterministic seed offsets support reproducibility without proving physical independence or absence of drift.
 
-## Frozen error taxonomy
+## Explicit identifiability examples
+
+[identifiability_examples.py](../scripts/identifiability_examples.py) generates [identifiability-v1.json](../benchmarks/identifiability-v1.json) exclusively; an existing destination is never replaced. The report records software versions, source SHA256 values, seeds, resources and every genuine reference/Aer sampled histogram. Exact evaluator state/channel proofs are separately labelled. This deliberately constructed demonstration is not an untouched scientific holdout.
+
+Bell `Phi+` and `Phi-` have identical computational-basis distributions and orthogonal states. XX parity separates them exactly. Three distinct one-edit repairs of a submitted X gate—remove X, replace X by Z, or insert another X—produce the same density matrix `|00><00|` from the declared input, despite different programs and, for I versus Z, different full unitaries. Every POVM on that output has the same probabilities. Tensor powers preserve this equality, so increasing shots cannot resolve the structural ambiguity. The finite-shot samples illustrate the example; density-matrix equality establishes the all-measurement statement.
+
+A logical X gate and the explicitly constructed Qiskit Kraus channel `E(rho)=X_0 rho X_0` give the same output density, hence output-only data cannot distinguish their causal origins without extra assumptions. This deterministic bit-flip channel is an evaluator/executor demonstration outside QFAULT's supported `Noise` schema; no new supported backend or physical channel is claimed. A separate example uses supported `readout=0.5`: readout-randomized `|00>` and an ideal logical uniform superposition have identical Z probabilities, while their XX distributions differ with TV `0.75`.
+
+## Original 75-case policy result
+
+The original [results.json](../benchmarks/results.json) contains 300 rows: 75 matched cases for each of evidence, fixed, random and threshold. All 300 referenced raw investigation manifests were checked locally and passed hash verification. The protocol used 2,048 observation shots, a 6,144-shot/4-evaluation ceiling, seeds 11/29/47, and Bell/GHZ/QFT templates. The table recounts category mismatches, including random-policy abstentions, directly from those frozen rows.
+
+| Scenario | Cases per policy | Evidence errors | Fixed errors | Random errors | Threshold errors |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| clean | 9 | 0 | 0 | 0 | 0 |
+| readout | 9 | 3 | 3 | 7 | 3 |
+| gate noise | 9 | 6 | 6 | 8 | 6 |
+| remove | 9 | 3 | 0 | 7 | 3 |
+| replace | 9 | 1 | 0 | 7 | 1 |
+| rewire | 9 | 3 | 0 | 7 | 3 |
+| mixed | 9 | 3 | 0 | 7 | 3 |
+| phase | 9 | 9 | 0 | 9 | 9 |
+| QFT angle control | 3 | 0 | 0 | 0 | 0 |
+| **Total** | **75** | **28** | **9** | **52** | **28** |
+
+Thus evidence and threshold each scored `47/75`, fixed `66/75`, and random `23/75`. Random's 52 mismatches include 24 `INSUFFICIENT_EVIDENCE` outcomes; the other three policies had no abstentions. Evidence/threshold's 28 misses comprise 16 logical, nine noise-labelled and three mixed cases, all predicted as no significant failure. The 16 logical misses are nine phase cases, three QFT removals, three QFT rewires and one QFT replacement. Fixed's nine misses are three Bell gate-noise, three QFT gate-noise and three QFT readout cases. All 12 evaluator-correct controls were classified correctly; zero observed false diagnoses is not a population guarantee.
+
+Raw ledgers show that fixed performed **75 privileged ideal-state probes**, evidence 35, threshold 36 and random 11. Fixed used 384,000 shots/300 evaluations versus evidence's 343,040 shots/220 evaluations. The improvement from `47/75` to `66/75` is therefore not a measurement-only attribution result or evidence of resource dominance. Fixed directly inspected every candidate's exact fixed-input state, allowing it to classify logical defects invisible to computational counts. For example, the frozen QFT remove/rewire/phase runs at seed 11 each have empirical TV `0.02002`, radius `0.05512`, no significant discrepancy and no state probe under evidence.
+
+The remaining fixed misses are consistent with the declared detection objective: independent channel calculation gives Bell gate-noise computational TV `0.1`, exactly its tolerance, and QFT3 gate-noise computational TV zero up to floating error. Symmetric readout leaves the uniform QFT computational distribution unchanged. More Z shots do not make these labels identifiable from that distribution. The evaluator labels configured noise; a label mismatch does not prove that the measured task output violated its tolerance.
+
+## Later frozen error taxonomy
 
 The following are descriptive counts read from frozen results, not new holdout executions or population guarantees.
 
@@ -69,4 +100,6 @@ The following are descriptive counts read from frozen results, not new holdout e
 
 The frozen repetitions share architectures, seeds and budgets. They do not justify independent-circuit inferential intervals, causal claims, hardware performance claims, or unseen-architecture generalization. New tests are regression/audit controls and must not be relabelled as untouched scientific validation.
 
-Local verification: `.local/release-audit-python/Scripts/python.exe -m pytest tests/test_information_boundaries.py -q -p no:cacheprovider` passed all 16 cases after the fixes, with the existing Starlette/httpx deprecation warning. The initial pre-fix run had 11 failures and four passes; adding the second contradictory-bound threshold produced the final 16-case set. No external validation or new holdout score is inferred from this result.
+Local verification: `.local/release-audit-python/Scripts/python.exe -m pytest tests/test_information_boundaries.py tests/test_identifiability_examples.py -q -p no:cacheprovider` passed all 28 cases after the fixes, with the existing Starlette/httpx deprecation warning. The initial boundary pre-fix run had 11 failures and four passes; adding the second contradictory-bound threshold produced its final 16-case set. The 12 identifiability tests additionally reconstruct the equal densities independently, reproduce every sampled count/report digest and reject output replacement.
+
+The explicit default demonstration ran 92 executions and 200,192 shots across both reference and Aer, using shot sizes 256 and 4,096, seed 20261016, Python 3.13.2, Qiskit 2.3.1, Aer 0.17.2, NumPy 2.5.2, SciPy 1.18.1 and Pydantic 2.13.4. Its canonical report digest, every source fingerprint and all count/resource totals were independently checked after generation. No external validation or new holdout success score is inferred from these results.
