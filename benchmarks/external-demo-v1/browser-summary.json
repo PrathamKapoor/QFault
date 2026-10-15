@@ -1,0 +1,37 @@
+{
+  "source_path": "small/qrng_n4/qrng_n4.qasm",
+  "rows": [
+    {
+      "stage": "z_only",
+      "experiment_id": "experiment_153a7692acb0495ab109e72aa2263783",
+      "category": "NO_SIGNIFICANT_DISCREPANCY",
+      "shots": 1024
+    },
+    {
+      "stage": "complementary",
+      "experiment_id": "experiment_7241bf18943f4e3bbc4fa714d9f4c525",
+      "category": "SIGNIFICANT_DISCREPANCY",
+      "shots": 2048
+    }
+  ],
+  "recovery_id": "experiment_ebe0d3574e6d4826b677ea2c42013d93",
+  "recovery_status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+  "causal_origin": "NOT_IDENTIFIED",
+  "export_verified": true,
+  "mobile": [
+    {
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "width": 375,
+      "overflow": false
+    },
+    {
+      "width": 360,
+      "overflow": false
+    }
+  ],
+  "page_errors": [],
+  "console_errors": []
+}
