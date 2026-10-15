@@ -8,7 +8,7 @@ from time import perf_counter
 from typing import Literal
 from pydantic import Field, model_validator
 from .quantum import Strict, Noise
-from .lab import CustomCircuit, Contract, check_pair, _Port
+from .lab import CustomCircuit, Contract, TargetStateContract, check_pair, _Port
 from .diagnostics import ExecutionBudget, tv_radius
 from .evidence import digest, identifier, timestamp, canonical
 from .interventions import EditRestrictions, generate
@@ -90,6 +90,7 @@ def recover(request: RecoveryRequest):
     tested, plausible, ranked = [], [], []
     status = 'INSUFFICIENT_BUDGET'
     screen_limit = 0
+    uncalibrated_target = isinstance(request.contract, TargetStateContract) and bool(request.environment.readout or request.environment.depolarizing)
 
     def measure_for(circuit, phase):
         # Unique deterministic seed per execution throughout this investigation.
@@ -108,7 +109,10 @@ def recover(request: RecoveryRequest):
         # Protect confirmation AND a possible readout control before observation.
         # Otherwise a large screen batch can exhaust the control budget after
         # observation even though the initial confirmation-only preflight passed.
-        if budget.can(reserve+(groups+1)*request.screen_shots,reserve_evals+groups+1):
+        if uncalibrated_target:
+            status = 'MEASUREMENT_MODEL_ABSTENTION'
+            verification = {'status': 'NOT_EXECUTED', 'reason': 'Target fidelity requires calibrated common-state Pauli measurements. Declared readout or analysis-gate noise is uncalibrated; no state certificate or repair is claimed.'}
+        elif budget.can(reserve+(groups+1)*request.screen_shots,reserve_evals+groups+1):
             by_shots=max(0,(request.max_shots-reserve-(groups+1)*request.screen_shots)//max(1,groups*request.screen_shots))
             by_evals=max(0,(request.max_evaluations-reserve_evals-groups-1)//max(1,groups))
             screen_limit=min(request.max_candidates,by_shots,by_evals)

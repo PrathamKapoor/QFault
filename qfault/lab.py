@@ -8,6 +8,7 @@ Conventions (single source of truth, verified against Qiskit in tests):
 - The expected behaviour is declared by the contract and is never derived from the candidate.
 """
 import random
+from dataclasses import dataclass
 from math import log, pi, sqrt
 from time import perf_counter
 from typing import Annotated, Literal, Union
@@ -278,6 +279,22 @@ class LabRequest(Strict):
         return self
 
 
+@dataclass(frozen=True)
+class PolicyConfig:
+    """Analyst settings only; excludes the candidate, executor and noise model."""
+    policy: str
+    batch_shots: int
+    max_shots: int
+    max_evaluations: int
+    max_looks: int
+    alpha_total: float
+    seed: int
+
+    @classmethod
+    def from_request(cls, request):
+        return cls(**{name: getattr(request, name) for name in cls.__dataclass_fields__})
+
+
 def exact_expectations(circuit, contract):
     """PRIVILEGED simulator operation: exact ideal values of the declared claims."""
     state = Statevector.from_instruction(circuit.subject().native())
@@ -487,7 +504,7 @@ def target_feasibility(contract, request):
                         "stabilizer_target": cat["stabilizer"], "omitted_terms": cat["omitted_count"],
                         "omitted_abs_bound": cat["omitted_abs_bound"], "looks_affordable": affordable},
             "limitations": ["Measured witnesses bound fidelity; they do not certify the state unless the lower bound clears the threshold",
-                            "Bounds assume i.i.d. shots and count readout/basis-gate noise as part of the observed state",
+                            "Fidelity bounds require calibrated Pauli measurements of one common state and i.i.d. shots; basis-dependent noise need not define such a state",
                             "Violations do not identify a faulty gate or distinguish logic from noise",
                             "One declared input state only; not unitary equivalence"]}
 
@@ -606,10 +623,28 @@ def investigate_lab(request, truth=None):
     contract_id = "contract_" + digest(request.contract.model_dump(mode="json"))[:20]
     is_target = isinstance(contract, TargetStateContract)
     target_evidence = None
+    policy_config = PolicyConfig.from_request(request)
     if is_target:
-        states, ledger, stop, slot, target_evidence = run_witness_policy(contract, contract_id, port, request)
+        states, ledger, stop, slot, target_evidence = run_witness_policy(contract, contract_id, port, policy_config)
+        uncalibrated = bool(request.environment.readout or request.environment.depolarizing)
+        target_evidence['model_validity'] = 'CALIBRATION_REQUIRED' if uncalibrated else 'IDEAL_MEASUREMENT_MODEL'
+        target_evidence['measurement_assumption'] = 'Calibrated Pauli measurements of one common preanalysis state; sampling intervals do not cover systematic measurement-channel bias.'
+        if uncalibrated:
+            target_evidence['observed_witness_decision'] = target_evidence['status']
+            target_evidence['conditional_witness_interval'] = target_evidence['fidelity_bound']
+            target_evidence['fidelity_bound'] = [0., 1.]
+            target_evidence['status'] = 'UNRESOLVED'
+            target_evidence['bound_method'] = 'State fidelity is unestablished: declared readout or analysis-gate noise is not calibrated. Numerical witness bounds are conditional model calculations only'
+            state = states['target:fidelity']
+            state.status, state.lower, state.upper = 'UNRESOLVED', 0., 1.
+            stop = ('MEASUREMENT_MODEL_UNCALIBRATED', 'Sampled witness means do not certify preanalysis state fidelity without a calibrated measurement model.')
+            for action in ledger:
+                action['interpretation'] = 'Conditional witness calculation; not a state-fidelity certificate under the declared measurement noise.'
+                observed = action['observed_result']['target:fidelity']
+                observed['conditional_witness_status'] = observed['status']
+                observed['status'] = 'UNRESOLVED'
     else:
-        states, ledger, stop, slot = run_policy(claims, groups, n, expected, port, request)
+        states, ledger, stop, slot = run_policy(claims, groups, n, expected, port, policy_config)
     violated = [s for s in states.values() if s.status == "VIOLATED"]
     unresolved = [s for s in states.values() if not s.resolved]
     control = None
@@ -706,8 +741,7 @@ def investigate_lab(request, truth=None):
                                      "per-group shot grid {b,2b,...,Kb}; union bound over claims x looks plus one control"),
                                      "alpha_total": request.alpha_total, "alpha_per_interval": slot,
                                      "looks_per_group": request.max_looks, "batch_shots": request.batch_shots,
-                                     "validity": "Error rate for any false violation/confirmation <= alpha_total under i.i.d. shots; "
-                                                 "conservative; not a calibrated class probability"},
+                                     "validity": "Error rate for any false violation/confirmation <= alpha_total under i.i.d. shots and the stated measurement model. Target fidelity additionally requires calibrated common-state Pauli measurements; no certificate under uncalibrated noise. Not a class probability."},
               "replay": {"request": request.model_dump(mode="json"),
                          "note": "Same request and seed reproduce counts on the same backend and software versions"},
               "integrity": {"algorithm": "sha256", "canonicalization": "qfault-json-v1", "signing": "UNAVAILABLE"},

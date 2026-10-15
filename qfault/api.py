@@ -2,7 +2,7 @@
 import os
 import threading
 from pathlib import Path
-from fastapi import Depends,FastAPI,HTTPException
+from fastapi import FastAPI,HTTPException
 from fastapi.responses import FileResponse,JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import Field
@@ -10,6 +10,37 @@ from .quantum import Strict,contract
 from .workflow import RunRequest,investigate
 from .storage import ArtifactStore
 from .evidence import canonical,identifier,timestamp
+
+
+class RequestBodyLimit:
+    """Bound actual API bytes before JSON parsing, including chunked requests."""
+    def __init__(self, app, limit=65536):
+        self.app, self.limit = app, limit
+
+    async def __call__(self, scope, receive, send):
+        if scope['type'] != 'http' or not scope.get('path', '').startswith('/api/'):
+            return await self.app(scope, receive, send)
+        headers = dict(scope.get('headers', []))
+        length = headers.get(b'content-length')
+        if length is not None and (not length.isdigit() or len(length) > 20):
+            return await JSONResponse({'detail': 'Invalid Content-Length'}, status_code=400)(scope, receive, send)
+        if length is not None and int(length) > self.limit:
+            return await JSONResponse({'detail': 'Request body exceeds 64 KiB'}, status_code=413)(scope, receive, send)
+        messages, size = [], 0
+        while True:
+            message = await receive()
+            size += len(message.get('body', b''))
+            if size > self.limit:
+                return await JSONResponse({'detail': 'Request body exceeds 64 KiB'}, status_code=413)(scope, receive, send)
+            messages.append(message)
+            if message['type'] == 'http.disconnect' or not message.get('more_body', False):
+                break
+        pending = iter(messages)
+
+        async def replay():
+            return next(pending, None) or await receive()
+
+        await self.app(scope, replay, send)
 
 
 class ReviewRequest(Strict):
@@ -20,6 +51,7 @@ class ReviewRequest(Strict):
 
 def create_app(root=None):
     app=FastAPI(title="QFAULT",version="0.1.0")
+    app.add_middleware(RequestBodyLimit)
     store=ArtifactStore(root or os.environ.get("QFAULT_ARTIFACTS","artifacts/investigations"))
     lock=threading.Lock()
     from .challenge import BlindChallenges,ChallengeRequest,ChallengeConflict
@@ -117,10 +149,6 @@ def create_app(root=None):
 
     from .lab import LabRequest,investigate_lab,feasibility
     from .lab_corpus import cases as lab_cases
-    from fastapi import Request
-
-    async def bounded(request:Request):
-        if int(request.headers.get("content-length") or 0)>65536: raise HTTPException(413,"Request body exceeds 64 KiB")
 
     @app.get("/api/lab/examples")
     def lab_examples():
@@ -132,7 +160,7 @@ def create_app(root=None):
                  "provenance":"Contract declared from the reference design by exact Qiskit evaluation, not from this candidate"}
                 for k,v in picks.items()]
 
-    @app.post("/api/lab/validate",dependencies=[Depends(bounded)])
+    @app.post("/api/lab/validate")
     def lab_validate(request:LabRequest):
         return {"valid":True,"circuit_id":request.circuit.circuit_id,"executed_subject":request.circuit.subject().model_dump(mode="json"),
                 "circuit_diagram":str(request.circuit.subject().native().draw(output="text")),
@@ -151,7 +179,7 @@ def create_app(root=None):
             raise HTTPException(422,"Investigation failed; error preserved in local failure artifact")
         finally: lock.release()
 
-    @app.post("/api/lab/investigations",status_code=201,dependencies=[Depends(bounded)])
+    @app.post("/api/lab/investigations",status_code=201)
     def lab_investigate(request:LabRequest): return run_lab(request)
 
     from .counterfactual import RecoveryRequest,recover
@@ -168,7 +196,7 @@ def create_app(root=None):
             raise HTTPException(422,"Recovery execution failed; failure recorded, no verified repair claimed") from exc
         finally: lock.release()
 
-    @app.post('/api/lab/recoveries',status_code=201,dependencies=[Depends(bounded)])
+    @app.post('/api/lab/recoveries',status_code=201)
     def measured_recovery(request:RecoveryRequest): return run_recovery(request)
 
     @app.post('/api/lab/recoveries/{eid}/replay',status_code=201)

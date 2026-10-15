@@ -160,10 +160,12 @@ def bounds(cat, est, rad):
             if len(chosen) == n:
                 L = max(L, 1 - sum((1 - g) / 2 for g, _ in chosen))
                 break
-    return L, U  # L > U can only occur when some interval failed to cover; decide() then reports VIOLATED
+    return L, U  # L > U indicates incompatible intervals or a failed common-state measurement model.
 
 
 def decide(L, U, threshold):
+    if L > U:
+        return "UNRESOLVED"
     if U < threshold:
         return "VIOLATED"
     if L >= threshold:

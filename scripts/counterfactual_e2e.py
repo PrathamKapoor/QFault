@@ -54,7 +54,8 @@ def main():
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1')
             page.screenshot(path=str(out/f'mobile-{width}.png'),full_page=True)
         clean={**c,'gates':[]}
-        r=ctx.request.post(BASE+'/api/lab/recoveries',data={'circuit':clean,'contract':target,'environment':{'readout':.35}}).json()
+        distribution={'kind':'measurement_distribution','expected_probabilities':{'00':1.},'tolerance':.2}
+        r=ctx.request.post(BASE+'/api/lab/recoveries',data={'circuit':clean,'contract':distribution,'environment':{'readout':.35}}).json()
         assert r['status']=='NOISE_CONTROL_ABSTENTION'
         page.set_viewport_size({'width':1440,'height':900});page.goto(BASE+'/#/lab/recovery/'+r['experiment_id'])
         expect(page.get_by_text('noise control abstention').first).to_be_visible()

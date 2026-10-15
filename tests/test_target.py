@@ -207,7 +207,9 @@ def test_simulator_assisted_reports_exact_fidelity_separately():
     noisy = investigate_lab(req(diagnostic_mode="simulator_assisted", environment={"readout": 0, "depolarizing": .1}))
     assert noisy["target_evidence"]["exact"]["ideal_fidelity"] == pytest.approx(1)
     assert noisy["target_evidence"]["exact"]["gate_noise_state_fidelity"] < .95
-    assert r["diagnosis"]["attribution"]["status"] == "LOGICAL_DEFECT_SUPPORTED_FIXED_INPUT"
+    assert r["diagnosis"]["category"] == "INSUFFICIENT_EVIDENCE"
+    assert r["target_evidence"]["model_validity"] == "CALIBRATION_REQUIRED"
+    assert r["diagnosis"]["attribution"]["status"] == "LOGICAL_DEFECT_SUPPORTED_BY_PRIVILEGED_STATE_NOT_SAMPLED"
 
 
 def test_api_target_roundtrip(tmp_path):
