@@ -1,4 +1,6 @@
 """Localhost API; all science runs through the same CLI-tested workflow."""
+import json
+import math
 import os
 import threading
 from pathlib import Path
@@ -21,10 +23,12 @@ class RequestBodyLimit:
         if scope['type'] != 'http' or not scope.get('path', '').startswith('/api/'):
             return await self.app(scope, receive, send)
         headers = dict(scope.get('headers', []))
-        length = headers.get(b'content-length')
-        if length is not None and (not length.isdigit() or len(length) > 20):
+        lengths = [value for key, value in scope.get('headers', []) if key.lower() == b'content-length']
+        if any(not value.isdigit() or len(value) > 20 for value in lengths):
             return await JSONResponse({'detail': 'Invalid Content-Length'}, status_code=400)(scope, receive, send)
-        if length is not None and int(length) > self.limit:
+        if len({int(value) for value in lengths}) > 1:
+            return await JSONResponse({'detail': 'Conflicting Content-Length'}, status_code=400)(scope, receive, send)
+        if any(int(value) > self.limit for value in lengths):
             return await JSONResponse({'detail': 'Request body exceeds 64 KiB'}, status_code=413)(scope, receive, send)
         messages, size = [], 0
         while True:
@@ -35,6 +39,35 @@ class RequestBodyLimit:
             messages.append(message)
             if message['type'] == 'http.disconnect' or not message.get('more_body', False):
                 break
+        body = b''.join(message.get('body', b'') for message in messages)
+        content_type = headers.get(b'content-type', b'application/json').split(b';', 1)[0].strip().lower()
+        if body and messages[-1]['type'] != 'http.disconnect':
+            if content_type != b'application/json' and not content_type.endswith(b'+json'):
+                return await JSONResponse({'detail': 'API requests require JSON'}, status_code=422)(scope, receive, send)
+            def reject_constant(value):
+                raise ValueError('Non-finite JSON number')
+            def finite_float(value):
+                number = float(value)
+                if not math.isfinite(number):
+                    raise ValueError('Non-finite JSON number')
+                return number
+            try:
+                parsed = json.loads(body, parse_constant=reject_constant, parse_float=finite_float)
+                pending_values = [(parsed, 0)]
+                while pending_values:
+                    value, depth = pending_values.pop()
+                    if depth > 64:
+                        raise ValueError('JSON nesting exceeds 64 levels')
+                    if isinstance(value, dict):
+                        for key in value:
+                            key.encode('utf-8')
+                        pending_values.extend((child, depth + 1) for child in value.values())
+                    elif isinstance(value, list):
+                        pending_values.extend((child, depth + 1) for child in value)
+                    elif isinstance(value, str):
+                        value.encode('utf-8')
+            except (ValueError, UnicodeError, RecursionError):
+                return await JSONResponse({'detail': 'Invalid JSON body'}, status_code=422)(scope, receive, send)
         pending = iter(messages)
 
         async def replay():
@@ -203,13 +236,17 @@ def create_app(root=None):
     def replay_recovery(eid:str):
         original=existing(eid)
         if original.get('investigation_kind')!='counterfactual_recovery': raise HTTPException(422,'Not a measured recovery')
-        return run_recovery(RecoveryRequest.model_validate(original['replay']['request']))
+        try: request=RecoveryRequest.model_validate(original['replay']['request'])
+        except (ValueError,KeyError,TypeError): raise HTTPException(422,'Saved replay request is invalid')
+        return run_recovery(request)
 
     @app.post("/api/lab/investigations/{eid}/replay",status_code=201)
     def lab_replay(eid:str):
         original=existing(eid)
         if original.get("investigation_kind")!="custom_circuit": raise HTTPException(422,"Not a custom-circuit investigation")
-        return run_lab(LabRequest.model_validate(original["replay"]["request"]))
+        try: request=LabRequest.model_validate(original['replay']['request'])
+        except (ValueError,KeyError,TypeError): raise HTTPException(422,'Saved replay request is invalid')
+        return run_lab(request)
 
     @app.get("/api/experiments")
     def list_experiments(): return store.list()

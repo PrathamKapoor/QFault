@@ -59,7 +59,9 @@ the expectation of the executed measurement setting, not an inferred noiseless
 preanalysis state. Target-fidelity claims abstain under uncalibrated noise.
 
 The [protocol](../configs/external-validation-protocol.json) was committed at
-`cac14a5` before holdout execution. Its scientific sources are pinned by normalized
+`cac14a5`, an ancestor of the result commit `fe15f25`. The recorded procedure
+freezes it before execution; Git ancestry establishes commit ordering, not an
+authenticated execution time or the absence of unrecorded tuning. Its scientific sources are pinned by normalized
 LF SHA-256 values, with source revision `7f75a29`. The summary records execution
 revision `6eaeb2d`; that intervening commit adds demonstration/audit material and
 does not change the frozen scientific sources. Source, dependency, corpus and
@@ -157,8 +159,10 @@ Examples include cat-state terminal Z passing the Z contract; cat-state
 low-shot deletion failing to resolve; lpn gate noise reaching its look limit;
 and cat-state readout noise withholding target-state certification. The raw
 records, interval widths and stop codes support these classifications. A mutation
-name alone does not decide the failure reason. No outcome was used to change
-thresholds, candidate order or policy heuristics after freezing.
+name alone does not decide the failure reason. The recorded procedure made no
+outcome-driven changes to thresholds, candidate order or policy heuristics after
+freezing. The frozen scientific hashes match; private activity outside the
+recorded history cannot be independently authenticated.
 
 ## Reproduce and inspect
 
@@ -169,6 +173,7 @@ python -m pip check
 python -m scripts.retrieve_external_sources --verify
 python -m scripts.external_corpus --output artifacts/rebuilt-external-corpus.json
 python -m scripts.verify_external_results benchmarks/external-holdout-v1/summary.json benchmarks/external-holdout-v1/reports.jsonl.gz
+python -m scripts.reconcile_external_evidence benchmarks/external-holdout-v1/summary.json benchmarks/external-holdout-v1/reports.jsonl.gz
 python -m scripts.external_validation --split development --out artifacts/my-external-development
 python -m scripts.external_validation --split holdout --out artifacts/my-external-holdout
 ```

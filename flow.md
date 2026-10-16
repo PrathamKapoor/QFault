@@ -4,7 +4,9 @@
 
 `api.RequestBodyLimit` counts actual request bytes before JSON parsing on API
 routes, including chunked requests. Malformed lengths return 400 and oversized
-bodies 413. The default server remains loopback-only.
+bodies 413. Finite JSON numbers, valid Unicode and at most 64 nesting levels are
+required before schema validation; invalid saved replay requests return 422.
+The default server remains loopback-only.
 
 `qasm_import.import_qasm2` validates a bounded static external program, records
 terminal measurement mappings and gate transformations, and checks full-operator

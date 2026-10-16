@@ -533,3 +533,17 @@ explain calibration-related abstention. Windows and Linux clean-clone locked
 installs, frontend checks/builds and 335 Python tests passed; full Windows browser
 regressions also passed. Linux browser research coverage and physical hardware
 remain separately untested. See `docs/current-state.md`.
+
+### D046 — Reject malformed API inputs before error serialization (2026-10-16)
+
+Final adversarial tests reproduced HTTP 500 responses for nonfinite numbers,
+excessive nesting, invalid Unicode and corrupt saved replay requests. The API
+now validates bounded JSON before schema parsing and rejects conflicting length
+headers. Invalid input returns a client error without executing an investigation.
+Replay requests are validated before acquiring the execution lock. Scientific
+thresholds, frozen records and the approved frontend are unchanged.
+
+The separate evidence reconciliation checks the complete frozen case grid and
+maps 2,232 evaluation rows to 2,206 unique executed exports plus 26 explicitly
+unsupported QRNG entangler deletions. It complements payload verification rather
+than authenticating authorship or historical execution time.
