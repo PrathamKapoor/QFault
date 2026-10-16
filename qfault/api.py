@@ -42,7 +42,7 @@ class RequestBodyLimit:
         body = b''.join(message.get('body', b'') for message in messages)
         content_type = headers.get(b'content-type', b'application/json').split(b';', 1)[0].strip().lower()
         if body and messages[-1]['type'] != 'http.disconnect':
-            if content_type != b'application/json' and not content_type.endswith(b'+json'):
+            if content_type != b'application/json' and not (content_type.startswith(b'application/') and content_type.endswith(b'+json')):
                 return await JSONResponse({'detail': 'API requests require JSON'}, status_code=422)(scope, receive, send)
             def reject_constant(value):
                 raise ValueError('Non-finite JSON number')

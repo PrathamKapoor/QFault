@@ -19,6 +19,13 @@ from qfault.storage import ArtifactStore, verify_export
 from qfault.workflow import RunRequest, investigate
 
 
+@pytest.mark.parametrize('content_type', ['text/problem+json', 'image/example+json'])
+def test_nonapplication_json_suffix_cannot_bypass_media_validation(tmp_path, content_type):
+    response = TestClient(create_app(tmp_path), raise_server_exceptions=False).post(
+        '/api/experiments', content='{}'.encode('utf-16'), headers={'content-type': content_type})
+    assert response.status_code == 422
+
+
 def transport(headers=(), chunks=(b"{}",), disconnect=False):
     """No HTTP client can normalize headers or synthesize Content-Length here."""
     forwarded, sent = [], []
