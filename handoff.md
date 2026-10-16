@@ -1,6 +1,52 @@
 # QFAULT engineering handoff
 
-## Release engineering — 2026-10-13 (current)
+## Current research delivery — 2026-10-16
+
+Work is on `research/external-validation`, descending from the original release
+at `35cbbb9`. The six reviewed release commits were published normally to public
+`main`; both hosted CI jobs passed. All subsequent research commits remain local.
+No history rewrite, force push, branch/tag deletion or main reset occurred in this
+assignment. The prior message-polish branch and recovery worktree remain intact.
+
+Current evidence and commands: [current-state index](docs/current-state.md),
+[external validation](docs/external-validation.md),
+[boundary/statistical audit](docs/information-boundary-audit.md), and
+[competitor comparison](docs/competitor-comparison.md).
+
+Frozen protocol `cac14a5` preceded all final outcomes. Scientific source revision
+`7f75a29` remains hash-identical. The final study retained 1,962 diagnostic and
+270 recovery rows; all 2,206 executed reports independently verify. Conservative
+recovery verified 10/41 eligible cases and rejected eight; causal origin remains
+unidentified. Do not tune these methods against this holdout or overwrite it.
+
+Windows fresh-clone locked installation, frontend check/build, 335 Python tests,
+source verification, full report audit and Aer smoke passed. Full Chromium
+regression suites and external-circuit editor/mobile verification passed. New
+research has no hosted CI run. Calibrated state-witness interpretation is required;
+declared noisy target cases now abstain. The following sections are historical
+and their publication/server/test status must not be read as current.
+
+Linux clean-clone locked installation, frontend check/build, 335 tests, source
+checks and Aer smoke also passed on Ubuntu 26.04/WSL2 with Python 3.13.15 and
+Node 24.19.0. Linux research browsers and macOS remain untested.
+
+Inspection service: `http://127.0.0.1:8000/`, interpreter PID 24144, launcher
+PID 25100. It uses the separate retained store `artifacts/external-live/investigations`;
+the existing default investigation store is preserved. Start the same inspection
+configuration with:
+
+```powershell
+$env:QFAULT_ARTIFACTS = 'artifacts/external-live/investigations'
+.local/release-audit-python/Scripts/python.exe -m qfault serve --port 8000
+```
+
+The external editor demonstration is saved as
+`/#/lab/recovery/experiment_ebe0d3574e6d4826b677ea2c42013d93`.
+Service logs are `.local/release-audit/external-server.log` and
+`external-server-error.log`. PID and health observations are dated to this
+delivery; recheck them before stopping or restarting any process.
+
+## Release engineering — 2026-10-13 (historical)
 
 Local commits on `hardening/blind-measurement` above published `main` 24f4e61; **not pushed** (needs explicit authorization). See D042.
 

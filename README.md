@@ -10,6 +10,11 @@ QFAULT runs small quantum circuits (2–5 qubits) on local Qiskit simulators, co
 
 Everything is simulated (Qiskit reference simulators and Qiskit Aer). QFAULT makes no hardware, quantum-advantage or universal-verification claims; finite-shot uncertainty, abstentions and negative results are reported alongside successes.
 
+Current scientific scope and dated records: [current-state index](docs/current-state.md).
+The external-validation research described below is committed locally on
+`research/external-validation`; public `main` remains the reviewed release at
+`35cbbb9`, whose [two CI jobs passed](https://github.com/PrathamKapoor/QFault/actions/runs/38787130996).
+
 ## Quick start
 
 Requirements: 64-bit **CPython 3.13** and **Node.js 24** (tested: Python 3.13.2 on Windows 11, Python 3.13.15 on Ubuntu 26.04 under WSL2, Node 24.19.0). macOS has not been tested.
@@ -68,7 +73,7 @@ Optional browser checks need Chromium: `python -m playwright install chromium`, 
 |---|---|
 | **Template investigations** | Bell, GHZ and QFT circuits with injected logical faults and gate/readout noise; five diagnostic policies under explicit shot and evaluation budgets. |
 | **Custom Circuit Laboratory** | Validated JSON circuits (no arbitrary code) with declared contracts: Z/X/Y measurement distributions, Pauli expectations or a pure target state. Real basis-change measurements, union-bounded finite-shot intervals and an adaptive evidence planner. |
-| **Target-state witnesses** | Measured Pauli witnesses give a *conservative fidelity bound*; exact fidelity is shown only in the explicitly labelled simulator-assisted mode. |
+| **Target-state witnesses** | Calibrated common-state Pauli measurements give a *conservative fidelity bound*. Declared uncalibrated readout or analysis noise withholds state certification; exact fidelity remains explicitly simulator-assisted. |
 | **Measurement-only vs simulator-assisted** | Measurement-only analysis sees sampled counts and the declared contract, never the candidate state. Simulator-assisted analysis may use privileged exact-state calculations and is labelled as such. |
 | **Blind Challenge** | Executes a hidden server-selected scenario, persists a frozen prediction, then reveals evaluator truth. A controlled local exercise, not secrecy from the server operator. |
 | **Measured counterfactual recovery** | Tests bounded one-edit changes to a custom circuit by measurement, ranks them conservatively, and confirms a selected edit on fresh samples. An improving edit is not proof of where the original fault was. |
@@ -94,10 +99,52 @@ Results come from frozen, prespecified simulation evaluations. Denominators are 
 | Template diagnosis (68 cases per policy, frozen) | Phase-sensitive 66/68 correct vs fixed 58/68, using 40% more shots; two QFT angle faults missed | [findings](docs/diagnostic-findings.md), [summary](benchmarks/diagnostic-final.json) |
 | Measurement-only holdout (52 cases per policy) | Complementary measurements raised supported-discrepancy detection from 14/52 to 30/52, but strict category successes stayed 16/52 — more detection, no unique causes | [findings](docs/measurement-holdout-findings.md), [data](benchmarks/measurement-boundary-holdout-20261013.json) |
 | Custom laboratory (117-case holdout) | New circuit families and Pauli contracts work; the adaptive planner tied simple schedules and only beat random selection; reference and Aer agree on 113/117 categories per policy | [methodology](docs/custom-circuit-lab.md), [data](benchmarks/custom-lab-holdout-10240.json) |
-| Target-state witnesses (414-case holdout) | Bounds contained the true fidelity in 165/165 checkable cases with no false alarms; dense non-Clifford targets stayed unconfirmed; adaptive selection was not uniformly better than fixed orders | [methodology](docs/target-state-witnesses.md), [data](benchmarks/target-witness-holdout.json) |
+| Target-state witnesses (414-case holdout) | Bounds covered the historical effective-state oracle fidelity in 165/165 checkable cases per policy/budget; dense non-Clifford targets stayed unconfirmed; adaptive selection was not uniformly better than fixed orders | [methodology](docs/target-state-witnesses.md), [data](benchmarks/target-witness-holdout.json) |
 | Measured recovery (62-case holdout, 5 policies) | Conservative policy verified 16/62 overall (16/21 measurement-detected eligible cases), with 0 rejected repairs and 0 proposals on 28 noise controls; point ranking also verified 16/62 but made 5 rejected proposals | [methodology](docs/counterfactual-recovery.md), [data](benchmarks/counterfactual-recovery-holdout.json) |
 
 These are bounded design corpora on simulators. They do not establish performance on arbitrary circuits, hardware reliability, or statistical superiority of any policy.
+
+### External circuit validation
+
+A pinned QASMBench inventory covers all 252 QASM paths (132 canonical originals,
+120 transpiled variants). Fourteen originals fit the bounded static importer;
+five were development programs and nine were held out. The frozen study ran
+1,962 diagnostic and 270 recovery cases, retaining unsupported mutations and all
+negative outcomes. All 2,206 executed report bundles are committed and independently
+checked. Some external programs share familiar state-preparation or QFT structures.
+
+- Adaptive Pauli planning detected **103/108 operational contract violations**
+  versus fixed **102/108**, with no observed false violations. This one-run
+  difference across repeated seeds is not a statistical superiority claim.
+- Target witness policies mostly tied. All **530 checkable intervals** covered
+  the oracle fidelity; 54 uncalibrated-noise cases per policy withheld state claims.
+- Conservative recovery freshly verified **10/41 eligible cases** (10/90 overall),
+  rejected eight proposals and made no noise-only proposals. Point ranking also
+  verified ten, but rejected 31 proposals, including 13 noise-only proposals.
+
+[Protocol, exclusions, costs, family results and reproduction](docs/external-validation.md)
+explain the separate denominators. The trusted contract comes from the original
+external source before mutation; candidate state and evaluator truth never enter
+measurement-only decisions. [Five observability examples](benchmarks/identifiability-v1.json)
+show both ambiguities that complementary measurements break and ambiguities that
+more shots cannot resolve.
+
+To demonstrate one external circuit against a running server:
+
+```powershell
+python -m scripts.external_demo --out artifacts/my-external-demo
+python -m qfault verify-report artifacts/my-external-demo/recovery-report.json
+```
+
+The QRNG example follows a phase discrepancy from Z-only ambiguity to complementary
+measurement, bounded intervention and fresh verification. It preserves the source
+circuit and records the controlled mutation separately.
+
+[Competitor comparison](docs/competitor-comparison.md) documents substantial prior
+work: Qrep already repairs circuits using sampled behavior tests; MQT Debugger
+supports simulator debugging and measured runtime assertions; Muskit provides
+mutation testing; QCEC checks circuit equivalence with a reference oracle. QFAULT
+does not claim to be the first debugger or to outperform those tools.
 
 ## Architecture
 
@@ -122,6 +169,10 @@ The API is documented at <http://127.0.0.1:8000/docs> while the server runs. One
 - Contracts describe one declared input state, not full unitary equivalence. Measured witnesses are incomplete; Z-basis distributions cannot see relative phases.
 - Exact attribution and exact fidelity require privileged simulation and are labelled.
 - Shots are assumed independent and identically distributed; intervals are conservative union bounds, not calibrated probabilities.
+- State-fidelity interpretation requires calibrated Pauli measurements of one
+  common state. Basis-dependent analysis noise can violate that model even when
+  sampling intervals cover every observed mean. Operational distribution/Pauli
+  tests do not identify a noiseless preanalysis state. See the [audit](docs/information-boundary-audit.md).
 - Repair search is bounded (one edit, capped candidates) and may abstain; verified edits are not causal localization.
 - Hash manifests detect inconsistent edits relative to the manifest; they are not signed and anyone who rewrites both data and manifest can rehash.
 - Local, single-process server bound to 127.0.0.1.

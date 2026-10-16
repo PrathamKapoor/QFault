@@ -1,5 +1,13 @@
 # Target-state contracts and adaptive witness selection
 
+> **Historical methodology and evaluation (2026-10-13).** The 2026-10-16
+> [audit](information-boundary-audit.md) corrects the basis-noise interpretation:
+> fidelity certification requires calibrated Pauli measurements of one common
+> state. Current noisy target investigations withhold preanalysis state claims;
+> noisy target recovery abstains. Historical symmetric-readout effective-state
+> coverage remains separately valid, and frozen results are unchanged. Current
+> behavior and new experiments: [external validation](external-validation.md).
+
 Implemented in `qfault/target.py` (contract, catalog, bounds, selection proxy), `qfault/lab.py` (`run_witness_policy`, `target_feasibility`, integration in `investigate_lab`), `qfault/target_corpus.py`, `scripts/evaluate_target.py`, `tests/test_target.py`, `scripts/lab_e2e.py`, and the Custom Circuit Laboratory (`/#/lab`, contract type "Target state"). Pauli/distribution contracts and their `adaptive` planner are unchanged.
 
 ## Contract

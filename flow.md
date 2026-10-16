@@ -1,5 +1,38 @@
 # Implemented runtime flow
 
+## Current external validation and audit changes (2026-10-16)
+
+`api.RequestBodyLimit` counts actual request bytes before JSON parsing on API
+routes, including chunked requests. Malformed lengths return 400 and oversized
+bodies 413. The default server remains loopback-only.
+
+`qasm_import.import_qasm2` validates a bounded static external program, records
+terminal measurement mappings and gate transformations, and checks full-operator
+preservation. `scripts.external_corpus` builds the complete pinned eligibility
+inventory. `scripts.retrieve_external_sources` verifies/retrieves original bytes.
+
+`scripts.external_validation` builds contracts from separately parsed unmodified
+reference QASM, then constructs controlled candidates. Evaluator truth stays
+outside `investigate_lab`/`recover` and is attached only after the prediction.
+`lab.PolicyConfig` passes policy/budget/seed settings without circuit, environment
+or executor fields. Counts cross the existing evidence allowlist.
+
+Target witness decisions require the common-state calibrated measurement model.
+Noisy target investigations preserve operational witness calculations but return
+unresolved state claims; noisy target recovery abstains. Incompatible fidelity
+intervals also remain unresolved. Ideal measured recovery still freezes selection
+before fresh original/candidate measurements.
+
+The source-gated runner saves exclusive ArtifactStore records and compressed
+exports. `scripts.verify_external_results` independently checks every report,
+row/cost binding, membership and aggregate. `scripts.external_demo` uses the real
+API and the existing laboratory; `scripts.external_demo_e2e` exercises the editor,
+complementary evidence, recovery, downloads and three mobile widths. No second
+scientific engine or new frontend shell is introduced. See D043–D045 and
+[external validation](docs/external-validation.md).
+
+## Existing template and laboratory execution paths
+
 Inputs enter qfault/cli.py:main or qfault/api.py:create_app. Both use the same qfault/workflow.py:RunRequest and investigate. The React client in web/src/main.tsx submits validated template settings to POST /api/experiments; it never executes uploaded code. Family/qubit selection fetches the matching /api/contracts/{family}/{qubits} contract. load restores saved run controls and the associated contract; probability keys are sorted in binary order.
 
 1. RunRequest validates family, qubit count, scenario, seeds, shot and evaluation bounds. scenario constructs a benchmark copy, controlled valid mutation and configured noise. Evaluator labels remain outside analyst inputs.

@@ -469,3 +469,67 @@ Repeated original reinterpretations of the reference sculpture were rejected. C:
 - Server lifecycle: the server that disappeared during publication (PID 34428) was launched by a different session with output to that session's console; no Application/System crash or WER event exists for python, and no log was written. Cause is undetermined; no application defect is indicated. Findings: a Windows venv `python.exe` is a launcher whose child is the real interpreter (different PID); stopping the launcher also stops the child. `qfault serve` now accepts `--port`, stays bound to 127.0.0.1, prints its PID, and exits with code 2 and a clear message if the port is taken (previously uvicorn reported "startup complete" before failing to bind). Tests: tests/test_serve.py.
 - Presentation: README rebuilt as a product page (quick start tested from clean clones, capability table, evidence table with denominators and links, limitations, troubleshooting). The previous README is preserved in docs/release-history.md. Historical documents carry dated banners rather than being rewritten. Screenshots in docs/media were captured by scripts/capture_readme_media.py from the real UI against a throwaway store with genuine Aer runs. The frozen counterfactual summary (SHA-256 8fb0e091...) is now committed byte-identical as benchmarks/counterfactual-recovery-holdout.json so the README can link it.
 - Stale UI claim corrected in the frontend only: lab investigations said repair selection from measurements is not implemented, although measured counterfactual recovery exists as a separate action. `qfault/lab.py` is pinned by the frozen counterfactual protocol digest, so the recorded engine message is left unchanged and the UI states the current position, still showing the recorded note.
+
+### D043 — Enforce analyst inputs and calibrated witness interpretation (2026-10-16)
+
+The independent audit reproduced eleven failures before correction. An actual-byte
+ASGI request guard now precedes JSON parsing, rejecting oversized chunked/lying
+length bodies and malformed lengths. `lab.PolicyConfig` removes candidate,
+environment and backend fields from policy inputs; real Aer tests poison exact
+candidate helpers and executor truth metadata while exercising diagnosis and
+fresh recovery. This hardens a trusted application data flow, not a malicious-code
+sandbox.
+
+Qiskit demonstrates that basis-dependent gate noise can make correctly estimated
+Bell witness means incompatible with any single state. Incompatible bounds now
+remain unresolved. Declared noisy target investigations withhold preanalysis
+fidelity certification, and target recovery abstains without calibrated
+measurement-channel support. Historical symmetric-readout effective-state results
+remain valid within their separately stated interpretation. The audit and five
+explicit observability examples are in `docs/information-boundary-audit.md` and
+`benchmarks/identifiability-v1.json`. Old frozen results are unchanged; these
+scientific corrections intentionally postdate their source fingerprints.
+
+### D044 — Freeze an external, reference-relative evaluation (2026-10-16)
+
+The full pinned QASMBench tree is inventoried. Fourteen canonical sources meet the
+static adapter and existing size limits; a deterministic path split reserves nine
+for holdout. Contracts derive from separately parsed original source, not mutated
+candidates. The importer rejects dynamic/unsupported semantics, records every
+transformation and terminal mapping, and verifies complete operator preservation.
+Upstream bytes and custom redistribution terms are retained.
+
+Protocol commit `cac14a5` freezes source/dependency/dataset hashes, seeds,
+mutations, budgets, comparators and metrics before final outcomes. Existing
+policies were not tuned. All 1,962 diagnostic and 270 recovery rows are retained;
+the independent report audit checks all 2,206 executed exports. Adaptive Pauli
+detects 103/108 versus fixed 102/108; target methods mostly tie. Conservative
+recovery verifies 10/41 eligible, rejects eight and makes no noise-only proposals.
+Point ranking also verifies ten but rejects 31, including 13 noise-only proposals.
+These are descriptive small-circuit results, with repeated seeds and correlated
+mutants, not superiority or universal-generalization claims. Raw reports,
+architecture results, failures and reproduction live in
+`benchmarks/external-holdout-v1/` and `docs/external-validation.md`.
+
+### D045 — Preserve prior work, release boundaries and the existing application (2026-10-16)
+
+The original six reviewed release commits were normally fast-forwarded to public
+main `35cbbb9`; both hosted jobs passed in run `38787130996`. All new research
+remains local on `research/external-validation`. Original refs, worktrees and
+scientific history remain reachable; no force push or rewrite occurred here.
+
+Primary-source comparison finds substantial overlap: Qrep already performs
+sampled gate-edit repair and MQT Debugger supports measured runtime assertions.
+Muskit is a mutation-testing tool and QCEC supplies a stronger reference-circuit
+oracle. Four executed QCEC examples explain task boundaries rather than rank
+unmatched tools. No new cryptographic identity system or hardware integration is
+justified; unsigned hash consistency remains explicit.
+
+The external QRNG demonstration executes through the existing lab/editor,
+complementary measurements, bounded screening, frozen selection and fresh
+verification. It retains causal uncertainty and verified exports. The approved
+hero, handover, PixelSwap and scientific shell are unchanged. UI additions only
+explain calibration-related abstention. Windows and Linux clean-clone locked
+installs, frontend checks/builds and 335 Python tests passed; full Windows browser
+regressions also passed. Linux browser research coverage and physical hardware
+remain separately untested. See `docs/current-state.md`.

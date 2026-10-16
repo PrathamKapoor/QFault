@@ -1,5 +1,18 @@
 # Attribution
 
+## QASMBench external evaluation sources
+
+`benchmarks/external/qasmbench/` contains bounded benchmark source files and
+metadata from [PNNL QASMBench](https://github.com/pnnl/QASMBench) at commit
+`357b942396d5c2b7cbc1c229c585a6ef5ccaebac`. Copyright 2020 Battelle Memorial
+Institute. These files retain the upstream custom redistribution terms in
+`benchmarks/external/qasmbench/LICENSE` and `NOTICE`; QFAULT's MIT grant does
+not replace those terms. The inventory records original paths and Git blob
+hashes. Accepted gate transformations are documented separately and do not alter
+the vendored original files.
+
+## Existing design references and components
+
 QFAULT code was independently implemented. The evidence/review design draws on SAT-SA, Closure-Trace and Quantum-Secure-MLOps; QFT convention checks draw on QFT-Lab; resource/uncertainty discipline draws on Q-TRUST; causal-evaluation lessons draw on QuantumAttack. No historical performance claims transfer. See docs/reuse-inventory.md.
 
 These related source notices are retained for attribution. No AGPL Muskit code or unlicensed QuantumAttack/Quantum-Simulator code is copied.

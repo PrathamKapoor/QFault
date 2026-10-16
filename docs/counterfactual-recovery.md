@@ -1,5 +1,12 @@
 # Measured counterfactual recovery
 
+> **Historical evaluation (2026-10-13), current capability retained.** The
+> 2026-10-16 [audit](information-boundary-audit.md) adds calibrated-measurement
+> requirements: target-state recovery now abstains under declared uncalibrated
+> analysis/readout noise. Operational distribution/Pauli recovery retains its
+> separate scope. Original 62-case results are unchanged; new external results
+> and their source revision are in [external validation](external-validation.md).
+
 This capability evaluates **edits to a controllable circuit program**, not hidden hardware faults. An edit that improves a finite contract does not identify the original cause. No circuit is changed automatically. Existing simulator-assisted `RecoveryPlanner` and its historical results remain unchanged.
 
 ## Architecture and eligibility
