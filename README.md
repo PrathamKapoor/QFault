@@ -113,6 +113,11 @@ five were development programs and nine were held out. The frozen study ran
 negative outcomes. All 2,206 executed report bundles are committed and independently
 checked. Some external programs share familiar state-preparation or QFT structures.
 
+The [final adversarial gate](docs/final-verification.md) independently reconciles
+all rows and exports, reproduces 72 prespecified configurations, and records fresh
+Windows/Linux installs plus ten Chromium suites. Its GO verdict applies to the
+documented bounded simulator scope; new research remains unpublished.
+
 - Adaptive Pauli planning detected **103/108 operational contract violations**
   versus fixed **102/108**, with no observed false violations. This one-run
   difference across repeated seeds is not a statistical superiority claim.

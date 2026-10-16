@@ -14,6 +14,7 @@ rewrite their experiments or erase recorded failures.
 | Observability | [Five explicit examples](../benchmarks/identifiability-v1.json), real reference/Aer counts and exact evaluator proofs; more shots cannot resolve structurally identical observations. |
 | Authenticity | Reports provide unsigned SHA-256 consistency. Reviewer names are self-declared. No authenticated author, trusted timestamp or scientific validity proof is supplied. |
 | Hardware | NOT TESTED. No credentials inspected and no hardware jobs submitted. |
+| Final publication gate | [Independent adversarial verification](final-verification.md): GO within documented scope; 449 tests on fresh Windows/Linux installs, ten Chromium suites, exact 72-run replication, and all 88 original benchmark/config files preserved. Research remains unpublished. |
 
 The README describes current product use. Older release, frontend, environment,
 competition and handoff sections are dated history. Statements such as “Aer
@@ -21,7 +22,7 @@ unavailable”, “recovery unsupported”, or “publication blocked” in thos
 describe their recorded revisions. Current measured recovery is a separate
 laboratory action; it does not run automatically during diagnosis.
 
-Windows clean-clone installation, TypeScript/build, 335 Python tests, source and
+Before the final adversarial gate, Windows clean-clone installation, TypeScript/build, 335 Python tests, source and
 all raw report checks, and deterministic Aer smoke passed for the research code.
 Full Windows Chromium regressions passed, including the approved hero,
 handover/PixelSwap, reduced motion/fallback, existing workbench, blind challenge,

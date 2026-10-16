@@ -1,0 +1,5379 @@
+{
+  "schema_version": 1,
+  "name": "final-adversarial-verification-v1",
+  "created_at": "2026-10-16T05:35:53.938434+00:00",
+  "source_revision": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+  "baseline_revision": "ebf2d52b3f64280d7ea90be732f3f6431aeb6e0b",
+  "verdict": "GO",
+  "blocking_findings": [],
+  "scope": "Bounded 2–5-qubit simulator workbench; contract-relative conclusions conditional on declared measurement models and stationary independent shots. Publication still requires owner authorization and hosted checks on the published revision.",
+  "repository": {
+    "branch": "research/external-validation",
+    "remote_main": "35cbbb9b351ef2ef4e42163b969c5331dc116eba",
+    "origin": "https://github.com/PrathamKapoor/QFault.git",
+    "publication_performed": false,
+    "history_rewritten": false,
+    "force_push_performed": false,
+    "author": "PrathamKapoor <prathamkapoor027@gmail.com>",
+    "checkpoint_refs": [
+      "refs/heads/checkpoint/target-state-e90acf0 e90acf061985c41123fa430ef51e7f8ea5b74fbb",
+      "refs/heads/hardening/blind-measurement 35cbbb9b351ef2ef4e42163b969c5331dc116eba",
+      "refs/heads/research/counterfactual-recovery c5cedf5c8b35ed957c18362c9434a5fba7e45079",
+      "refs/tags/checkpoint/pre-mental-hero-transplant f7642acea6ed96bfbe955eb64a64113bbe5e726f",
+      "refs/tags/snapshot/pre-hardening-20261013 f36665616c2aee95a7b82e764adcf290b9e05468",
+      "refs/tags/snapshot/public-20261013 ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3"
+    ]
+  },
+  "tool_versions": {
+    "windows": {
+      "qiskit": "2.3.1",
+      "qiskit-aer": "0.17.2",
+      "numpy": "2.5.2",
+      "pydantic": "2.13.4",
+      "pytest": "9.1.1",
+      "fastapi": "0.141.1",
+      "playwright": "1.62.0"
+    },
+    "windows_python": "3.13.14",
+    "windows_platform": "Windows-11-10.0.26200-SP0",
+    "windows_node": "24.19.0",
+    "windows_npm": "12.0.2",
+    "chromium": "151.0.7922.34",
+    "linux": {
+      "completed_at": "2026-10-16T05:31:44.267280+00:00",
+      "source_revision": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+      "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+      "python": "3.13.15",
+      "qiskit": "2.3.1",
+      "aer": "0.17.2",
+      "node": "v24.19.0",
+      "libraries": {
+        "nss3": null,
+        "nspr4": null,
+        "atk-1.0": "libatk-1.0.so.0",
+        "atk-bridge-2.0": "libatk-bridge-2.0.so.0",
+        "asound": null,
+        "gbm": "libgbm.so.1"
+      }
+    }
+  },
+  "tests": {
+    "windows": {
+      "source_revision": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+      "command": "python -m pytest tests -q -p no:cacheprovider",
+      "passed": 449,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 50.78,
+      "environment": "fresh locked venv and local clone; initial fresh install at ebf2d52, normal fast-forward updates to exact tested revision; dependencies unchanged"
+    },
+    "linux": {
+      "source_revision": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+      "command": "python -m pytest tests -q -p no:cacheprovider",
+      "passed": 449,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 28.49,
+      "environment": "fresh clone and venv; Ubuntu26.04/WSL2"
+    },
+    "adversarial_api": {
+      "command": "python -m pytest tests/test_final_api_adversarial.py tests/test_storage_api.py tests/test_artifact_corruption.py -q -p no:cacheprovider",
+      "passed": 116,
+      "new_cases": 101,
+      "seconds": 9.21,
+      "note": "Overlaps full suite; not added to449. Exact rerun recorded in final-media-targeted.log."
+    },
+    "warnings": [
+      "Starlette/httpx TestClient deprecation",
+      "Production build lazy Three.js chunk566.56kB exceeds500kB advisory threshold"
+    ]
+  },
+  "reproducibility": {
+    "windows_initial_clean_install": {
+      "source_revision": "ebf2d52b3f64280d7ea90be732f3f6431aeb6e0b",
+      "started_at": "2026-10-16T05:04:31.726363+00:00",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "steps": [
+        {
+          "name": "windows-clone",
+          "command": [
+            "git",
+            "-c",
+            "safe.directory=C:/Projects/QFF",
+            "-c",
+            "safe.directory=C:/Projects/QFF/.git",
+            "clone",
+            "--no-hardlinks",
+            "--single-branch",
+            "--branch",
+            "research/external-validation",
+            "C:\\Projects\\QFF",
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-source"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-venv",
+          "command": [
+            "C:\\Users\\LENOVO\\AppData\\Local\\Microsoft\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\python.exe",
+            "-m",
+            "venv",
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-locked-install",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "install",
+            "--require-hashes",
+            "-r",
+            "requirements.lock"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-editable-install",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "install",
+            "--no-deps",
+            "-e",
+            "."
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-pip-check",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "check"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-npm-ci",
+          "command": [
+            "C:/Program Files/nodejs/npm.cmd",
+            "--prefix",
+            "web",
+            "ci"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-typescript",
+          "command": [
+            "C:/Program Files/nodejs/npm.cmd",
+            "--prefix",
+            "web",
+            "run",
+            "check"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-build",
+          "command": [
+            "C:/Program Files/nodejs/npm.cmd",
+            "--prefix",
+            "web",
+            "run",
+            "build"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-pytest",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "pytest",
+            "tests",
+            "-q",
+            "-p",
+            "no:cacheprovider",
+            "-rA"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-aer",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "scripts.aer_smoke"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-sources",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "scripts.retrieve_external_sources",
+            "--verify"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-archive",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-m",
+            "scripts.verify_external_results",
+            "benchmarks/external-holdout-v1/summary.json",
+            "benchmarks/external-holdout-v1/reports.jsonl.gz"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "windows-versions",
+          "command": [
+            "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+            "-c",
+            "import json,platform,qiskit,qiskit_aer,numpy,pydantic; print(json.dumps({'python':platform.python_version(),'qiskit':qiskit.__version__,'aer':qiskit_aer.__version__,'numpy':numpy.__version__,'pydantic':pydantic.__version__}))"
+          ],
+          "exit_code": 0
+        }
+      ],
+      "completed_at": "2026-10-16T05:09:19.161340+00:00"
+    },
+    "linux_commands": [
+      "git clone --no-local --single-branch --branch research/external-validation LOCAL_REPO NEW_DIR",
+      "python3.13 -m venv NEW_VENV",
+      "python -m pip install --require-hashes -r requirements.lock",
+      "python -m pip install --no-deps -e .",
+      "python -m pip check",
+      "npm --prefix web ci",
+      "npm --prefix web run check",
+      "npm --prefix web run build",
+      "python -m pytest tests -q -p no:cacheprovider",
+      "python -m scripts.aer_smoke",
+      "python -m scripts.retrieve_external_sources --verify",
+      "python -m scripts.verify_external_results benchmarks/external-holdout-v1/summary.json benchmarks/external-holdout-v1/reports.jsonl.gz",
+      "python -m scripts.reconcile_external_evidence benchmarks/external-holdout-v1/summary.json benchmarks/external-holdout-v1/reports.jsonl.gz"
+    ],
+    "linux_outcomes": "all listed commands exited0; first cross-filesystem direct-copy clone failed, fresh transport clone succeeded",
+    "linux_node_archive": {
+      "archive_sha256": "14b342e71204f811bde6153be8e04b62aef63c236fef92b55f9c83154b409647",
+      "matches": true,
+      "official_record": "14b342e71204f811bde6153be8e04b62aef63c236fef92b55f9c83154b409647  node-v24.19.0-linux-x64.tar.xz"
+    },
+    "linux_browser": {
+      "status": "NOT_TESTED",
+      "reason": "System nss3/nspr4/asound libraries unavailable"
+    },
+    "macos": "NOT_TESTED",
+    "hardware": "NOT_TESTED"
+  },
+  "evidence_reconciliation": {
+    "counts": {
+      "diagnostic_rows": 1962,
+      "executed_rows": 2206,
+      "nonexecution_rows": 26,
+      "recovery_rows": 270,
+      "reports": 2206,
+      "total_rows": 2232,
+      "unique_report_ids": 2206,
+      "unique_row_ids": 2206
+    },
+    "duplicate_report_ids": [],
+    "duplicate_row_ids": [],
+    "errors": [],
+    "missing_cases": [],
+    "missing_exports": [],
+    "nonexecution_rows": [
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "adaptive",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "adaptive",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "complementary_schedule",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "complementary_schedule",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "fixed",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "fixed",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "random",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "measurement_distribution",
+          "random",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "adaptive",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "adaptive",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "complementary_schedule",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "complementary_schedule",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "fixed",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "fixed",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "random",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "pauli_expectations",
+          "random",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "adaptive_witness",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "adaptive_witness",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "coefficient_weighted",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "coefficient_weighted",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "complementary_schedule",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "complementary_schedule",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "fixed",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "fixed",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "random",
+          "remove_entangler",
+          91001
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      },
+      {
+        "case_key": [
+          "small/qrng_n4/qrng_n4.qasm",
+          "target_state",
+          "random",
+          "remove_entangler",
+          91002
+        ],
+        "category": "UNSUPPORTED",
+        "reason": "reference contains no two-qubit gate",
+        "row_class": "diagnostic"
+      }
+    ],
+    "unexpected_cases": [],
+    "unmatched_exports": [],
+    "valid": true
+  },
+  "independent_archive_verification": {
+    "assurance": "Unsigned digest, membership, report/row and aggregate consistency; no scientific correctness proof",
+    "counts": {
+      "diagnostic_rows": 1962,
+      "expected_exports": 2206,
+      "recovery_rows": 270,
+      "reports": 2206
+    },
+    "errors": [],
+    "valid": true
+  },
+  "independent_scientific_audit": {
+    "raw": {
+      "totals": {
+        "reports": 2206,
+        "diagnostic_reports": 1936,
+        "diagnostic_shots": 5586240,
+        "recovery_reports": 270
+      },
+      "target_coverage": {
+        "fixed": 106,
+        "complementary_schedule": 106,
+        "coefficient_weighted": 106,
+        "adaptive_witness": 106,
+        "random": 106,
+        "uncalibrated": 270
+      },
+      "target_mean_widths": {
+        "fixed": 0.29306255466986264,
+        "complementary_schedule": 0.2896103002369288,
+        "coefficient_weighted": 0.29306255466986264,
+        "adaptive_witness": 0.29379268298255096,
+        "random": 0.29242923470331655
+      },
+      "recovery": {
+        "conservative": {
+          "NO_REPAIR_NEEDED": 26,
+          "shots": 5337088,
+          "executions": 2498,
+          "INSUFFICIENT_EVIDENCE": 28,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "VERIFIED_UNDER_DECLARED_CONTRACT": 10,
+          "selected": 18,
+          "REJECTED": 8
+        },
+        "point_discrepancy": {
+          "NO_REPAIR_NEEDED": 26,
+          "shots": 5902336,
+          "executions": 2636,
+          "REJECTED": 31,
+          "selected": 41,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "INSUFFICIENT_EVIDENCE": 5,
+          "VERIFIED_UNDER_DECLARED_CONTRACT": 10
+        },
+        "no_repair": {
+          "NO_REPAIR_NEEDED": 26,
+          "shots": 612352,
+          "executions": 299,
+          "NO_REPAIR_CONTROL": 41,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "INSUFFICIENT_EVIDENCE": 5
+        }
+      }
+    },
+    "math": {
+      "covering_interval_trials_n2_to_n5": 512,
+      "omitted_term_cases": [
+        {
+          "angle": 1e-07,
+          "retained_terms": 31,
+          "omitted_mass": 1.4921397450962104e-13,
+          "omitted_abs_bound": 1.2166357824490617e-05
+        },
+        {
+          "angle": 1e-06,
+          "retained_terms": 31,
+          "omitted_mass": 1.5987211554602254e-11,
+          "omitted_abs_bound": 0.00012593376775974519
+        },
+        {
+          "angle": 1e-05,
+          "retained_terms": 31,
+          "omitted_mass": 1.5999859215298784e-09,
+          "omitted_abs_bound": 0.0012598357171304676
+        }
+      ],
+      "maximum_exact_binomial_miss_over_alpha": 0.11155389491874869
+    },
+    "checks": {
+      "raw_shot_cost": 2206,
+      "operational_alpha": 1136,
+      "operational_claim_from_counts": 5608,
+      "recovery_alpha": 270,
+      "recovery_loss_interval": 2466,
+      "fresh_improvement": 59,
+      "target_action_mean_radius": 12035,
+      "target_action_bound": 1871,
+      "target_alpha": 800,
+      "target_final_bound": 530,
+      "independent_oracle_fidelity": 530,
+      "target_conditional_bound": 270,
+      "independent_random_bound": 512
+    },
+    "verdict": "PASS within stated calibrated i.i.d. fixed-input scope"
+  },
+  "independent_external_recount": {
+    "adaptive_pauli_by_architecture": {
+      "small/cat_state_n4/cat_state_n4.qasm": {
+        "detected_violations": 12,
+        "observable_violations": 14
+      },
+      "small/deutsch_n2/deutsch_n2.qasm": {
+        "detected_violations": 10,
+        "observable_violations": 10
+      },
+      "small/grover_n2/grover_n2.qasm": {
+        "detected_violations": 12,
+        "observable_violations": 12
+      },
+      "small/hs4_n4/hs4_n4.qasm": {
+        "detected_violations": 11,
+        "observable_violations": 12
+      },
+      "small/linearsolver_n3/linearsolver_n3.qasm": {
+        "detected_violations": 13,
+        "observable_violations": 14
+      },
+      "small/lpn_n5/lpn_n5.qasm": {
+        "detected_violations": 14,
+        "observable_violations": 14
+      },
+      "small/qft_n4/qft_n4.qasm": {
+        "detected_violations": 12,
+        "observable_violations": 12
+      },
+      "small/qrng_n4/qrng_n4.qasm": {
+        "detected_violations": 9,
+        "observable_violations": 10
+      },
+      "small/toffoli_n3/toffoli_n3.qasm": {
+        "detected_violations": 10,
+        "observable_violations": 10
+      }
+    },
+    "all_execution_count": 11223,
+    "all_output_count_shots": 17438016,
+    "conservative_fresh_rejections": [
+      {
+        "experiment_id": "experiment_5e48cc3dad354f908ae6a3a11e44e4b3",
+        "seed": 91001,
+        "source_path": "small/deutsch_n2/deutsch_n2.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      },
+      {
+        "experiment_id": "experiment_0b8eeb4cfd524df8bbdf5f8bc46c0d41",
+        "seed": 91002,
+        "source_path": "small/deutsch_n2/deutsch_n2.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      },
+      {
+        "experiment_id": "experiment_cbf5a817fb0e408699078e740c70f827",
+        "seed": 91001,
+        "source_path": "small/linearsolver_n3/linearsolver_n3.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      },
+      {
+        "experiment_id": "experiment_22d442eef3394066b255efe8a1a43755",
+        "seed": 91002,
+        "source_path": "small/linearsolver_n3/linearsolver_n3.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      },
+      {
+        "experiment_id": "experiment_970396f5988e4acd92b2358980b9b317",
+        "seed": 91001,
+        "source_path": "small/linearsolver_n3/linearsolver_n3.qasm",
+        "status": "REJECTED",
+        "variant": "terminal_phase"
+      },
+      {
+        "experiment_id": "experiment_7583cd23edf94de283e6433181118d08",
+        "seed": 91002,
+        "source_path": "small/linearsolver_n3/linearsolver_n3.qasm",
+        "status": "REJECTED",
+        "variant": "terminal_phase"
+      },
+      {
+        "experiment_id": "experiment_38f9084ed9d54d649ea503641f716c3b",
+        "seed": 91001,
+        "source_path": "small/qft_n4/qft_n4.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      },
+      {
+        "experiment_id": "experiment_929660960c674ded82ca3acb3ce6a0ea",
+        "seed": 91002,
+        "source_path": "small/qft_n4/qft_n4.qasm",
+        "status": "REJECTED",
+        "variant": "remove_first"
+      }
+    ],
+    "diagnostic_counts": {
+      "measurement_distribution/adaptive": {
+        "detected_violations": 70,
+        "executions": 226,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 82,
+        "oracle_nonviolations": 60,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 16,
+          "NO_SIGNIFICANT_DISCREPANCY": 56,
+          "SIGNIFICANT_DISCREPANCY": 70
+        },
+        "shots": 208384,
+        "uncheckable_model": 0
+      },
+      "measurement_distribution/complementary_schedule": {
+        "detected_violations": 70,
+        "executions": 226,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 82,
+        "oracle_nonviolations": 60,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 16,
+          "NO_SIGNIFICANT_DISCREPANCY": 56,
+          "SIGNIFICANT_DISCREPANCY": 70
+        },
+        "shots": 208384,
+        "uncheckable_model": 0
+      },
+      "measurement_distribution/fixed": {
+        "detected_violations": 70,
+        "executions": 226,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 82,
+        "oracle_nonviolations": 60,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 16,
+          "NO_SIGNIFICANT_DISCREPANCY": 56,
+          "SIGNIFICANT_DISCREPANCY": 70
+        },
+        "shots": 208384,
+        "uncheckable_model": 0
+      },
+      "measurement_distribution/random": {
+        "detected_violations": 70,
+        "executions": 226,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 82,
+        "oracle_nonviolations": 60,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 16,
+          "NO_SIGNIFICANT_DISCREPANCY": 56,
+          "SIGNIFICANT_DISCREPANCY": 70
+        },
+        "shots": 208384,
+        "uncheckable_model": 0
+      },
+      "pauli_expectations/adaptive": {
+        "detected_violations": 103,
+        "executions": 649,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 108,
+        "oracle_nonviolations": 34,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 7,
+          "NO_SIGNIFICANT_DISCREPANCY": 32,
+          "SIGNIFICANT_DISCREPANCY": 103
+        },
+        "shots": 634816,
+        "uncheckable_model": 0
+      },
+      "pauli_expectations/complementary_schedule": {
+        "detected_violations": 102,
+        "executions": 672,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 108,
+        "oracle_nonviolations": 34,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 8,
+          "NO_SIGNIFICANT_DISCREPANCY": 32,
+          "SIGNIFICANT_DISCREPANCY": 102
+        },
+        "shots": 658368,
+        "uncheckable_model": 0
+      },
+      "pauli_expectations/fixed": {
+        "detected_violations": 102,
+        "executions": 672,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 108,
+        "oracle_nonviolations": 34,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 8,
+          "NO_SIGNIFICANT_DISCREPANCY": 32,
+          "SIGNIFICANT_DISCREPANCY": 102
+        },
+        "shots": 658368,
+        "uncheckable_model": 0
+      },
+      "pauli_expectations/random": {
+        "detected_violations": 102,
+        "executions": 778,
+        "exports": 142,
+        "false_alarms": 0,
+        "observable_violations": 108,
+        "oracle_nonviolations": 34,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 12,
+          "NO_SIGNIFICANT_DISCREPANCY": 28,
+          "SIGNIFICANT_DISCREPANCY": 102
+        },
+        "shots": 765952,
+        "uncheckable_model": 0
+      },
+      "target_state/adaptive_witness": {
+        "detected_violations": 49,
+        "executions": 401,
+        "exports": 160,
+        "false_alarms": 0,
+        "observable_violations": 58,
+        "oracle_nonviolations": 48,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 63,
+          "NO_SIGNIFICANT_DISCREPANCY": 48,
+          "SIGNIFICANT_DISCREPANCY": 49
+        },
+        "shots": 384704,
+        "uncheckable_model": 54
+      },
+      "target_state/coefficient_weighted": {
+        "detected_violations": 49,
+        "executions": 402,
+        "exports": 160,
+        "false_alarms": 0,
+        "observable_violations": 58,
+        "oracle_nonviolations": 48,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 63,
+          "NO_SIGNIFICANT_DISCREPANCY": 48,
+          "SIGNIFICANT_DISCREPANCY": 49
+        },
+        "shots": 385728,
+        "uncheckable_model": 54
+      },
+      "target_state/complementary_schedule": {
+        "detected_violations": 49,
+        "executions": 407,
+        "exports": 160,
+        "false_alarms": 0,
+        "observable_violations": 58,
+        "oracle_nonviolations": 48,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 63,
+          "NO_SIGNIFICANT_DISCREPANCY": 48,
+          "SIGNIFICANT_DISCREPANCY": 49
+        },
+        "shots": 390848,
+        "uncheckable_model": 54
+      },
+      "target_state/fixed": {
+        "detected_violations": 49,
+        "executions": 402,
+        "exports": 160,
+        "false_alarms": 0,
+        "observable_violations": 58,
+        "oracle_nonviolations": 48,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 63,
+          "NO_SIGNIFICANT_DISCREPANCY": 48,
+          "SIGNIFICANT_DISCREPANCY": 49
+        },
+        "shots": 385728,
+        "uncheckable_model": 54
+      },
+      "target_state/random": {
+        "detected_violations": 48,
+        "executions": 503,
+        "exports": 160,
+        "false_alarms": 0,
+        "observable_violations": 58,
+        "oracle_nonviolations": 48,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 68,
+          "NO_SIGNIFICANT_DISCREPANCY": 44,
+          "SIGNIFICANT_DISCREPANCY": 48
+        },
+        "shots": 488192,
+        "uncheckable_model": 54
+      }
+    },
+    "errors": [],
+    "failure_taxonomy": {
+      "DETECTED_CONTRACT_DISCREPANCY": 933,
+      "FAULT_UNOBSERVABLE_OR_WITHIN_CONTRACT_TOLERANCE": 212,
+      "LOOK_LIMIT_REACHED": 8,
+      "NO_FALSE_VIOLATION": 404,
+      "SHOT_BUDGET_EXHAUSTED": 109,
+      "UNCALIBRATED_MEASUREMENT_MODEL": 270,
+      "UNSUPPORTED_MUTATION": 26
+    },
+    "independently_checked_distinct_original_contracts": 36,
+    "inventory": {
+      "exclusion_reasons": {
+        "classical_control": 1,
+        "custom_gate_definition": 4,
+        "interior_measurement": 1,
+        "parse_error": 1,
+        "qubit_limit": 101,
+        "reset": 1,
+        "source_instruction_limit": 1,
+        "transformed_gate_limit": 6,
+        "transpiled_duplicate": 120,
+        "unsupported_operation": 2
+      },
+      "splits": {
+        "development": 5,
+        "holdout": 9
+      },
+      "statuses": {
+        "eligible": 14,
+        "excluded": 238
+      },
+      "total_paths": 252,
+      "variants": {
+        "canonical_original": 132,
+        "transpiled_duplicate": 120
+      }
+    },
+    "operators": [
+      {
+        "basis_inputs": 16,
+        "max_residual": 3.3306690738754696e-16,
+        "original_gate_count": 23,
+        "serialized_gate_count": 23,
+        "source_path": "small/adder_n4/adder_n4.qasm",
+        "split": "development"
+      },
+      {
+        "basis_inputs": 16,
+        "max_residual": 0.0,
+        "original_gate_count": 4,
+        "serialized_gate_count": 4,
+        "source_path": "small/cat_state_n4/cat_state_n4.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 4,
+        "max_residual": 0.0,
+        "original_gate_count": 5,
+        "serialized_gate_count": 5,
+        "source_path": "small/deutsch_n2/deutsch_n2.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 8,
+        "max_residual": 1.118023595199392e-16,
+        "original_gate_count": 19,
+        "serialized_gate_count": 19,
+        "source_path": "small/fredkin_n3/fredkin_n3.qasm",
+        "split": "development"
+      },
+      {
+        "basis_inputs": 4,
+        "max_residual": 0.0,
+        "original_gate_count": 16,
+        "serialized_gate_count": 16,
+        "source_path": "small/grover_n2/grover_n2.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 16,
+        "max_residual": 0.0,
+        "original_gate_count": 28,
+        "serialized_gate_count": 28,
+        "source_path": "small/hs4_n4/hs4_n4.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 4,
+        "max_residual": 0.0,
+        "original_gate_count": 9,
+        "serialized_gate_count": 9,
+        "source_path": "small/iswap_n2/iswap_n2.qasm",
+        "split": "development"
+      },
+      {
+        "basis_inputs": 8,
+        "max_residual": 3.076246122541462e-16,
+        "original_gate_count": 19,
+        "serialized_gate_count": 27,
+        "source_path": "small/linearsolver_n3/linearsolver_n3.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 32,
+        "max_residual": 0.0,
+        "original_gate_count": 11,
+        "serialized_gate_count": 11,
+        "source_path": "small/lpn_n5/lpn_n5.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 32,
+        "max_residual": 1.1443916996305594e-16,
+        "original_gate_count": 25,
+        "serialized_gate_count": 25,
+        "source_path": "small/qec_en_n5/qec_en_n5.qasm",
+        "split": "development"
+      },
+      {
+        "basis_inputs": 16,
+        "max_residual": 0.0,
+        "original_gate_count": 12,
+        "serialized_gate_count": 12,
+        "source_path": "small/qft_n4/qft_n4.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 16,
+        "max_residual": 0.0,
+        "original_gate_count": 4,
+        "serialized_gate_count": 4,
+        "source_path": "small/qrng_n4/qrng_n4.qasm",
+        "split": "holdout"
+      },
+      {
+        "basis_inputs": 8,
+        "max_residual": 2.7755575615628914e-17,
+        "original_gate_count": 8,
+        "serialized_gate_count": 8,
+        "source_path": "small/teleportation_n3/teleportation_n3.qasm",
+        "split": "development"
+      },
+      {
+        "basis_inputs": 8,
+        "max_residual": 2.333611954595783e-16,
+        "original_gate_count": 18,
+        "serialized_gate_count": 18,
+        "source_path": "small/toffoli_n3/toffoli_n3.qasm",
+        "split": "holdout"
+      }
+    ],
+    "privileged_operations": 0,
+    "provenance": {
+      "ancestry": {
+        "6eaeb2d ancestor of fe15f25": true,
+        "7f75a29 ancestor of cac14a5": true,
+        "cac14a5 ancestor of 6eaeb2d": true,
+        "fe15f25 ancestor of ebf2d52": true
+      },
+      "chronology_limit": "Git ancestry and matching frozen bytes establish repository ordering only; authored timestamps, actual run wall-clock order and absence of unrecorded tuning are not independently authenticated.",
+      "execution_revision": "6eaeb2ddb83caacbb5fd758776a06bb2632cd916",
+      "frozen_hashes_checked": 53,
+      "head": "ebf2d52b3f64280d7ea90be732f3f6431aeb6e0b",
+      "source_revision": "7f75a29ab18a7fde7f7567bd42eb6cbf8d09a708"
+    },
+    "qcec_cases": [
+      {
+        "case": "identity_pair_inserted",
+        "matrix_equivalent": true,
+        "zero_input_fidelity": 0.9999999999999996
+      },
+      {
+        "case": "cx_removed",
+        "matrix_equivalent": false,
+        "zero_input_fidelity": 0.2499999999999999
+      },
+      {
+        "case": "relative_phase_z_appended",
+        "matrix_equivalent": false,
+        "zero_input_fidelity": 0.0
+      },
+      {
+        "case": "initial_z_invisible_on_zero_input",
+        "matrix_equivalent": false,
+        "zero_input_fidelity": 0.9999999999999996
+      }
+    ],
+    "reconciliation": {
+      "counts": {
+        "diagnostic_rows": 1962,
+        "executed_rows": 2206,
+        "nonexecution_rows": 26,
+        "recovery_rows": 270,
+        "reports": 2206,
+        "total_rows": 2232,
+        "unique_report_ids": 2206,
+        "unique_row_ids": 2206
+      },
+      "duplicate_report_ids": [],
+      "duplicate_row_ids": [],
+      "errors": [],
+      "missing_cases": [],
+      "missing_exports": [],
+      "nonexecution_rows": [
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "adaptive",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "adaptive",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "complementary_schedule",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "complementary_schedule",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "fixed",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "fixed",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "random",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "measurement_distribution",
+            "random",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "adaptive",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "adaptive",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "complementary_schedule",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "complementary_schedule",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "fixed",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "fixed",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "random",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "pauli_expectations",
+            "random",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "adaptive_witness",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "adaptive_witness",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "coefficient_weighted",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "coefficient_weighted",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "complementary_schedule",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "complementary_schedule",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "fixed",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "fixed",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "random",
+            "remove_entangler",
+            91001
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        },
+        {
+          "case_key": [
+            "small/qrng_n4/qrng_n4.qasm",
+            "target_state",
+            "random",
+            "remove_entangler",
+            91002
+          ],
+          "category": "UNSUPPORTED",
+          "reason": "reference contains no two-qubit gate",
+          "row_class": "diagnostic"
+        }
+      ],
+      "unexpected_cases": [],
+      "unmatched_exports": [],
+      "valid": true
+    },
+    "recovery_counts": {
+      "conservative": {
+        "eligible": 41,
+        "executions": 2498,
+        "generated_candidates": 2880,
+        "noise_only_proposals": 0,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 28,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "NO_REPAIR_NEEDED": 26,
+          "REJECTED": 8,
+          "VERIFIED_UNDER_DECLARED_CONTRACT": 10
+        },
+        "runs": 90,
+        "searched_truth_cases": 28,
+        "selected": 18,
+        "shots": 5337088,
+        "tested_candidates": 1039,
+        "true_locus_covered": 20
+      },
+      "no_repair": {
+        "eligible": 41,
+        "executions": 299,
+        "generated_candidates": 2880,
+        "noise_only_proposals": 0,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 5,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "NO_REPAIR_CONTROL": 41,
+          "NO_REPAIR_NEEDED": 26
+        },
+        "runs": 90,
+        "searched_truth_cases": 0,
+        "selected": 0,
+        "shots": 612352,
+        "tested_candidates": 0,
+        "true_locus_covered": 0
+      },
+      "point_discrepancy": {
+        "eligible": 41,
+        "executions": 2636,
+        "generated_candidates": 2880,
+        "noise_only_proposals": 13,
+        "outcomes": {
+          "INSUFFICIENT_EVIDENCE": 5,
+          "NOISE_CONTROL_ABSTENTION": 18,
+          "NO_REPAIR_NEEDED": 26,
+          "REJECTED": 31,
+          "VERIFIED_UNDER_DECLARED_CONTRACT": 10
+        },
+        "runs": 90,
+        "searched_truth_cases": 28,
+        "selected": 41,
+        "shots": 5902336,
+        "tested_candidates": 1039,
+        "true_locus_covered": 20
+      }
+    },
+    "sampled_estimates_checked": 5608,
+    "target_intervals": {
+      "target_state/adaptive_witness": {
+        "checkable": 106,
+        "covered": 106,
+        "mean_width": 0.2937926838224551
+      },
+      "target_state/coefficient_weighted": {
+        "checkable": 106,
+        "covered": 106,
+        "mean_width": 0.2930625555097668
+      },
+      "target_state/complementary_schedule": {
+        "checkable": 106,
+        "covered": 106,
+        "mean_width": 0.2896103010768329
+      },
+      "target_state/fixed": {
+        "checkable": 106,
+        "covered": 106,
+        "mean_width": 0.2930625555097668
+      },
+      "target_state/random": {
+        "checkable": 106,
+        "covered": 106,
+        "mean_width": 0.2924292355432207
+      }
+    },
+    "valid": true
+  },
+  "fresh_replication": {
+    "protocol": "configs/final-verification-subset-v1.json",
+    "protocol_sha256": "ae897fb97fec3019edfa95791853a1c95d22f43807a7f652328cce0f6ac3f7eb",
+    "execution_revision": "a3a45ba00f3bc076e8038b6378a74d7ef71b616a",
+    "source_sha256_normalized_lf": {
+      "scripts/replicate_external_subset.py": "eebec9607fcc5a0e2a09b9225542e945ff05a3997ee1cfc860c354ad79336fc1",
+      "qfault/lab.py": "2b9adbcfdd3a6258bdcd568fdc101d510242f724a8415be84f307d57d03d1e4a",
+      "qfault/target.py": "712ebb16322addbecef4ae5424b61effe4343e0d8d3a1c9350735051db7f3ff9",
+      "qfault/counterfactual.py": "6c79f9c34dfc7f2de0c6df62d567720fc355fdd9392fcfca7f10bc233a6f113b",
+      "qfault/recovery_observation.py": "5fcb8fedba2bba8a520f45aa70fd5c50685b0d0e28bcc173759d0384274f7490",
+      "qfault/interventions.py": "6877a5d4496a169e7a8f01bfbc8f6881529fb7e611f191997dff9a8f16cb3c86",
+      "qfault/quantum.py": "fd4a7507278e52e83c7b0e60fc6beb3b607d138190bf87024e66655b9c9e48eb",
+      "qfault/backends.py": "a8a0a252e1c2abe33d6cbf3a120b57ea77d812b84ebfa8cca5077e5c3bb0fc42",
+      "qfault/diagnostics.py": "c7d751f2c9e988c3a76d9c230956d95b25c1b320997523fb7713d38d3e276577",
+      "qfault/evidence.py": "ce8c99d3f4d08de5d83bc17c556b317cb90e4f4caf328b5a028c4c686fe34360",
+      "qfault/storage.py": "6d2437e0c32a86dcc8cf41b42d5053fbe40bfb327e5f07313589f111221e1580"
+    },
+    "runs": 72,
+    "matched": 72,
+    "errors": 0,
+    "divergences": 0,
+    "export_verified": 72,
+    "total_shots": 2272256,
+    "total_backend_evaluations": 1127,
+    "outcomes": {
+      "diagnostic": {
+        "SIGNIFICANT_DISCREPANCY": 26,
+        "NO_SIGNIFICANT_DISCREPANCY": 21,
+        "INSUFFICIENT_EVIDENCE": 7
+      },
+      "recovery": {
+        "INSUFFICIENT_EVIDENCE": 5,
+        "REJECTED": 11,
+        "VERIFIED_UNDER_DECLARED_CONTRACT": 2
+      }
+    },
+    "runtime_seconds": 53.117195599996194,
+    "rows": [
+      {
+        "number": 1,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_89c2515ec36b4875aef4e09f6e266e93",
+        "experiment_id": "experiment_5b81f6c9f5a1418e93afcfe3d113e4b0",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "6e24ac861864db76ce819b4bac2aeb7171b38da88f9c6762e4cfa8fd5f7b714e",
+        "actual_scientific_projection_sha256": "6e24ac861864db76ce819b4bac2aeb7171b38da88f9c6762e4cfa8fd5f7b714e",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 2,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e12f291c6b42489c86bb061015aa3936",
+        "experiment_id": "experiment_f1285e115db044d2ae77db2f85abc87c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "795a1c56212d1e4920ed5a37b3df9e477139f88318c5739520cb326702282d7c",
+        "actual_scientific_projection_sha256": "795a1c56212d1e4920ed5a37b3df9e477139f88318c5739520cb326702282d7c",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 3,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_f26b1ac0cd1d4c5ba904178adb340780",
+        "experiment_id": "experiment_0c6d235702d6462f8b983d9356d722ef",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "f8bc42b15cb0f88d48ed7c2fa383020007808f26aba0b132b67a756ca00a5d2f",
+        "actual_scientific_projection_sha256": "f8bc42b15cb0f88d48ed7c2fa383020007808f26aba0b132b67a756ca00a5d2f",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 9216,
+        "evaluations": 9
+      },
+      {
+        "number": 4,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_f64caac1fe9347cda6f67454aeff8e9c",
+        "experiment_id": "experiment_ce8434c5005745fe9a38bc7e0c42473a",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "ee5d3deeca220fa093b47a55dd309e2807dea2128274fbe979ba20d92446abef",
+        "actual_scientific_projection_sha256": "ee5d3deeca220fa093b47a55dd309e2807dea2128274fbe979ba20d92446abef",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 10240,
+        "evaluations": 10
+      },
+      {
+        "number": 5,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_321c261d24a2441db8100679e505a82c",
+        "experiment_id": "experiment_7c2f149a50fc4c0ea07d18d0d111eae7",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "49ce231843640f5062ccc1f8078f2e70952a6bd7921b0e2c2300eff6e5d2ffbe",
+        "actual_scientific_projection_sha256": "49ce231843640f5062ccc1f8078f2e70952a6bd7921b0e2c2300eff6e5d2ffbe",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 9216,
+        "evaluations": 9
+      },
+      {
+        "number": 6,
+        "case_key": "diagnostic|small/cat_state_n4/cat_state_n4.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_24f46c9723814946931309dd29ee5b08",
+        "experiment_id": "experiment_eda5c1badf7a4ecdb4f9bf18e9a5912f",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "81b91fddefe7b92c3f25d5233c342063caa0f4af8f942a28e49f7d87ee409ea3",
+        "actual_scientific_projection_sha256": "81b91fddefe7b92c3f25d5233c342063caa0f4af8f942a28e49f7d87ee409ea3",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 3072,
+        "evaluations": 3
+      },
+      {
+        "number": 7,
+        "case_key": "recovery|small/cat_state_n4/cat_state_n4.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_777b3cc492a949bd83620182721614a7",
+        "experiment_id": "experiment_51256fd124fa4246a371232144779658",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "822a422ff624ccc9cde83f2152896d44bd287affd9edffe7111a246bc46bea0d",
+        "actual_scientific_projection_sha256": "822a422ff624ccc9cde83f2152896d44bd287affd9edffe7111a246bc46bea0d",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 112640,
+        "evaluations": 55
+      },
+      {
+        "number": 8,
+        "case_key": "recovery|small/cat_state_n4/cat_state_n4.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_477890488d0f4085a90a726b6492a529",
+        "experiment_id": "experiment_b9f93ac43b034a30b53f010348fa16c2",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "eda8f73bcd64e35b68bc1599e7588365369a5e36f248341f8db492a0210bfd5b",
+        "actual_scientific_projection_sha256": "eda8f73bcd64e35b68bc1599e7588365369a5e36f248341f8db492a0210bfd5b",
+        "status": "REJECTED",
+        "shots": 186368,
+        "evaluations": 73
+      },
+      {
+        "number": 9,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_c4fba7ab275c4c3aaeafbb57e387c5c8",
+        "experiment_id": "experiment_0091c90901a048378fb034e92e68dd44",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "3a663cc349f4d9438c6b90c9a329d7de58449f8899859fa1af3260d4db68fb96",
+        "actual_scientific_projection_sha256": "3a663cc349f4d9438c6b90c9a329d7de58449f8899859fa1af3260d4db68fb96",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 10,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_730f0b2ca91b4666b462204b8d471640",
+        "experiment_id": "experiment_5648b0cb29cf4d998c8843f686f701b6",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "5e2d371a81418b75f4677db9b24f754d45034120f7346b460fe9857b5ba3f33e",
+        "actual_scientific_projection_sha256": "5e2d371a81418b75f4677db9b24f754d45034120f7346b460fe9857b5ba3f33e",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 4096,
+        "evaluations": 4
+      },
+      {
+        "number": 11,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_51238ff2fb8646f29d90d5551bdb5425",
+        "experiment_id": "experiment_81de7760146f4806b46c05a2881bd904",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "a24a093e5e153938a6033c706651d49405e779d8ec5c6be41b9ac513fbd80aa8",
+        "actual_scientific_projection_sha256": "a24a093e5e153938a6033c706651d49405e779d8ec5c6be41b9ac513fbd80aa8",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 12,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_c0ca014d26524c238e5343529018d768",
+        "experiment_id": "experiment_ae4a8bd545ee4419ab91ff92c42c222e",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "ed3ff7821e24c7983b14a479892087b89f400c5662eca92fa1da70dd4db53e6f",
+        "actual_scientific_projection_sha256": "ed3ff7821e24c7983b14a479892087b89f400c5662eca92fa1da70dd4db53e6f",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 13,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_60bd3b2c605f4d49827b392c24d383c1",
+        "experiment_id": "experiment_b2aa162ab8054698bc23f4b462f05adc",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "327394190f2061715690662ff7c48032e3ef6d9820dbe27d0f3fc74a7bf8d943",
+        "actual_scientific_projection_sha256": "327394190f2061715690662ff7c48032e3ef6d9820dbe27d0f3fc74a7bf8d943",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 14,
+        "case_key": "diagnostic|small/deutsch_n2/deutsch_n2.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_bb3d03e71f3740b6b64b0b337cb31046",
+        "experiment_id": "experiment_601b5282b34d4e94a3edf9ee331c241d",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "17fa03fd0108acaf470efa43566034a6fc439a9e3b80a91ded45af62844e3ead",
+        "actual_scientific_projection_sha256": "17fa03fd0108acaf470efa43566034a6fc439a9e3b80a91ded45af62844e3ead",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 4096,
+        "evaluations": 4
+      },
+      {
+        "number": 15,
+        "case_key": "recovery|small/deutsch_n2/deutsch_n2.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_5e48cc3dad354f908ae6a3a11e44e4b3",
+        "experiment_id": "experiment_339bd45e3cc5419f8b591c86516881d3",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "0ba1aeb8412052c689bad24b2f64b98219af4888d89845b28da064e8079c4003",
+        "actual_scientific_projection_sha256": "0ba1aeb8412052c689bad24b2f64b98219af4888d89845b28da064e8079c4003",
+        "status": "REJECTED",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 16,
+        "case_key": "recovery|small/deutsch_n2/deutsch_n2.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_e278882eda4549c4ba18f00934efd517",
+        "experiment_id": "experiment_9cafb8f61743471db081940a7380d5b5",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "2e8e9fd7bfe028981b7c053d3246f64023bfcda77939749ce7b1e3ba27f2dd41",
+        "actual_scientific_projection_sha256": "2e8e9fd7bfe028981b7c053d3246f64023bfcda77939749ce7b1e3ba27f2dd41",
+        "status": "REJECTED",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 17,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_78a28e2617e94581af45cd2fc1ded934",
+        "experiment_id": "experiment_a551abe2094e47cabb88887c86a1233e",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "2e3205197b1db722403b7836d5024299b8ef6d7307837d2b71a17c02ebad3627",
+        "actual_scientific_projection_sha256": "2e3205197b1db722403b7836d5024299b8ef6d7307837d2b71a17c02ebad3627",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 18,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_35318f8389dd4892bc16da9843566a3c",
+        "experiment_id": "experiment_de97d8d63a97485a92e6190a39d1eea9",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "50129477784029c319c81810b0bf5470aff43fe032bd2d12f34d3ce97d20ccf6",
+        "actual_scientific_projection_sha256": "50129477784029c319c81810b0bf5470aff43fe032bd2d12f34d3ce97d20ccf6",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 19,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_2037577308f449b5ad86885ce8036211",
+        "experiment_id": "experiment_6385d56f75774e94aa54f9c05bda5f82",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "d055dcd6bced4f9c66441639f750cd818d73cb8b0aef7495cb9d9eb3cc840225",
+        "actual_scientific_projection_sha256": "d055dcd6bced4f9c66441639f750cd818d73cb8b0aef7495cb9d9eb3cc840225",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 20,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_759b52c075834d24b68c28454079c20f",
+        "experiment_id": "experiment_4fe2941199434cbab2e4ca866f988c72",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "5cdf6beca708fc46290c6dace74b7bbcb7875cb2493b7e12d8a57a762e307874",
+        "actual_scientific_projection_sha256": "5cdf6beca708fc46290c6dace74b7bbcb7875cb2493b7e12d8a57a762e307874",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 5120,
+        "evaluations": 5
+      },
+      {
+        "number": 21,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_417f739b1fbd4d728e1c0de40a3a4795",
+        "experiment_id": "experiment_3b4103afed284fa3a889f4d95e59b1c6",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "24f106c18bb26f2bdc2a240699e02eda528f0c7c18dfd88aa07a861c9cc41405",
+        "actual_scientific_projection_sha256": "24f106c18bb26f2bdc2a240699e02eda528f0c7c18dfd88aa07a861c9cc41405",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 22,
+        "case_key": "diagnostic|small/grover_n2/grover_n2.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_3eea4f7f8b6e473a995c1cf198e1849c",
+        "experiment_id": "experiment_893810b71aad495585cb075f5d9ae25a",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "7efa142ee69d8b97973438c0694518e97580a078de3227f83093fd22e9a89966",
+        "actual_scientific_projection_sha256": "7efa142ee69d8b97973438c0694518e97580a078de3227f83093fd22e9a89966",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 4096,
+        "evaluations": 4
+      },
+      {
+        "number": 23,
+        "case_key": "recovery|small/grover_n2/grover_n2.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_1e39514d661b40549308a306aca29cf3",
+        "experiment_id": "experiment_a27bfbf17ad74e9d91ec1bba0c0cd56c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "73cf2169fb6da38082f320b2313ecbeb2697d3c1338d9587892970aba5999029",
+        "actual_scientific_projection_sha256": "73cf2169fb6da38082f320b2313ecbeb2697d3c1338d9587892970aba5999029",
+        "status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 24,
+        "case_key": "recovery|small/grover_n2/grover_n2.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_313d96a326904796bd3c61ad71226828",
+        "experiment_id": "experiment_9a1540f393904d0d8aeaf52c267cb875",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "8b90bbb659779133728d9ece60a787d8a3205dfc512006150452a6693db46448",
+        "actual_scientific_projection_sha256": "8b90bbb659779133728d9ece60a787d8a3205dfc512006150452a6693db46448",
+        "status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 25,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_3fc0af4524544bada1978326c664dbca",
+        "experiment_id": "experiment_fb231ef167e5476e93826cee1c765b2c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "9b009eab12374cdd0a3c025de83946e7b409bb9cab498bd542101bfa53d68435",
+        "actual_scientific_projection_sha256": "9b009eab12374cdd0a3c025de83946e7b409bb9cab498bd542101bfa53d68435",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 26,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e12b58fb71c54adeba2f74f0e5a71107",
+        "experiment_id": "experiment_05ea72c6e8f94e9fbd2e2d23e82ee146",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "de585e379adb0b175eaad85b6fe6489ee5654c5787419f3a5fdc8b129d989ce9",
+        "actual_scientific_projection_sha256": "de585e379adb0b175eaad85b6fe6489ee5654c5787419f3a5fdc8b129d989ce9",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 27,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_be96da3f70384f19a73d16861e35e5fd",
+        "experiment_id": "experiment_97ae3350f2ad481f83482112253da716",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "7b99c37adc4bf3524688b8b791cb0e0011d12b8274d6862c99a55bf1a9309563",
+        "actual_scientific_projection_sha256": "7b99c37adc4bf3524688b8b791cb0e0011d12b8274d6862c99a55bf1a9309563",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 28,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_63dedcac2cae46f0a94babb61fcf0421",
+        "experiment_id": "experiment_be93a106a27a4123b42cfd9bb9d8666e",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "56f9850f59a6a9cba9dbd01459d6c8ce3591c2531d5fde74ff9f1aed1afb1f64",
+        "actual_scientific_projection_sha256": "56f9850f59a6a9cba9dbd01459d6c8ce3591c2531d5fde74ff9f1aed1afb1f64",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 5120,
+        "evaluations": 5
+      },
+      {
+        "number": 29,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_55c2ac816c27401fa3b9aa27a447af1d",
+        "experiment_id": "experiment_1bcff0e0d7b443de91395658eecb82fb",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "5cfe8a62809a5271ce616117054a21a4f1bad83be9efe390728071251d5ed719",
+        "actual_scientific_projection_sha256": "5cfe8a62809a5271ce616117054a21a4f1bad83be9efe390728071251d5ed719",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 30,
+        "case_key": "diagnostic|small/hs4_n4/hs4_n4.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_8680128e57c4424585118d950aabd8ab",
+        "experiment_id": "experiment_eb733e3071f249afab4b2bde6e43cba3",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "efc0aeb7b87bcc68fc4c4e01a09c7b20fef6eeab32fd4639249b81cf89886ec3",
+        "actual_scientific_projection_sha256": "efc0aeb7b87bcc68fc4c4e01a09c7b20fef6eeab32fd4639249b81cf89886ec3",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 31,
+        "case_key": "recovery|small/hs4_n4/hs4_n4.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_34fa790732b2468896d628136a6eab33",
+        "experiment_id": "experiment_ad9f9e4f3a1c4c66b49f0e6610da7acc",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "21c33a4862b21b950f8a00b279501ca4d2cb1fb6a89989b22ea9acc4be51316b",
+        "actual_scientific_projection_sha256": "21c33a4862b21b950f8a00b279501ca4d2cb1fb6a89989b22ea9acc4be51316b",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 69632,
+        "evaluations": 34
+      },
+      {
+        "number": 32,
+        "case_key": "recovery|small/hs4_n4/hs4_n4.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_725dde0ea31f4017a11e906dde4b07a0",
+        "experiment_id": "experiment_4f3f58cde6584779801c7eaedc1b030e",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "4b3a9340d63b55eea1c05d9cb7f670bd4099e6af23ce0ba61bbbb89357faefb0",
+        "actual_scientific_projection_sha256": "4b3a9340d63b55eea1c05d9cb7f670bd4099e6af23ce0ba61bbbb89357faefb0",
+        "status": "REJECTED",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 33,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_57b3d1c2eb174e1ab3fd8011c3f39b0f",
+        "experiment_id": "experiment_5b4225b7ece04f10981f35742cd5bde2",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "bf18034e040e6aaedb678f93db235282194cf58c3ed38a2ea9393f1562643389",
+        "actual_scientific_projection_sha256": "bf18034e040e6aaedb678f93db235282194cf58c3ed38a2ea9393f1562643389",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 34,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_3a16da90e7c74c868ad6e58499498903",
+        "experiment_id": "experiment_bee44f6b7a264e31bce33736d6b29dcb",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "01a52aeba83e35305011a5be5ee4fa2e643b18d2a112c56167855bdd574fe8e4",
+        "actual_scientific_projection_sha256": "01a52aeba83e35305011a5be5ee4fa2e643b18d2a112c56167855bdd574fe8e4",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 35,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_d47458f28d9e42b195910aa4b994f6c5",
+        "experiment_id": "experiment_541b746834b54a568236f8d44a8e7e80",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "3a5f7d8f31eac748175e1cb80aa889c1ddb3b785eb26afec250585b855420f88",
+        "actual_scientific_projection_sha256": "3a5f7d8f31eac748175e1cb80aa889c1ddb3b785eb26afec250585b855420f88",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 3072,
+        "evaluations": 3
+      },
+      {
+        "number": 36,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_520f211637c74bda92d730364dc30d83",
+        "experiment_id": "experiment_84d88314d3864c8881bd158579a5622e",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "4b5140779a83407ce26f37f6a87572acccd97d901bf6ba51fe3c6f8f37df64d6",
+        "actual_scientific_projection_sha256": "4b5140779a83407ce26f37f6a87572acccd97d901bf6ba51fe3c6f8f37df64d6",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 5120,
+        "evaluations": 5
+      },
+      {
+        "number": 37,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_cafa705491a34b39a09d96b5bda2db9a",
+        "experiment_id": "experiment_99d2a459e3d9469f81e8551c38c6ee59",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "0c9a2bf4759bae1d332ce16e7c266117bf1bc363c62c5413531e494f1cfea5be",
+        "actual_scientific_projection_sha256": "0c9a2bf4759bae1d332ce16e7c266117bf1bc363c62c5413531e494f1cfea5be",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 4096,
+        "evaluations": 4
+      },
+      {
+        "number": 38,
+        "case_key": "diagnostic|small/linearsolver_n3/linearsolver_n3.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_72357308e3ac4eac804025d2ff78a8f1",
+        "experiment_id": "experiment_f2540ce562234309be44024026df0625",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "e9b066764ebe6d43162bb208b9beb8dcb66e436c541361b04f6b46d3a99cb343",
+        "actual_scientific_projection_sha256": "e9b066764ebe6d43162bb208b9beb8dcb66e436c541361b04f6b46d3a99cb343",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 6144,
+        "evaluations": 6
+      },
+      {
+        "number": 39,
+        "case_key": "recovery|small/linearsolver_n3/linearsolver_n3.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_cbf5a817fb0e408699078e740c70f827",
+        "experiment_id": "experiment_d5e8acdee0914650aead88ee33dda2b5",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "fb97be555aa0dcfc5b927656b22430fa20678c606d1ac58195d93edaa4f656b5",
+        "actual_scientific_projection_sha256": "fb97be555aa0dcfc5b927656b22430fa20678c606d1ac58195d93edaa4f656b5",
+        "status": "REJECTED",
+        "shots": 198656,
+        "evaluations": 91
+      },
+      {
+        "number": 40,
+        "case_key": "recovery|small/linearsolver_n3/linearsolver_n3.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_bae7ff5902d5458b80e8c7c5e72dd77a",
+        "experiment_id": "experiment_e9fb535abe4947c49ab05c49d8ed2a5d",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "0bbb327f67b1ce3d4957de470ada07d19283ccb2307b57d4849504ddc78b9743",
+        "actual_scientific_projection_sha256": "0bbb327f67b1ce3d4957de470ada07d19283ccb2307b57d4849504ddc78b9743",
+        "status": "REJECTED",
+        "shots": 198656,
+        "evaluations": 91
+      },
+      {
+        "number": 41,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_172d0a547f9c471a93ee33f4c89a9e94",
+        "experiment_id": "experiment_bb6f350b955e41418d3e00a90f348f8a",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "af6cbca2976f62c600d0e5772fda4ef2cd413d456e0d4eacca55c27d7c73d09c",
+        "actual_scientific_projection_sha256": "af6cbca2976f62c600d0e5772fda4ef2cd413d456e0d4eacca55c27d7c73d09c",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 42,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e3e7473c20ff4d6aa7d94b1e82be62c8",
+        "experiment_id": "experiment_79038b53ab2240c283f9a8be747ac26c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "874b045f9b15558ecce31b8aed6b0b6c805741f4552d73cd1567e2f9a51ea007",
+        "actual_scientific_projection_sha256": "874b045f9b15558ecce31b8aed6b0b6c805741f4552d73cd1567e2f9a51ea007",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 43,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_f67d86abc1e54d7a9b890b3d9e887f33",
+        "experiment_id": "experiment_dc0794da55f94624ac782ffafea060f1",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "27019581a7574058133b338ed49bc4a5da5453801886629dbd0b60318a59dac1",
+        "actual_scientific_projection_sha256": "27019581a7574058133b338ed49bc4a5da5453801886629dbd0b60318a59dac1",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 6144,
+        "evaluations": 6
+      },
+      {
+        "number": 44,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_1044174e5e58409d909d8a497364590d",
+        "experiment_id": "experiment_40361522c6504a478eef75ea2e410b33",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "0ec882fd42530292333690f3b3e12c8269f0c100d57848a45f546cb134a5354d",
+        "actual_scientific_projection_sha256": "0ec882fd42530292333690f3b3e12c8269f0c100d57848a45f546cb134a5354d",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 9216,
+        "evaluations": 9
+      },
+      {
+        "number": 45,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_1fceb7a882c644e4a610d6bf50c49245",
+        "experiment_id": "experiment_8cc69c28d2dd4357bea412cc4d3f82cc",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "f34fc1b084a25d9e0da23b6db8db7cef3721c9ce41609236ec26ee177f2ee12e",
+        "actual_scientific_projection_sha256": "f34fc1b084a25d9e0da23b6db8db7cef3721c9ce41609236ec26ee177f2ee12e",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 5120,
+        "evaluations": 5
+      },
+      {
+        "number": 46,
+        "case_key": "diagnostic|small/lpn_n5/lpn_n5.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e79855f5b1fb4380983621fe7f159a29",
+        "experiment_id": "experiment_6e1b39e90fdc4ffaaa3651f9bf279da4",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "4158bcee07e86f0e32dc4c7f3c2bd3df1ea3507c27d26921e0a565ff6d442c27",
+        "actual_scientific_projection_sha256": "4158bcee07e86f0e32dc4c7f3c2bd3df1ea3507c27d26921e0a565ff6d442c27",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 47,
+        "case_key": "recovery|small/lpn_n5/lpn_n5.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_c298b07ca2ef47cab4547c1cfb369f12",
+        "experiment_id": "experiment_fa8ba0c6a93546f2bb72d443cf813180",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "3ff6c2b58bea0e53efba71394f1b7a88a118608ce6ab26368620e3bfff3334e4",
+        "actual_scientific_projection_sha256": "3ff6c2b58bea0e53efba71394f1b7a88a118608ce6ab26368620e3bfff3334e4",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 155648,
+        "evaluations": 76
+      },
+      {
+        "number": 48,
+        "case_key": "recovery|small/lpn_n5/lpn_n5.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_21b6b4cfcb8a48cea7375ea42fecfbf3",
+        "experiment_id": "experiment_4045033559384a42bab968f078f15a05",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "b03c18c96613c4865151525dccef0f449dbe627045f5a2e8827cdf6e6df80562",
+        "actual_scientific_projection_sha256": "b03c18c96613c4865151525dccef0f449dbe627045f5a2e8827cdf6e6df80562",
+        "status": "REJECTED",
+        "shots": 196608,
+        "evaluations": 86
+      },
+      {
+        "number": 49,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e52294b847474fb28d29b394c30d27a0",
+        "experiment_id": "experiment_274411f7ed8d43ba86eeddfc09b1b321",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "c8b9b80819631eeffe3703b519a657271e45800ed85ae501915323928bfbe4e8",
+        "actual_scientific_projection_sha256": "c8b9b80819631eeffe3703b519a657271e45800ed85ae501915323928bfbe4e8",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 50,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_becdcc4883bf4f8fa2a8cc3874c7f031",
+        "experiment_id": "experiment_3dc61bb3a9394fb3a769d1b6768eac5f",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "16fdf0ad53a46a39b3cd288d0abec7240133a72c583d6520001a50fb85c686ac",
+        "actual_scientific_projection_sha256": "16fdf0ad53a46a39b3cd288d0abec7240133a72c583d6520001a50fb85c686ac",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 51,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_9b55dcb02b89428891c3432fb2a23c91",
+        "experiment_id": "experiment_0bcdf2035eeb4c3dad9e02be02e97d34",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "d5914399134bd3c543b500760e4e7c3ae9675fe65954752c566e8a237ad36b78",
+        "actual_scientific_projection_sha256": "d5914399134bd3c543b500760e4e7c3ae9675fe65954752c566e8a237ad36b78",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 52,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_ac23593aed6044b090f1f116678177d9",
+        "experiment_id": "experiment_f935e64a236743579a97e466a0ce9cbf",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "b41c0f021a53c36443c8b39a9ffdb586b735b1c96706aa11bbeb265fde6d469d",
+        "actual_scientific_projection_sha256": "b41c0f021a53c36443c8b39a9ffdb586b735b1c96706aa11bbeb265fde6d469d",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 9216,
+        "evaluations": 9
+      },
+      {
+        "number": 53,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_8b548dcc224a4327816f208ecf1182e0",
+        "experiment_id": "experiment_64ac7079fef14c5cb2f70e611450ac89",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "cc41d88bfe1a55180c9413b5cd2fdd3ae3b00b6bee2d642a866e50c0dd847669",
+        "actual_scientific_projection_sha256": "cc41d88bfe1a55180c9413b5cd2fdd3ae3b00b6bee2d642a866e50c0dd847669",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 54,
+        "case_key": "diagnostic|small/qft_n4/qft_n4.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_346a23f439024dd4b9453cbba6686266",
+        "experiment_id": "experiment_81691591b4ec4c7988a39d5af62e399b",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "fd214657ccf5afe975a4b2bc2e5915b85cc2360c7d97a664b0fd09bbd55086b4",
+        "actual_scientific_projection_sha256": "fd214657ccf5afe975a4b2bc2e5915b85cc2360c7d97a664b0fd09bbd55086b4",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 55,
+        "case_key": "recovery|small/qft_n4/qft_n4.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_38f9084ed9d54d649ea503641f716c3b",
+        "experiment_id": "experiment_1563e39837294ebfb33b8ea7f7def1f4",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "eaea84da310e87f339f2c58310678a30e04ae67313862625659bd3793f176210",
+        "actual_scientific_projection_sha256": "eaea84da310e87f339f2c58310678a30e04ae67313862625659bd3793f176210",
+        "status": "REJECTED",
+        "shots": 153600,
+        "evaluations": 71
+      },
+      {
+        "number": 56,
+        "case_key": "recovery|small/qft_n4/qft_n4.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_18a7b89b35f044709207167d9cf6ebea",
+        "experiment_id": "experiment_18ce148ea08f476f8b5fd5b00ef3cbef",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "858a88a36a7c364e26f9d70cf52a9661e1f2adb9fec8e0699aea9763608bc953",
+        "actual_scientific_projection_sha256": "858a88a36a7c364e26f9d70cf52a9661e1f2adb9fec8e0699aea9763608bc953",
+        "status": "REJECTED",
+        "shots": 153600,
+        "evaluations": 71
+      },
+      {
+        "number": 57,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_e1ff81f7b613419b891faa602ff03afc",
+        "experiment_id": "experiment_d958aca2e5b9450ea2d614b335132244",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "a94fb8650a0b171f1f637405249afd07cc17a4d043ba4bee907966000f154bc9",
+        "actual_scientific_projection_sha256": "a94fb8650a0b171f1f637405249afd07cc17a4d043ba4bee907966000f154bc9",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 58,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|measurement_distribution|readout|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_f49b480f37b74e5daf976095667abfab",
+        "experiment_id": "experiment_6663313315264903877bac506ba58dbe",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "99b2377704142b4f74fc5eefc36e312db9cda6f504136973ec3eca743cbca4b6",
+        "actual_scientific_projection_sha256": "99b2377704142b4f74fc5eefc36e312db9cda6f504136973ec3eca743cbca4b6",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 59,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|pauli_expectations|clean|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_8b28bc1613634223860615c8e3a73d2a",
+        "experiment_id": "experiment_ba590407db5c4abea4bb14695c187b60",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "9f7b1280f426178a9f62ae70e408fc98a75988f62b996ba2fc692a8124761c5d",
+        "actual_scientific_projection_sha256": "9f7b1280f426178a9f62ae70e408fc98a75988f62b996ba2fc692a8124761c5d",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 60,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_5af3f9172681418cb1e7a2db49eb0bce",
+        "experiment_id": "experiment_77b460867d7f494d80530ebb589daee7",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "d86fb098b285f9bf5f93c4f4826f1b3e79c92155844261c2c278315f0cbfbc3b",
+        "actual_scientific_projection_sha256": "d86fb098b285f9bf5f93c4f4826f1b3e79c92155844261c2c278315f0cbfbc3b",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 61,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|target_state|remove_first|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_b5ff69d872754a0d9320f7a7593a48bc",
+        "experiment_id": "experiment_1b82aaf7377d48859e59f2cfae4623e2",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "944bf7954a28d1ade8534fb4426b8f651dce38e968eedbd800a86ffac8c147a1",
+        "actual_scientific_projection_sha256": "944bf7954a28d1ade8534fb4426b8f651dce38e968eedbd800a86ffac8c147a1",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 62,
+        "case_key": "diagnostic|small/qrng_n4/qrng_n4.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_944447276a8d4a03926c1bfc467f4545",
+        "experiment_id": "experiment_167498aabd044c4da3e0b441014c4f9c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "a895f266c9facb64cefcf89b47230f6e20eaf482db4b0885f4dfaf8cb5c45466",
+        "actual_scientific_projection_sha256": "a895f266c9facb64cefcf89b47230f6e20eaf482db4b0885f4dfaf8cb5c45466",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 63,
+        "case_key": "recovery|small/qrng_n4/qrng_n4.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_66991c582d44410aada5d7d96b1e9678",
+        "experiment_id": "experiment_ec51eb26a39b4ebca23351c873934a18",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "dd6853d1e5e3edabbda796b893e6950f64075650e341ee4ad2b91a686bc955c6",
+        "actual_scientific_projection_sha256": "dd6853d1e5e3edabbda796b893e6950f64075650e341ee4ad2b91a686bc955c6",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 69632,
+        "evaluations": 34
+      },
+      {
+        "number": 64,
+        "case_key": "recovery|small/qrng_n4/qrng_n4.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_3be54fc768e44c85aba2f64ce2142685",
+        "experiment_id": "experiment_68f4b80c5832440c8606e99dc586b08c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "dbfe5b08c7d227a91289ca5b024d323b0ba649cc6e1ef889ae68211c505f8f12",
+        "actual_scientific_projection_sha256": "dbfe5b08c7d227a91289ca5b024d323b0ba649cc6e1ef889ae68211c505f8f12",
+        "status": "REJECTED",
+        "shots": 77824,
+        "evaluations": 36
+      },
+      {
+        "number": 65,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|measurement_distribution|clean|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_ead0c29a7ede4d6291a7cb5bf9424244",
+        "experiment_id": "experiment_5669942884534dc68ecc9191f4136621",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "c912c7a4b1790ce6329d3c41d46149c2deb1a795c368350cf857301d7087fd45",
+        "actual_scientific_projection_sha256": "c912c7a4b1790ce6329d3c41d46149c2deb1a795c368350cf857301d7087fd45",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 66,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|measurement_distribution|remove_first|fixed|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_04cf5bde2f964a34ab71dd0e7886b5ce",
+        "experiment_id": "experiment_58fad2749ca84d5192790075f99d3c37",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "4a00d4af5c2b35f96fbf9119129acecced966c1c46f4e959927a988236ac4051",
+        "actual_scientific_projection_sha256": "4a00d4af5c2b35f96fbf9119129acecced966c1c46f4e959927a988236ac4051",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 67,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|pauli_expectations|remove_first|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_8fc1451f03154f14ae212b8ffd8b0deb",
+        "experiment_id": "experiment_454df95cdc5c4a35b45b6e30c9879ca5",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "57927a9f1d7edc04d13e37e81cffa039752c0e6e4dbc3aa9c393533a1be8e955",
+        "actual_scientific_projection_sha256": "57927a9f1d7edc04d13e37e81cffa039752c0e6e4dbc3aa9c393533a1be8e955",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 2048,
+        "evaluations": 2
+      },
+      {
+        "number": 68,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|pauli_expectations|readout|adaptive|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_7a22339e89fa4d8da02ac6f04c18f087",
+        "experiment_id": "experiment_a6abcd83024742f397f06a99ad3651ad",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "21ee38112908c8228d3ee4f95e015a53cb36558643ea80893a8451be796a310a",
+        "actual_scientific_projection_sha256": "21ee38112908c8228d3ee4f95e015a53cb36558643ea80893a8451be796a310a",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "shots": 5120,
+        "evaluations": 5
+      },
+      {
+        "number": 69,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|target_state|clean|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_23ef87e4eac24d10b1cbe377ca7d7962",
+        "experiment_id": "experiment_5fa6c65fec00471bae8457bfd630e326",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "3b7fa47263af54f36a86b5637d869df2ae7396e9723eb27adec4d0510c97f39b",
+        "actual_scientific_projection_sha256": "3b7fa47263af54f36a86b5637d869df2ae7396e9723eb27adec4d0510c97f39b",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 70,
+        "case_key": "diagnostic|small/toffoli_n3/toffoli_n3.qasm|target_state|readout|adaptive_witness|91001",
+        "mode": "diagnostic",
+        "source_experiment_id": "experiment_d8cc2e9f5c5b4869ba14d177b95d2466",
+        "experiment_id": "experiment_bd7863c49aa94679980b6ef5d89e426c",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "400e3c16c6651023473fb8457c1296a35a3de9a82639ae3ab368cb29f44aaf02",
+        "actual_scientific_projection_sha256": "400e3c16c6651023473fb8457c1296a35a3de9a82639ae3ab368cb29f44aaf02",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 1024,
+        "evaluations": 1
+      },
+      {
+        "number": 71,
+        "case_key": "recovery|small/toffoli_n3/toffoli_n3.qasm|pauli_expectations|remove_first|conservative|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_c34c678d3c4c488787a171dd96a10743",
+        "experiment_id": "experiment_efbf3879d5764004b2cef007208466eb",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "03875885917e3bb2adec3b927df2c5c40dc121b371c4ea8b3ba3d24520a9e1c8",
+        "actual_scientific_projection_sha256": "03875885917e3bb2adec3b927df2c5c40dc121b371c4ea8b3ba3d24520a9e1c8",
+        "status": "INSUFFICIENT_EVIDENCE",
+        "shots": 69632,
+        "evaluations": 34
+      },
+      {
+        "number": 72,
+        "case_key": "recovery|small/toffoli_n3/toffoli_n3.qasm|pauli_expectations|remove_first|point_discrepancy|91001",
+        "mode": "recovery",
+        "source_experiment_id": "experiment_4d98e41a831345eca7a1d10e2b3f1c8b",
+        "experiment_id": "experiment_3ceedd6d997b4f2d8c5457edd6363449",
+        "export_valid": true,
+        "matched": true,
+        "differences": [],
+        "expected_scientific_projection_sha256": "c73b1bef3145016c36550448d86adfb435f46c06558ddaec6956731fe224fd22",
+        "actual_scientific_projection_sha256": "c73b1bef3145016c36550448d86adfb435f46c06558ddaec6956731fe224fd22",
+        "status": "REJECTED",
+        "shots": 77824,
+        "evaluations": 36
+      }
+    ],
+    "interpretation": "Reused-seed deterministic replication of72 preregistered configurations across9 external programs. Not72 backend jobs, independent programs or new performance evidence.",
+    "passed": true
+  },
+  "fresh_replication_archive_sha256": "1d1400ece3ac5fc3d387ec9f1f5de97d31056cbf00549ba5698b173f3ff64f8d",
+  "fresh_external_demo": {
+    "digest": "c3cf590ebfaa86ff65d97927a695f2aa7a22347de12e11d2e7f5b3e8b724d06f",
+    "example": {
+      "candidate": {
+        "gates": [
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              0
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              1
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              2
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              3
+            ]
+          },
+          {
+            "name": "z",
+            "qubits": [
+              0
+            ]
+          }
+        ],
+        "input": {
+          "bitstring": "0000",
+          "kind": "computational_basis"
+        },
+        "n_qubits": 4,
+        "name": "QASMBench QRNG with controlled terminal Z on qubit 0",
+        "schema_version": 1
+      },
+      "complementary": {
+        "kind": "pauli_expectations",
+        "observables": [
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IIIX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IIXI",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IIXX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IXII",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IXIX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IXXI",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "IXXX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "XIII",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "XIIX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "XIXI",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "XIXX",
+            "tolerance": 0.2
+          },
+          {
+            "expected": 0.9999999999999993,
+            "pauli": "XXII",
+            "tolerance": 0.2
+          }
+        ]
+      },
+      "distribution": {
+        "basis": "Z",
+        "expected_probabilities": {
+          "0000": 0.06249999999999996,
+          "0001": 0.06249999999999996,
+          "0010": 0.06249999999999996,
+          "0011": 0.06249999999999996,
+          "0100": 0.06249999999999996,
+          "0101": 0.06249999999999996,
+          "0110": 0.06249999999999996,
+          "0111": 0.06249999999999996,
+          "1000": 0.06249999999999996,
+          "1001": 0.06249999999999996,
+          "1010": 0.06249999999999996,
+          "1011": 0.06249999999999996,
+          "1100": 0.06249999999999996,
+          "1101": 0.06249999999999996,
+          "1110": 0.06249999999999996,
+          "1111": 0.06249999999999996
+        },
+        "kind": "measurement_distribution",
+        "tolerance": 0.15
+      },
+      "reference": {
+        "gates": [
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              0
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              1
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              2
+            ]
+          },
+          {
+            "angle": null,
+            "name": "h",
+            "qubits": [
+              3
+            ]
+          }
+        ],
+        "input": {
+          "bitstring": "0000",
+          "kind": "computational_basis"
+        },
+        "n_qubits": 4,
+        "name": "qrng_n4",
+        "schema_version": 1
+      },
+      "scope": "Canonical zero input; original four-H external circuit unchanged. Terminal Z is a separately declared evaluator-controlled discrepancy. This simple product-state example demonstrates observability, not general recovery performance.",
+      "source_path": "small/qrng_n4/qrng_n4.qasm",
+      "source_revision": "357b942396d5c2b7cbc1c229c585a6ef5ccaebac",
+      "source_sha256": "627d604f685cebe71f4d079cea6a9266a8d6a136279b6199b32cbc010079a184"
+    },
+    "interpretation": "Z-only observations cannot see the terminal relative phase. Complementary X-basis evidence can detect it. Any verified edit restores only this contract and input; causal origin is not established.",
+    "reports": {
+      "baseline_z": "experiment_99d0a2cf33a54eac9229a82dc8ac2fd1",
+      "phase_complementary": "experiment_15bfe3ed0599425686839b3cdcb28537",
+      "phase_z": "experiment_7e815ad6b75348849c83a55d2117f00b",
+      "recovery": "experiment_dc54dc4fa8e94d5492678b275633b235"
+    },
+    "stages": [
+      {
+        "attribution": {
+          "ideal_violation_claims": null,
+          "readout_control": null,
+          "statement": "A violated expectation alone cannot separate a logical defect from gate or readout noise.",
+          "status": "NOT_APPLICABLE"
+        },
+        "category": "NO_SIGNIFICANT_DISCREPANCY",
+        "claims": [
+          {
+            "basis": "Z",
+            "claim_id": "dist:Z",
+            "estimate": 0.05468750000000008,
+            "interval": [
+              -0.03723460864255507,
+              0.14660960864255523
+            ],
+            "kind": "distribution",
+            "looks": 1,
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.15,
+            "uncertainty_radius": 0.09192210864255515
+          }
+        ],
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:ZZZZ",
+              "resources": {
+                "depth": 1,
+                "gates": 4,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 0,
+          "circuit_executions": 1,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 1,
+          "evaluations": 1,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.2001215000054799,
+          "shots": 1024,
+          "two_qubit_gate_sum": 0
+        },
+        "experiment_id": "experiment_99d0a2cf33a54eac9229a82dc8ac2fd1",
+        "export_verified": true,
+        "measurements": [
+          {
+            "action_id": "action0",
+            "basis_gates": 0,
+            "circuit_evaluations": 1,
+            "execution_backend": "qiskit_aer.AerSimulator/density_matrix",
+            "execution_id": "exec_a25532909b4341c0b3b4f54790aabed3",
+            "measurement_specification": {
+              "claims": [
+                "dist:Z"
+              ],
+              "group_id": "group0:ZZZZ",
+              "look": 1,
+              "setting": "ZZZZ"
+            },
+            "observed_result": {
+              "dist:Z": {
+                "estimate": 0.05468750000000008,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              }
+            },
+            "reason_selected": "Predetermined round-robin in declared order. Independent of evidence.",
+            "remaining_budget": {
+              "evaluations": 23,
+              "shots": 7168
+            },
+            "selection_policy": "fixed",
+            "shots_executed": 1024,
+            "shots_requested": 1024,
+            "uncertainty": {
+              "dist:Z": 0.09192210864255515
+            }
+          }
+        ],
+        "stage": "baseline_z"
+      },
+      {
+        "attribution": {
+          "ideal_violation_claims": null,
+          "readout_control": null,
+          "statement": "A violated expectation alone cannot separate a logical defect from gate or readout noise.",
+          "status": "NOT_APPLICABLE"
+        },
+        "category": "NO_SIGNIFICANT_DISCREPANCY",
+        "claims": [
+          {
+            "basis": "Z",
+            "claim_id": "dist:Z",
+            "estimate": 0.05468750000000008,
+            "interval": [
+              -0.03723460864255507,
+              0.14660960864255523
+            ],
+            "kind": "distribution",
+            "looks": 1,
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.15,
+            "uncertainty_radius": 0.09192210864255515
+          }
+        ],
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:ZZZZ",
+              "resources": {
+                "depth": 2,
+                "gates": 5,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 0,
+          "circuit_executions": 1,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 2,
+          "evaluations": 1,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.026025099999969825,
+          "shots": 1024,
+          "two_qubit_gate_sum": 0
+        },
+        "experiment_id": "experiment_7e815ad6b75348849c83a55d2117f00b",
+        "export_verified": true,
+        "measurements": [
+          {
+            "action_id": "action0",
+            "basis_gates": 0,
+            "circuit_evaluations": 1,
+            "execution_backend": "qiskit_aer.AerSimulator/density_matrix",
+            "execution_id": "exec_1699e0ace95a4d9fbcb95682d2a4c44a",
+            "measurement_specification": {
+              "claims": [
+                "dist:Z"
+              ],
+              "group_id": "group0:ZZZZ",
+              "look": 1,
+              "setting": "ZZZZ"
+            },
+            "observed_result": {
+              "dist:Z": {
+                "estimate": 0.05468750000000008,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              }
+            },
+            "reason_selected": "Predetermined round-robin in declared order. Independent of evidence.",
+            "remaining_budget": {
+              "evaluations": 23,
+              "shots": 7168
+            },
+            "selection_policy": "fixed",
+            "shots_executed": 1024,
+            "shots_requested": 1024,
+            "uncertainty": {
+              "dist:Z": 0.09192210864255515
+            }
+          }
+        ],
+        "stage": "phase_z"
+      },
+      {
+        "attribution": {
+          "ideal_violation_claims": null,
+          "readout_control": {
+            "execution_id": "exec_8b005c1dd95b454e97adf4ff56a596ce",
+            "method": "multinomial TV bound on |0...0> readout control; no gate noise is probed",
+            "significant_disagreement": false,
+            "tolerance": 0.1,
+            "total_variation": 0.0,
+            "uncertainty_radius": 0.0977963116970667
+          },
+          "statement": "A violated expectation alone cannot separate a logical defect from gate or readout noise.",
+          "status": "AMBIGUOUS_LOGICAL_VS_NOISE"
+        },
+        "category": "SIGNIFICANT_DISCREPANCY",
+        "claims": [
+          {
+            "claim_id": "obs:IIIX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IIIX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IIXI",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IIXI",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IIXX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IIXX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IXII",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IXII",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IXIX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IXIX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IXXI",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IXXI",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:IXXX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "IXXX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:XIII",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "XIII",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:XIIX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "XIIX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:XIXI",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "XIXI",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:XIXX",
+            "estimate": -1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              -1.133975697894381,
+              -0.866024302105619
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "XIXX",
+            "shots": 1024,
+            "status": "VIOLATED",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          },
+          {
+            "claim_id": "obs:XXII",
+            "estimate": 1.0,
+            "expected": 0.9999999999999993,
+            "interval": [
+              0.866024302105619,
+              1.133975697894381
+            ],
+            "kind": "pauli_expectation",
+            "looks": 1,
+            "pauli": "XXII",
+            "shots": 1024,
+            "status": "SATISFIED_WITHIN_TOLERANCE",
+            "tolerance": 0.2,
+            "uncertainty_radius": 0.13397569789438102
+          }
+        ],
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            },
+            {
+              "action": "readout_control",
+              "resources": {
+                "depth": 0,
+                "gates": 0,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 4,
+          "circuit_executions": 2,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 3,
+          "evaluations": 2,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.058583900005032774,
+          "shots": 2048,
+          "two_qubit_gate_sum": 0
+        },
+        "experiment_id": "experiment_15bfe3ed0599425686839b3cdcb28537",
+        "export_verified": true,
+        "measurements": [
+          {
+            "action_id": "action0",
+            "basis_gates": 4,
+            "circuit_evaluations": 1,
+            "execution_backend": "qiskit_aer.AerSimulator/density_matrix",
+            "execution_id": "exec_aa4c87fa70084471a65175052706f3ad",
+            "measurement_specification": {
+              "claims": [
+                "obs:IIIX",
+                "obs:IIXI",
+                "obs:IIXX",
+                "obs:IXII",
+                "obs:IXIX",
+                "obs:IXXI",
+                "obs:IXXX",
+                "obs:XIII",
+                "obs:XIIX",
+                "obs:XIXI",
+                "obs:XIXX",
+                "obs:XXII"
+              ],
+              "group_id": "group0:XXXX",
+              "look": 1,
+              "setting": "XXXX"
+            },
+            "observed_result": {
+              "obs:IIIX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:IIXI": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              },
+              "obs:IIXX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:IXII": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              },
+              "obs:IXIX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:IXXI": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              },
+              "obs:IXXX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:XIII": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              },
+              "obs:XIIX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:XIXI": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              },
+              "obs:XIXX": {
+                "estimate": -1.0,
+                "status": "VIOLATED"
+              },
+              "obs:XXII": {
+                "estimate": 1.0,
+                "status": "SATISFIED_WITHIN_TOLERANCE"
+              }
+            },
+            "reason_selected": "Predetermined round-robin in declared order. Independent of evidence.",
+            "remaining_budget": {
+              "evaluations": 23,
+              "shots": 7168
+            },
+            "selection_policy": "fixed",
+            "shots_executed": 1024,
+            "shots_requested": 1024,
+            "uncertainty": {
+              "obs:IIIX": 0.13397569789438102,
+              "obs:IIXI": 0.13397569789438102,
+              "obs:IIXX": 0.13397569789438102,
+              "obs:IXII": 0.13397569789438102,
+              "obs:IXIX": 0.13397569789438102,
+              "obs:IXXI": 0.13397569789438102,
+              "obs:IXXX": 0.13397569789438102,
+              "obs:XIII": 0.13397569789438102,
+              "obs:XIIX": 0.13397569789438102,
+              "obs:XIXI": 0.13397569789438102,
+              "obs:XIXX": 0.13397569789438102,
+              "obs:XXII": 0.13397569789438102
+            }
+          }
+        ],
+        "stage": "phase_complementary"
+      },
+      {
+        "cost": {
+          "actions": [
+            {
+              "action": "observation:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "control:readout",
+              "resources": {
+                "depth": 0,
+                "gates": 0,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "verification_original:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 4096
+            },
+            {
+              "action": "verification_candidate:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 4096
+            }
+          ],
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 102,
+          "evaluations": 36,
+          "generated_candidates": 32,
+          "max_evaluations": 160,
+          "max_shots": 200000,
+          "phase_shots": {
+            "control": 2048,
+            "observation": 2048,
+            "screening": 65536,
+            "verification_candidate": 4096,
+            "verification_original": 4096
+          },
+          "reserved_verification_shots": 8192,
+          "runtime_seconds": 1.1956092999971588,
+          "shots": 77824,
+          "tested_candidates": 32,
+          "two_qubit_gate_sum": 24
+        },
+        "experiment_id": "experiment_dc54dc4fa8e94d5492678b275633b235",
+        "export_verified": true,
+        "localization": {
+          "causal_origin": "NOT_IDENTIFIED",
+          "plausible_loci": [
+            4
+          ],
+          "scope": "Tested one-edit set only; untested candidates remain possible",
+          "status": "CANDIDATE_LOCATION"
+        },
+        "selection": {
+          "candidate_id": "custom_9bdbadb99308012d354f",
+          "created_at": "2026-10-16T05:18:46.621039+00:00",
+          "digest": "e10d566b496cef963725209eb901bb2256239d697a7a4f94fd38ed1149a2aa4b",
+          "frozen_before_verification": true,
+          "plausible_candidate_ids": [
+            "custom_9bdbadb99308012d354f"
+          ],
+          "policy": "conservative",
+          "screening_digest": "1739e06956df9bec7a6a213a1d669be6d1b781e4d77a130ca166522224b5bb53",
+          "tie_rule": "Fewest two-qubit gates, depth, gates, then structural ID. Operational choice, not evidential superiority."
+        },
+        "stage": "measured_recovery",
+        "status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+        "verification": {
+          "bounds_consistent": true,
+          "candidate": {
+            "claims": [
+              {
+                "claim_id": "obs:IIIX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIIX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IIXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IIXX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIXX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXIX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXIX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXXX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXXX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIIX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIIX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIXX",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIXX",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XXII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XXII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              }
+            ],
+            "events": [
+              {
+                "backend": "qiskit_aer.AerSimulator/density_matrix",
+                "counts": {
+                  "0000": 4096
+                },
+                "execution_id": "exec_e2a83a1e0fbf4739a39c0fa7baae8fbe",
+                "group": {
+                  "basis_gates": 4,
+                  "claims": [
+                    "obs:IIIX",
+                    "obs:IIXI",
+                    "obs:IIXX",
+                    "obs:IXII",
+                    "obs:IXIX",
+                    "obs:IXXI",
+                    "obs:IXXX",
+                    "obs:XIII",
+                    "obs:XIIX",
+                    "obs:XIXI",
+                    "obs:XIXX",
+                    "obs:XXII"
+                  ],
+                  "group_id": "group0:XXXX",
+                  "setting": "XXXX"
+                },
+                "seed": 282356,
+                "shots": 4096
+              }
+            ],
+            "loss_interval": [
+              0.0,
+              0.3720743655492931
+            ],
+            "point_loss": 3.3306690738754696e-15
+          },
+          "contract_satisfied": true,
+          "improvement_lower": 9.255851268901413,
+          "improvement_supported": true,
+          "improvement_upper": 10.372074365549286,
+          "original": {
+            "claims": [
+              {
+                "claim_id": "obs:IIIX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIIX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IIXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IIXX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IIXX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXIX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXIX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:IXXX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "IXXX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIIX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIIX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIXI",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIXI",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XIXX",
+                "estimate": -1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  -1.074414873109858,
+                  -0.925585126890142
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XIXX",
+                "shots": 4096,
+                "status": "VIOLATED",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              },
+              {
+                "claim_id": "obs:XXII",
+                "estimate": 1.0,
+                "expected": 0.9999999999999993,
+                "interval": [
+                  0.925585126890142,
+                  1.074414873109858
+                ],
+                "kind": "pauli_expectation",
+                "looks": 1,
+                "pauli": "XXII",
+                "shots": 4096,
+                "status": "SATISFIED_WITHIN_TOLERANCE",
+                "tolerance": 0.2,
+                "uncertainty_radius": 0.07441487310985795
+              }
+            ],
+            "events": [
+              {
+                "backend": "qiskit_aer.AerSimulator/density_matrix",
+                "counts": {
+                  "0001": 4096
+                },
+                "execution_id": "exec_2037659acbd64fd4b761289e57b33075",
+                "group": {
+                  "basis_gates": 4,
+                  "claims": [
+                    "obs:IIIX",
+                    "obs:IIXI",
+                    "obs:IIXX",
+                    "obs:IXII",
+                    "obs:IXIX",
+                    "obs:IXXI",
+                    "obs:IXXX",
+                    "obs:XIII",
+                    "obs:XIIX",
+                    "obs:XIXI",
+                    "obs:XIXX",
+                    "obs:XXII"
+                  ],
+                  "group_id": "group0:XXXX",
+                  "setting": "XXXX"
+                },
+                "seed": 274437,
+                "shots": 4096
+              }
+            ],
+            "loss_interval": [
+              9.627925634450706,
+              10.372074365549286
+            ],
+            "point_loss": 9.999999999999996
+          },
+          "status": "VERIFIED_UNDER_DECLARED_CONTRACT"
+        }
+      }
+    ],
+    "total_executions": 40,
+    "total_shots": 81920
+  },
+  "live_demo_checks": {
+    "health": {
+      "status": "ok",
+      "mode": "local simulation",
+      "qiskit": "2.3.1",
+      "aer": {
+        "version": "0.17.2",
+        "status": "importable; select backend=aer to execute"
+      },
+      "default_backend": "reference",
+      "supported_backends": [
+        "reference",
+        "aer"
+      ],
+      "signing": "unavailable"
+    },
+    "saved_original": "experiment_ebe0d3574e6d4826b677ea2c42013d93",
+    "fresh_recovery": "experiment_dc54dc4fa8e94d5492678b275633b235",
+    "replays": [
+      {
+        "stage": "baseline_z",
+        "original": "experiment_99d0a2cf33a54eac9229a82dc8ac2fd1",
+        "replayed": "experiment_907f4e7922d242edbcbf58925ad8b9dc",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:ZZZZ",
+              "resources": {
+                "depth": 1,
+                "gates": 4,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 0,
+          "circuit_executions": 1,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 1,
+          "evaluations": 1,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.019687199994223192,
+          "shots": 1024,
+          "two_qubit_gate_sum": 0
+        }
+      },
+      {
+        "stage": "phase_complementary",
+        "original": "experiment_15bfe3ed0599425686839b3cdcb28537",
+        "replayed": "experiment_b8b3e044c11544c687cd6e383c8c2263",
+        "status": "SIGNIFICANT_DISCREPANCY",
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            },
+            {
+              "action": "readout_control",
+              "resources": {
+                "depth": 0,
+                "gates": 0,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 4,
+          "circuit_executions": 2,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 3,
+          "evaluations": 2,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.04283199999917997,
+          "shots": 2048,
+          "two_qubit_gate_sum": 0
+        }
+      },
+      {
+        "stage": "phase_z",
+        "original": "experiment_7e815ad6b75348849c83a55d2117f00b",
+        "replayed": "experiment_503fc9c653e6433f92e897adc381507c",
+        "status": "NO_SIGNIFICANT_DISCREPANCY",
+        "cost": {
+          "actions": [
+            {
+              "action": "claims:group0:ZZZZ",
+              "resources": {
+                "depth": 2,
+                "gates": 5,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 1024
+            }
+          ],
+          "basis_gates": 0,
+          "circuit_executions": 1,
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 2,
+          "evaluations": 1,
+          "exact_state_evaluations": 0,
+          "max_evaluations": 24,
+          "max_shots": 8192,
+          "runtime_seconds": 0.020220699996571057,
+          "shots": 1024,
+          "two_qubit_gate_sum": 0
+        }
+      },
+      {
+        "stage": "recovery",
+        "original": "experiment_dc54dc4fa8e94d5492678b275633b235",
+        "replayed": "experiment_2220895c33df40f287b671f52adf3460",
+        "status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+        "cost": {
+          "actions": [
+            {
+              "action": "observation:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "control:readout",
+              "resources": {
+                "depth": 0,
+                "gates": 0,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 1
+              },
+              "shots": 2048
+            },
+            {
+              "action": "screening:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 2048
+            },
+            {
+              "action": "verification_original:group0:XXXX",
+              "resources": {
+                "depth": 3,
+                "gates": 9,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 4096
+            },
+            {
+              "action": "verification_candidate:group0:XXXX",
+              "resources": {
+                "depth": 2,
+                "gates": 8,
+                "qubits": 4,
+                "two_qubit_gates": 0
+              },
+              "shots": 4096
+            }
+          ],
+          "cost_units": "shots and local circuit evaluations; no currency conversion",
+          "depth_sum": 102,
+          "evaluations": 36,
+          "generated_candidates": 32,
+          "max_evaluations": 160,
+          "max_shots": 200000,
+          "phase_shots": {
+            "control": 2048,
+            "observation": 2048,
+            "screening": 65536,
+            "verification_candidate": 4096,
+            "verification_original": 4096
+          },
+          "reserved_verification_shots": 8192,
+          "runtime_seconds": 0.9067479999939678,
+          "shots": 77824,
+          "tested_candidates": 32,
+          "two_qubit_gate_sum": 24
+        }
+      }
+    ],
+    "export_verified": true,
+    "refresh_navigation": true,
+    "viewports": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1440,
+        900
+      ],
+      [
+        1366,
+        768
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        375,
+        812
+      ],
+      [
+        360,
+        800
+      ]
+    ],
+    "page_errors": [],
+    "failed_requests": []
+  },
+  "restart": {
+    "url": "http://127.0.0.1:8000",
+    "health": {
+      "status": "ok",
+      "mode": "local simulation",
+      "qiskit": "2.3.1",
+      "aer": {
+        "version": "0.17.2",
+        "status": "importable; select backend=aer to execute"
+      },
+      "default_backend": "reference",
+      "supported_backends": [
+        "reference",
+        "aer"
+      ],
+      "signing": "unavailable"
+    },
+    "fresh_recovery_id": "experiment_dc54dc4fa8e94d5492678b275633b235",
+    "persisted_report_verified": true,
+    "browser_refresh_verified": true,
+    "page_errors": [],
+    "chromium_version": "151.0.7922.34"
+  },
+  "browser_suites": [
+    {
+      "suite": "release",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.release_smoke",
+        "--base",
+        "http://127.0.0.1:8000",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\release"
+      ],
+      "started_at": "2026-10-16T05:30:07.891277+00:00",
+      "completed_at": "2026-10-16T05:30:16.244664+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "standard",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.browser_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\standard"
+      ],
+      "started_at": "2026-10-16T05:30:16.245847+00:00",
+      "completed_at": "2026-10-16T05:30:29.800988+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "blind",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.blind_challenge_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\blind"
+      ],
+      "started_at": "2026-10-16T05:30:29.802281+00:00",
+      "completed_at": "2026-10-16T05:30:42.524720+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "lab",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.lab_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\lab"
+      ],
+      "started_at": "2026-10-16T05:30:42.525874+00:00",
+      "completed_at": "2026-10-16T05:30:59.588123+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "recovery",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.counterfactual_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\recovery"
+      ],
+      "started_at": "2026-10-16T05:30:59.589505+00:00",
+      "completed_at": "2026-10-16T05:31:06.302569+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "navigation",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.workspace_navigation_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\navigation.json"
+      ],
+      "started_at": "2026-10-16T05:31:06.303696+00:00",
+      "completed_at": "2026-10-16T05:31:12.933115+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "cinematic",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.cinematic_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\cinematic"
+      ],
+      "started_at": "2026-10-16T05:31:12.934323+00:00",
+      "completed_at": "2026-10-16T05:33:12.381310+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "landing",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.landing_recovery_e2e",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\landing"
+      ],
+      "started_at": "2026-10-16T05:33:12.382420+00:00",
+      "completed_at": "2026-10-16T05:34:25.324972+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "inspection",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.inspection_smoke",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\inspection"
+      ],
+      "started_at": "2026-10-16T05:34:25.326574+00:00",
+      "completed_at": "2026-10-16T05:34:36.575990+00:00",
+      "exit_code": 0
+    },
+    {
+      "suite": "external",
+      "command": [
+        "C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe",
+        "-m",
+        "scripts.external_demo_e2e",
+        "--base",
+        "http://127.0.0.1:8000",
+        "--out",
+        "C:\\Projects\\QFF\\.local\\final-gate\\browser-final\\external"
+      ],
+      "started_at": "2026-10-16T05:34:36.577321+00:00",
+      "completed_at": "2026-10-16T05:34:44.041212+00:00",
+      "exit_code": 0
+    }
+  ],
+  "browser_scope": {
+    "source_revision": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+    "viewports": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1440,
+        900
+      ],
+      [
+        1366,
+        768
+      ],
+      [
+        390,
+        844
+      ],
+      [
+        375,
+        812
+      ],
+      [
+        360,
+        800
+      ]
+    ],
+    "reduced_motion": true,
+    "webgl_fallback": true,
+    "pixel_swap_and_handover": true,
+    "real_aer_success_paths": true,
+    "screenshots_visually_inspected": [
+      "standard/evidence-desktop.png",
+      "lab/mobile-390__lab.png",
+      "recovery/mobile-360.png",
+      "cinematic/hero.png",
+      "cinematic/landing-360.png",
+      "external/external-mobile-360.png",
+      "final-live-360.png"
+    ],
+    "surface": "Repository Chromium regression scripts; connected interactive browser unavailable"
+  },
+  "qcec_reexecution": {
+    "schema_version": 1,
+    "task": "two-qubit full-reference unitary equivalence scope demonstration",
+    "oracle_scope": {
+      "qcec_access": "complete trusted reference and candidate circuit descriptions",
+      "equivalence_relation": "full-unitary equivalence up to global phase",
+      "comparison_to_qfault": "stronger oracle; not an equal-information performance or repair comparison",
+      "interpretation_access": "privileged exact Statevector for zero input; no measured QFAULT run",
+      "shots": 0,
+      "fault_localization_or_repair_evaluated": false
+    },
+    "created_utc": "2026-10-16T05:11:05.834538+00:00",
+    "environment": {
+      "python": "3.13.2",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "machine": "AMD64",
+      "packages": {
+        "mqt.qcec": "3.11.0",
+        "mqt.core": "3.11.0",
+        "qiskit": "2.5.2",
+        "numpy": "2.5.4",
+        "scipy": "1.18.1",
+        "rustworkx": "0.18.1",
+        "dill": "0.4.1",
+        "stevedore": "5.9.1",
+        "typing-extensions": "4.16.0",
+        "nanobind-backend": "1.0.0"
+      }
+    },
+    "source": {
+      "script_path": "scripts/compare_qcec_scope.py",
+      "script_sha256": "6fdb47bd524f47760b3c9e1e9c3ab37e48db45a4f866382e78a21ceac7c1ab4d",
+      "qcec_release": "3.11.0",
+      "qcec_release_source_commit": "844a67c94159ae97d1c4cc01501fbdd98a84a730"
+    },
+    "checker_options": {
+      "method": "construction",
+      "parallel": false,
+      "timeout": 5
+    },
+    "reference_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];",
+    "reference_sha256": "e249a9217a1b139d11a0faf6fa9e852539aa830e2e318b9a6f414afb1035bee5",
+    "cases": [
+      {
+        "case": "identity_pair_inserted",
+        "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\nx q[1];\nx q[1];",
+        "candidate_sha256": "31e35e1b4892698bfa1a02da3f9aa2cfea4606970352c2bef7eb91038204e4a6",
+        "expected_equivalence": "equivalent",
+        "equivalence": "equivalent",
+        "checker_verdicts": [
+          {
+            "checker": "decision_diagram_construction",
+            "equivalence": "equivalent"
+          }
+        ],
+        "zero_input_z_distribution_equal": true,
+        "zero_input_state_fidelity": 0.9999999999999996
+      },
+      {
+        "case": "cx_removed",
+        "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];",
+        "candidate_sha256": "f788d3610c7f5242d673c1f51f2693fa5c2187212a662d21dd91f9db93779318",
+        "expected_equivalence": "not_equivalent",
+        "equivalence": "not_equivalent",
+        "checker_verdicts": [
+          {
+            "checker": "decision_diagram_construction",
+            "equivalence": "not_equivalent"
+          }
+        ],
+        "zero_input_z_distribution_equal": false,
+        "zero_input_state_fidelity": 0.2499999999999999
+      },
+      {
+        "case": "relative_phase_z_appended",
+        "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nh q[0];\ncx q[0],q[1];\nz q[0];",
+        "candidate_sha256": "37c2cd67d15260624a9444af273be677c37d6096b5e765c687ddc05b1281e8cc",
+        "expected_equivalence": "not_equivalent",
+        "equivalence": "not_equivalent",
+        "checker_verdicts": [
+          {
+            "checker": "decision_diagram_construction",
+            "equivalence": "not_equivalent"
+          }
+        ],
+        "zero_input_z_distribution_equal": true,
+        "zero_input_state_fidelity": 0.0
+      },
+      {
+        "case": "initial_z_invisible_on_zero_input",
+        "candidate_qasm2": "OPENQASM 2.0;\ninclude \"qelib1.inc\";\nqreg q[2];\nz q[0];\nh q[0];\ncx q[0],q[1];",
+        "candidate_sha256": "c5db2fbfced60fcd9acb8e5a889841a8b1179d08e74dd1770a0025e73a33a77d",
+        "expected_equivalence": "not_equivalent",
+        "equivalence": "not_equivalent",
+        "checker_verdicts": [
+          {
+            "checker": "decision_diagram_construction",
+            "equivalence": "not_equivalent"
+          }
+        ],
+        "zero_input_z_distribution_equal": true,
+        "zero_input_state_fidelity": 0.9999999999999996
+      }
+    ],
+    "expected_verdicts_matched": 4,
+    "digest_definition": "SHA-256 of UTF-8 JSON with sort_keys=True and separators=(',',':'), excluding payload_sha256",
+    "payload_sha256": "6c6cc698300e23ee7c5fd16fbb3c84f25cdda5f462d082f93a681793ef381a56"
+  },
+  "public_ci": {
+    "head_sha": "35cbbb9b351ef2ef4e42163b969c5331dc116eba",
+    "jobs": [
+      {
+        "name": "browser-smoke",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/PrathamKapoor/QFault/actions/runs/38787130996/job/116601907804"
+      },
+      {
+        "name": "checks",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/PrathamKapoor/QFault/actions/runs/38787130996/job/116601908155"
+      }
+    ],
+    "run_id": 38787130996,
+    "status": "completed",
+    "url": "https://github.com/PrathamKapoor/QFault/actions/runs/38787130996",
+    "conclusion": "success"
+  },
+  "fixes": [
+    {
+      "severity": "MEDIUM",
+      "file": "qfault/api.py",
+      "commit": "a7294d414509c8c8b76fd922deaa572d358b12a5",
+      "defect": "Malformed/nonfinite/deep/invalid-Unicode or raw binary requests could trigger500 during validation/error serialization",
+      "correction": "Bounded JSON prevalidation, finite floats, UTF8-valid values/keys, depth<=64; client422"
+    },
+    {
+      "severity": "MEDIUM",
+      "file": "qfault/api.py",
+      "commit": "a7294d414509c8c8b76fd922deaa572d358b12a5",
+      "defect": "Integrity-consistent malformed saved custom/recovery replay could trigger500",
+      "correction": "Validate stored request before execution; client422"
+    },
+    {
+      "severity": "LOW",
+      "file": "qfault/api.py",
+      "commit": "a7294d414509c8c8b76fd922deaa572d358b12a5",
+      "defect": "ASGI duplicate Content-Length handling depended on header order",
+      "correction": "Validate every length and reject disagreement400; Uvicorn independently rejects malformed framing; actual byte limit retained"
+    },
+    {
+      "severity": "MEDIUM",
+      "file": "docs/external-validation.md",
+      "commit": "a7294d414509c8c8b76fd922deaa572d358b12a5",
+      "defect": "Execution chronology/no-tuning wording stronger than independently authenticatable evidence",
+      "correction": "Distinguish recorded procedure from commit ancestry and unauthenticated private activity"
+    }
+  ],
+  "media_type_followup": {
+    "commit": "be64f29fa7e8694bbeddf94329fc0c46c4591617",
+    "red_cases": 2,
+    "green_cases": 2,
+    "reason": "Reject non-application JSON suffix media types consistently with FastAPI, including UTF16 raw bytes"
+  },
+  "benchmark_preservation": {
+    "baseline_revision": "ebf2d52b3f64280d7ea90be732f3f6431aeb6e0b",
+    "original_paths": 88,
+    "changed_paths": [],
+    "sha256": {
+      "benchmarks/aer-environment.json": "73a7d61c4295f53fa0903ace6c2e9095e6279be40fc6c28a39aa7a8052c66cb1",
+      "benchmarks/backend-conformance.json": "3cf815557f647ddb62c98031245b11754e0a7150e46fc2c7cf58f3a274aee538",
+      "benchmarks/browser-verification.json": "eb4d084fefc413cbc439e4e87da4e9d6241d394c0ea4b93749afbe4aefc690f9",
+      "benchmarks/counterfactual-recovery-holdout.json": "8fb0e091016e5c9106c8ffb73afbcc5e41fe15e9517a566338b9cdfa6d10c957",
+      "benchmarks/custom-lab-development.json": "50f488292de5436fb9dcf1402b3794fce511fafaf123c6ee6d577d75c9053f57",
+      "benchmarks/custom-lab-holdout-10240-aer.json": "1d2933875a5b99298328ec95bff03cb0a9eb4aac5efed382f4339f0ada9ec8fe",
+      "benchmarks/custom-lab-holdout-10240.json": "b8a894f1f46dbef6b2c0c47b2becf521fc7d01d931789c48adf626f4b020b604",
+      "benchmarks/custom-lab-holdout-4096.json": "bb25f865c97ed747e19a8f7fece177e22b111c22a42636dc15a993039af428cc",
+      "benchmarks/custom-lab-holdout-backend-agreement.json": "9bd070f8d52e31a473b1fe59370308e756ef3bce5db06037bf63193d14595daf",
+      "benchmarks/delivery-verification.json": "dd13407a4969e0cb9ca5d9836c108fa8ea78d315bf85454fa238db7e718d24f7",
+      "benchmarks/demo.json": "60414d2b40b88f51b5f58d975dbf183fe498e5e01a9d69a57ea21349e70f94b8",
+      "benchmarks/development-hardening-verification.json": "fe28af7833341f7ef3a887d3712d4e0317407f353b661108f296f0a42bf07aa9",
+      "benchmarks/diagnostic-development.json": "251374d36a1933f6a89f9a4b23a6e86107101205448f3e787025adeb2001f272",
+      "benchmarks/diagnostic-final.json": "d19e4af6b37bb6fca6ef737968ff445d407e4c95976742115fbf4e6f52e11616",
+      "benchmarks/diagnostic-low-shot.json": "b74c4c74cc511f42910007af9b8e3c329e1024ff8fea12585adace84844646cb",
+      "benchmarks/engineering-verification-v1.json": "54a52154fe41d66b550211a5e43e0eab19b1d38f0932fb864f987e1428f6f1bf",
+      "benchmarks/external/qasmbench/LICENSE": "3ba843379e9d16d4cc80e971f530c20053afbbb8da94de3c5e945d3212d91cd3",
+      "benchmarks/external/qasmbench/NOTICE": "ea24d219a4d59c01a8b3a27a4d92ed3ffcdcccbc8aae7096e54bd4721cd1be7b",
+      "benchmarks/external/qasmbench/small/adder_n4/adder_n4.qasm": "30f0be9eb50d37ab2de7c87676e32ff7c66bc67eff32dfeafa0cf69951d92438",
+      "benchmarks/external/qasmbench/small/basis_change_n3/basis_change_n3.qasm": "2d998840327e516c71142442f6d9c2924962a8fad2e12e70a2c90d53a78be851",
+      "benchmarks/external/qasmbench/small/basis_trotter_n4/basis_test_n4.qasm": "a6056d13a17783d499e4a8a87c62508534633ca0668225b49a8bf7c3c7e18a4a",
+      "benchmarks/external/qasmbench/small/basis_trotter_n4/basis_trotter_n4.qasm": "9ead0e7d5f41cb6675c19457d4e414b77cf90c78cea3e0412bcccdc3f9f73dd5",
+      "benchmarks/external/qasmbench/small/bell_n4/bell_n4.qasm": "1f3a1115385d87f6a444189776e521d6bba1d300f96454e85cb58bb3e297bf81",
+      "benchmarks/external/qasmbench/small/cat_state_n4/cat_state_n4.qasm": "caa882935bb73087db2edbee2aa77133965bdda3aec9687166f9e96b9a2ef8ff",
+      "benchmarks/external/qasmbench/small/deutsch_n2/deutsch_n2.qasm": "56a7b3389495fb497df1a331abb7d4f64ac57d397aaa1c1169d0ac33a10889cd",
+      "benchmarks/external/qasmbench/small/dnn_n2/dnn_n2.qasm": "ce0359edb654e5dd1f54035e07cec177d2f50ae1ecd45b651ba71637854b7921",
+      "benchmarks/external/qasmbench/small/error_correctiond3_n5/error_correctiond3_n5.qasm": "c33b5a03491bceb26ca6d494632936614df035a352d437369eca28087ae72ff5",
+      "benchmarks/external/qasmbench/small/fredkin_n3/fredkin_n3.qasm": "5ede0e9d4cdc723afcdb515f16f984bf47cf53423e12fcafc10ee03bd9577996",
+      "benchmarks/external/qasmbench/small/grover_n2/grover_n2.qasm": "afd134759fa0eefb9f84a88d3e9f156cd54e83b10177d02c33bb6f519c08b813",
+      "benchmarks/external/qasmbench/small/hs4_n4/hs4_n4.qasm": "f362ca9ffd7f045f517dfe4d67350794ac998f4eb427586a804eed9379340f63",
+      "benchmarks/external/qasmbench/small/inverseqft_n4/inverseqft_n4.qasm": "2b950bb566ea547918adcea27b13defb3ad31fb10bf3b4ccb25d51e91b5527b1",
+      "benchmarks/external/qasmbench/small/ipea_n2/ipea_n2.qasm": "78a11d6fadec00a0a119d9e40641124a40fd8b4eebacfb36e81ed525775e4ee8",
+      "benchmarks/external/qasmbench/small/iswap_n2/iswap_n2.qasm": "0c6d4dffaeb32c5758511cb51d5f89bcb6c97f3f60c1f5e3cbbeabb53c53ed50",
+      "benchmarks/external/qasmbench/small/linearsolver_n3/linearsolver_n3.qasm": "ad98aaab04fdd11eed43b6839122909c568ff848dd0b97ed09c11346dd592c42",
+      "benchmarks/external/qasmbench/small/lpn_n5/lpn_n5.qasm": "4216e9b4fdf9f22e6ae4f92a67aac8c634209093db4e3f0290f5413165b4de87",
+      "benchmarks/external/qasmbench/small/pea_n5/pea_n5.qasm": "0ab8129a30be0350c68704b5fcd91f2dfb4c868303c5ad761af411f277f91660",
+      "benchmarks/external/qasmbench/small/qaoa_n3/qaoa_n3.qasm": "4dc17a12b187cc3cf02962cf023a36de4cc48ed3923343ab9ef84e3daf89f5c7",
+      "benchmarks/external/qasmbench/small/qec_en_n5/qec_en_n5.qasm": "d7b95967326b65050c5e645c180f2361f8cb3513dae7936de0e0cf53a63fec58",
+      "benchmarks/external/qasmbench/small/qec_sm_n5/qec_sm_n5.qasm": "dcf8d069188a5cf96a04aaaed23ff6f78e3663523c429609676e066a90332598",
+      "benchmarks/external/qasmbench/small/qft_n4/qft_n4.qasm": "62c6c8c7ddd95ac2b5367420b9925dbf82d6fb45725f089f01619a639621ad60",
+      "benchmarks/external/qasmbench/small/qrng_n4/qrng_n4.qasm": "627d604f685cebe71f4d079cea6a9266a8d6a136279b6199b32cbc010079a184",
+      "benchmarks/external/qasmbench/small/quantumwalks_n2/quantumwalks_n2.qasm": "dea93828107b2b17f6381ed75cb8d985bc8790be74a7378179b441932a84e80b",
+      "benchmarks/external/qasmbench/small/shor_n5/shor_n5.qasm": "e4dace5c3769f934e9c94786e9e12e5b2106960792a0812816cce36bc3b1a615",
+      "benchmarks/external/qasmbench/small/teleportation_n3/teleportation_n3.qasm": "71891c017af93f74cf72b1f222b26d02650ec23242ba9c96b0e8c34da93a5bd6",
+      "benchmarks/external/qasmbench/small/toffoli_n3/toffoli_n3.qasm": "3cd72f83491b25a3c7c94fa826f85fe13f1af28079268b2c34e144299380968f",
+      "benchmarks/external/qasmbench/small/variational_n4/variational_n4.qasm": "df4ced794da7fd4ca56eb2b02bce53ee77207bec77286cb4626115c6a9b6357d",
+      "benchmarks/external/qasmbench/small/vqe_n4/vqe_n4.qasm": "f6777e4fdd8eadcbc8a85a5135e797a96d3b91b3f494593a5b8c9fdcd37530c6",
+      "benchmarks/external/qasmbench/small/vqe_uccsd_n4/vqe_uccsd_n4.qasm": "be59c8aa33b7cc3b997187e09c24e5f59223cfe79a0c38016d3615d828fed1dd",
+      "benchmarks/external/qasmbench/small/wstate_n3/wstate_n3.qasm": "9077432a88fea0f3da2c3b24558333c1a329261b20836ba82b253418d8c7b0dd",
+      "benchmarks/external/qasmbench/upstream-tree.json": "98d68267ab063eba6bad8ad86a022e4e03f38e6fa9b7754ee672a3678e7aa5d6",
+      "benchmarks/external-demo-v1/baseline_z-report.json": "6d7a1f709ee8e0ed97789214f06ed7ce6911e12524b62fd437c628bbcd3c9555",
+      "benchmarks/external-demo-v1/browser-summary.json": "629f1e56c532a1d79e0ee8deaf7c325ae1bf5ef172fc7da7d73d6b722a187555",
+      "benchmarks/external-demo-v1/phase_complementary-report.json": "00872eabd7017c2c3417fd50c1e5d8a25e022cf2b4763998498e62bdc59296e5",
+      "benchmarks/external-demo-v1/phase_z-report.json": "a001f1d1461805a03e57e53178aef96a381b472a7bad9f794a624830209913c4",
+      "benchmarks/external-demo-v1/recovery-report.json": "697aa0875b0ff3ecc9b3f72d81895fb54aeb6ad1fec91b44bfa9cdad893778b6",
+      "benchmarks/external-demo-v1/summary.json": "5660d5ea945463e0929105f7d8afe48a8ab77f98c708813747ccf1f0d836f695",
+      "benchmarks/external-holdout-v1/reports.jsonl.gz": "0a8c1ada171bfa1c9b5230b75430efa62e61b31989f0cc87aa56d4a836806e0d",
+      "benchmarks/external-holdout-v1/summary.json": "7bb2383fd3ae47dbccdf7a80ae06e6aa96fdb5a681fe041c62a66f1c1e241864",
+      "benchmarks/final-delivery-verification.json": "17c9e576d38baf43d81acf36ceae45f19dad1e4b00e916fcc96b4a9c31090391",
+      "benchmarks/http-smoke.json": "7c647dd6d043df701438c5391d32d18f0e1b092431f4485dae9b47f7178b7cb2",
+      "benchmarks/http-stabilization.json": "476243ef8ef9878f958e05ab74a31a7064d9f2f9fa62ee54e0be9340d0b3feda",
+      "benchmarks/identifiability-v1.json": "52f01b5e13d69117ae8a81678aa666217b54f57f3406b2d6614d66ef195d224c",
+      "benchmarks/measurement-boundary-holdout-20261013.json": "d50f6145fe2ddd3614c6eb08d1b9b24f94e09dd2328d2b7adff78c92969c13c1",
+      "benchmarks/measurement-holdout-protocol.json": "2b6b20743c3b0cc4462bea8e4bc124bc5161fa5339d4eb663d56b7a28a08b326",
+      "benchmarks/paired-policy-audit.json": "57cb6e8546f7b22946bb1b22586471a83c6ca11424225384f7235fc08a38dde8",
+      "benchmarks/policy-audit.json": "c842783ef6ed1107f85f291cb9836c8c2f8392f0adf7ce24926cce95b550ab91",
+      "benchmarks/policy-tradeoff.png": "93616d8f7a2bb6af0054529dff05387e6b9790bd98b09b51542b634fea2753c4",
+      "benchmarks/policy-tradeoff.svg": "394469193a94dc7f325fb21cb0cbc06276e08cc4638d9d9dbe3e01d0573e91e7",
+      "benchmarks/publication-verification.json": "3c03c2039bb4287450831a8f3bc12e397996e8b9a3c8f035e5f7cbc0b7a9b923",
+      "benchmarks/qcec-scope-v1.json": "8ba5539f1fb4b58eb022733b3b9c3dcf993d0a9bb48d22e4d2bec2e4349756ad",
+      "benchmarks/recovery-stabilization.json": "8f12a346231b6cf81aad0e1f9b903b16fa9fee7940bd0c871b1bd18e4aa01351",
+      "benchmarks/release-candidate-verification.json": "7a62a42d46e2661d6e4365375e75d6d0fa3e2db7485d251dd4fecbb5b8a0fc1d",
+      "benchmarks/reproduction.json": "32b9c659e818259581c70fb1f1f75f4c6724671a4d5cab73584623a82310e5cf",
+      "benchmarks/results.json": "c6a91e7fceeb2259731e9e4f87647b0463f86eae6797f43718cb0235988afa1c",
+      "benchmarks/stabilization-reproduction.json": "aa8bb02d6a94b3ff6d4213e7d33b1c6170c040f9f7bb66b865a0b70f3e829f7c",
+      "benchmarks/stabilization-verification.json": "ed82188d6335261cc56bd148747f5fa6d419bead3fd6585b6e1b746e85571e97",
+      "benchmarks/submission-demo.json": "b9be5e3eb1ab3c617eaf4618fad64dca8640663bf8cec9d749570ed604777e42",
+      "benchmarks/submission-verification.json": "eedbd0add741c9d62c3519e5d7a69c1706c4f86722dc9fa64ddc3df769f1b9dc",
+      "benchmarks/target-witness-backend-agreement.json": "1be2f1089c96be9349e1ef7fd8164bb92f0472d7346d3d8716ae567756a4c5f3",
+      "benchmarks/target-witness-development.json": "e9e31872da43b84c5347ef3d53626f7b5703bcfc13b6c8c6529d3dbbb139d8b6",
+      "benchmarks/target-witness-holdout-aer.json": "fddb9b20a6ae498402fb6b2cef059f048ca24a960e61e7b5e6feee8e10786fb4",
+      "benchmarks/target-witness-holdout.json": "cada2c0061ff0a98b738f52867bdc029a8002812a93f939b81bc0c185ed91971",
+      "benchmarks/verification.json": "34a05f1a67b2b60237bbf0a050b9044b959f52c0460ffa68eee4b55c1dd4b524",
+      "configs/counterfactual-protocol.json": "55c0baea7eaed287039d6de9562c451c2906a746a377e1087a5c6e77f13b4ea4",
+      "configs/diagnostic-evaluation.json": "d53c9f68a9cdcd3ee3356a878d92ffbecf5e469789e74193297c3f42b006e4be",
+      "configs/external-corpus.json": "47cb02eb4abc5739190f826389743660a83d50a1ed0548937d85cce80494b522",
+      "configs/external-validation-protocol.json": "e0512355b8c70fd9963a66c2a1d7f9e2addfd8d9252a4e70e9d933e09ae9b0e1",
+      "configs/target-witness-protocol.json": "e556f5290d50117d6b590bcd81a1e3a546fd988ca023c33c06734ec178a3b5f9"
+    }
+  },
+  "operational_limits": [
+    "Target fidelity requires calibrated common-state measurement channels; noisy model abstention is not hardware certification",
+    "Recovery is contract/input-relative, never causal attribution or full circuit equivalence",
+    "Nine external holdout programs and repeated seeds support limited generalization only",
+    "Runtime guard checks between backend jobs; cannot interrupt an in-flight call",
+    "SHA256 manifests are unsigned consistency; complete replacement plus rehash can pass",
+    "Unindexed auxiliary files are outside manifest-covered export scope",
+    "Historical commit ordering does not authenticate actual experiment timing or absence of private tuning",
+    "Hosted CI has passed public35cbbb9 only; research source remains unpublished"
+  ],
+  "running_frontend": {
+    "url": "http://127.0.0.1:8000/",
+    "process": {
+      "ProcessId": 25788,
+      "ParentProcessId": 29820,
+      "CommandLine": "\"C:\\Projects\\QFF\\.local\\final-gate\\windows-python\\Scripts\\python.exe\" -m qfault serve --port 8000"
+    },
+    "command": ".local/final-gate/windows-python/Scripts/python.exe -m qfault serve --port 8000",
+    "artifact_root": "artifacts/external-live/investigations",
+    "health": {
+      "status": "ok",
+      "mode": "local simulation",
+      "qiskit": "2.3.1",
+      "aer": {
+        "version": "0.17.2",
+        "status": "importable; select backend=aer to execute"
+      },
+      "default_backend": "reference",
+      "supported_backends": [
+        "reference",
+        "aer"
+      ],
+      "signing": "unavailable"
+    }
+  }
+}

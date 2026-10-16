@@ -8,6 +8,12 @@ bodies 413. Finite JSON numbers, valid Unicode and at most 64 nesting levels are
 required before schema validation; invalid saved replay requests return 422.
 The default server remains loopback-only.
 
+The final gate independently recounts the frozen study with
+`scripts.reconcile_external_evidence`, then executes the committed subset through
+`scripts.replicate_external_subset` into an exclusive new artifact directory.
+Only frozen request configurations enter the engine; comparator outcomes remain
+outside the policy. See `docs/final-verification.md` for actual verification.
+
 `qasm_import.import_qasm2` validates a bounded static external program, records
 terminal measurement mappings and gate transformations, and checks full-operator
 preservation. `scripts.external_corpus` builds the complete pinned eligibility

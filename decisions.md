@@ -547,3 +547,18 @@ The separate evidence reconciliation checks the complete frozen case grid and
 maps 2,232 evaluation rows to 2,206 unique executed exports plus 26 explicitly
 unsupported QRNG entangler deletions. It complements payload verification rather
 than authenticating authorship or historical execution time.
+
+### D047 — Record the final gate without replacing frozen evidence (2026-10-16)
+
+The adversarial gate independently reconstructed the complete external archive,
+validated original/imported full operators, rederived statistical intervals and
+executed an outcome-independent subset frozen in a separate commit before its
+run. All 72 configurations reproduced, including abstentions and rejections.
+Fresh Windows/Linux installations pass 449 tests; ten Windows Chromium suites
+pass. The original 88 benchmark/config files remain byte-identical.
+
+`benchmarks/final-adversarial-verification-v1.json` records GO for the documented
+bounded simulator scope, exact tested revisions and remaining untested platforms.
+Git ordering does not authenticate historical execution timing; physical
+calibration and hard backend cancellation remain unestablished. Publication is
+still separately authorized; no remote mutation occurred during this gate.

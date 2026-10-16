@@ -1,5 +1,43 @@
 # QFAULT engineering handoff
 
+## Final adversarial gate — 2026-10-16
+
+**GO within the documented bounded simulator scope. No publication occurred.**
+This section supersedes the verification counts and running-process snapshots
+below. Tested implementation: `be64f29fa7e8694bbeddf94329fc0c46c4591617`.
+The final record/documentation commit adds no scientific logic.
+
+Fresh locked Windows and Linux installations each passed 449 Python tests, real
+Aer smoke, frontend checks/builds, source checks and archive verification. All
+ten Windows Chromium suites passed. Linux Chromium is untested because required
+NSS/NSPR and ALSA libraries are unavailable; macOS and physical hardware are also
+untested. Hosted checks cover public `35cbbb9` only.
+
+Independent reconciliation resolves 1,962 + 270 rows as 2,206 unique executed
+exports plus 26 unsupported QRNG entangler-deletion cases, with no duplicates or
+missing cases. All reported metrics match raw evidence. A committed, outcome-
+independent 72-run replication reproduced every scientific projection and export
+using 2,272,256 shots and 1,127 executions. All 88 original benchmark/config files
+retain their pre-gate bytes.
+
+Minimal API fixes reject malformed JSON/error-serialization inputs, conflicting
+length headers and invalid saved replay requests. Scientific thresholds and the
+approved frontend were preserved. Details and exact source/commands/digests are
+in `docs/final-verification.md` and
+`benchmarks/final-adversarial-verification-v1.json`.
+
+The updated root service is running at `http://127.0.0.1:8000/` using the new
+locked environment and existing `artifacts/external-live/investigations` store.
+After restart, PID 25788 returned HTTP/health 200 and restored both the historical
+external recovery and fresh recovery
+`experiment_dc54dc4fa8e94d5492678b275633b235`. Refresh, navigation, four replays,
+verified export and required viewports passed. Startup command:
+`.local/final-gate/windows-python/Scripts/python.exe -m qfault serve --port 8000`.
+Recheck the PID before stopping it; later sessions may supersede this snapshot.
+
+Request separate owner authorization before normal fast-forward publication.
+Do not claim hosted research CI has run while this branch remains local.
+
 ## Current research delivery — 2026-10-16
 
 Work is on `research/external-validation`, descending from the original release
@@ -118,7 +156,7 @@ Two dominant helical ribbon sweeps, two fine companion paths and a violet filame
 
 Final TypeScript/build pass; 99 Python tests pass with Starlette/httpx and unwritable-cache warnings. Seven actual Aer workflows pass in artifacts/helix-science-final, including verified recovery, abstention, export/integrity, history and invalid budgets. Cinematic/reduced-motion/WebGL-fallback/direct-route/refresh/back-forward checks pass in artifacts/helix-motion-verified. Both static/fallback captures were opened. Three earlier cinematic attempts and one science attempt exposed default five-second async waits; explicit 30-second budgets now cover actual API completion/lazy workbench mounting without removing correctness assertions. Details and commands: docs/helix-hero.md. Fresh-context hero-phase observation:4.546s; existing shared Three.js size warning remains.
 
-Implementation commit:23eb4c68ca2cfdbf800a1df42d34332ada0f1fce, author/committer PrathamKapoor <prathamkapoor027@gmail.com>. The verified old owned QFAULT server44940 was stopped. Integrated launcher `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve` was started from C:\Projects\QFF in persistent terminal session23392; server PID21436, port8000, URL http://127.0.0.1:8000/ (workbench /#/workbench). Root HTTP200 and healthok confirmed. Final `scripts.inspection_smoke --out artifacts/helix-inspection` through local_browser.ps1 passes: rendered WebGL landing, transitioned/focused/loaded workbench, real Aer experiment_505cc35ec428447d9e4838f267be2fe7 with independently VERIFIED recovery and verified artifact hashes. No page/console/failed-request errors. Final landing-desktop.png and workbench-desktop.png were opened. Server remains alive; logs are stdout/stderr in session23392, metadata in ignored .local/frontend-inspection.json. No further disruptive tests follow this final inspection. A documentation-only commit records this launch; no push. Human hero approval remains pending.
+Implementation commit:23eb4c68ca2cfdbf800a1df42d34332ada0f1fce, author/committer PrathamKapoor <prathamkapoor027@gmail.com>. The verified old owned QFAULT server44940 was stopped. Integrated launcher `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve` was started from C:\Projects\QFF in persistent terminal session23392; server PID21436, port8000, URL http://127.0.0.1:8000/ (workbench /#/workbench). Root HTTP200 and healthok confirmed. Final `scripts.inspection_smoke --out artifacts/helix-inspection` through local_browser.ps1 passes: rendered WebGL landing, transitioned/focused/loaded workbench, real Aer experiment_505cc35ec428449d9e4838f267be2fe7 with independently VERIFIED recovery and verified artifact hashes. No page/console/failed-request errors. Final landing-desktop.png and workbench-desktop.png were opened. Server remains alive; logs are stdout/stderr in session23392, metadata in ignored .local/frontend-inspection.json. No further disruptive tests follow this final inspection. A documentation-only commit records this launch; no push. Human hero approval remains pending.
 
 ## Hero art direction correction — 2026-10-12 (historical)
 
