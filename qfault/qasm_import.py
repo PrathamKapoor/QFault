@@ -205,3 +205,122 @@ def import_qasm2(source, *, name="imported"):
         "canonical_input": "0" * parsed.num_qubits,
         "order_policy": "each source unitary translated individually in source order",
     }}
+
+
+def from_qiskit(circuit, *, name='imported', input_bitstring=None,
+                strip_barriers=False, strip_terminal_measurements=False):
+    """Convert supported local QuantumCircuit objects without executing Python input.
+
+    The argument is an already constructed trusted local object, never an upload.
+    Only the exact built-in gate vocabulary of CustomCircuit is accepted. No
+    transpilation or decomposition runs. Global phase is recorded and omitted
+    from state/distribution semantics. Input preparation remains the lab's job.
+    """
+    import qiskit
+    from qiskit.circuit import Barrier, Measure
+    from qiskit.circuit.library import (HGate, XGate, ZGate, SGate, RXGate, RYGate,
+        RZGate, CXGate, CZGate, CPhaseGate, SwapGate)
+    from .lab import ImportProvenance
+    from .evidence import canonical
+    allowed = {cls: label for cls, label in [(HGate,'h'), (XGate,'x'), (ZGate,'z'),
+        (SGate,'s'), (RXGate,'rx'), (RYGate,'ry'), (RZGate,'rz'), (CXGate,'cx'),
+        (CZGate,'cz'), (CPhaseGate,'cp'), (SwapGate,'swap')]}
+    if not isinstance(circuit, QuantumCircuit):
+        raise TypeError('circuit must be a local QuantumCircuit object')
+    if type(strip_barriers) is not bool or type(strip_terminal_measurements) is not bool:
+        raise ValueError('import options must be booleans')
+    if not 2 <= circuit.num_qubits <= 5 or circuit.num_clbits > 32:
+        raise ValueError('import requires 2-5 qubits and at most 32 classical bits')
+    if len(circuit.data) > MAX_SOURCE_INSTRUCTIONS:
+        raise ValueError('instruction 1024: source instruction limit exceeded')
+    if circuit.parameters:
+        index = next((i for i, item in enumerate(circuit.data)
+                      if any(getattr(p, 'parameters', None) for p in item.operation.params)), 0)
+        raise ValueError(f'instruction {index}: unbound parameters are unsupported (including global phase)')
+    phase = float(circuit.global_phase)
+    if not math.isfinite(phase):
+        raise ValueError('global phase must be finite')
+    gates, instructions = [], []
+    seen_measurement = False
+    for index, item in enumerate(circuit.data):
+        operation = item.operation
+        qubits = [circuit.find_bit(q).index for q in item.qubits]
+        clbits = [circuit.find_bit(c).index for c in item.clbits]
+        base = operation.base_class
+        prefix = f'instruction {index}: '
+        if base is Barrier:
+            if not strip_barriers:
+                raise ValueError(prefix + 'barrier requires strip_barriers=True')
+            label, params = 'barrier', []
+        elif base is Measure:
+            if not strip_terminal_measurements:
+                raise ValueError(prefix + 'measure requires strip_terminal_measurements=True')
+            seen_measurement = True
+            label, params = 'measure', []
+        else:
+            if seen_measurement:
+                raise ValueError(prefix + 'unitary operation after measurement is unsupported')
+            if base not in allowed or clbits or getattr(operation, 'condition', None) is not None:
+                raise ValueError(prefix + f'unsupported operation {operation.name}; no automatic decomposition')
+            label = allowed[base]
+            try:
+                params = [float(value) for value in operation.params]
+            except (TypeError, ValueError):
+                raise ValueError(prefix + 'parameters must be finite real bound numbers') from None
+            if any(not math.isfinite(value) or abs(value) > 8 * math.pi for value in params):
+                raise ValueError(prefix + 'angles must be finite and within +/-8 pi radians')
+            gate = {'name': label, 'qubits': qubits, 'angle': params[0] if params else None}
+            # Validate at the indexed boundary, rather than leaking an opaque model error.
+            from .quantum import Gate
+            try:
+                Gate.model_validate(gate)
+            except ValueError as exc:
+                raise ValueError(prefix + 'invalid gate arity, qubits or parameters') from exc
+            gates.append(gate)
+            if len(gates) > 32:
+                raise ValueError(prefix + 'converted circuit exceeds 32 gates')
+        instructions.append({'name': label, 'qubits': qubits, 'clbits': clbits, 'parameters': params})
+    converted = CustomCircuit.model_validate({'schema_version': 1, 'name': name,
+        'n_qubits': circuit.num_qubits, 'input': {'kind': 'computational_basis',
+        'bitstring': '0' * circuit.num_qubits if input_bitstring is None else input_bitstring}, 'gates': gates})
+    representation = canonical({'format': 'quantumcircuit-v1', 'n_qubits': circuit.num_qubits,
+        'n_clbits': circuit.num_clbits, 'global_phase': phase, 'instructions': instructions}).decode('utf-8')
+    if len(representation.encode('utf-8')) > MAX_SOURCE_BYTES:
+        raise ValueError('source representation exceeds 64 KiB')
+    provenance = ImportProvenance(format='quantumcircuit-v1', qiskit_version=qiskit.__version__,
+        source_representation=representation, source_sha256=hashlib.sha256(representation.encode('utf-8')).hexdigest(),
+        converted_circuit_id=converted.circuit_id, strip_barriers=strip_barriers,
+        strip_terminal_measurements=strip_terminal_measurements)
+    return converted.model_copy(update={'import_provenance': provenance})
+
+
+def from_qasm2(source, *, name='imported', strip_barriers=False,
+               strip_terminal_measurements=False, allow_decomposition=False):
+    """Public local-file adapter with explicit transformation permissions.
+
+    The historical evaluation adapter import_qasm2 retains its frozen behavior.
+    This wrapper records original UTF-8 source and every performed transformation.
+    """
+    import qiskit
+    from .lab import ImportProvenance
+    from .evidence import canonical
+    raw = source.encode('utf-8') if isinstance(source, str) else source
+    if not isinstance(raw, bytes):
+        raise TypeError('QASM source must be text or bytes')
+    result = import_qasm2(raw, name=name)
+    meta = result['provenance']
+    if meta['barriers_removed'] and not strip_barriers:
+        raise ValueError('barrier requires --strip-barriers')
+    if meta['measurement_mapping'] and not strip_terminal_measurements:
+        raise ValueError('terminal measure requires --strip-terminal-measurements')
+    if any(t['kind'] == 'standard_gate_decomposition' for t in meta['transformations']) and not allow_decomposition:
+        raise ValueError('standard gate decomposition requires --allow-decomposition')
+    circuit = CustomCircuit.model_validate(result['circuit'])
+    representation = canonical({'source_utf8':raw.decode('utf-8'), 'conversion':meta}).decode('utf-8')
+    if len(representation.encode('utf-8')) > MAX_SOURCE_BYTES:
+        raise ValueError('recorded source and provenance exceed 64 KiB')
+    provenance = ImportProvenance(format='qasm2-v1', qiskit_version=qiskit.__version__,
+        source_representation=representation, source_sha256=hashlib.sha256(representation.encode('utf8')).hexdigest(),
+        converted_circuit_id=circuit.circuit_id, strip_barriers=strip_barriers,
+        strip_terminal_measurements=strip_terminal_measurements, allow_decomposition=allow_decomposition)
+    return circuit.model_copy(update={'import_provenance':provenance})

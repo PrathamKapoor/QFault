@@ -1,0 +1,6 @@
+/* The evidence component also appears on the light workbench surface. */
+.overview [data-research="measured-recovery"] .research-metrics strong { color: #302344; }
+.overview [data-research="measured-recovery"] .research-metrics strong span { color: #635273; }
+.overview [data-research="measured-recovery"] .research-metrics p,
+.overview [data-research="measured-recovery"] .research-limit { color: #554c63; font-size: 14px; line-height: 1.7; }
+.overview [data-research="measured-recovery"] .research-metrics article { border-color: #d8cfe3; }

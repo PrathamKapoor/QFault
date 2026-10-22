@@ -309,7 +309,7 @@ def test_declared_hash_only_limit_allows_complete_rehash_and_unrelated_file(tmp_
 def test_rehashed_invalid_replay_returns_safe_error(tmp_path, real_aer_record, kind, route, replay):
     # A complete rehash is outside authenticity assurance; safe failure remains necessary.
     record = copy.deepcopy(real_aer_record)
-    record.update(investigation_kind=kind, replay=replay)
+    record.update(investigation_kind=kind, schema_version=2 if kind=='custom_circuit' else 3, replay=replay)
     store = ArtifactStore(tmp_path)
     eid = store.save(record)
     assert store.verify(eid)["valid"]

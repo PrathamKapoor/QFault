@@ -30,8 +30,8 @@ class RecoveryRequest(Strict):
     max_shots: int = Field(default=200000,ge=128,le=1000000,strict=True)
     max_evaluations: int = Field(default=160,ge=1,le=512,strict=True)
     max_groups: int = Field(default=16,ge=1,le=32,strict=True)
-    max_seconds: float = Field(default=120,ge=1,le=300)
-    alpha_total: float = Field(default=.01,ge=.00001,le=.1)
+    max_seconds: float = Field(default=120,ge=1,le=300,strict=True)
+    alpha_total: float = Field(default=.01,ge=.00001,le=.1,strict=True)
     seed: int = Field(default=42,ge=0,lt=2**32,strict=True)
 
     @model_validator(mode='after')

@@ -28,7 +28,7 @@ class TargetStateContract(Strict):
     environment: Literal["ideal"] = "ideal"
     # [real, imaginary] JSON numbers only; strings and expressions are rejected (strict).
     amplitudes: tuple[tuple[Annotated[float, Field(strict=True)], Annotated[float, Field(strict=True)]], ...] = Field(min_length=4, max_length=32)
-    fidelity_tolerance: float = Field(gt=0, lt=1)
+    fidelity_tolerance: float = Field(gt=0, lt=1, strict=True)
     provenance: str = Field(default="user-declared", min_length=1, max_length=200)
 
     @model_validator(mode="after")

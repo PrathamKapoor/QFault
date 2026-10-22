@@ -1,0 +1,16 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Recorded source SHA-256 keyed by api.py in the frozen measurement study; independently inspected as provenance, not a credential"
+condition = "AND"
+paths = ['''(^|[\\/])benchmarks[\\/]measurement-boundary-holdout-20261013\.json$''']
+regexTarget = "match"
+regexes = ['''api\.py":"[0-9a-f]{64}"''']
+
+[[allowlists]]
+description = "Exact api.py source SHA-256 in the four explicitly versioned replication protocols; numerical provenance only"
+condition = "AND"
+paths = ['''(^|[\\/])configs[\\/]current-release-replication-v[1-4]\.json$''']
+regexTarget = "match"
+regexes = ['''api\.py":"[0-9a-f]{64}"''']

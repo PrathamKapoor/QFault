@@ -12,7 +12,7 @@ dependencies = ["qiskit==2.3.1", "numpy==2.5.2", "scipy==1.18.1", "pydantic==2.1
 [project.optional-dependencies]
 browser = ["playwright==1.62.0"]
 aer = ["qiskit-aer==0.17.2"]
-dev = ["pytest==9.1.1", "httpx==0.28.1"]
+dev = ["pytest==9.1.1", "httpx==0.28.1", "certifi==2026.10.19"]
 
 [project.scripts]
 qfault = "qfault.cli:main"

@@ -1,7 +1,7 @@
 """Deterministic one-edit program interventions. No state or evaluator access."""
 from itertools import permutations
 from math import pi
-from typing import Literal
+from typing import Annotated, Literal
 from pydantic import Field
 from .quantum import Strict, Gate, resources
 from .lab import CustomCircuit
@@ -9,9 +9,9 @@ from .lab import CustomCircuit
 
 class EditRestrictions(Strict):
     operators: tuple[Literal['remove','replace','angle','reassign','insert'], ...] = Field(default=('remove','replace','angle','reassign'), max_length=5)
-    positions: tuple[int, ...] | None = Field(default=None, max_length=33)
+    positions: tuple[Annotated[int, Field(strict=True)], ...] | None = Field(default=None, max_length=33)
     palette: tuple[Literal['h','x','z','s','rx','ry','rz','cx','cz','cp','swap'], ...] = Field(default=('h','x','z','cx','cz'), max_length=11)
-    angles: tuple[float, ...] = Field(default=(0., pi/2, -pi/2, pi), max_length=8)
+    angles: tuple[Annotated[float, Field(strict=True)], ...] = Field(default=(0., pi/2, -pi/2, pi), max_length=8)
     max_depth: int = Field(default=32, ge=1, le=37, strict=True)
 
 

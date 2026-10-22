@@ -1,5 +1,18 @@
 # External capability comparison
 
+## Additional primary-source check — 2026-10-23
+
+| Tool | Verified documented task | License checked | Relation to QFault |
+|---|---|---|---|
+| [Qiskit Experiments 0.14.2](https://qiskit-community.github.io/qiskit-experiments/) | Experiment framework, characterization, randomized benchmarking, state tomography and readout mitigation | [Apache 2.0](https://raw.githubusercontent.com/qiskit-community/qiskit-experiments/main/LICENSE.txt) | Substantial overlap in measurement/analysis and experiment records. Its documented calibration/characterization tasks are not a matched bounded gate-edit recovery benchmark. |
+| [Mitiq 1.1.0 documentation](https://mitiq.readthedocs.io/en/stable/) | Error mitigation, including the demonstrated zero-noise extrapolation execution workflow | [Current upstream license text: GNU GPL version 3](https://raw.githubusercontent.com/unitaryfoundation/mitiq/main/LICENSE) | Mitigates noisy expectation estimates; that task differs from selecting and freshly verifying an edit against a finite behavioral contract. No performance ranking follows. |
+
+These two tools were source-reviewed, not installed or quantitatively benchmarked.
+No code was copied or added as a dependency. The existing pinned Qrep, Debugger,
+Muskit and QCEC comparison below retains its checked revisions and limitations.
+Current upstream capability/license links can change; the date above records
+the scope of this additional check, not a timeless claim.
+
 This is a source-backed scope comparison, not a performance ranking. Sources were retrieved on 2026-10-15 UTC (2026-10-16 IST); the repository commits below freeze the inspected versions. “Not established here” means the inspected evidence does not establish a capability, not that the project lacks it. QFAULT's baseline is commit `35cbbb9b351ef2ef4e42163b969c5331dc116eba`, its [README](../README.md), [custom laboratory](custom-circuit-lab.md), [target witnesses](target-state-witnesses.md), and [measured recovery](counterfactual-recovery.md).
 
 ## Documented capabilities and overlap

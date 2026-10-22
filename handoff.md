@@ -1,381 +1,74 @@
-# QFAULT engineering handoff
-
-## Final adversarial gate — 2026-10-16
-
-**GO within the documented bounded simulator scope. No publication occurred.**
-This section supersedes the verification counts and running-process snapshots
-below. Tested implementation: `be64f29fa7e8694bbeddf94329fc0c46c4591617`.
-The final record/documentation commit adds no scientific logic.
-
-Fresh locked Windows and Linux installations each passed 449 Python tests, real
-Aer smoke, frontend checks/builds, source checks and archive verification. All
-ten Windows Chromium suites passed. Linux Chromium is untested because required
-NSS/NSPR and ALSA libraries are unavailable; macOS and physical hardware are also
-untested. Hosted checks cover public `35cbbb9` only.
-
-Independent reconciliation resolves 1,962 + 270 rows as 2,206 unique executed
-exports plus 26 unsupported QRNG entangler-deletion cases, with no duplicates or
-missing cases. All reported metrics match raw evidence. A committed, outcome-
-independent 72-run replication reproduced every scientific projection and export
-using 2,272,256 shots and 1,127 executions. All 88 original benchmark/config files
-retain their pre-gate bytes.
-
-Minimal API fixes reject malformed JSON/error-serialization inputs, conflicting
-length headers and invalid saved replay requests. Scientific thresholds and the
-approved frontend were preserved. Details and exact source/commands/digests are
-in `docs/final-verification.md` and
-`benchmarks/final-adversarial-verification-v1.json`.
-
-The updated root service is running at `http://127.0.0.1:8000/` using the new
-locked environment and existing `artifacts/external-live/investigations` store.
-After restart, PID 25788 returned HTTP/health 200 and restored both the historical
-external recovery and fresh recovery
-`experiment_dc54dc4fa8e94d5492678b275633b235`. Refresh, navigation, four replays,
-verified export and required viewports passed. Startup command:
-`.local/final-gate/windows-python/Scripts/python.exe -m qfault serve --port 8000`.
-Recheck the PID before stopping it; later sessions may supersede this snapshot.
-
-Request separate owner authorization before normal fast-forward publication.
-Do not claim hosted research CI has run while this branch remains local.
-
-## Current research delivery — 2026-10-16
-
-Work is on `research/external-validation`, descending from the original release
-at `35cbbb9`. The six reviewed release commits were published normally to public
-`main`; both hosted CI jobs passed. All subsequent research commits remain local.
-No history rewrite, force push, branch/tag deletion or main reset occurred in this
-assignment. The prior message-polish branch and recovery worktree remain intact.
-
-Current evidence and commands: [current-state index](docs/current-state.md),
-[external validation](docs/external-validation.md),
-[boundary/statistical audit](docs/information-boundary-audit.md), and
-[competitor comparison](docs/competitor-comparison.md).
-
-Frozen protocol `cac14a5` preceded all final outcomes. Scientific source revision
-`7f75a29` remains hash-identical. The final study retained 1,962 diagnostic and
-270 recovery rows; all 2,206 executed reports independently verify. Conservative
-recovery verified 10/41 eligible cases and rejected eight; causal origin remains
-unidentified. Do not tune these methods against this holdout or overwrite it.
-
-Windows fresh-clone locked installation, frontend check/build, 335 Python tests,
-source verification, full report audit and Aer smoke passed. Full Chromium
-regression suites and external-circuit editor/mobile verification passed. New
-research has no hosted CI run. Calibrated state-witness interpretation is required;
-declared noisy target cases now abstain. The following sections are historical
-and their publication/server/test status must not be read as current.
-
-Linux clean-clone locked installation, frontend check/build, 335 tests, source
-checks and Aer smoke also passed on Ubuntu 26.04/WSL2 with Python 3.13.15 and
-Node 24.19.0. Linux research browsers and macOS remain untested.
-
-Inspection service: `http://127.0.0.1:8000/`, interpreter PID 24144, launcher
-PID 25100. It uses the separate retained store `artifacts/external-live/investigations`;
-the existing default investigation store is preserved. Start the same inspection
-configuration with:
-
-```powershell
-$env:QFAULT_ARTIFACTS = 'artifacts/external-live/investigations'
-.local/release-audit-python/Scripts/python.exe -m qfault serve --port 8000
-```
-
-The external editor demonstration is saved as
-`/#/lab/recovery/experiment_ebe0d3574e6d4826b677ea2c42013d93`.
-Service logs are `.local/release-audit/external-server.log` and
-`external-server-error.log`. PID and health observations are dated to this
-delivery; recheck them before stopping or restarting any process.
-
-## Release engineering — 2026-10-13 (historical)
-
-Local commits on `hardening/blind-measurement` above published `main` 24f4e61; **not pushed** (needs explicit authorization). See D042.
-
-Done: CI on checkout/setup-python/setup-node v7, ubuntu-24.04, read-only permissions, lock-based install, plus a browser-smoke job (unvalidated on GitHub until pushed); `requirements.lock` (uv-compiled, pip-consumed) verified by fresh installs on Windows 3.13.2 and Linux 3.13.15; product README with genuine screenshots (docs/media, scripts/capture_readme_media.py); docs/release-history.md; dated banners on historical docs; `qfault serve --port` with fail-fast port check and PID; committed frozen counterfactual summary; lab UI recovery wording corrected.
-
-Server: launch with `.local\release-audit-python\Scripts\python.exe -m qfault serve` from C:\Projects\QFF (or the README quick start). The shell-reported PID is the venv launcher; the printed PID is the interpreter. Cause of the earlier unexpected exit is undetermined (no crash events, no log).
-
-Next: after authorization, push and confirm both CI jobs on GitHub; then consider Ubuntu 26 runner testing.
-
-## MENTAL.AI hero transplant — 2026-10-13 (current)
-
-Landing hero replaced by the MENTAL.AI entry composition transplanted from C:\Projects\DE (read-only, clean) with the authors' permission as confirmed by the owner; see docs/hero-transplant.md and D041. Science, API, benchmarks and schemas unchanged. Checkpoint tag before the change: checkpoint/pre-mental-hero-transplant (f7642ac).
-
-Verification: `.local/release-audit-python/Scripts/python.exe -m pytest -q` 243 passed; `npm run check` passed; `npm run build` passed; browser suites browser_e2e, blind_challenge_e2e, workspace_navigation_e2e, lab_e2e (real Aer), counterfactual_e2e, cinematic_e2e (rewritten), landing_recovery_e2e (rewritten) all exit 0. Visual evidence in artifacts/hero-transplant (git-ignored): reference/, qfault/, qfault-before/, qfault-transition/, preserved/.
-
-Open: human visual approval; taller wordmark is an inherent consequence of six glyphs; the reference resting split layout is used only during Enter Workbench. Server: http://127.0.0.1:8000/ via `.local\release-audit-python\Scripts\python.exe -m qfault serve`.
-
-## Target-state witness delivery — 2026-10-13 (current)
-
-Branch hardening/blind-measurement (local main f366656 unchanged; nothing pushed). Commits authored and committed by PrathamKapoor <prathamkapoor027@gmail.com>; `git -c safe.directory=C:/Projects/QFF` is still needed per command because .git is owned by another Windows account.
-
-Done: target-state contracts (`qfault/target.py`), witness runner and feasibility in `qfault/lab.py`, UI target editor and evidence views at `/#/lab`, `scripts/lab_e2e.py` (desktop + 390/375/360 px), challenge-lock race fix, Aer replication of the 117-case holdout (`benchmarks/custom-lab-holdout-10240-aer.json`, `custom-lab-holdout-backend-agreement.json`), frozen protocol `configs/target-witness-protocol.json`, development and holdout results (`benchmarks/target-witness-*.json`). Methodology and findings: docs/target-state-witnesses.md; D037.
-
-Tests: `python -m pytest -q` 211 passed. Browser: browser_e2e, blind_challenge_e2e, cinematic_e2e, landing_recovery_e2e, workspace_navigation_e2e, lab_e2e all exit 0 against the live server (outputs in .local/e2e-final). `npm run check`/`build` pass.
-
-Findings: bounds covered the effective fidelity in 165/165 defined holdout cases per policy with no false alarms; adaptive_witness is not uniformly better than fixed/coefficient-weighted orders (worse at the tight budget, slightly better at the ample one), better than random and complementary. The dense non-Clifford target always abstains.
-
-Next: cost-aware batch sizing per group and a projection that does not assume unmeasured terms equal the target; stronger bounds for non-stabilizer targets (e.g. positivity-constrained SDP with verified solver tolerances). Server: http://127.0.0.1:8000/ , lab http://127.0.0.1:8000/#/lab , `.local/repro-python/Scripts/python.exe -m qfault serve` from C:\Projects\QFF.
-
-## Custom circuit laboratory delivery — 2026-10-13 (current)
-
-Branch hardening/blind-measurement on top of cd897ac. Added `qfault/lab.py`, `qfault/lab_corpus.py`, API routes `/api/lab/*`, web `CustomLab` at `/#/lab`, `scripts/evaluate_lab.py`, `tests/test_lab.py`, `docs/custom-circuit-lab.md`, D036. Nothing pushed; commits are authored solely by PrathamKapoor <prathamkapoor027@gmail.com>.
-
-Tests: `.local/repro-python/Scripts/python.exe -m pytest -q` -> 176 passed (122 existing + 54 new). `npm run check` and `npm run build` pass. Real Aer HTTP investigations (faulty, correct, readout-noise cluster state) completed and verified; browser checks of editor, feasibility, result timeline and the legacy workbench were performed.
-
-Findings: adaptive planning ties the fixed and complementary schedules and only beats random selection (docs/custom-circuit-lab.md). 3/42 holdout faults are undetected; 12/45 correct circuits stay INSUFFICIENT at 10240 shots. Measurement-only never gives a unique logical attribution.
-
-Limits: simulation only; no target-state contract; no measured recovery; no gate localization; claims are witnesses, not correctness proofs.
-
-Next: target-state contracts with global-phase-safe witnesses; policies that can exploit differing measurement costs; Aer-backed holdout rerun. Running app: http://127.0.0.1:8000/ , custom route http://127.0.0.1:8000/#/lab , started with `.local/repro-python/Scripts/python.exe -m qfault serve` from C:\Projects\QFF.
-
-## Scientific development delivery — 2026-10-13 (current)
-
-The user explicitly removed competition eligibility and presentation work. This is continuing project development. No new judging footage, narration, competition submission or remote push was produced. Workbench/landing/Pixel Swap and scientific benchmark artifacts are preserved; the only landing change is the canonical GitHub link.
-
-Branch: hardening/blind-measurement. Local main remains f36665616c2aee95a7b82e764adcf290b9e05468, public QFault main remains ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3 (fresh ls-remote check). Both snapshot tags remain. Protocol freeze: 3dbf423e9d9b133e57738e7ee65236a5a75aa744; diagnostic implementation freeze: f7a832be853faa263280cc6fe08fddd2becc275f. The final evidence/transport commit follows this implementation; obtain current source HEAD with git rev-parse HEAD. All new authors/committers are PrathamKapoor <prathamkapoor027@gmail.com>, repository-local identity; no co-authors or collaborators.
-
-Implemented: BlindChallenges API/storage with private setup and public observed/diagnosed/freeze/reveal records; saved /#/challenges/<id> routes; private seeds and deterministic revealed replay; safe history/export; freeze/observation/private-prediction binding; measurement-only analyst with an opaque finite-shot measurement port and explicit disabled recovery; labelled existing simulator-assisted phase diagnosis and bounded independently verified repair. Public additional measurement counts now reconcile all charged shots. Ordinary experiments remain backward-compatible.
-
-Independent release environment: normal CPython 3.13.2 at .local/repro-python, installed .[aer,dev,browser] from pyproject.toml. pip check succeeds. CPython isolation evidence and pip freeze are in artifacts/hardening-release. The legitimate existing frontend lockfile was revalidated by npm; independent archived f7a832b source under .local/hardening-source passed npm ci/check/build using its own installed dependencies. Final source TypeScript/build also pass. Node 24.19.0/npm 12.0.2. No dependency bridge is used in current checks. Chromium assets were already cached; no fresh browser-download claim. CI is configured but not executed on GitHub.
-
-Verification: 122 Python tests pass with one Starlette/httpx deprecation; actual deterministic Aer smoke and nine Aer/reference conformance cases pass. Existing CLI Aer healthy/fault/phase/recovery/noise/abstention and tamper/restore checks pass. All 300 original benchmark rows, 340 final rows and 12 recovery trials reproduce scientific fields within 1e-12, excluding run IDs/path/manifest/implementation digest/timestamps/runtime. All 23 historical summary files are byte-identical. Historical collector verifies 2425 raw JSON files; combined collector with the new holdout verifies 3049.
-
-New prespecified untouched holdout: 208/208 executions succeeded, 52 cases per policy. Measurement Z/complementary strict category scores both 16/52; detected discrepancies 14/52 and 30/52, attribution abstentions 8/52 and 20/52. Simulator fixed/phase score 32/52 and 38/52, with 40% higher phase shot cost. All failures, matrices, costs and negative controls are retained in benchmarks/measurement-boundary-holdout-20261013.json and docs/measurement-holdout-findings.md. No algorithm tuned after the holdout. Post-run fixes affect error redaction, count projection and evidence transfer, not diagnosis.
-
-Browser evidence: artifacts/hardening-browser-existing (seven real Aer workflows, verified repairs/export/history/budgets); artifacts/hardening-blind-browser-final-ledger (both capability modes, observed→diagnosed→frozen→revealed, pre-reveal downloads, keyboard freeze, refresh, back/forward, replay and deterministic verified-recovery fixture); artifacts/hardening-workspace-navigation (JSON file: draft/route/error/mobile navigation checks); artifacts/hardening-cinematic (five sizes, transition, reduced motion, WebGL fallback); artifacts/hardening-final-inspection (actual landing/workbench/Aer recovery). No unexpected page/console errors in passing runs; existing invalid-input checks intentionally produce HTTP 422. Desktop/mobile and recovery screenshots were opened, including mobile-ledger-detail.png and challenge-mobile-viewport.png; no page overflow.
-
-Running app: http://127.0.0.1:8000/; direct challenge http://127.0.0.1:8000/#/challenge. Command from C:\Projects\QFF: .local/repro-python/Scripts/python.exe -m qfault serve. Persistent terminal session 1448, server PID 46112; HTTP 200, Aer health and rendered landing/workbench verified. Leave this server running. The old bridge server was replaced after verifying its PID; no unrelated process was stopped.
-
-Limits: local single-process simulation; server administrators can inspect/rewrite private records and hashes; supplied seed permits inference; no authenticated secrecy or external timestamp; no measurement-only unique logical attribution or recovery; low noise can be unobservable; witnesses cover a fixed input, not full unitary equivalence. Blind runtime_seconds covers resumed diagnose, excluding initial observe wall time; all shots remain charged. Interrupted multi-file writes fail closed and can require manual inspection. Hardware execution and remote CI are unverified. Existing Three.js 548.54-kB chunk warning remains. No new dependencies or donor code. Full changed-file inventory and commands are in docs/scientific-hardening.md.
-
-Next: open Blind Challenge, run measured evidence, freeze, reveal, inspect costs and export. Review findings before any further algorithm work; the holdout is now observed and must not be reused as an untouched tuning target. Push only if separately authorized.
-
-## DNA-like centerpiece correction — 2026-10-12 (historical)
-
-Starting state: clean main at e9827eab18cbcca7a28f3de3283a079099d4b7fe. The user rejected the diagonal sculpture and explicitly requested a tall DNA-like black-chrome spiral woven through the wordmark. This supersedes earlier hero acceptance descriptions. Only landing geometry, matching fallback, reflection/texture tuning, foreground glyph selection and hero layout change. Workbench, transition state/timers/PixelSwap, backend, scientific artifacts, below-hero content and dependencies are preserved. No remote push, collaborators or co-author trailers.
-
-Two dominant helical ribbon sweeps, two fine companion paths and a violet filament now rise through the central title stage. Copy/actions sit together lower-left. Baseline, first reconstruction and refined captures were opened; the first reconstruction was corrected for excessive rightward placement and foreground-letter occlusion. Five-size landing/transition checks pass in artifacts/helix-review, with no page/console errors. Reference rights, construction and limitations: docs/helix-hero.md; decision D-033; flow.md. Remaining verification and final running-process details are recorded below after execution. User visual approval remains pending.
-
-Final TypeScript/build pass; 99 Python tests pass with Starlette/httpx and unwritable-cache warnings. Seven actual Aer workflows pass in artifacts/helix-science-final, including verified recovery, abstention, export/integrity, history and invalid budgets. Cinematic/reduced-motion/WebGL-fallback/direct-route/refresh/back-forward checks pass in artifacts/helix-motion-verified. Both static/fallback captures were opened. Three earlier cinematic attempts and one science attempt exposed default five-second async waits; explicit 30-second budgets now cover actual API completion/lazy workbench mounting without removing correctness assertions. Details and commands: docs/helix-hero.md. Fresh-context hero-phase observation:4.546s; existing shared Three.js size warning remains.
-
-Implementation commit:23eb4c68ca2cfdbf800a1df42d34332ada0f1fce, author/committer PrathamKapoor <prathamkapoor027@gmail.com>. The verified old owned QFAULT server44940 was stopped. Integrated launcher `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve` was started from C:\Projects\QFF in persistent terminal session23392; server PID21436, port8000, URL http://127.0.0.1:8000/ (workbench /#/workbench). Root HTTP200 and healthok confirmed. Final `scripts.inspection_smoke --out artifacts/helix-inspection` through local_browser.ps1 passes: rendered WebGL landing, transitioned/focused/loaded workbench, real Aer experiment_505cc35ec428449d9e4838f267be2fe7 with independently VERIFIED recovery and verified artifact hashes. No page/console/failed-request errors. Final landing-desktop.png and workbench-desktop.png were opened. Server remains alive; logs are stdout/stderr in session23392, metadata in ignored .local/frontend-inspection.json. No further disruptive tests follow this final inspection. A documentation-only commit records this launch; no push. Human hero approval remains pending.
-
-## Hero art direction correction — 2026-10-12 (historical)
-
-Started clean main at463c1970922c7f2ba620cd431b7a3023a2782914. The user rejected the previous isolated oval hero; earlier visual acceptance statements do not constitute approval. This correction affects only hero art, matching fallback, visual browser checks and engineering documentation. The workbench, PixelSwap implementation/state/timers, backend, below-hero sections and frozen scientific results remain unchanged. No new dependency, collaborator, co-author, history rewrite or remote push. Local commits use PrathamKapoor <prathamkapoor027@gmail.com>.
-
-The hero now shares two identical per-letter word planes with a diagonal black-chrome ribbon sculpture. Two variable-width major paths, two secondary paths and a fine violet filament replace the oval trajectories. Outward winding, seamless profile normals, filtered UV brushing and physical anisotropy refine the material. Neutral strip/fill reflections replace broad silver patches; MoltenMetal props create darker, finer folds. Decorative art captions are removed. The requested copy/actions remain unobstructed below the shared stage; the existing leftward handoff is framed for this new composition. Details and actual comparison: docs/hero-art-direction.md; decision D-032; flow.md.
-
-Baseline and iterative captures were opened. The first pass was rejected internally for dark/coarse surfaces and word-plane alignment, followed by neutral-fill/texture/letter corrections. TypeScript/build and99 Python tests pass (one existing warning). Final landing/cinematic/saved-navigation suites and all seven actual Aer browser workflows pass. All five viewport captures, isolated background/metal, reduced-motion hero, fallback, reframe and workbench were opened. Evidence: artifacts/hero-art-delivery, hero-art-motion, hero-art-science and hero-art-navigation.json; commands/results/limits in docs/hero-art-direction.md. Fresh headless hero-phase observation4.833s; shared Three size warning remains. After implementation commit ba48f0ffa3e8f489a7b6776b58d2862fa699e73b, the previous owned server17868 was stopped and the verified integrated launcher started in persistent terminal session3313, server PID44940. Working directory C:\Projects\QFF; URL http://127.0.0.1:8000/ (direct workbench /#/workbench). Command: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve. Root HTTP200 and healthok confirmed. Final inspection_smoke passed into artifacts/hero-art-inspection: actual WebGL hero, workbench and Aer experiment_fccf2aa434194cbeaf306a9d1bda8551 independently VERIFIED; no console/page/request errors. Both final desktop screenshots were opened. Server remains alive; stdout/stderr are in session3313 and machine metadata in ignored .local/frontend-inspection.json. No disruptive tests followed the final smoke. This handoff does not claim user aesthetic approval.
-
-
-## Landing recovery handoff — 2026-10-12 (current; supersedes earlier landing acceptance)
-
-Started from clean main at c5fb023a5bbf53a9790548731eebae9b2df7101a. The user rejected the previous landing and approved retaining the workbench/transition. This change rebuilds only landing art, public composition and MoltenMetal rendering. No App/main/workbench CSS, backend, methodology or frozen benchmark artifacts changed. Local Git identity is PrathamKapoor <prathamkapoor027@gmail.com>; no push, collaborator, co-author or history rewrite.
-
-Actual baseline, causes and two visual correction rounds: docs/landing-recovery.md. Changes: Landing.tsx and landing.css separate readable copy from a 46%-width art stage, provide complete workflow/capability/frozen-evidence sections and functioning public navigation; quantumSculpture.ts/Sculpture.tsx replace the knot with original thinner open ribbons/strands, neutral chrome reflections and matching static fallback; MoltenMetal.tsx fixes first-frame defaults, visible atmosphere and static mobile/reduced-motion rendering. The existing reframe timing/PixelSwap/workbench are preserved. scripts/landing_recovery_e2e.py adds real visual/keyboard/anchor/viewport regression checks. decisions D-031, flow and frontend-sources document the implementation and rights.
-
-Verified: TypeScript and production build pass; 99 Python tests pass (one existing warning); seven real Aer browser workflows pass including two independently verified repairs, abstention, noise, export, integrity, history, binary order, frozen benchmarks and invalid422. Landing, cinematic and saved-navigation checks pass across all five requested sizes, keyboard entry, reduced motion, forced no-WebGL, route refresh/back/forward, API failure and renderer cleanup. Captures under artifacts/landing-rebuild-final, landing-rebuild-cinematic and landing-rebuild-science were opened and inspected. All generated evidence remains ignored/local.
-
-No new dependencies or source copied from unlicensed references. Existing project-owned npm dependencies/lockfile were used; no fresh installation claimed this recovery. Python/Playwright retain the disclosed bridge. Fresh headless hero-phase observation: 4.234s; navigation duration103ms, not FPS/GPU timing. Shared Three548.53kB warning remains. User aesthetic approval and hardware/browser profiling remain manual checks.
-
-Inspection URL: http://127.0.0.1:8000/; workbench: http://127.0.0.1:8000/#/workbench. Correct integrated launcher from C:\Projects\QFF: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve`. The pre-existing PID10032/session63723 served the rebuilt bundle during verification, then was stopped after implementation commit ffbb074ac260def39947af3930ce5b32f72d9f0a. The actual integrated launcher now runs in persistent terminal session **74655**, server PID **17868**, listening on 127.0.0.1:8000. HTTP root200 and health statusok were confirmed. Final inspection_smoke passed into artifacts/landing-rebuild-inspection: actual WebGL landing, focused workbench and real Aer missing-gate recovery experiment_71d1d869cfd442579c43eb08cb67f113 independently VERIFIED. Console/page/request errors are empty. Final desktop landing/workbench images were opened and inspected. The server remains alive; stdout/stderr are in session74655 and machine metadata in ignored .local/frontend-inspection.json. No disruptive tests followed this final smoke.
-
-
-## Current frontend handoff — 2026-10-12 (supersedes historical environment/UI status below)
-
-Started from clean `main` at `ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3`. This assignment makes local commits only under `PrathamKapoor <prathamkapoor027@gmail.com>`; no collaborator, co-author, history rewrite or remote push. The commit containing this entry is the frontend delivery; use `git log -1` for its exact SHA rather than embedding a self-referential hash.
-
-Implemented a staged React Bits Hyperspeed/TechText entry, original intertwined reflective Three.js ribbon sculpture and mark, restrained MoltenMetal, left reframe/access composition and static-only PixelSwap. Bright SAT-SA-inspired overview/sidebar/history/methodology and investigation surfaces retain real FastAPI controls, measurements, ambiguity, independent recovery, exports, integrity and human review. Hash routes support direct access and refresh. One workspace retains drafts across home navigation; request generation guards reject stale selected-run responses and shared errors stay visible. Backend/science/frozen results are unchanged.
-
-Changed files: web entry/App/main, components/branding/landing/effects/quantum/Overview, workbench CSS, favicon/index, package manifest/lockfile and TypeScript entry checker; existing browser runner adapts to the new entry and expandable circuit text. Added cinematic, saved-navigation and inspection browser runners. Source rights and verification are in docs/frontend-sources.md, docs/licenses/react-bits.md and docs/frontend-verification.md; README/local-development, THIRD_PARTY_NOTICES, decisions D-030 and flow describe the new lifecycle. Mental.ai/Vantage are design references only because no clear reuse license was found. React Bits terms are retained.
-
-Official npm access now succeeds: genuine lockfile, clean npm ci, TypeScript and production build passed with QFAULT-owned web/node_modules. This supersedes earlier frontend-registry/lockfile blockers. The Python and Playwright bridges remain disclosed; fresh isolated Python installation is not verified. 99 Python tests pass with one existing warning; seven actual Aer browser workflows, navigation regressions and cinematic/responsive/fallback acceptance pass. Exact commands, screenshots, observations and limits are in docs/frontend-verification.md. The shared Three chunk warning and ~6.8s fresh headless entry measurement remain known limits, with immediate reduced-motion/direct-workbench paths. No FPS or hardware performance claim.
-
-Manual inspection URL: **http://127.0.0.1:8000/**; direct overview **http://127.0.0.1:8000/#/workbench**. Startup from `C:\Projects\QFF`:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
-```
-
-The integrated server was restarted after implementation commit `65ff3b38ef8168d11a7b3095a1fb9576a1f3fba5` in dedicated persistent terminal session **63723**, server PID **10032**, listening on **127.0.0.1:8000**. HTTP `/` and `/api/health` succeeded. Final browser smoke loaded actual assets/WebGL landing, entered/focused the workbench and executed Aer missing-gate recovery `experiment_6b0df8dfacd047f49b2d76fda979c9c2`, status VERIFIED. Console/page/request errors were empty. Final desktop landing/workbench screenshots were opened and visually inspected. The server remains running for manual inspection; no disruptive tests followed this smoke.
-
-PID/session, command and URL are recorded in ignored `.local/frontend-inspection.json`; stdout/stderr logs are in persistent terminal session 63723. Final actual smoke records/captures are under ignored `artifacts/frontend-inspection/`. These machine-specific records identify the inspection process; this document is not a process monitor. No additional Vite server or deployment is required.
-
-Remaining checks: manual aesthetic review on the user's GPU/browser, wider hardware/browser performance profiling and optional further startup optimization. Existing scientific limitations and unrecorded human narration/competition-rule questions are preserved in historical sections below; no new authentication or hardware capability was added.
+# QFault engineering handoff — 2026-10-22
 
 ## 1. Current Phase
 
-Final competition/publication audit continued from clean main90503efe6576d1fcb080ef92b2c12c34f0fd050b. The user explicitly authorizes only the existing destination https://github.com/PrathamKapoor/QTrust.git; origin is now configured accordingly. GitHub connector confirms PrathamKapoor/public/push-admin and no main branch; local Git transport currently cannot connect to github.com:443. The authorized normal push of27ed91f and subsequent fetch/ls-remote failed with exit128 (cannot connect to github.com:443). Post-attempt connector search finds no main and README retrieval reports an empty repository. No remote SHA/upstream or successful publication exists. Current audit: docs/publication-audit.md and benchmarks/publication-verification.json; raw checks: artifacts/publication-audit.
-
-Release stabilization and diagnostic evidence are implemented and locally verified. Overall submission status is PARTIALLY READY: fresh isolated Python/frontend installation and the project-owned npm lockfile remain blocked. Aer now genuinely executes; the previous Aer-unavailable conclusion is superseded by D-016.
-
-Submission release continuation began at clean ee7120286de69f54609e53855a2c09d48a324b2b. npm lockfile resolution and exact ci failed in a disposable source copy; no suitable standard CPython>=3.12 was available. No elevation or speculative dependency changes. Current evidence: benchmarks/release-candidate-verification.json and docs/release-candidate.md.
-
-Final recovery continuation started at clean36ba7f17a0b85c9df1cb8063f03cc5da6140255a. One bounded probe per official package source still returns EACCES before TLS. Repeated install experiments stopped. Portable committed-history/evidence packaging and genuine silent browser footage now exist; no independent install or narrated final video is claimed. Current summary: benchmarks/submission-verification.json.
-
-Final-delivery-only continuation verified clean main at a73fc0a600b97a7b53a41bf4d9d2bb5d951f10f9. Implementation/results remain frozen. Current checks are benchmarks/final-delivery-verification.json and artifacts/final-delivery. No package-source requests or independent-install attempt were repeated.
+Implementation/release contract: implementation assembled, release gates partial. Started clean on research/external-validation at c4be11cded71f7625179f30c2b33b10c3b857d4a. No publication yet. The full owner contract remains active; do not reduce it to an audit.
 
 ## 2. Work Completed
 
-Continued the existing project without rewrite. Initial branch main at d30535caac17fb55718ac313c3e033dabb631364 was clean. Read decisions/flow/handoff and required docs, inspected implementation, reran62 tests and reproduced the original75-case/policy benchmark. Audited all300 original predictions and their evidence/actions. Preserved authoritative benchmarks/results.json, reproduction.json and demo.json.
+Inspected clean source, refs/worktrees/stashes, correct QFault origin, runtime, locks and historical records. Fetched origin: HEAD 11 ahead/0 behind origin/main, current branch has no upstream. Root records were read in pages. Previous handoff is preserved verbatim in docs/handoff-history-20261016.md; its contradictory older instructions are historical.
 
-Committed disjoint development/final inputs before implementation. Added contract-defined sampled phase witnesses, phase policy, honest unfunded-evidence abstention, reserved independent recovery validation, separate phase qualities and fixed default. Executed development, frozen final, low-shot controls and separate selected recovery/negative controls. Current original/final benchmark reproduction matches scientific metrics without tuning on final results.
+Fresh isolated hashed CPython install at .local/contract-release/python, editable install, pip check, npm ci/check/build, baseline 449 tests and Aer smoke passed. First --no-build-isolation editable attempt failed because setuptools was absent; the documented normal build succeeded. No shared installation changed.
 
-Located a matching cp313 Aer0.17.2 installation read-only. Added optional explicit Aer adapter and CLI/API/UI backend choice while retaining reference. Executed real ideal/noisy Bell/GHZ/QFT conformance and saved-density comparisons. Added standalone report verification and boundary regression fixes. Executed Aer judging demo and actual HTTP workflows. UI presents actual bases/counts/hypotheses/costs/recovery and both original/final results. Built and checked TypeScript, generated and visually inspected a standard Matplotlib tradeoff plot. Subsequent installed Playwright/Chromium discovery enabled a real six-workflow browser E2E, downloaded-report verification and desktop/mobile screenshot inspection. Fixed plot bitstring ordering, saved configuration restoration and exposed validated qubit selection.
-
-Reproduced original/final metrics again under artifacts/release-candidate, all12 recovery scientific rows and two rejected controls. Ran nine paired conformance cases and Aer judging demo. Added a paired existing-results audit:56 both correct,10 phase-only,2 fixed-only,0 neither; all340 final raw manifests verify. Negative audit controls reject mismatched evaluator truth and modified manifest copies. Expanded actual browser to seven Aer workflows with full phase repair; clarified higher-cost phase and privileged calculation labels. Scientific code/defaults/thresholds remain unchanged.
-
-Earlier transfer continuation:98 Python tests pass, TypeScript/build pass through the disclosed retained bridge, seven recorded real Aer browser workflows pass, Aer CLI judging demo runs, valid export verifies and disposable altered export fails. All340 final row scientific fields and policy metrics excluding runtime reproduce unchanged. Added guarded transfer packager; initial validation covered2432 files including7 summaries (10,274,729 bytes). D-027 keeps the7 summaries in Git source only and2425 raw JSON files in the evidence archive to avoid source extraction conflicts. Browser raw video is34.64 seconds,1440×900,VP8,no audio; three sampled frames decoded and visually inspected. Final narrated video is pending.
-
-Final delivery checks:99 tests pass (1 deprecation warning,12.82s); retained TypeScript/build and seven real Aer browser workflows pass. The Aer judging demo and0/1 valid/tampered export controls execute. All340 frozen manifests verify. Original34.64-second video normal-speed playback completes with866 frames, no drops/corruption/media errors. A genuine176.56-second slower judging capture with corrected final-table framing and exact editable narration is recorded and playback-verified; no human narration or final narrated video is claimed.
+Added source/evidence snapshot packages and verifier, native QuantumCircuit conversion/provenance, opt-in QASM CLI conversion, custom lab/recovery CLI, strict numeric validation, parent-linked deterministic/new-seed replay, explicit ordinary/blind schema support and loopback/origin enforcement. Patched verified Vite/certifi advisories through existing locks. Current measured recovery reporting, native demonstration, dense development findings and full current flow are implemented. Work is uncommitted; final package/replication/publication gates are pending.
 
 ## 3. Files Changed
 
-Publication audit changes: README setup/identity/media wording, two relative links in docs/local-development.md, stale video wording in docs/browser-verification.md, local-only asset labels in docs/demo.md/video.md/transfer.md, and scope metadata only in scripts/http_release_smoke.py. New publication audit/verification summary plus D-029 and continuity updates. No quantum code, tests, dependency pins, frozen splits, authoritative results or license notices change.
-
-Core: qfault/quantum.py, diagnostics.py, recovery.py, workflow.py, experiments.py, storage.py, cli.py, api.py; new backends.py. Interface: web/src/main.tsx. Tests: test_phase_measurements.py, test_policy_evaluation.py, test_export_verification.py, test_aer_backend.py, test_aer_absence.py, test_measurement_boundaries.py, test_phase_truth_isolation.py, test_repair_boundaries.py. Additional release files: scripts/browser_bootstrap.py, browser_e2e.py, local_browser.ps1; tests/test_dependency_compatibility.py; requirements-browser-tested.txt; docs/browser-verification.md; benchmarks/browser-verification.json and delivery-verification.json. Tooling: scripts/audit_diagnostics.py, compare_backends.py, evaluate_recovery.py, submission_demo.py, http_release_smoke.py, plot_policy_tradeoff.py, local_bootstrap.py. Manifests: configs/diagnostic-evaluation.json, pyproject.toml optional Aer extra, requirements-aer-tested.txt. Documentation: README, decisions, flow, this handoff, docs/environment-stabilization.md, diagnostic-findings.md, methodology.md, demo.md, release-gates.md. Actual measured summaries/figure under benchmarks; raw artifacts and built frontend remain ignored.
-
-Release continuation changes: scripts/audit_release.py, scripts/browser_e2e.py, web/src/main.tsx labels, benchmarks/paired-policy-audit.json, benchmarks/release-candidate-verification.json, docs/release-candidate.md, docs/simulator-information-audit.md and current root documentation. No dependency versions replaced.
-
-Latest transfer/demo files: scripts/package_submission.py, tests/test_transfer.py, scripts/browser_e2e.py optional recording; docs/transfer.md, local-development.md, organizer-confirmations.md, demo.md; README, decisions/flow/handoff; benchmarks/submission-verification.json. No quantum policy, threshold, default or authoritative result changed.
-
-Final-delivery-only source changes are documentation and verification JSON: README, decisions/flow/handoff, docs/demo.md, video.md, video-timeline.json, transfer.md, organizer-confirmations.md and benchmarks/final-delivery-verification.json. No application, scientific implementation, tests, dependency declarations or authoritative result bytes were changed. Recording helpers/drafts/media are ignored delivery artifacts, not product modules.
+Inspect git status/diff for exact current inventory. Core: scripts/package_submission.py; qfault/qasm_import.py, lab.py, quantum.py, target.py, interventions.py, counterfactual.py, cli.py, api.py. New tests: test_release_package.py, test_native_import.py, test_custom_cli.py, test_strict_scientific_input.py, test_replay_identity.py. Locks/manifests: web/package.json/package-lock.json, pyproject.toml, requirements.lock. Records: decisions.md, flow.md, docs/implementation-ledger.md, docs/evidence-availability.md, this handoff and historical handoff copy.
 
 ## 4. Current Architecture / State
 
-CLI/API → RunRequest → investigate → budgeted selected simulator → EvidenceCollector → DiagnosticAnalyst/DiagnosticAccess → bounded RecoveryPlanner → independent DensityMatrix and fresh sampled verifier → pending human review → immutable ArtifactStore. See flow.md for actual functions and order. Phase policy samples a contract basis before privileged state attribution. Optional Aer never silently falls back; reference remains default. One-edit search does not receive mutation parameters or replace a full circuit. Export verification recomputes covered hashes; review remains append-only and self-declared.
+Local FastAPI + React; API and CLI share the validated engine. Native import accepts exact built-in H/X/Z/S/Rx/Ry/Rz/CX/CZ/CP/SWAP, 2–5 qubits/32 gates; records global phase/source instructions, with lab-only input preparation. No Python upload/eval/pickle. Optional ImportProvenance is excluded when absent, preserving legacy serialization/IDs. Derived edits retain import ancestry. Replay creates a new record linked to its source and declares same/new-seed semantics.
 
-The local application is served at http://127.0.0.1:8000/ by the owned process started during this session (inspect artifacts/server-error.log for the current PID before stopping). It serves built React assets and real API responses. Server may need restarting after future code edits; no deployment occurred.
+Package modes source-only/evidence-inclusive use clean committed source ZIP without full Git history/private runtime sweep. Complete-current evidence means the external study specifically; historical availability is separate. Actual committed-package extraction is not yet run.
 
 ## 5. Decisions Made
 
-D-029 records the exact newly authorized publication destination, full-history/presentation audit, bounded network failures and targeted non-scientific corrections. Historical no-push outcomes remain factual for those earlier sessions.
-
-D-001–012 retain the original foundation/history. D-013 records the original cp311 mismatch and failed install attempts; D-016 explicitly supersedes its Aer-unavailable outcome after locating cp313. D-014 defines complementary witnesses. D-015 freezes holdout/reserves validation and retains fixed default. D-017 adds exported-report checking and bounded internal analysis circuits. D-018 publishes all frozen negative findings. D-019 skips invalid repair angle edits rather than weakening input validation. D-020 supersedes the browser-unavailable outcome with actual Playwright evidence and UI regressions. D-021 corrects requires-python to >=3.12 from installed dependency metadata. Commits1d89eff and3039215 precede final evaluation; dffeb54 contains Aer/reporting/frozen evidence; the commit containing this update contains browser verification and installation-bound correction.
-
-D-022 records precise repeatable install blockers and keeps the normal own-manifest path distinct from the development-only fallback. D-023 documents descriptive paired outcomes, actual privileged information flow and scientific labels.
-
-D-025 defines clean committed-source/evidence transfer, with no fresh-install implication. D-027 removes duplicate tracked-summary archive entries after actual restore detected CRLF checkout conflicts; the real-artifact regression failed before and passes after. D-026 records genuine silent browser footage and pending final narration/organizer confirmation.
-
-D-028 records final delivery verification, genuine picture footage/voiceover handoff and unresolved competition boundaries. The camera-framing correction affects delivery footage only.
+D-048–D-063 cover packaging, native/import CLI, strict inputs, dependencies, replay, reporting/contrast, ordinary/blind schema support, local trust, authentic historical evidence, source-pinned replication, negative development findings and browser verification. Append only. Record implementation hash in the next ordinary documentation commit, avoiding self-reference.
 
 ## 6. Requirements and Constraints
 
-The earlier local-only/no-publication restriction is superseded solely by the latest explicit authorization to publish main with its existing history to https://github.com/PrathamKapoor/QTrust.git. No force push, other destination, competition submission, deployment, cloud, paid API or hardware is authorized. All new author/committer identities must be PrathamKapoor <prathamkapoor027@gmail.com>, repository-local configuration only. No tool coauthors, generated authorship footers or donor writes. Preserve authoritative experiments, notices and history. No arbitrary Python uploads, paper/research/.tex files, artificial stage directories, fabricated metrics or success claims. Keep decisions/flow/handoff current. Fixed-input states are not general unitary equivalence; unsigned hashes are not PQC signatures or scientific truth.
+Current owner authorizes implementation then publication to https://github.com/PrathamKapoor/QFault after gates. Older no-push/QTrust restrictions are superseded authorization, not current instructions. Preserve all refs/worktrees/ignored work. Never stage paper/, research/ or .tex; no force push. Author AND committer: PrathamKapoor <prathamkapoor027@gmail.com>. No competition submission/external messages/paid hardware. Preserve approved hero/transition. One read-only reviewer was dispatched as explicitly required by requesting-code-review; no implementation was delegated.
 
 ## 7. Testing and Verification
 
-Publication continuation:99 tests passed (1 existing Starlette/httpx warning,14.70s), retained TypeScript/build passed, nine paired conformance cases and five-scene Aer rehearsal passed. Seven actual browser workflows and four HTTP workflows pass; valid/tampered standalone CLI exits are0/1. All340 frozen manifests pass. All original/final scientific row fields and policy metrics (excluding runtime/IDs/paths/hashes) and12 recovery rows/interval reproduce unchanged; both negative controls reject. Source/history scan inspected11 commits/184 blobs/251 objects, with no selected secret-pattern/private-file findings; this is not an exhaustive guarantee. Two broken local Markdown links and stale HTTP/browser wording are corrected.
-
-Initial suite:62 passed,1 warning. Latest suite executed directly through LibreOffice python.exe -B -u scripts/local_bootstrap.py pytest -q -p no:cacheprovider:96 passed,1 Starlette/httpx deprecation warning,9.59s. Latest release output/status is benchmarks/release-candidate-verification.json; benchmarks/delivery-verification.json records the previous6.42s run; stabilization-verification.json is an earlier historical snapshot. The PowerShell launcher qfault circuits was executed again successfully. TypeScript check and Vite production build passed using the explicitly disclosed read-only donor node_modules bridge; own fresh frontend installation is not verified.
-
-Verified commands from repository root (new output destinations required):
-
-~~~powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 pytest -q -p no:cacheprovider
-node scripts/check-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
-node scripts/build-web.mjs C:/Projects/Quantum_Simulator/frontend/node_modules
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault benchmark --out artifacts/new-original
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault evaluate --split final --out artifacts/new-final
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.evaluate_recovery --out artifacts/new-recovery
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.compare_backends --out artifacts/new-backends
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.submission_demo --out artifacts/new-demo --backend aer
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 qfault serve
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local.ps1 scripts.http_release_smoke --out artifacts/new-http
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/local_browser.ps1 scripts.browser_e2e --out artifacts/new-browser-check
-~~~
-
-Original results reproduce47/75 evidence,66/75 fixed,23/75 random,47/75 threshold; shots/evaluations also match. Final results reproduce34/68 evidence,58/68 fixed,21/68 random,34/68 threshold,66/68 phase. Full confusion matrices/uncertainty/costs and raw paths are in benchmarks/diagnostic-final.json and docs/diagnostic-findings.md; reproduction comparison in benchmarks/stabilization-reproduction.json.
-
-Phase final uses487424 shots/328 evaluations versus fixed348160/272; phase misses both QFT2 angle cases. No false diagnosis among10 evaluator-correct cases (Wilson upper27.8%). Low-shot phase abstains4/4. Selected recovery10/12 verified (Wilson55.2–95.3%), two QFT4 inconclusive; two invalid/noisy proposals rejected. Recovery reproduction retains these outcomes. Actual Aer conformance: nine paired circuit/noise cases, density errors<=3.34e-16, sampled TV<=0.0188. Actual Aer demo has healthy/fault/noise/phase/abstention and true/false/true integrity control. HTTP checks cover page/assets, contracts, both measured summaries, four201 workflows, reloads, valid exports and invalid422 requests. Standalone valid export exits0; tampered export exits1. Actual installed Playwright1.62.0/Chromium151.0.7922.34 E2E passes six Aer workflows (QFT4/GHZ4/Bell clean, Bell remove/readout/low-shot phase), fresh repair display, report download/hash verification, history/settings restoration, loading states and expected invalid422. Zero unexpected console/page/request errors. Mobile390px has no horizontal page overflow; local screenshots are artifacts/browser-delivery. No automated human approval.
-
-Current seven-workflow browser output: artifacts/release-candidate/browser-complete. No unexpected console/page/request errors; actual full phase repair added. Commands/logs: docs/release-candidate.md. Current original/final reproduction compares every policy metric excluding runtime and matches; selected recovery rows retain all quality/cost fields. scripts.audit_release --out artifacts/new-audit checks frozen paired predictions and raw artifact manifests. Fresh-install checks remain failures, separate from retained-environment successes.
-
-D-024 fixes the recovery runner unconditionally overwriting its fixed published summary despite --out. Original tracked bytes restored; new sentinel regression failed before, passes after. Full96 tests pass. All new recovery artifacts remain separately retained.
-
-Transfer checks:99 passed,1 deprecation warning,11.73s after the D-027 transfer regression. Earlier98-test runs remain historical. Raw command results: artifacts/submission-delivery/{tests,typescript,build,demo-command,final-command,recording-command,report-verification,reproduction-comparison}.json. Full recorded browser evidence: artifacts/submission-delivery/browser-recording/summary.json; recording path: video/browser-workflow.webm. Actual export exit statuses are0 valid/1 tampered. Only sampled frame inspection is claimed; stripped FFmpeg full decode/re-encode was unsupported/timed out. docs/demo.md has exact seeds/settings, a timed shot/narration guide and honest raw-footage status.
-
-Final-delivery command logs are artifacts/final-delivery/*-command.json; frozen-audit.json covers340 manifests, export-verification.json records actual0/1 exits, original clip playback-verification.json records complete playback. The final picture-cut path is artifacts/final-delivery/judging-video-final/video/qfault-judging-silent.webm. docs/video.md and docs/video-timeline.json provide editable narration/recording instructions. Final package is generated from the clean committed HEAD at artifacts/qfault-final-delivery, leaving artifacts/qfault-submission unchanged.
+Commands use .local/contract-release/python/Scripts/python.exe.
+- Baseline pytest tests -q: 449 passed, Starlette/httpx and unwritable-cache warnings. Subsequently use -p no:cacheprovider.
+- scripts.aer_smoke: pass, counts 00=506/11=518.
+- npm ci/check/build: pass before/after Vite 8.2.4; lazy Three chunk warning remains.
+- Package/legacy transfer: 7 passed after 3 red failures.
+- Native/QASM/recovery: 61 passed. Native + CLI: 11 passed after 9 native/1 CLI red cases and correction of wrong feasibility signature.
+- Strict/lab/recovery/native/CLI: 100 passed. Two additional edit-restriction cases then failed red; strict/boundary/target set passed 60 after correction.
+- Replay/adversarial API: 102 passed after parent-link red regression.
+- External verify_results/reconcile: 2,206 reports, 2,232 rows including 26 unsupported; no missing/duplicate cases.
+- Historical recovery summary in C:/Projects/QFF-Recovery/artifacts/recovery-holdout is byte-identical to committed summary, SHA256 8fb0e091016e5c9106c8ffb73afbcc5e41fe15e9517a566338b9cdfa6d10c957. scripts.audit_counterfactual independently verified 310 manifests/count-based decisions/costs, replayed_records=0. Report: artifacts/contract-release/historical-recovery-audit.json.
+- Old recovery holdout correctly refuses current sources with Frozen recovery sources/cases differ; do not call this the untouched evaluation. Guard unchanged.
+- npm audit: affected Vite before, zero advisories after 8.2.4. pip-audit 2.10.0 isolated at .local/contract-release/audit-tools: certifi PYSEC-2026-4320 before, no known advisories after 2026.10.19. Reports: artifacts/contract-release/python-advisories*.json. pip check passed after hashed reinstall.
+- GitHub connector confirms authenticated login PrathamKapoor. No credentials printed.
+- Latest complete suite before the last blind-schema guard: 483 passed, one Starlette/httpx warning, 44.67 seconds; Aer smoke and pip check passed. Last blind-schema regression failed red, then 13 artifact/blind tests passed after correction. Complete final suite will run on the committed snapshot.
+- Ten original Windows Chromium suites passed: release smoke, counterfactual, external editor, blind lifecycle, lab, landing, cinematic, workspace navigation, inspection and seven-template workflow runner. Native import/phase/recovery/download suite also passed at 1440 and 390/375/360 widths; retained provenance, no page errors, new metric/caption contrast minimum 8.076:1. Actual corrected overview/native recovery and preserved hero/fresh verification screenshots were opened.
+- Native real API demo at seed 7241 passed five expected stages, with fresh original/candidate 4096 shots each and original preserved. Raw evidence is artifacts/contract-release/native-demo and browser-native-final.
+- Dense development study: 16 real Aer cases, one two-qubit development architecture, all intervals cover oracle fidelity, both allocations confirm 4/8. No production method adopted. See docs/dense-target-development.md and benchmarks/dense-target-development-v1.json.
+- Current supported protocol is configs/current-release-replication-v4.json. v1–v3 are preserved unexecuted drafts superseded by last resource/schema corrections; none is untouched evidence. Current-source execution refuses uncommitted inputs and awaits implementation commit.
+- Gitleaks 8.30.1 reviewed history scan covers all 108 commits. Tree scan found only the same source api.py hash pattern in protocol drafts; the narrowly scoped rules classify these as noncredentials. Final staged/tree scan still pending.
+- Fresh package extraction/install, current-source replication and publication remain pending.
 
 ## 8. Known Issues / Risks
 
-LibreOffice Python3.13.15 lacks venvlauncher.exe/venvwlauncher.exe. Python package network access fails EACCES/connection errors; npm online registry fails EACCES and offline metadata ENOTCACHED. The ignored partial .venv has no usable interpreter; do not treat it as an install. No package-lock.json or own node_modules could be generated/installed. Connected-browser discovery is empty, but installed standalone Playwright successfully executes Chromium. Installed uv0.12.5 also failed to create isolation from embedded LibreOffice Python; discovered complete CPython3.11.16 is below the pinned NumPy/SciPy >=3.12 requirement. Partial .venv-isolated and .venv-isolated-retry remain ignored. Exact attempts are docs/environment-stabilization.md.
-
-Current runtime is a machine-specific read-only bridge, not a clean installation. Qiskit2.3.1/NumPy2.5.2/SciPy1.18.1 plus Aer0.17.2 are actually loaded; only Aer is imported from the separate cp313 user package to avoid contaminating other versions. Frontend React19.2.8, Vite8.2.2, TypeScript6.0.3 were checked/built. Fresh transitive resolution remains unknown. Exact-state attribution is privileged; complementary witnesses are incomplete; small repeated-template intervals are descriptive. Four-qubit QFT validation can remain inconclusive at2048 shots. No QCEC, mitigation, temporal forecasting, ML-DSA signing or hardware execution exists. Persistence can retain partial directories after crashes; verification fails closed. Review identity is not authenticated.
-
-Current install details: official npm/PyPI DNS resolves, connect EACCES precedes TLS/auth; no proxy configured. Configured npm cache absent, standard AppData cache EPERM, local metadata ENOTCACHED. Standard CPython3.11.16 probe interpreter is isolated but its venv creation command timed out; it cannot satisfy>=3.12 pins and is not a QFAULT install. No complete usable dependency cache was established. Disposable source/partial probe retained under artifacts/release-candidate.
-
-Final picture-cut playback:176.56 seconds,1600×1000,4414 total video frames,2 dropped,0 corrupted, no media/page errors. Full normal-speed Chromium playback completes. Real decoded comparison/recovery/noise frames were visually inspected. Proof: artifacts/final-delivery/judging-video-final/playback-verification.json; exact editable voiceover/timeline: docs/video.md and docs/video-timeline.json. No final narrated video exists. All product code, tests, dependency declarations, frozen splits/results and license notices remain unchanged during this delivery-only continuation.
+Confirmed: new package extraction still pending; all historical/source guards preserved. Historical recovery raw evidence is now curated in benchmarks/historical-recovery-v1 (310 exact old exports, 1,057,578 bytes), with portable independent verifier; ordinary user sessions/reviews excluded. Other historical families remain summary-only where unavailable. Timeouts remain cooperative, hashes unsigned, no hardware calibration or causal localization. Linux/macOS/current hosted CI are not claimed from Windows local checks.
 
 ## 9. Unfinished Work
 
-Normal Git push/fetch failed (exit128); remote-SHA/public-source verification is blocked while local Git HTTPS cannot connect. Do not recreate historical commits through the limited connector commit API, fabricate a remote SHA or bypass network policy. Final push command evidence belongs under artifacts/publication-audit.
-
-Fresh Python/frontend install and lockfile; repeat browser acceptance against that independent installation; record narration/edit/inspect the final judging video from genuine raw footage; obtain organizer eligibility/deadline/portal/deliverable confirmations. Optional stronger independent scientific validation, larger unseen-circuit corpus, phase-angle detection study and measurement-efficient selection remain separate future work. Do not silently retune frozen final cases or replace losing results.
-
-Portable transfer validation now passes: source cf23b95e747b7d061323232caf48de071cef8b15 restored from its bundle,2425 raw evidence records and39 media/demo files restore with valid package hashes/ZIP CRCs, and102-file source checkout remains clean. Evidence: artifacts/submission-delivery/transfer-verified.json. Final delivery folder artifacts/qfault-submission is generated from the final clean committed HEAD; inspect its manifest.json for exact revision and hashes. The first artifacts/transfer-validation package is a failed-restore audit and must not be submitted.
+Finish reviewed staging/commit under owner identity; run final complete checks and committed v4 replication; verify both package modes and fresh extraction/locked install. Update gate report/next ordinary documentation commit with implementation SHA. Only then integrate normally to established main, push and verify remote SHA/sync and exact-SHA CI. Do not push until mandatory local gates pass.
 
 ## 10. Next Subphase
 
-On an unrestricted machine, use normal CPython3.13, install the tested manifests in an isolated environment, generate and validate QFAULT's own npm lockfile, then repeat the already passing browser E2E against that fresh installation. This is the most consequential submission-readiness objective. After release gates, design a new prespecified evaluation for incomplete witness/small-angle behavior.
+Commit the reviewable implementation, then execute frozen v4 replication and package gates. Server was deliberately restarted after core changes: unified exec session 56464, PID 17752, http://127.0.0.1:8000/, QFAULT_ARTIFACTS=artifacts/contract-release/live. Command: .local/contract-release/python/Scripts/python.exe -m qfault serve --port 8000. Real health/Aer/browser checks passed. Last isolated blind-version guard changes only verification of unsupported input; restart before final live demonstration to include it. Recheck PID before stopping; no unrelated process was stopped.
 
 ## 11. Critical Context
 
-The exact authorized origin is configured for QTrust. One normal push was attempted and failed; no publication or remote commit was created. Current source/evidence/media package is generated under artifacts/qfault-publication-final after the closing commit; its manifest binds the exact HEAD. Prior artifacts/qfault-publication-transfer records27ed91f. Do not confuse either verified source transfer with a clean dependency installation or public repository publication.
-
-Original expected HEAD d30535c was verified. Current commits are local on main; inspect git log/status for exact delivery HEAD. Authoritative old summaries remain unchanged. New holdout was frozen before implementation; final results were opened once without tuning, then reproduced. Latest recovery/media/transfer evidence is artifacts/submission-delivery; previous release evidence is artifacts/release-candidate (original/final/recovery/conformance/demo/browser-complete plus exact failed-install logs). Raw directories also include artifacts/stabilization-original, stabilization-current-original, diagnostic-development, diagnostic-final, diagnostic-final-reproduction, diagnostic-low-shot, recovery-stabilization, recovery-reproduction, backend-conformance, submission-rehearsal, http-stabilization and browser-delivery. These are ignored but retained locally. Normal fresh-machine commands are documented as unverified installation instructions. No donor implementation copied; prior reuse inventory/THIRD_PARTY_NOTICES remain valid. The official public site presents conflicting October12 and October23,23:59IST submission dates, lists Pratham Kapoor as a workshop lead, specifies teams of2–4 and schedules prompt release22 October18:00 IST. Permission to submit substantially pre-existing QFAULT is not established. No controlling deadline or eligibility has been confirmed. See docs/organizer-confirmations.md; do not submit before resolution.
+Historical full handoff: docs/handoff-history-20261016.md. Latest owner contract wins for authorization. Authentic original recovery worktree and its 310-run evidence are preserved. Research evidence may be deliberately selected; user runtime records stay private. Current external raw archive is already tracked (~4.65 MB). Source-only package omits it explicitly. No new evaluation has run yet and no existing holdout has been retuned.
 
 ## 12. Agent Instructions
 
-Read this file, decisions.md and flow.md completely before edits. Preserve working code/user changes and scientific artifacts. Inspect actual environment; do not assume Aer globally incompatible or installation/browser verified. Use matching ABI, standard package sources and local author identity; never modify global Git or donors. Keep actual output seeds/budgets/backend labels. Do not tune on final results and call them fresh generalization. Run relevant real quantum tests, preserve negative findings, update operational docs, commit under the required identity, attempt the explicitly authorized normal push only to QTrust, verify the actual remote SHA before claiming publication, and report blocked gates honestly.
-
-
-## Current scientific development branch (2026-10-13)
-
-User clarified this is continued project development; ignore competition eligibility and presentation work. Work is isolated on hardening/blind-measurement. Local main f36665616c2aee95a7b82e764adcf290b9e05468 and public main ea71bd981ee0d6a394b4d26e4a904c92bc4f5ed3 are protected by snapshot/pre-hardening-20261013 and snapshot/public-20261013. Canonical origin is QFault. No push or submission occurred. Identity is repository-local PrathamKapoor <prathamkapoor027@gmail.com>.
-
-New .local/repro-python is normal CPython 3.13.2; pip installed .[aer,dev,browser] from pyproject. pip check passes. A separate archived source .local/repro-source/web passed npm ci/check/build. The real web lockfile was already present locally and npm revalidated it without fabricated hashes. New CI configuration has not run on GitHub.
-
-Blind challenge API, public/private storage, saved workbench routes and measurement-only capability boundary are implemented. Initial 116-test run passed before the final additional clean-control test; targeted six blind API tests passed afterward. Real Aer/reference conformance passed all nine family/noise combinations; maximum density element discrepancy <=2.22e-16. Frontend TypeScript and production build passed; existing Three.js chunk warning persists. The subsequent complete test, browser and holdout results are recorded in the recovery-worktree section below.
-
-At the blind-challenge/measurement-boundary milestone, 119 Python tests passed, including forbidden faulty-state/density access, disabled measurement recovery, pre-reveal API/history/export projections, clean/phase/noise/low-budget controls, prediction binding and concurrent-read regression. Seven existing Aer browser workflows and challenge flows in both capability modes passed; those flows covered export, keyboard freeze, persisted refresh, back/forward/replay and mobile behavior. The milestone browser screenshots were inspected. Two integration defects were corrected at that stage: concurrent read requests returned 409; wrapping-select labels needed explicit accessible names. This is dated milestone evidence; the completed current suite and recovery results are recorded below.
-
-
-## Counterfactual recovery worktree — holdout complete (2026-10-13)
-
-Isolated worktree `C:\Projects\QFF-Recovery`, branch `research/counterfactual-recovery`. Stable base and preserved milestone: `e90acf061985c41123fa430ef51e7f8ea5b74fbb`; checkpoint branch `checkpoint/target-state-e90acf0`. The implementation commit is `5034972c3129c18f4f990dfae9993d71086db2fd`; a documentation-only results commit follows. Original checkout remains unchanged at its previously verified `e90acf061985c41123fa430ef51e7f8ea5b74fbb` on `hardening/blind-measurement`. No reset, push, merge or checkout affected that worktree. Branch HEAD and commits use PrathamKapoor <prathamkapoor027@gmail.com> as author and committer.
-
-Own CPython 3.13 environment `.local/recovery-python` installed `.[aer,dev,browser]`; `pip check` passes. This worktree independently passed `npm ci` (31 packages, audit reports 0 vulnerabilities), TypeScript check and Vite production build. Full suite: 237 passed. Qiskit Aer/reference conformance: 9/9 cases, maximum density-element error ≤2.22e−16. Existing selected-recovery reproduction remains 10/12 independently verified, two inconclusive. Existing browser E2E suites: seven legacy Aer workflows, blind challenge in both modes, and custom lab target-state editing/measurements passed. Recovery browser E2E exercised an actual Aer target-state repair, immutable report export, refresh/history, and a readout-noise abstention at 390/375/360 pixels. Cinematic landing/navigation/reduced-motion/WebGL-fallback checks passed at five sizes. No browser page or console errors were recorded in the recovery journey.
-
-Protocol commit 5034972 fixes source hashes, the 62-case corpus, seeds, policies, budgets and metrics before holdout. All 310 policy runs completed on Aer, every exported manifest verified, and no row errored. Conservative and point ranking each verified 16/62. Conservative used 1,890,304 shots/847 executions versus point 1,980,416/869, made no noise-only proposals versus five (all five freshly rejected for point), and abstained more. Conservative set coverage contained the designated locus for 14/14 logical and 2/2 deliberately ambiguous cases; causal identity is not established. Details and complete raw runs are in `docs/counterfactual-recovery.md` and ignored local `artifacts/recovery-holdout/`.
-
-Screenshots captured by the final recovery journey: `artifacts/recovery-browser-final-inspection/measured-recovery-desktop.png`, `candidate-comparison.png`, `circuit-diff.png`, `fresh-verification.png`, `noise-negative-control.png`, `preserved-workbench.png`, `mobile-390.png`, `mobile-375.png`, `mobile-360.png`. Its summary records Aer execution, verified export, no page/console errors and all three mobile widths. The recovery desktop, candidate comparison, circuit diff, fresh verification, negative control, mobile and preserved-workbench captures were visually inspected. Existing landing/transition suite screenshots are in `artifacts/cinematic-final-review/` and workbench/mobile screenshots in `artifacts/lab-regression/`.
-
-The independently launched server is running from the recovery worktree on `http://127.0.0.1:8001/` (launcher PowerShell process 26460; active uvicorn Python process 36316). `/` and `/api/health` return HTTP 200. Logs are `.local/recovery-server.log` and `.local/recovery-server-error.log`. The original checkout's listener on port 8000 was left untouched. No remote push occurred. See `docs/counterfactual-recovery.md` for statistical assumptions, per-class result tables and the prior target-evaluation source-digest explanation.
-
-
-## Integrated scientific release audit — current status
-
-This section supersedes the historical “worktrees remain separate” statements above. On 2026-10-13 the verified ancestry check passed: `research/counterfactual-recovery` descends directly from `hardening/blind-measurement` at `e90acf061985c41123fa430ef51e7f8ea5b74fbb`. The original development branch was fast-forwarded only to `c5cedf5c8b35ed957c18362c9434a5fba7e45079`; no merge/rebase/reset was used. The `research/counterfactual-recovery` branch, `checkpoint/target-state-e90acf0`, local `main` (`f36665616c2aee95a7b82e764adcf290b9e05468`) and `C:\Projects\QFF-Recovery` worktree remain preserved. The final audit corrections listed below are committed afterward on `hardening/blind-measurement`. No push occurred.
-
-### Independent evidence and corrections
-
-`scripts/audit_counterfactual.py` independently reconstructed all 310 frozen run records from stored samples and verified their manifests, resource ledgers, seeds, phases, and candidate-set bindings. It replayed the same 310 frozen requests against the integrated code; statuses, counts and seeds match. The frozen summary digest is `8fb0e091016e5c9106c8ffb73afbcc5e41fe15e9517a566338b9cdfa6d10c957`, generated at `5034972c3129c18f4f990dfae9993d71086db2fd`. The audit script does not call the engine's ranking/verdict routines while reconstructing the recorded intervals.
-
-One real bounded-budget defect was corrected: a request could reserve fresh candidate/original verification but not the possible readout control. The preflight now reserves observation groups, control, and independent confirmation before sampling. The UI's previous “Improvement interval” label was also made explicit: the score is a dimensionless reduction in worst-claim discrepancy divided by contract tolerance—not fidelity or total variation. The exact source formula and finite-sampling assumptions are documented in `docs/counterfactual-recovery.md`.
-
-The raw result remains 16 verified/62 for conservative selection and 16/62 for point discrepancy; conservative spent 1,890,304 shots/847 executions versus 1,980,416/869 and made no rejected proposals, but abstained more. Only 21 cases were measurement-detected eligible; 16 verified among them. The plausible set covered the designated locus in 16/16 searched truth-labelled cases, but 12 sets had one operation and 4 had two; 4/20 truth-labelled cases were not searched/detected. This is not universal or uniquely causal localization. Clean and readout controls abstained/no-repaired as expected. Gate-noise conservative made no proposals; point and first-admissible each made five, all rejected by fresh verification. Both deliberately ambiguous cases remained non-identifying.
-
-### Provenance and known limitations
-
-The frozen recovery protocol's ten source hashes are reproducible from evaluation commit `5034972...` after LF/CRLF normalization. The integrated source matches all but `qfault/counterfactual.py`, changed only for the post-holdout budget guard; this source difference is preserved and explicitly reported. The separate target-witness evaluation has its historical two-line lab error-message mismatch from `ddc8a67` to `e90acf0`; that diff does not affect decisions or sampling. Its aggregate result files lack per-run raw manifests, so the audit preserves this provenance limitation rather than claiming new count-level reproduction.
-
-### Final verification and running service
-
-- Isolated CPython 3.13.2 from `pyproject.toml` extras; `pip check` passed. `npm ci` used the committed `web/package-lock.json`; npm reported zero vulnerabilities. No claim is made that transitive Python packages are fully locked (there is no Python lockfile).
-- Full Python suite: **243 passed**, with one existing Starlette/httpx deprecation warning.
-- `npm run check` and production `npm run build`: passed. Existing Three.js vendor chunk warning remains (548.54 kB minified); no code-splitting change was made during this audit.
-- Deterministic real Qiskit Aer Bell smoke: passed. Browser suites `browser_e2e.py`, `blind_challenge_e2e.py`, `lab_e2e.py`, `workspace_navigation_e2e.py`, `cinematic_e2e.py`, `counterfactual_e2e.py`, `landing_recovery_e2e.py`, and `inspection_smoke.py`: passed. They exercised actual API/Aer operations, report hash checks, history/replay, the existing landing transition, reduced-motion/fallback, and the recovery UI. Expected invalid-input 422 responses appear in test logs; no unexpected browser page errors or failed requests were reported.
-- Actual screenshots were opened and inspected at `.local/release-audit/browser/landing/` and `.local/release-audit/browser/recovery/`; recovery screenshots cover 1440×900 and mobile 390/375/360, including candidate diff, fresh verification and noise-control abstention. The hero captures cover 1920×1080, 1440×900, 1366×768, 768×1024 and 390×844; the original workbench transition still reaches the actual overview.
-- Integrated inspection server: port 8000, launched from `C:\Projects\QFF` using `.local\release-audit-python\Scripts\python.exe -m qfault serve`; active session belongs to the current turn. `http://127.0.0.1:8000/` returned HTTP 200 after the final frontend build. Keep this service running for manual inspection.
-
-No target-state benchmark, historical benchmark, hidden-truth record, or source evaluation output was modified. The independent audit report/replay outputs and browser screenshots are local ignored artifacts under `.local/release-audit/`; the frozen source corpus remains in the preserved recovery worktree. The only integrated code corrections are the budget reserve guard, its regression test, the accurately labelled improvement interval and corresponding browser assertions; `scripts/audit_counterfactual.py` and its independent tests make the audit repeatable.
+Read root decisions/flow/handoff, recheck Git and continue without restarting baseline. Keep docs with changes; stage explicit paths. Use per-command git -c safe.directory=C:/Projects/QFF, never global changes. Record blockers honestly; continue independent work. Do not claim readiness/publication without current executed evidence for every mandatory gate.

@@ -1,4 +1,4 @@
-"""Reproducible local CLI; no arbitrary Python or OpenQASM execution."""
+"""Reproducible local CLI; bounded structured/QASM input, never arbitrary Python."""
 import argparse
 import json
 import sys
@@ -65,14 +65,41 @@ def main(argv=None):
     p=sub.add_parser("evaluate");p.add_argument("--out",required=True);p.add_argument("--split",choices=["development","final","low_shot_control"],required=True);p.add_argument("--config",default="configs/diagnostic-evaluation.json")
     p=sub.add_parser("verify-report");p.add_argument("report_json")
     p=sub.add_parser("serve");p.add_argument("--port",type=int,default=8000,help="localhost port (default 8000)")
+    p=sub.add_parser('import-qasm');p.add_argument('source');p.add_argument('--out',required=True)
+    p.add_argument('--name',default='imported');p.add_argument('--strip-barriers',action='store_true')
+    p.add_argument('--strip-terminal-measurements',action='store_true');p.add_argument('--allow-decomposition',action='store_true')
+    p=sub.add_parser('lab');p.add_argument('request_json');p.add_argument('--validate-only',action='store_true')
+    p=sub.add_parser('measured-recovery');p.add_argument('request_json')
     args=parser.parse_args(argv)
     try:
-        if args.command=="circuits":
+        if args.command=='import-qasm':
+            from .qasm_import import from_qasm2, MAX_SOURCE_BYTES
+            with Path(args.source).open('rb') as stream:
+                raw=stream.read(MAX_SOURCE_BYTES+1)
+            if len(raw)>MAX_SOURCE_BYTES: raise ValueError('QASM source exceeds 64 KiB')
+            circuit=from_qasm2(raw,name=args.name,strip_barriers=args.strip_barriers,
+                strip_terminal_measurements=args.strip_terminal_measurements,allow_decomposition=args.allow_decomposition)
+            with Path(args.out).open('xb') as stream: stream.write(canonical(circuit.model_dump(mode='json')))
+            emit({'exported':args.out,'circuit_id':circuit.circuit_id,'contract':'Declare independently; no contract was derived from this candidate'})
+        elif args.command in ('lab','measured-recovery'):
+            from .lab import LabRequest, feasibility, investigate_lab
+            from .counterfactual import RecoveryRequest,recover
+            with Path(args.request_json).open('rb') as stream: raw=stream.read(65537)
+            if len(raw)>65536: raise ValueError('request exceeds 64 KiB')
+            request=(LabRequest if args.command=='lab' else RecoveryRequest).model_validate_json(raw)
+            if args.command=='lab' and args.validate_only:
+                emit({'circuit_id':request.circuit.circuit_id,'feasibility':feasibility(request.circuit,request.contract,request)})
+            else:
+                result=(investigate_lab if args.command=='lab' else recover)(request)
+                store=ArtifactStore(args.store);eid=store.save(result);emit(store.load(eid))
+        elif args.command=="circuits":
             emit([{"family":f,"qubits":n,"contract_id":contract(f,n).contract_id,"circuit_id":benchmark(f,n).circuit_id} for f,n in [("bell",2),("ghz",3),("qft",3)]])
         elif args.command=="contract": emit(contract(args.family,args.qubits or (2 if args.family=="bell" else 3)).describe())
         elif args.command=="verify-report":
             from .storage import verify_export
-            result=verify_export(json.loads(Path(args.report_json).read_bytes()))
+            with Path(args.report_json).open('rb') as stream: raw=stream.read(16*1024*1024+1)
+            if len(raw)>16*1024*1024: raise ValueError('Report exceeds 16 MiB')
+            result=verify_export(json.loads(raw))
             emit(result)
             return 0 if result["valid"] else 1
         elif args.command=="serve":

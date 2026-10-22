@@ -562,3 +562,181 @@ bounded simulator scope, exact tested revisions and remaining untested platforms
 Git ordering does not authenticate historical execution timing; physical
 calibration and hard backend cancellation remain unestablished. Publication is
 still separately authorized; no remote mutation occurred during this gate.
+
+### D-048: Separate source snapshots from explicitly scoped research evidence packages
+- Date / phase / commit: 2026-10-22, reproducibility, uncommitted
+- Context: The owner requests implementation and release of the actual QFault checkout. The existing package command requires ignored historical runtime files and includes all reachable Git history; the current external study already has a deliberately tracked raw archive.
+- Decision: Add build_package and verify_package with source-only/evidence-inclusive modes, committed source snapshots, exclusive atomic completion, bounded archive checks and an explicit evidence availability ledger. Retain collect_evidence for historical verification compatibility. The evidence-inclusive scope is the current external study only; historical availability is stated separately.
+- Why: New regression tests failed because the package API was absent, then all seven package/legacy transfer tests passed. The independent external audit verifies 2,206 exports and reconciles all 2,232 attempted rows. The old default must not manufacture missing historical data or copy private runtime directories.
+- Alternatives considered: Full Git bundle (unreviewed historical/private content risk); sweeping artifacts (runtime ownership violation); silently dropping missing evidence while claiming complete history (scientifically misleading).
+- Consequences: Supersedes D-025/D-027 packaging defaults, not historical archives. Output has no Git history. Full-current evidence does not imply availability of every historical study. Fresh extraction/install remains a separate gate. Current source byte identity is preserved in archive members.
+- Files: scripts/package_submission.py, tests/test_release_package.py, docs/evidence-availability.md, docs/implementation-ledger.md, decisions.md, flow.md, handoff.md
+- Symptom: Historical packaging fails when referenced ignored files are absent in a fresh clone.
+- Root cause: main unconditionally calls collect_evidence for fixed legacy summaries and has no source-only contract.
+- Regression test: tests/test_release_package.py (three red failures before implementation; seven targeted package/legacy tests passed afterward).
+
+### D-049: Convert bounded native circuits without silently changing their semantics
+- Date / phase / commit: 2026-10-22, circuit import, uncommitted
+- Context: The existing static QASM evaluation adapter has no native QuantumCircuit conversion API or ergonomic custom CLI path. The owner explicitly requires both and provenance through replay/export.
+- Decision: Add qasm_import.from_qiskit for the exact eleven built-in gates already supported by Gate. No native transpilation runs. Nonzero input preparation remains exclusively in CustomCircuit.preparation. Global phase and indexed source instructions are recorded. Barrier and terminal-measurement removal require explicit options. Add from_qasm2 as an opt-in public wrapper around the unchanged historical adapter, plus import-qasm/lab/measured-recovery CLI commands. CustomCircuit gains optional validated ImportProvenance; absent provenance is excluded from serialization to preserve legacy bytes and IDs.
+- Why: Nine native tests and one CLI test failed before implementation. Independent Qiskit complex-state and input preparation checks, precise unsupported semantics and export persistence now pass (11 targeted tests); the broader native/QASM/recovery set passed 61 tests. A CLI feasibility integration initially called the wrong helper signature; inspection confirmed feasibility(circuit, contract, request), and the actual CLI regression passed after correction.
+- Alternatives considered: QPY/pickle upload (unsafe/unnecessary); arbitrary Python module loading (unauthorized execution); silent transpilation (changes gate/noise/edit semantics); deriving a contract from the converted candidate (circular).
+- Consequences: Supersedes D036's deliberate absence of import, without changing its measured policy. New source hashes invalidate untouched status under old source-pinned protocols; preserve those guards and version current-release verification separately. Provenance describes the original converted input; derived edits retain that ancestry rather than claiming to be the original representation. Native custom instructions, reset, unbound parameters, dynamic control and postmeasurement gates are rejected.
+- Files: qfault/qasm_import.py, qfault/lab.py, qfault/cli.py, tests/test_native_import.py, tests/test_custom_cli.py, decisions.md, flow.md, handoff.md, docs/implementation-ledger.md
+- Symptom: import-qasm is rejected as an invalid CLI choice; no public native converter exists.
+- Root cause: CLI only exposes the template workflow; QASM importer is evaluation-only and CustomCircuit has no import-provenance field.
+- Regression test: tests/test_native_import.py; tests/test_custom_cli.py.
+
+### D-050: Reject coercible scientific strings and booleans at schema boundaries
+- Date / phase / commit: 2026-10-22, input correctness, uncommitted
+- Context: The owner explicitly requires rejecting misleading strings and malformed numerical structures. Eight regression examples were accepted by the existing schemas, including a boolean qubit index and a string probability.
+- Decision: Use strict scalar numbers for Gate qubits/angles, Noise, Pauli/distribution values and tolerances, target tolerance, and lab/recovery alpha/time settings. JSON integer numbers remain valid where real values are expected; strings/booleans do not.
+- Why: All eight red regression cases demonstrated actual coercion. Validation must precede execution; converting a string to a scientific number silently hides malformed input.
+- Alternatives considered: Global strict configuration (would also reject valid JSON array-to-tuple inputs in Python model validation); frontend-only validation (does not protect CLI/API).
+- Consequences: Invalid formerly coercible requests now fail validation. Correct numerical requests and historical artifact inspection remain supported. Scientific formulas and threshold values are unchanged; historical source digests are not rewritten.
+- Files: qfault/quantum.py, qfault/lab.py, qfault/target.py, qfault/counterfactual.py, tests/test_strict_scientific_input.py, decisions.md, flow.md, handoff.md
+- Symptom: Gate qubits [true]/["0"], angle "0.2", and probability "1" pass validation.
+- Root cause: Individual Pydantic numerical fields used coercive defaults despite the Strict base class only forbidding extra fields/nonfinite values.
+- Regression test: tests/test_strict_scientific_input.py.
+
+### D-051: Patch the two verified dependency advisories without scientific upgrades
+- Date / phase / commit: 2026-10-22, dependency safety, uncommitted
+- Context: Fresh npm audit reports Vite 8.2.2 affected by six development-server advisories, including high-severity GHSA-587h-7wmj-h5pm. pip-audit 2.10.0 reports certifi 2026.7.22 affected by PYSEC-2026-4320 / GHSA-6q48-6c7w-9gw2.
+- Decision: Pin Vite 8.2.4 (same minor) and certifi 2026.10.19 in development extras, regenerate the existing npm/hashed Python locks with official tooling, and leave quantum dependencies unchanged. Install pip-audit separately under ignored .local/contract-release/audit-tools, outside the application closure. Extend strict validation to edit positions/angles after two additional red tests.
+- Why: npm registry confirms Vite 8.2.4 MIT and Node ^20.19.0 or >=22.12.0, compatible with actual Node 24.19.0. npm ci/audit/check/build pass with zero reported advisories after the update. pip-audit identifies certifi 2026.10.19 as the fix. The direct development constraint prevents future lock regeneration from restoring the affected trust store.
+- Alternatives considered: npm audit fix --force or latest Vite minor (unnecessary broader change); ignore a known advisory because the served application is local (does not satisfy the release scan); downgrade quantum packages (unrelated).
+- Consequences: Frozen environment records remain historical. Advisory scans are scoped and date-specific, not a security guarantee. No application dependency on the audit tool is added. Existing Three.js size and Starlette/httpx deprecation warnings remain.
+- Files: web/package.json, web/package-lock.json, pyproject.toml, requirements.lock, qfault/interventions.py, tests/test_strict_scientific_input.py, decisions.md, flow.md, handoff.md
+- Package: vite 8.2.4 (MIT); certifi 2026.10.19 (MPL-2.0); external audit-only pip-audit 2.10.0 (Apache-2.0).
+- Why this package: Retain the existing build tool and TLS trust store with the scoped advisory fixes; pip-audit queries current Python advisories.
+- Packages compared: Existing versions (reported affected); Vite 8.3.5 (larger unnecessary upgrade); alternate build/audit stacks (no verified need).
+
+### D-052: Bind replay identity and distinguish new-seed reruns
+- Date / phase / commit: 2026-10-22, evidence lifecycle, uncommitted
+- Context: Custom/recovery replay already creates a new investigation but does not persist the source identity or provide explicit new-seed semantics. The regression confirms the parent ID is absent.
+- Decision: Add ReplayOptions with an optional strict bounded seed to the two existing custom/recovery replay routes. Persist source_experiment_id and deterministic_replay/new_seed_rerun in the new record before ArtifactStore.save. Keep the original immutable and share run_lab/run_recovery admission/error paths.
+- Why: Same-seed repeatability is different from a new-seed rerun; both need traceable ancestry. Omitted/empty options preserve existing browser requests.
+- Alternatives considered: Reuse the original ID (violates immutable records); silently change seeds (ambiguous scientific meaning); add duplicate execution routes (unnecessary).
+- Consequences: New-seed reruns change only the seed, not the declared circuit/contract. Simulator model bias remains shared. No external timestamp or independent physical experiment is claimed. Legacy artifacts are not rewritten.
+- Files: qfault/api.py, tests/test_replay_identity.py, decisions.md, flow.md, handoff.md
+- Symptom: A replay's replay.source_experiment_id is absent and a requested new seed is ignored by the old route signature.
+- Root cause: The routes revalidate the saved request and call run_lab/run_recovery without parent metadata or replay options.
+- Regression test: tests/test_replay_identity.py (failed before implementation).
+
+### D-053: Foreground measured recovery with one recorded reporting source
+- Date / phase / commit: 2026-10-22, product evidence, uncommitted
+- Context: Landing/overview emphasize older 68-case template results despite the complete current external measured-recovery archive. Repeating constants across pages risks drift and obscures denominators/evidence availability.
+- Decision: Add GET /api/research derived from the frozen external summary, and reuse ResearchEvidence on landing/overview. Display both policies, overall/eligible denominators, rejected proposals, noise-only proposals, shots, source/protocol and evidence availability. Add a prominent Custom Circuit Laboratory action while preserving template entry and all hero/transition code. Add a tightly scoped Gitleaks allowlist for the exact source-digest false positive.
+- Why: The route regression failed 404 before implementation. The independent raw audit checked the underlying external aggregates. Gitleaks 8.30.1 scans 108 historical commits and identifies api.py's recorded 64-hex source fingerprint as a generic key; the field is /provenance/implementation/qfault\\api.py, not a credential. The allowlist matches that exact file and digest-shaped api.py match only.
+- Alternatives considered: Hardcode new metrics in components (drift); replace hero/art (no verified need); hide all scanner findings (unsafe); remove historical evidence (violates preservation).
+- Consequences: Loading/failure has no fabricated metrics. Availability reports file presence, not a fresh audit on every HTTP request. Historical benchmarks remain explicitly historical. Existing template browser entry remains functional.
+- Files: qfault/api.py, web/src/components/ResearchEvidence.tsx, web/src/components/landing/Landing.tsx, web/src/components/Overview.tsx, tests/test_research_summary.py, .gitleaks.toml, decisions.md, flow.md, handoff.md
+- Regression test: tests/test_research_summary.py independently reconciles displayed fields with frozen per-case rows.
+
+### D-054: Refuse unsupported artifact schemas independently of valid hashes
+- Date / phase / commit: 2026-10-22, evidence verification, uncommitted
+- Context: Two regressions show schema_version=999 passes verification when the recorded hashes match; a consistency digest does not authorize interpreting unknown schemas.
+- Decision: Add _supported_investigation and enforce manifest schema 1 and the existing template/custom/recovery version-kind pairs in local/export verification. Preserve all old supported artifacts; unsupported records fail explicitly and raw files remain inspectable without migration.
+- Why: Both tests failed before the guard, including a rehashed unknown investigation. The owner requires explicit unsupported-schema behavior.
+- Alternatives considered: Silently treat every record as the latest format (changes historical scientific meaning); rewrite old records (forbidden); rely on embedded valid=true (not verification).
+- Consequences: Hash consistency remains separate from scientific correctness/authenticity. New schemas need an explicit compatibility decision. Existing schema 1 template, 2 custom, 3 recovery records remain supported.
+- Files: qfault/storage.py, tests/test_artifact_versions.py, decisions.md, flow.md, handoff.md
+- Symptom: Unknown manifest/investigation schema 999 verifies successfully.
+- Root cause: Verifiers check digest/canonicalization membership but never inspect schema-version support.
+- Regression test: tests/test_artifact_versions.py.
+
+### D-055: Enforce the declared local host and same-origin mutation boundary
+- Date / phase / commit: 2026-10-22, local API trust, uncommitted
+- Context: The server binds loopback but accepts arbitrary Host values; a regression reproduces HTTP 200 for attacker.example. A local-only trust model needs an explicit browser origin/host boundary.
+- Decision: Add LocalRequestBoundary outside the existing byte limiter: require one loopback Host, reject credentials/path/invalid port in authority, and reject state-changing requests with an Origin differing from the actual scheme/Host. CLI clients without Origin remain supported. testserver is allowed only in explicitly constructed test/store applications, not the default served application. Forwarded headers are not trusted by this middleware.
+- Why: Browser JSON/CORS constraints alone do not validate the Host used to access a loopback service. The observed arbitrary-host response contradicts the declared local trust boundary.
+- Alternatives considered: Authentication/cloud hosting (outside scope); blanket CORS allowance (weakens boundary); shared secret configuration (unnecessary for the specified local workbench).
+- Consequences: Default served hosts are localhost, 127.0.0.1 and ::1; command-line/API clients should use those names. Cross-origin mutation returns structured 403, untrusted host 400, before execution. This is not an authenticated multiuser service or malicious-local-process sandbox.
+- Files: qfault/api.py, tests/test_local_trust.py, decisions.md, flow.md, handoff.md
+- Symptom: Untrusted Host attacker.example is accepted with HTTP 200.
+- Root cause: Loopback binding alone does not inspect the HTTP authority or Origin.
+- Regression test: tests/test_local_trust.py (failed before implementation).
+
+### D-056: Recover authentic historical measurement evidence without fabricating a rerun
+- Date / phase / commit: 2026-10-22, historical evidence, uncommitted
+- Context: The preserved recovery worktree contains the original frozen 310 investigations. Its summary is byte-identical to the committed 8fb0e091... digest. The existing independent audit verifies all manifests, count-derived intervals, rows, budgets and policies, with zero replays.
+- Decision: Curate exactly those controlled research exports as a small versioned compressed public artifact, with a separate manifest and portable verify_recovery_archive command. No human reviews or ordinary sessions enter it. Evidence-inclusive packaging verifies it; source-only omits report archives. Keep historical summary/protocol bytes and source mismatch guard unchanged. Update the ordinary lab recovery note to point to the separate measured operation, preserving its legacy status.
+- Why: This repairs the actual public evidence gap using verified original records rather than fabricated identities. The independent archive verifier reports 310 valid records: conservative 16 verified/62, 0 rejected, 1,890,304 shots; point 16 verified/62, 5 rejected, 1,980,416 shots. This is identical historical evidence, not new performance evidence. The compressed selected archive is 1,057,578 bytes.
+- Alternatives considered: Publish entire ignored worktrees (private/unreviewed contents); regenerate old IDs/timestamps (false provenance); leave available verified evidence inaccessible (unnecessary gap); raw uncompressed runtime directories (unnecessary size).
+- Consequences: Source-only remains explicitly incomplete. Other historical families remain unavailable where not independently established. The portable verifier reuses independent raw interval reconstruction, never engine ranking/verdict functions. Preserved historical source mismatch is expected. Schema guards require adversarial replay fixtures to use their correct schema 2/3 so the tests continue exercising invalid replay rather than stopping at unrelated version rejection; no rejection assertions were weakened.
+- Files: benchmarks/historical-recovery-v1/manifest.json, benchmarks/historical-recovery-v1/reports.jsonl.gz, scripts/verify_recovery_archive.py, tests/test_recovery_archive.py, scripts/package_submission.py, qfault/lab.py, tests/test_final_api_adversarial.py, docs/evidence-availability.md, docs/handoff-history-20261016.md, decisions.md, flow.md, handoff.md
+
+### D-057: Version current-source replication and demonstrate the native measured workflow
+- Date / phase / commit: 2026-10-22, current release verification, uncommitted
+- Context: Current input/provenance/schema changes intentionally invalidate old source-pinned protocols. The old source guard must remain intact; a practical demonstration must use a custom/imported circuit and honest negative outcomes.
+- Decision: Add a separately frozen current-release replication protocol/runner using the prior outcome-independent 72-case subset. It compares complete scientific projections, permitting only the exact enumerated ordinary-lab explanatory-note change. Label reused designs/seeds as deterministic replication, never untouched holdout/new performance evidence. Add a native H(0),Z(0) API/Aer demo with independent analytic Z/IX contracts and noise/budget controls. Replace the root flow with complete current subsystem records while preserving its earlier text separately.
+- Why: The actual native demo at seed 7241 produced all five prescribed outcomes: inadequate Z confirmed only its scoped distribution; IX detected discrepancy; bounded recovery freshly verified; readout control abstained; reserve shortage returned insufficient budget without measurements. The new complete suite passed 479 tests. No old protocol/summary was rewritten or retuned.
+- Alternatives considered: Disable old guards (invalid provenance); call observed cases untouched (false claim); use a hardcoded live demo response (not execution); leave the runtime flow mixed with retired symbols (misleading documentation).
+- Consequences: Freeze and commit sources/protocol before current replication. Source digest rule explicitly replaces CRLF byte pairs with LF and otherwise preserves bytes, separate from historical byte digests. More shots/different seeds do not create new circuit families. Publication still depends on remaining gates. Documentation and demo script are not proof a narrated video exists.
+- Files: scripts/current_release_evaluation.py, configs/current-release-replication-v1.json, scripts/judging_demo.py, docs/native-import.md, docs/judging-guide.md, docs/flow-history-20261022.md, README.md, decisions.md, flow.md, handoff.md
+
+### D-058: Retain a negative dense-target development result and close reviewed archive corruption handling
+- Date / phase / commit: 2026-10-23, independent verification, uncommitted
+- Context: Dense targets remain a concrete limitation; a target-only allocation improvement needs development evidence before adoption. Independent code review found no Critical/Important issue, but reproduced one decompression-error handling defect in package verification.
+- Decision: Compare fixed uniform full-group measurement with bounded coefficient-weighted allocation on the existing two-qubit development rotation-entangler design only. Minimize the L1 uncertainty proxy using N_g proportional to w_g^(2/3), with integer budgets/per-job caps. Record all 16 executed cases/raw counts. Do not adopt a production policy: both confirm 4/8, all 16 intervals cover oracle fidelity. Catch zlib.error in package verification after reproducing the exact malformed deflate case in a regression.
+- Why: The allocation test failed before implementation and passes against an analytic optimum. Matched-shot/group experiments show a proxy improvement does not establish greater verified yield; repeated seeds are not architectures. Reviewer corruption reproduction was independently reproduced: invalid compressed block plus matching outer checksum raised zlib.error rather than returning invalid.
+- Alternatives considered: Tune on holdout or adopt from proxy score alone (invalid evidence); present one small development family as generalization (unsupported); ignore a verifier crash because the outer checksum usually detects corruption (fails corruption contract).
+- Consequences: Existing methods remain production baselines. The study is explicitly development, ideal measurement, one architecture, no superiority claim. Package corruption returns invalid without extraction. Current source-pinned protocol is unaffected because only separate study/package scripts changed.
+- Files: scripts/dense_target_study.py, tests/test_witness_allocation.py, benchmarks/dense-target-development-v1.json, scripts/package_submission.py, tests/test_release_package.py, decisions.md, flow.md, handoff.md
+- Symptom: verify_package raises zlib.error: Error -3 while decompressing data: invalid block type for a malformed deflated ZIP with matching unsigned outer checksum.
+- Root cause: Its exception boundary omitted zlib.error raised by zipfile.testzip decompression.
+- Regression test: tests/test_release_package.py::test_package_verifier_returns_invalid_for_rehashed_broken_deflate (observed red before fix).
+
+### D-059: Clarify fresh-user safety and extend the primary-source task comparison
+- Date / phase / commit: 2026-10-23, release documentation, uncommitted
+- Context: The owner requires secrets/private research excluded and related tools compared by actual task rather than unmatched performance numbers. This local workbench needs no provider key/database.
+- Decision: Add explicit environment/key/database/private-research ignore patterns without deleting files; state no external key/service requirement. Extend the qualitative comparison with current primary Qiskit Experiments and Mitiq documentation/license links, checked on this date, without installing/copying either. Keep original pinned comparison records unchanged below the new dated section.
+- Why: Qiskit Experiments documents characterization/tomography/readout mitigation; Mitiq documents expectation-value mitigation. These overlap with measurement workflows but are different tasks from QFault's finite-contract edit selection/confirmation. Current license texts were read directly, rather than inferred from memory.
+- Alternatives considered: Add unused provider configuration (misleading); publish private runtime state to ease setup (forbidden); rank different tasks using published success numbers (unfair).
+- Consequences: Ignore patterns do not remove already tracked material; explicit tracked/staged/history scans remain required. No dependency, cloud infrastructure or competition action is introduced. Future upstream changes need a new dated source check.
+- Files: .gitignore, README.md, docs/competitor-comparison.md, decisions.md, flow.md, handoff.md
+
+### D-060: Bound standalone report input and preserve superseded unexecuted protocol drafts
+- Date / phase / commit: 2026-10-23, final input/resource check, uncommitted
+- Context: CLI verify-report reads an entire arbitrary file before parsing. A 16-MiB-plus regression confirms the oversized input reaches JSON parsing instead of an explicit limit. The current-source protocol had been frozen but not executed/committed.
+- Decision: Read at most 16 MiB plus one byte and reject oversized reports before parsing/verification. Preserve protocol drafts v1/v2 rather than overwrite them; freeze v3 against final sources and use the filename stem as its unique protocol ID. Expose --protocol so each preserved version retains its own source guard.
+- Why: The oversized report test failed with an end-of-file JSON parser error before the bound and passes with the explicit limit afterward. v1 predates this source change; v2 exposed a hardcoded protocol-name oversight before any execution. Neither is performance evidence. A new version avoids rewriting a frozen source record.
+- Alternatives considered: Ignore local-file resource limits (contradicts the requested contract); overwrite old fingerprints (forbidden); claim a failed precommit invocation was an evaluated run (false).
+- Consequences: Default supported current replication is v3; v1/v2 are superseded unexecuted drafts. Scientific algorithms/thresholds remain unchanged. Report export integrity and gate statuses are unaffected by the new upper bound.
+- Files: qfault/cli.py, tests/test_report_size_limit.py, scripts/current_release_evaluation.py, configs/current-release-replication-v1.json, configs/current-release-replication-v2.json, configs/current-release-replication-v3.json, docs/dense-target-development.md, decisions.md, flow.md, handoff.md
+- Symptom: Oversized report is fully read and parsed rather than rejected with a resource-limit error.
+- Root cause: verify-report uses Path.read_bytes without a bound.
+- Regression test: tests/test_report_size_limit.py (red before fix, then nine relevant CLI/export tests passed).
+
+### D-061: Correct measured-evidence contrast on the light workbench
+- Date / phase / commit: 2026-10-23, visual verification, uncommitted
+- Context: Actual mobile overview screenshot shows the newly reused research component inherits landing colors intended for a dark background; numeric metrics/captions are too pale against white.
+- Decision: Scope dark text and readable caption sizing to the research component inside .overview, leaving landing/hero/transition styles unchanged.
+- Why: The real browser capture artifacts/contract-release/browser-cinematic/workbench-390.png was opened and shows the defect. Reuse of global research-metrics styles, rather than backend data, causes the contrast issue.
+- Alternatives considered: Change the approved global palette/hero (unnecessary); leave a verified accessibility defect (unacceptable).
+- Consequences: Only light-workbench evidence styling changes. Rebuild and actual browser/contrast inspection required before completion.
+- Files: web/src/components/ResearchEvidence.css, web/src/components/ResearchEvidence.tsx, decisions.md, flow.md, handoff.md
+- Symptom: Research figures/captions are faint on the white overview panel.
+- Root cause: Landing research-metrics CSS is reused on a light surface without scoped color overrides.
+- Regression test: Actual overview desktop/mobile browser capture and computed contrast verification; no trivial implementation-mirroring unit test.
+
+### D-062: Verify native import in the real browser and record scoped contrast evidence
+- Date / phase / commit: 2026-10-23, final browser verification, uncommitted
+- Context: Native conversion works in Python/API, but the owner requires the real editor/recovery/download path and visual accessibility evidence, not an inferred browser pass.
+- Decision: Add native_demo_e2e using the actual declared native fixture, existing JSON editor, feasibility route, Aer investigation/recovery and real downloaded export. Check retained provenance, desktop/mobile layout and computed contrast of the corrected light-surface research metrics/captions. Retain screenshots locally and inspect them.
+- Why: The actual run passed: phase discrepancy and verified recovery, source provenance retained, export independently valid, 390/375/360 widths without overflow, no page errors. Minimum tested metric/caption contrast against the actual white panel is 8.076:1. Both corrected overview and recovery mobile captures were opened.
+- Alternatives considered: API-only inference or mocked browser results (insufficient); broad interface redesign (not requested).
+- Consequences: This is Windows Chromium/Aer evidence for the actual tested source, not all browsers/platforms or every text element. No narrated video claim follows. Existing ten suites also passed before the isolated contrast change.
+- Files: scripts/native_demo_e2e.py, docs/implementation-ledger.md, decisions.md, flow.md, handoff.md
+
+### D-063: Apply explicit schema support to blind exports and classify source-fingerprint scan matches
+- Date / phase / commit: 2026-10-23, final evidence boundary, uncommitted
+- Context: Final schema inspection finds the blind-export verifier dispatch still accepts top-level schema 999. The new real challenge regression reproduces acceptance. Final scanner matches api.py source fingerprints in three unexecuted replication protocol drafts, not credentials.
+- Decision: Require integer challenge export schema 1 before chain verification. Preserve draft v3 and freeze final current-source v4 after this guard; all earlier drafts remain unexecuted. Add a narrow Gitleaks exception only for api.py's 64-hex fingerprint in these four explicitly named source protocol versions, in addition to the previous frozen-study exception.
+- Why: Unsupported schemas cannot be silently interpreted even when hash membership is valid. The scanner's redacted matches identify api.py keys in source_sha256_normalized_lf; those values are computed source hashes, not provider material.
+- Alternatives considered: Accept unknown blind versions (inconsistent with ordinary report rules); broadly ignore config files or generic keys (unsafe); overwrite v3 source fingerprint (forbidden).
+- Consequences: No known valid blind export changes. New versions need explicit support. Current supported replication path is v4; v1–v3 are documented unexecuted drafts. No secrets were removed/replaced and no rotation need was established.
+- Files: qfault/storage.py, tests/test_artifact_versions.py, scripts/current_release_evaluation.py, configs/current-release-replication-v4.json, .gitleaks.toml, decisions.md, flow.md, handoff.md
+- Symptom: A valid blind export with schema_version changed to 999 still verifies true.
+- Root cause: Special blind-export dispatch checks chain format/digests but omitted top-level version support.
+- Regression test: tests/test_artifact_versions.py::test_unknown_blind_export_version_is_not_silently_reinterpreted (failed before guard).

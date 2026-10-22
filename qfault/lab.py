@@ -36,12 +36,33 @@ class ComputationalInput(Strict):
     bitstring: str = Field(pattern=r"^[01]{2,5}$")
 
 
+class ImportProvenance(Strict):
+    """Recorded conversion input; metadata never supplies a behavioral contract."""
+    format: Literal['quantumcircuit-v1', 'qasm2-v1']
+    importer_version: Literal[1] = 1
+    qiskit_version: str = Field(min_length=1, max_length=40)
+    source_representation: str = Field(min_length=1, max_length=65536)
+    source_sha256: str = Field(pattern=r'^[0-9a-f]{64}$')
+    converted_circuit_id: str = Field(pattern=r'^custom_[0-9a-f]{20}$')
+    strip_barriers: bool = Field(strict=True)
+    strip_terminal_measurements: bool = Field(strict=True)
+    allow_decomposition: bool = Field(default=False, strict=True)
+
+    @model_validator(mode='after')
+    def valid(self):
+        import hashlib
+        if hashlib.sha256(self.source_representation.encode('utf-8')).hexdigest() != self.source_sha256:
+            raise ValueError('import source representation digest mismatch')
+        return self
+
+
 class CustomCircuit(Strict):
     schema_version: Literal[1]
     name: str = Field(min_length=1, max_length=80)
     n_qubits: int = Field(ge=2, le=5, strict=True)
     input: ComputationalInput
     gates: tuple[Gate, ...] = Field(max_length=32)
+    import_provenance: ImportProvenance | None = Field(default=None, exclude_if=lambda value: value is None)
 
     @model_validator(mode="after")
     def valid(self):
@@ -74,8 +95,8 @@ class CustomCircuit(Strict):
 
 class PauliObservable(Strict):
     pauli: str = Field(pattern=r"^[IXYZ]{2,5}$")
-    expected: float = Field(ge=-1, le=1)
-    tolerance: float = Field(gt=0, le=1)
+    expected: float = Field(ge=-1, le=1, strict=True)
+    tolerance: float = Field(gt=0, le=1, strict=True)
 
 
 class PauliContract(Strict):
@@ -100,8 +121,8 @@ class DistributionContract(Strict):
     kind: Literal["measurement_distribution"]
     environment: Literal["ideal"] = "ideal"
     basis: Literal["X", "Y", "Z"] = "Z"
-    expected_probabilities: dict[str, float] = Field(min_length=1, max_length=32)
-    tolerance: float = Field(gt=0, le=1)
+    expected_probabilities: dict[str, Annotated[float, Field(strict=True)]] = Field(min_length=1, max_length=32)
+    tolerance: float = Field(gt=0, le=1, strict=True)
 
     @model_validator(mode="after")
     def valid(self):
@@ -254,7 +275,7 @@ class LabRequest(Strict):
     max_shots: int = Field(default=8192, ge=128, le=100000, strict=True)
     max_evaluations: int = Field(default=24, ge=2, le=100, strict=True)
     max_looks: int = Field(default=4, ge=1, le=8, strict=True)
-    alpha_total: float = Field(default=0.01, gt=1e-6, le=0.1)
+    alpha_total: float = Field(default=0.01, gt=1e-6, le=0.1, strict=True)
     seed: int = Field(default=42, ge=0, lt=2 ** 32, strict=True)
 
     @model_validator(mode="before")
@@ -719,8 +740,8 @@ def investigate_lab(request, truth=None):
                  "confidence": None, "confidence_semantics": "No class probability claimed; intervals only",
                  "limitations": feas["limitations"]}
     recovery = {"status": "UNSUPPORTED",
-                "reason": "No recovery class is validated for custom-circuit contracts (including target states); "
-                          "repair selection from measurements is not implemented."}
+                "reason": "Automatic recovery is not part of an ordinary laboratory investigation. "
+                          "Use the separate bounded measured-recovery operation to screen edits and collect fresh verification."}
     cost = {**budget.report(), "circuit_executions": len(records),
             "exact_state_evaluations": sum(a["shots"] == 0 for a in budget.actions),
             "basis_gates": sum(a["basis_gates"] for a in ledger), "runtime_seconds": perf_counter() - start}

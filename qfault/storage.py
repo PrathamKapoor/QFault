@@ -5,6 +5,15 @@ from pathlib import Path
 from .evidence import canonical,digest,identifier,timestamp
 
 
+def _supported_investigation(record):
+    if not isinstance(record,dict) or type(record.get('schema_version')) is not int:
+        return False
+    version=record['schema_version']
+    return ((version==1 and record.get('investigation_kind') is None) or
+            (version==2 and record.get('investigation_kind')=='custom_circuit') or
+            (version==3 and record.get('investigation_kind')=='counterfactual_recovery'))
+
+
 class ArtifactStore:
     def __init__(self,root):
         self.root=Path(root)
@@ -34,12 +43,17 @@ class ArtifactStore:
             manifest=json.loads((folder/"manifest.json").read_bytes())
             if not isinstance(manifest,dict) or not isinstance(manifest.get("artifacts"),dict):
                 raise ValueError("manifest and artifact map must be objects")
+            if type(manifest.get('schema_version')) is not int or manifest['schema_version']!=1:
+                errors.append('unsupported manifest schema')
             if manifest.get("algorithm")!="sha256" or manifest.get("canonicalization")!="qfault-json-v1":
                 errors.append("unsupported integrity format")
             if set(manifest.get("artifacts",{}))!={"investigation.json","evaluation.json"} or manifest.get("experiment_id")!=eid:
                 errors.append("invalid manifest membership")
             for name in ["investigation.json","evaluation.json"]:
-                actual=digest(json.loads((folder/name).read_bytes()))
+                document=json.loads((folder/name).read_bytes())
+                if name=='investigation.json' and not _supported_investigation(document):
+                    errors.append('unsupported investigation schema')
+                actual=digest(document)
                 if actual!=manifest["artifacts"].get(name): errors.append(f"digest mismatch: {name}")
             reviews=manifest.get("reviews",{})
             if not isinstance(reviews,dict): raise ValueError("review index must be an object")
@@ -113,6 +127,10 @@ def verify_export(report):
         if not isinstance(report,dict): raise ValueError('report must be an object')
         manifest=report['manifest']
         if not isinstance(manifest,dict) or not isinstance(manifest.get('artifacts'),dict): raise ValueError('invalid manifest')
+        if type(manifest.get('schema_version')) is not int or manifest['schema_version']!=1:
+            errors.append('unsupported manifest schema')
+        if not _supported_investigation(report['investigation']):
+            errors.append('unsupported investigation schema')
         if manifest.get('algorithm')!='sha256' or manifest.get('canonicalization')!='qfault-json-v1':
             errors.append('unsupported integrity format')
         if set(manifest['artifacts'])!={'investigation.json','evaluation.json'}: errors.append('invalid artifact membership')
@@ -137,6 +155,8 @@ def verify_challenge_export(report):
     errors=[]
     steps={'observed':'OBSERVED','diagnosed':'DIAGNOSED','freeze':'FROZEN','reveal':'REVEALED'}
     try:
+        if type(report.get('schema_version')) is not int or report['schema_version']!=1:
+            raise ValueError('unsupported challenge schema')
         if report['kind']!='blind_challenge' or report['manifest']['algorithm']!='sha256':raise ValueError('format')
         state=report['state'];names=list(steps)[:list(steps.values()).index(state)+1]
         docs=report['documents'];hashes=report['manifest']['artifacts']

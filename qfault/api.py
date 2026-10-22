@@ -14,6 +14,33 @@ from .storage import ArtifactStore
 from .evidence import canonical,identifier,timestamp
 
 
+class LocalRequestBoundary:
+    """Enforce loopback host/same-origin mutation semantics, without proxy trust."""
+    def __init__(self,app,testing=False):
+        self.app=app
+        self.allowed={'localhost','127.0.0.1','::1'} | ({'testserver'} if testing else set())
+
+    async def __call__(self,scope,receive,send):
+        if scope['type']!='http': return await self.app(scope,receive,send)
+        from urllib.parse import urlsplit
+        hosts=[v for k,v in scope.get('headers',[]) if k.lower()==b'host']
+        try:
+            if len(hosts)!=1: raise ValueError('Host required')
+            host=hosts[0].decode('ascii').lower()
+            parsed=urlsplit('http://'+host)
+            if parsed.hostname not in self.allowed or parsed.username or parsed.password or parsed.path or parsed.query or parsed.fragment:
+                raise ValueError('Invalid local host')
+            if parsed.port is not None and not 1<=parsed.port<=65535: raise ValueError('Invalid port')
+        except (ValueError,UnicodeError):
+            return await JSONResponse({'detail':'Local host required'},status_code=400)(scope,receive,send)
+        if scope.get('method') not in ('GET','HEAD','OPTIONS'):
+            origins=[v for k,v in scope.get('headers',[]) if k.lower()==b'origin']
+            expected=(scope.get('scheme','http')+'://'+host).encode('ascii')
+            if origins and (len(origins)!=1 or origins[0]!=expected):
+                return await JSONResponse({'detail':'Same-origin local request required'},status_code=403)(scope,receive,send)
+        await self.app(scope,receive,send)
+
+
 class RequestBodyLimit:
     """Bound actual API bytes before JSON parsing, including chunked requests."""
     def __init__(self, app, limit=65536):
@@ -82,9 +109,14 @@ class ReviewRequest(Strict):
     reason: str = Field(min_length=1,max_length=2000)
 
 
+class ReplayOptions(Strict):
+    seed: int | None = Field(default=None, ge=0, lt=2**32, strict=True)
+
+
 def create_app(root=None):
     app=FastAPI(title="QFAULT",version="0.1.0")
     app.add_middleware(RequestBodyLimit)
+    app.add_middleware(LocalRequestBoundary,testing=root is not None)
     store=ArtifactStore(root or os.environ.get("QFAULT_ARTIFACTS","artifacts/investigations"))
     lock=threading.Lock()
     from .challenge import BlindChallenges,ChallengeRequest,ChallengeConflict
@@ -160,6 +192,30 @@ def create_app(root=None):
         data=json.loads(path.read_bytes())
         return {k:v for k,v in data.items() if k!="rows"}
 
+    @app.get('/api/research')
+    def current_research():
+        import hashlib
+        root=Path(__file__).resolve().parents[1]
+        path=root/'benchmarks/external-holdout-v1/summary.json'
+        if not path.is_file(): raise HTTPException(404,'Current research summary is unavailable')
+        data=json.loads(path.read_bytes())
+        recovery={}
+        for policy in ('conservative','point_discrepancy'):
+            row=data['recovery_summaries'][policy]
+            recovery[policy]={'runs':row['runs'],'eligible':row['eligible'],
+                'verified':row['outcomes'].get('VERIFIED_UNDER_DECLARED_CONTRACT',0),
+                'rejected':row['outcomes'].get('REJECTED',0),'shots':row['shots'],
+                'executions':row['executions'],'noise_only_proposals':row['noise_only_proposals']}
+        reports=root/'benchmarks/external-holdout-v1/reports.jsonl.gz'
+        return {'protocol':data['protocol']['name'],'source_commit':data['execution_revision'],
+            'summary_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+            'architectures':data['architecture_count'],'recovery':recovery,
+            'evidence':{'available':reports.is_file(),'scope':'Current external study; availability is not a fresh integrity audit',
+                'verification_command':'python -m scripts.verify_external_results benchmarks/external-holdout-v1/summary.json'},
+            'limitations':['Controlled local simulation; repeated seeds are not independent circuit families',
+                'One declared input/contract; a verified intervention does not identify the causal origin',
+                'Historical template/lab/target studies have separate evidence-availability records']}
+
     @app.get("/api/benchmark/report")
     def benchmark_report():
         path=Path(__file__).resolve().parents[1]/"benchmarks"/"results.json"
@@ -200,10 +256,13 @@ def create_app(root=None):
                 "feasibility":feasibility(request.circuit,request.contract,request),
                 "conventions":"Bitstrings/Pauli strings use Qiskit order: leftmost character = highest qubit"}
 
-    def run_lab(request):
+    def run_lab(request, replay_of=None, semantics=None):
         if not lock.acquire(blocking=False): raise HTTPException(409,"An investigation is already running")
         try:
-            return store.load(store.save(investigate_lab(request)))
+            result=investigate_lab(request)
+            if replay_of:
+                result['replay'].update(source_experiment_id=replay_of,semantics=semantics)
+            return store.load(store.save(result))
         except (ValueError,RuntimeError,ImportError,OSError) as exc:
             failure={"failure_id":identifier("failure"),"created_at":timestamp(),"configuration":request.model_dump(mode="json"),
                      "execution_status":"FAILED","failure_reason":str(exc)}
@@ -217,9 +276,13 @@ def create_app(root=None):
 
     from .counterfactual import RecoveryRequest,recover
 
-    def run_recovery(request):
+    def run_recovery(request, replay_of=None, semantics=None):
         if not lock.acquire(blocking=False): raise HTTPException(409,"An investigation is already running")
-        try: return store.load(store.save(recover(request)))
+        try:
+            result=recover(request)
+            if replay_of:
+                result['replay'].update(source_experiment_id=replay_of,semantics=semantics)
+            return store.load(store.save(result))
         except (ValueError,RuntimeError,ImportError,OSError) as exc:
             failure={"failure_id":identifier("failure"),"created_at":timestamp(),
                      "configuration":request.model_dump(mode="json"),"execution_status":"FAILED",
@@ -233,20 +296,24 @@ def create_app(root=None):
     def measured_recovery(request:RecoveryRequest): return run_recovery(request)
 
     @app.post('/api/lab/recoveries/{eid}/replay',status_code=201)
-    def replay_recovery(eid:str):
+    def replay_recovery(eid:str, options:ReplayOptions=ReplayOptions()):
         original=existing(eid)
         if original.get('investigation_kind')!='counterfactual_recovery': raise HTTPException(422,'Not a measured recovery')
         try: request=RecoveryRequest.model_validate(original['replay']['request'])
         except (ValueError,KeyError,TypeError): raise HTTPException(422,'Saved replay request is invalid')
-        return run_recovery(request)
+        semantics='new_seed_rerun' if options.seed is not None and options.seed!=request.seed else 'deterministic_replay'
+        if options.seed is not None: request=request.model_copy(update={'seed':options.seed})
+        return run_recovery(request,replay_of=eid,semantics=semantics)
 
     @app.post("/api/lab/investigations/{eid}/replay",status_code=201)
-    def lab_replay(eid:str):
+    def lab_replay(eid:str, options:ReplayOptions=ReplayOptions()):
         original=existing(eid)
         if original.get("investigation_kind")!="custom_circuit": raise HTTPException(422,"Not a custom-circuit investigation")
         try: request=LabRequest.model_validate(original['replay']['request'])
         except (ValueError,KeyError,TypeError): raise HTTPException(422,'Saved replay request is invalid')
-        return run_lab(request)
+        semantics='new_seed_rerun' if options.seed is not None and options.seed!=request.seed else 'deterministic_replay'
+        if options.seed is not None: request=request.model_copy(update={'seed':options.seed})
+        return run_lab(request,replay_of=eid,semantics=semantics)
 
     @app.get("/api/experiments")
     def list_experiments(): return store.list()

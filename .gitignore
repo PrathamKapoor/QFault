@@ -10,3 +10,15 @@ artifacts/
 %SystemDrive%/
 .venv-isolated/
 .venv-isolated-retry/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.db
+*.sqlite
+*.sqlite3
+paper/
+research/
+*.tex

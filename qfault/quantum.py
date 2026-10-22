@@ -2,7 +2,7 @@
 from itertools import product
 from math import pi
 from time import perf_counter
-from typing import Literal
+from typing import Annotated, Literal
 import importlib.metadata as metadata
 import numpy as np
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -18,8 +18,8 @@ class Strict(BaseModel):
 
 class Gate(Strict):
     name: Literal["h", "x", "z", "s", "rx", "ry", "rz", "cx", "cz", "cp", "swap"]
-    qubits: tuple[int, ...]
-    angle: float | None = None
+    qubits: tuple[Annotated[int, Field(strict=True)], ...]
+    angle: Annotated[float, Field(strict=True)] | None = None
 
     @model_validator(mode="after")
     def valid(self):
@@ -57,8 +57,8 @@ class Circuit(Strict):
 
 
 class Noise(Strict):
-    readout: float = Field(default=0,ge=0,le=.5)
-    depolarizing: float = Field(default=0,ge=0,le=1)
+    readout: float = Field(default=0,ge=0,le=.5,strict=True)
+    depolarizing: float = Field(default=0,ge=0,le=1,strict=True)
 
 
 class Contract(Strict):

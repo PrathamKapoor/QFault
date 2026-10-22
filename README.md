@@ -11,9 +11,10 @@ QFAULT runs small quantum circuits (2–5 qubits) on local Qiskit simulators, co
 Everything is simulated (Qiskit reference simulators and Qiskit Aer). QFAULT makes no hardware, quantum-advantage or universal-verification claims; finite-shot uncertainty, abstentions and negative results are reported alongside successes.
 
 Current scientific scope and dated records: [current-state index](docs/current-state.md).
-The external-validation research described below is committed locally on
-`research/external-validation`; public `main` remains the reviewed release at
-`35cbbb9`, whose [two CI jobs passed](https://github.com/PrathamKapoor/QFault/actions/runs/38787130996).
+The current release adds native circuit import, explicit measured recovery evidence,
+parent-linked replay and verifiable source/evidence packages. The earlier reviewed
+release at `35cbbb9` has [historical passing CI](https://github.com/PrathamKapoor/QFault/actions/runs/38787130996);
+check hosted results for the exact current Git revision separately.
 
 ## Quick start
 
@@ -45,7 +46,24 @@ npm --prefix web ci && npm --prefix web run build
 
 Open <http://127.0.0.1:8000/>. The server binds to localhost only; use `qfault serve --port 8001` if 8000 is taken. The frontend must be built (`npm --prefix web run build`) before the server can serve it.
 
+No external API key, provider account, cloud service or database is required.
+Simulation uses local CPU/memory. Keep the server on loopback; it is not an
+authenticated Internet service. Personal records stay in ignored `artifacts/`.
+
 ### A first real investigation
+
+Open **Custom Circuit** to validate a circuit and an independently declared
+contract, inspect feasibility, collect evidence, and optionally run **Measured
+recovery**. Native Qiskit object conversion and the local QASM/CLI path are in
+the [import guide](docs/native-import.md). A repeatable native-circuit phase
+demonstration, noise abstention and insufficient-budget control use the real API:
+
+```powershell
+python -m scripts.judging_demo --out artifacts/my-native-demo
+python -m qfault verify-report artifacts/my-native-demo/fresh_recovery-report.json
+```
+
+The template path remains available:
 
 In a second terminal (same virtual environment):
 
@@ -92,6 +110,14 @@ Optional browser checks need Chromium: `python -m playwright install chromium`, 
 
 ## Scientific evidence
 
+Raw evidence availability is explicit in the [evidence ledger](docs/evidence-availability.md).
+The external study has 2,206 raw exports. The authentic historical measured
+recovery study now has a separately versioned 310-export archive, independently
+recountable with `python -m scripts.verify_recovery_archive`. Other historical
+families retain summary-only limitations where raw acquisition is unavailable.
+Source-only and evidence-inclusive [package commands](docs/evidence-availability.md#package-contracts)
+have distinct contracts and never require the owner's ordinary runtime store.
+
 Results come from frozen, prespecified simulation evaluations. Denominators are the evaluated cases; intervals in the linked reports are descriptive.
 
 | Evaluation | Result | Source |
@@ -116,7 +142,8 @@ checked. Some external programs share familiar state-preparation or QFT structur
 The [final adversarial gate](docs/final-verification.md) independently reconciles
 all rows and exports, reproduces 72 prespecified configurations, and records fresh
 Windows/Linux installs plus ten Chromium suites. Its GO verdict applies to the
-documented bounded simulator scope; new research remains unpublished.
+documented bounded simulator scope and its recorded revision; current-release
+verification and evidence availability are tracked separately.
 
 - Adaptive Pauli planning detected **103/108 operational contract violations**
   versus fixed **102/108**, with no observed false violations. This one-run
