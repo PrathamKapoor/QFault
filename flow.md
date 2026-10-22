@@ -422,7 +422,9 @@ Known limitations: No selected competition, no submission/external messages, no 
 | Browser verification | Exercise native provenance through real editor/Aer/recovery/download and inspect corrected mobile contrast | scripts/native_demo_e2e.py; docs/implementation-ledger.md | uncommitted | D-062 |
 | Final schema/scan | Require explicit blind schema support and narrowly classify source hashes in versioned protocols | qfault/storage.py; tests/test_artifact_versions.py; scripts/current_release_evaluation.py; configs/current-release-replication-v4.json; .gitleaks.toml | uncommitted | D-063 |
 | Current retained evidence | Verify 72 current-source exports, costs and frozen projections before full packaging; record release checks | scripts/verify_replication.py; scripts/package_submission.py; tests/test_replication_verifier.py; benchmarks/current-release-replication-v4; docs/release-verification-20261023.md; root records | uncommitted | D-064 |
+| Package description | Scope completeness to explicitly listed available studies; record independently extracted checks | scripts/package_submission.py; docs/release-verification-20261023.md; handoff.md | uncommitted | D-065 |
 
 D-048–D-063 and their implementation rows above were committed in
 97710d834abeef93f0094b169a05d182f22c8434. Earlier uncommitted labels describe
 write time; this follow-up records the known hash without rewriting decisions.
+D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503.

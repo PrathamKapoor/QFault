@@ -136,3 +136,21 @@ Publication is authorized after gates; normal fast-forward integration and push
 must preserve the existing main convention and history. Remote/CI observations
 will be appended in an ordinary follow-up record; this file cannot contain its
 own eventual final hash. Git history is authoritative.
+
+## Follow-up extraction evidence
+
+Evidence follow-up commit: `6998e5959180af6c7224b95cb468fa8dd8ea7503`.
+Both `source-package-current` and `evidence-package-current` under
+`artifacts/contract-release` were built from its clean committed source and
+independently verified before extraction. Full archive has 2,206 external,
+310 historical recovery and 72 new replication exports. At the independent
+`qfault-evidence-6998e59` temporary extraction, module path confirms local source;
+both offline archive verifiers pass. Source-only extraction runs Aer and explicitly
+reports missing raw evidence rather than success. All 90 previously tracked
+benchmark/config files remain byte-identical to the starting revision.
+
+Final staged scan uses Gitleaks git --pre-commit --staged and reports no leaks.
+Piping a diff to stdin loses paths and triggers the already-classified source
+fingerprint; that report is not misrepresented as a credential or a clean scan.
+The package scope wording is corrected in the next ordinary packaging commit.
+No frozen engine source or measured result changes.

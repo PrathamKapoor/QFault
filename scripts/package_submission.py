@@ -205,7 +205,7 @@ def build_package(repo, output, mode='source-only'):
                 archive_file.writestr(name, body)
         manifest = {'schema_version': 1, 'version': 'qfault-release-package-v1',
             'mode': mode, 'source_commit': revision, 'branch': branch, 'dirty_policy': 'clean committed snapshot only',
-            'evidence_complete': mode == 'evidence-inclusive', 'evidence_scope': 'current external holdout only; historical availability separately declared',
+            'evidence_complete': mode == 'evidence-inclusive', 'evidence_scope': 'available studies explicitly listed in evidence; other historical families excluded',
             'evidence': evidence, 'packages': [{'file': target.name, 'bytes': target.stat().st_size, 'sha256': sha(target)}],
             'source_members_sha256': {name: hashlib.sha256(body).hexdigest() for name, body in members.items()},
             'integrity': 'Unsigned SHA256 and ZIP CRC; not authenticity or scientific truth',

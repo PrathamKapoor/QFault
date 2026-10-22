@@ -2,7 +2,7 @@
 
 ## 1. Current Phase
 
-Release verification, partial pending final evidence commit/package/push/exact-SHA CI. Implementation 97710d834abeef93f0094b169a05d182f22c8434 is complete and locally verified. Started clean at c4be11cded71f7625179f30c2b33b10c3b857d4a on research/external-validation. Owner's full contract remains active.
+Release verification, partial pending final manifest-label package/push/exact-SHA CI. Evidence committed as6998e5959180af6c7224b95cb468fa8dd8ea7503. Implementation 97710d834abeef93f0094b169a05d182f22c8434 is complete and locally verified. Started clean at c4be11cded71f7625179f30c2b33b10c3b857d4a on research/external-validation. Owner's full contract remains active.
 
 ## 2. Work Completed
 
@@ -22,7 +22,7 @@ Package modes source-only/evidence-inclusive require clean committed source, exa
 
 ## 5. Decisions Made
 
-D-048–D-063 implemented in 97710d834abeef93f0094b169a05d182f22c8434; exact owner author AND committer verified. D-064 retains current replication and adds offline verification/package preflight and release records. Append only. This follow-up's own hash is unknown at write time; Git history is authoritative.
+D-048–D-063 implemented in 97710d834abeef93f0094b169a05d182f22c8434; exact owner author AND committer verified. D-064 (6998e5959180af6c7224b95cb468fa8dd8ea7503) retains current replication and adds offline verification/package preflight and release records. D-065 corrects the manifest evidence scope description; no scientific source change. Append only. This follow-up's own hash is unknown at write time; Git history is authoritative.
 
 ## 6. Requirements and Constraints
 
@@ -34,7 +34,7 @@ See docs/release-verification-20261023.md for commands/evidence/scope. Windows x
 
 External independent checks2206exports/2232rows including26unsupported; historical310; current72. Native API demo actual phase/recovery/noise/budget outcomes passed. Ten original real Chromium suites passed; final restarted-backend release_smoke and native_demo_e2e passed. Native ancestry/export retained, mobile390/375/360 nooverflow, no pageerrors, tested light text contrast8.076:1 minimum. Screenshots opened. New output reuse rejected safely, rerun to new directory passed. No narrated new video claimed.
 
-Gitleaks8.30.1 reviewed109commit history+intended tree: no unclassified leaks. Initial final history scan hit ownership and scanned0; reviewed rerun is counted. Narrow source-fingerprint exceptions only. npmzero advisories afterVite8.2.4; pip-audit2.10.0 no known app-lock vulnerabilities aftercertifi2026.10.19. No tracked secrets/env/db/key/paper/research/tex. Final staged scan pending. New Linux/macOS/ARM results not claimed; final GitHubCI pending. Machine clock reported2026-10-22UTC while sessiondate2026-10-23; no external timestamp claim.
+Gitleaks8.30.1 reviewed109commit history+intended tree: no unclassified leaks. Initial final history scan hit ownership and scanned0; reviewed rerun is counted. Narrow source-fingerprint exceptions only. npmzero advisories afterVite8.2.4; pip-audit2.10.0 no known app-lock vulnerabilities aftercertifi2026.10.19. No tracked secrets/env/db/key/paper/research/tex. Final staged scan passed using path-preserving git --pre-commit --staged. New Linux/macOS/ARM results not claimed; final GitHubCI pending. Machine clock reported2026-10-22UTC while sessiondate2026-10-23; no external timestamp claim.
 
 ## 8. Known Issues / Risks
 
@@ -42,7 +42,7 @@ Confirmed: historical template/custom/target raw availability remains unknown/un
 
 ## 9. Unfinished Work
 
-Commit reviewed current evidence/docs with exact owner identity; build/verify both final package modes; verify final extraction offline evidence and new test without rerunning expensive scientific evaluation. Update gate record. Fetch and fast-forward established main without loss, push only after local gates, verify remote SHA/aheadbehind and exact-SHA CI. Write ordinary publication follow-up, push and check that final SHA too. Keep tree clean.
+Both6998e59packages built/verified/extracted; full extraction offline historical/current verifiers and6package/verifier tests pass8.89s; source-only Aer works and raw absence explicit. Commit reviewed D-065 label/docs, rebuild/verify both modes, then publish. No scientific rerun needed. Fetch and fast-forward established main without loss, push only after local gates, verify remote SHA/aheadbehind and exact-SHA CI. Write ordinary publication follow-up, push and check that final SHA too. Keep tree clean.
 
 ## 10. Next Subphase
 
@@ -50,7 +50,7 @@ Final package/publication. Own server PID1492, unified session26591, localhost80
 
 ## 11. Critical Context
 
-Current replication protocolv4 SHAabd06df1664c0f9fc7f1282ee624189b5d3170fb7fc4443d257d8dfab97a91c1; raw SHA c648f4c16347306cfd6f3b79e8597681a651deb20d6e20977684990254df2b05,449269bytes. DO NOT change frozen qfault sources/runner/lock after replication without a new protocol. Draftv1–v3 unexecuted. New work is replication of observed designs, not new untouched data. Genuine original historical310reports preserved in recovery worktree and public curated archive. GitHub connector authenticated owner; gitfetchworks; ghCLIabsent. Original main remains35cbbb9 until verified normal integration. Historical complete handoff/flow preserved under docs.
+Current replication protocolv4 SHAabd06df1664c0f9fc7f1282ee624189b5d3170fb7fc4443d257d8dfab97a91c1; raw SHA c648f4c16347306cfd6f3b79e8597681a651deb20d6e20977684990254df2b05,449269bytes. DO NOT change frozen qfault sources/runner/lock after replication without a new protocol. Draftv1–v3 unexecuted. New work is replication of observed designs, not new untouched data. Genuine original historical310reports preserved in recovery worktree and public curated archive. GitHub connector authenticated owner; gitfetchworks; ghCLIabsent. Remote main remains35cbbb9 until verified normal integration. Historical complete handoff/flow preserved under docs.
 
 ## 12. Agent Instructions
 

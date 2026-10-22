@@ -751,3 +751,15 @@ still separately authorized; no remote mutation occurred during this gate.
 - Files: scripts/verify_replication.py, scripts/package_submission.py, tests/test_replication_verifier.py, benchmarks/current-release-replication-v4/summary.json, benchmarks/current-release-replication-v4/reports.jsonl.gz, .gitleaks.toml, docs/evidence-availability.md, docs/current-state.md, docs/final-verification.md, docs/release-verification-20261023.md, docs/implementation-ledger.md, README.md, decisions.md, flow.md, handoff.md
 - Scanner scope: The retained summary repeats the frozen api.py source fingerprint. A path-and-match constrained exception classifies that exact 64-hex provenance field, without ignoring the file or credential rules. The initial final history invocation hit Git ownership protection and scanned zero commits; rerun with a command-local safe.directory exception is required and its actual scope is recorded separately.
 - Failed approach: Piping the staged diff to scanner stdin discards path identity and triggers the known source-fingerprint pattern. Use Gitleaks git --pre-commit --staged to retain paths and apply the narrow rule; do not broaden a global value exception.
+
+### D-065: Describe the exact package evidence scope and record extraction checks
+- Date / phase / commit: 2026-10-23, release packaging, uncommitted
+- Context: D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503. Its two packages verify and extract, but the manifest description still says current external only after historical recovery and current replication were added to the explicit evidence map.
+- Decision: Describe completeness as applying to the explicitly listed available studies, excluding other historical families. Record actual clean-source packaging and extraction checks, retaining previous package outputs unchanged.
+- Why: Full manifest lists verified external 2,206 exports, historical recovery 310 and current replication 72. Independent extraction verifies both retained archives; source-only Aer works and missing raw evidence correctly returns unavailable. The stale prose should not contradict that explicit map.
+- Alternatives considered: Leave misleading scope prose (rejected); imply all historical evidence is complete (false).
+- Consequences: No schema, algorithms, evidence bytes or frozen source digests change. The two packages must be built again for this commit; expensive scientific replication is not repeated for a manifest label.
+- Files: scripts/package_submission.py, docs/release-verification-20261023.md, decisions.md, flow.md, handoff.md
+- Symptom: Package evidence_scope says current external holdout only while the evidence map names three verified archives.
+- Root cause: Original narrow description was not updated when archive preflights were extended.
+- Regression test: Existing tests/test_release_package.py suite plus actual full/source package manifest inspection; no implementation-mirroring text assertion.
