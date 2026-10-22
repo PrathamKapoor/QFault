@@ -22,7 +22,7 @@ Package modes source-only/evidence-inclusive require clean committed source, exa
 
 ## 5. Decisions Made
 
-D-048–D-063 implemented in 97710d834abeef93f0094b169a05d182f22c8434; exact owner author AND committer verified. D-064 (6998e5959180af6c7224b95cb468fa8dd8ea7503) retains current replication and adds offline verification/package preflight and release records. D-065 (4cc58de3aff12f27ed1f6dc131507551acf1bc7a) corrects the manifest evidence scope description; both clean-main package modes passed. D-066 binds summary source fingerprints to frozen protocol; new adversarial test failed before fix then7targetedtests passed. No scientific source change. Append only. This follow-up's own hash is unknown at write time; Git history is authoritative.
+D-048–D-063 implemented in 97710d834abeef93f0094b169a05d182f22c8434; exact owner author AND committer verified. D-064 (6998e5959180af6c7224b95cb468fa8dd8ea7503) retains current replication and adds offline verification/package preflight and release records. D-065 (4cc58de3aff12f27ed1f6dc131507551acf1bc7a) corrects the manifest evidence scope description; both clean-main package modes passed. D-066 (285939f0b170d953d54600955393d3c90f6558c0) binds summary source fingerprints to frozen protocol; adversarial test failed before fix then7targetedtests passed. D-067 rejects noninteger versions in the two new offline formats; both red regressions reproduced before strict guards. No scientific source change. Append only. This follow-up's own hash is unknown at write time; Git history is authoritative.
 
 ## 6. Requirements and Constraints
 
@@ -30,7 +30,7 @@ All new commits PrathamKapoor <prathamkapoor027@gmail.com>, author and committer
 
 ## 7. Testing and Verification
 
-See docs/release-verification-20261023.md for commands/evidence/scope. Windows x64 CPython3.13.2, Node24.19.0, npm12.0.2. Final full tree after D-066: 486 passed in46.34s, one Starlette/httpx warning. Fresh cloned 97710d8:484 passed59.85s; separately extracted full ZIP:484 passed50.65s with qfault path confirmed inside extraction. Fresh hashed install/editable/pipcheck and npmci/check/build passed clone/extraction. Aer Bell00=506/11=518. Package+replication tests6passed8.41s.
+See docs/release-verification-20261023.md for commands/evidence/scope. Windows x64 CPython3.13.2, Node24.19.0, npm12.0.2. Final full tree after D-067: 488 passed in46.96s, one Starlette/httpx warning. Fresh cloned 97710d8:484 passed59.85s; separately extracted full ZIP:484 passed50.65s with qfault path confirmed inside extraction. Fresh hashed install/editable/pipcheck and npmci/check/build passed clone/extraction. Aer Bell00=506/11=518. Package+replication tests6passed8.41s.
 
 External independent checks2206exports/2232rows including26unsupported; historical310; current72. Native API demo actual phase/recovery/noise/budget outcomes passed. Ten original real Chromium suites passed; final restarted-backend release_smoke and native_demo_e2e passed. Native ancestry/export retained, mobile390/375/360 nooverflow, no pageerrors, tested light text contrast8.076:1 minimum. Screenshots opened. New output reuse rejected safely, rerun to new directory passed. No narrated new video claimed.
 
@@ -42,7 +42,7 @@ Confirmed: historical template/custom/target raw availability remains unknown/un
 
 ## 9. Unfinished Work
 
-Both6998e59packages built/verified/extracted; full extraction offline historical/current verifiers and6package/verifier tests pass8.89s; source-only Aer works and raw absence explicit. Commit reviewed D-066 verifier/docs, rebuild/verify both modes, then publish. No scientific rerun needed. Fetch and fast-forward established main without loss, push only after local gates, verify remote SHA/aheadbehind and exact-SHA CI. Write ordinary publication follow-up, push and check that final SHA too. Keep tree clean.
+Both6998e59packages built/verified/extracted; full extraction offline historical/current verifiers and6package/verifier tests pass8.89s; source-only Aer works and raw absence explicit. Commit reviewed D-067 verifier/docs, rebuild/verify both modes, then publish. No scientific rerun needed. Fetch and fast-forward established main without loss, push only after local gates, verify remote SHA/aheadbehind and exact-SHA CI. Write ordinary publication follow-up, push and check that final SHA too. Keep tree clean.
 
 ## 10. Next Subphase
 

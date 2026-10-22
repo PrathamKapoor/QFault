@@ -51,6 +51,17 @@ def test_full_package_missing_current_evidence_creates_no_success_manifest(tmp_p
     assert not output.exists()
 
 
+def test_package_schema_is_an_integer_not_a_coercible_value(tmp_path):
+    repo=repository(tmp_path)
+    output=repo/'artifacts'/'strict-schema'
+    packaging.build_package(repo,output,'source-only')
+    path=output/'manifest.json'; original=json.loads(path.read_bytes())
+    for invalid in (True,1.0,'1'):
+        changed={**original,'schema_version':invalid}
+        path.write_text(json.dumps(changed))
+        assert not packaging.verify_package(output)['valid']
+
+
 def test_package_verifier_rejects_unsupported_schema_and_truncated_zip(tmp_path):
     repo = repository(tmp_path)
     build = getattr(packaging, 'build_package', None)

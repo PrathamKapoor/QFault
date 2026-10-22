@@ -775,3 +775,15 @@ still separately authorized; no remote mutation occurred during this gate.
 - Symptom: An altered summary source hash was accepted despite disagreement with the checked frozen protocol.
 - Root cause: The verifier bound the protocol byte digest and scientific projections but omitted equality of the duplicated source fingerprint map.
 - Regression test: tests/test_replication_verifier.py::test_replication_source_fingerprints_are_bound_to_frozen_protocol, failed before fix.
+
+### D-067: Require literal integer versions in new offline artifact formats
+- Date / phase / commit: 2026-10-23, release input boundary, uncommitted
+- Context: D-066 committed as 285939f0b170d953d54600955393d3c90f6558c0. Final malformed-version review of the newly added package/replication verifiers finds Python equality treats JSON true and 1.0 as version 1.
+- Decision: Require actual integer schema_version 1 in both new offline formats; reject booleans, floating values and strings. Preserve valid archives and frozen scientific sources.
+- Why: Both new malformed-schema regressions failed with valid=true before the type guard. Integer version dispatch must match the existing strict investigation-version boundary.
+- Alternatives considered: Accept coercible versions (ambiguous format dispatch); revise version 1 or recorded evidence (unnecessary).
+- Consequences: Only malformed new artifact inputs are rejected; no valid result, protocol or source digest changes. Rebuild source packages after this focused verifier fix.
+- Files: scripts/package_submission.py, scripts/verify_replication.py, tests/test_release_package.py, tests/test_replication_verifier.py, decisions.md, flow.md, handoff.md, docs/release-verification-20261023.md
+- Symptom: JSON schema_version true or 1.0 is accepted as integer version 1.
+- Root cause: Numeric equality alone is insufficient because Python bool subclasses int and 1.0 equals 1.
+- Regression test: tests/test_release_package.py::test_package_schema_is_an_integer_not_a_coercible_value; tests/test_replication_verifier.py::test_replication_schema_is_an_integer_not_a_coercible_value; both failed before guards.

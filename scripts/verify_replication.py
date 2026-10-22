@@ -18,7 +18,7 @@ def verify(root):
     errors=[];seen=set();shots=evaluations=0
     try:
         root=Path(root);summary=json.loads((root/'summary.json').read_bytes())
-        if summary.get('schema_version')!=1 or summary.get('protocol')!='current-release-replication-v4':
+        if type(summary.get('schema_version')) is not int or summary['schema_version']!=1 or summary.get('protocol')!='current-release-replication-v4':
             raise ValueError('unsupported replication schema/protocol')
         raw=(ROOT/'configs/current-release-replication-v4.json').read_bytes()
         if hashlib.sha256(raw).hexdigest()!=summary['protocol_sha256']:raise ValueError('protocol digest mismatch')

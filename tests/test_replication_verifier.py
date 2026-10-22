@@ -23,3 +23,12 @@ def test_replication_source_fingerprints_are_bound_to_frozen_protocol(tmp_path):
     summary['source_sha256_normalized_lf']['qfault/api.py']='0'*64
     (tmp_path/'summary.json').write_text(json.dumps(summary))
     assert not verify(tmp_path)['valid']
+
+
+def test_replication_schema_is_an_integer_not_a_coercible_value(tmp_path):
+    source=Path('benchmarks/current-release-replication-v4')
+    shutil.copyfile(source/'reports.jsonl.gz',tmp_path/'reports.jsonl.gz')
+    summary=json.loads((source/'summary.json').read_bytes())
+    for invalid in (True,1.0,'1'):
+        (tmp_path/'summary.json').write_text(json.dumps({**summary,'schema_version':invalid}))
+        assert not verify(tmp_path)['valid']

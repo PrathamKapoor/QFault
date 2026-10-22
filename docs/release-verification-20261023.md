@@ -59,7 +59,7 @@ No Linux/macOS/ARM result is inferred from these local tests.
 | Check | Actual result / local evidence |
 |---|---|
 | Fresh hashed installation, editable installation, `python -m pip check` | PASS in `.local/contract-release/python` and separately `fresh-python`; no shared installation changed |
-| `python -m pytest tests -q -p no:cacheprovider` final assembled tree | **486 passed**, 46.34 s, one Starlette/httpx deprecation warning |
+| `python -m pytest tests -q -p no:cacheprovider` final assembled tree | **488 passed**, 46.96 s, one Starlette/httpx deprecation warning |
 | Same full suite in fresh clone of 97710d8 | **484 passed**, 59.85 s |
 | Same full suite in separately extracted evidence ZIP of 97710d8 | **484 passed**, 50.65 s; module path confirmed extracted files |
 | `python -m scripts.aer_smoke` | PASS, Bell counts 00=506/11=518, also in fresh environment |
@@ -103,7 +103,7 @@ remain, including the separate hero provenance/license boundary.
 |---|---|---|
 | G1 baseline/preservation | PASS | starting SHA above, `docs/implementation-ledger.md`; clean original inventory, refs/worktree preserved |
 | G2 install | PASS | fresh hashed environments, pip check, root/clone/extraction npm ci |
-| G3 input | PASS | native/strict/endian/replay tests in complete 486 suite; real native browser workflow |
+| G3 input | PASS | native/strict/endian/replay tests in complete 488 suite; real native browser workflow |
 | G4 scientific validity | PASS for documented scope | boundary/interval/control/resource tests, independent raw reconstructions; negative dense result retained |
 | G5 recovery | PASS | fresh paired measurements, freeze/diff/abstention tests and actual demo |
 | G6 evidence | PASS for advertised available archives | external/historical/current offline verifiers; missing historical families explicit |
@@ -167,3 +167,15 @@ unclassified leaks.
 
 Final assembled suite after D-066: **486 passed**, one Starlette/httpx warning,
 46.34 seconds. No engine/protocol changes or expensive measurement reruns.
+
+Both exact285939fpackages passed verification; source ZIP SHA-256
+27ae4ce5675d82adee92ca49a947f7cdffb3a04d815fe85c960f66e82fde4585;
+full ZIP ed238c0c7e4f88b043348d6fed8bec814d25b841a9151b5f8ae74f1ba81b897e.
+D-067 additionally rejects boolean/float/string versions in the new offline
+formats. Both regressions reproduced acceptance before the strict type guards.
+No frozen scientific source, protocol or measured archive changed.
+
+After D-067, all9package/replication tests passed8.96s; final full suite
+**488 passed**, one deprecation warning,46.96s. GitHub connector returned no
+runs even for the independently known historical SHA; exact-SHA hosted checks
+will use GitHub's official public REST API as fallback, not infer success.

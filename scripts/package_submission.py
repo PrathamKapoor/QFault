@@ -95,7 +95,7 @@ def verify_package(folder):
         if manifest_path.stat().st_size > 1024 * 1024:
             raise ValueError('manifest exceeds 1 MiB')
         data = json.loads(manifest_path.read_bytes())
-        if data.get('schema_version') != 1 or data.get('mode') not in ('source-only', 'evidence-inclusive'):
+        if type(data.get('schema_version')) is not int or data['schema_version'] != 1 or data.get('mode') not in ('source-only', 'evidence-inclusive'):
             raise ValueError('unsupported package schema or mode')
         packages = data['packages']
         if not isinstance(packages, list) or not 1 <= len(packages) <= 2:

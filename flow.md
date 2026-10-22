@@ -425,9 +425,11 @@ Known limitations: No selected competition, no submission/external messages, no 
 | Current retained evidence | Verify 72 current-source exports, costs and frozen projections before full packaging; record release checks | scripts/verify_replication.py; scripts/package_submission.py; tests/test_replication_verifier.py; benchmarks/current-release-replication-v4; docs/release-verification-20261023.md; root records | uncommitted | D-064 |
 | Package description | Scope completeness to explicitly listed available studies; record independently extracted checks | scripts/package_submission.py; docs/release-verification-20261023.md; handoff.md | uncommitted | D-065 |
 | Offline source binding | Reject summary fingerprints inconsistent with checked frozen protocol | scripts/verify_replication.py; tests/test_replication_verifier.py; release records | uncommitted | D-066 |
+| Offline format boundary | Require literal integer schema versions in package and replication parsers | scripts/package_submission.py; scripts/verify_replication.py; corresponding tests; release records | uncommitted | D-067 |
 
 D-048–D-063 and their implementation rows above were committed in
 97710d834abeef93f0094b169a05d182f22c8434. Earlier uncommitted labels describe
 write time; this follow-up records the known hash without rewriting decisions.
 D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503.
 D-065 is committed as 4cc58de3aff12f27ed1f6dc131507551acf1bc7a.
+D-066 is committed as 285939f0b170d953d54600955393d3c90f6558c0.
