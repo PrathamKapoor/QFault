@@ -9,6 +9,13 @@ regexTarget = "match"
 regexes = ['''api\.py":"[0-9a-f]{64}"''']
 
 [[allowlists]]
+description = "Exact source fingerprint in the retained current-source replication summary; source identity, not a credential"
+condition = "AND"
+paths = ['''(^|[\\/])benchmarks[\\/]current-release-replication-v4[\\/]summary\.json$''']
+regexTarget = "match"
+regexes = ['''api\.py":"[0-9a-f]{64}"''']
+
+[[allowlists]]
 description = "Exact api.py source SHA-256 in the four explicitly versioned replication protocols; numerical provenance only"
 condition = "AND"
 paths = ['''(^|[\\/])configs[\\/]current-release-replication-v[1-4]\.json$''']

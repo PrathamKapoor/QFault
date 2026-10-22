@@ -1,5 +1,9 @@
 # Final adversarial publication gate
 
+Historical gate for the revision named below. Current authorized implementation
+and release evidence: [2026-10-23 verification](release-verification-20261023.md).
+The older separate-authorization wording records that earlier assignment only.
+
 **GO for the documented bounded simulator scope. No unresolved CRITICAL or HIGH
 finding was reproduced. Publication requires the owner's separate authorization.**
 

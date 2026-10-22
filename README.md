@@ -190,6 +190,11 @@ The API is documented at <http://127.0.0.1:8000/docs> while the server runs. One
 
 ## Reproducibility
 
+Current [release verification](docs/release-verification-20261023.md) records the
+tested source, platforms, real browser workflows and package checks. Run
+`python -m scripts.verify_replication` to check all 72 retained current-source
+replication exports offline. These repeat observed designs and are not a new holdout.
+
 - `requirements.lock` is a hashed, universal lock generated from `pyproject.toml` (which remains authoritative) for CPython 3.13 with the `aer`, `dev` and `browser` extras. Regenerate with `uv pip compile pyproject.toml --extra aer --extra dev --extra browser --universal --python-version 3.13 --generate-hashes -o requirements.lock`; installing from it needs only pip.
 - `web/package-lock.json` pins the frontend; use `npm ci`.
 - Each frozen evaluation documents its protocol, seeds and reproduction command in the linked methodology file. New runs must use a new output directory; committed results are never overwritten.

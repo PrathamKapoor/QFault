@@ -315,6 +315,10 @@ scripts.external_validation    reference_contract() -> candidate -> investigate_
  └─ scripts.verify_external_results.verify_results() reports, rows and aggregates
      └─ scripts.reconcile_external_evidence.reconcile_rows() every attempted Cartesian case
 scripts.current_release_evaluation.freeze() new versioned current-source replication protocol
+scripts.verify_replication.verify() scripts/verify_replication.py; offline retained current-source evidence
+ ├─ verify_export() qfault/storage.py; schema/membership/document identities
+ ├─ normalized() scripts/current_release_evaluation.py; compare frozen scientific projection
+ └─ audit_record() scripts/audit_counterfactual.py; reconstruct recovery intervals from counts
  └─ run()                      committed sources, exact frozen requests, new exports
      └─ audit_record()          scripts/audit_counterfactual.py; independent recovery interval reconstruction
 ```
@@ -417,3 +421,8 @@ Known limitations: No selected competition, no submission/external messages, no 
 | Visual accessibility | Correct research metrics/caption contrast specifically on the light overview | web/src/components/ResearchEvidence.css; web/src/components/ResearchEvidence.tsx | uncommitted | D-061 |
 | Browser verification | Exercise native provenance through real editor/Aer/recovery/download and inspect corrected mobile contrast | scripts/native_demo_e2e.py; docs/implementation-ledger.md | uncommitted | D-062 |
 | Final schema/scan | Require explicit blind schema support and narrowly classify source hashes in versioned protocols | qfault/storage.py; tests/test_artifact_versions.py; scripts/current_release_evaluation.py; configs/current-release-replication-v4.json; .gitleaks.toml | uncommitted | D-063 |
+| Current retained evidence | Verify 72 current-source exports, costs and frozen projections before full packaging; record release checks | scripts/verify_replication.py; scripts/package_submission.py; tests/test_replication_verifier.py; benchmarks/current-release-replication-v4; docs/release-verification-20261023.md; root records | uncommitted | D-064 |
+
+D-048–D-063 and their implementation rows above were committed in
+97710d834abeef93f0094b169a05d182f22c8434. Earlier uncommitted labels describe
+write time; this follow-up records the known hash without rewriting decisions.

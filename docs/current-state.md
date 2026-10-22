@@ -1,5 +1,12 @@
 # Current scientific and release state
 
+Updated 2026-10-23: implementation is committed as
+97710d834abeef93f0094b169a05d182f22c8434. See
+[current release verification](release-verification-20261023.md),
+[evidence availability](evidence-availability.md) and root handoff.md.
+The table below preserves the October 16 snapshot; its remote/CI statements
+must not be applied to this new release.
+
 Updated 2026-10-16. This index supersedes earlier status snapshots; it does not
 rewrite their experiments or erase recorded failures.
 

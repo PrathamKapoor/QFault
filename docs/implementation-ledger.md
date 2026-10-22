@@ -112,14 +112,14 @@ Commit: uncommitted.
 
 ### ID / subsystem: Scientific development and source-pinned verification (D-057/D-058/D-060)
 Verified starting condition: Old recovery holdout refuses changed sources, correctly; dense targets remain unresolved in published studies.
-What changed: Separate current-source 72-case deterministic replication protocol v3; preserved unexecuted v1/v2 drafts; matched dense-target development study with complete raw counts.
+What changed: Separate current-source 72-case deterministic replication protocol v4; preserved unexecuted v1/v2/v3 drafts; matched dense-target development study with complete raw counts.
 Why: Preserve old protocols while verifying current sources, and investigate allocation limitations without tuning/relabeling holdout.
 How / actual files and symbols: current_release_evaluation.freeze/run; dense_target_study.allocate/run; target bounds and independent recovery audit.
 When triggered / call order: Freeze exact requests/source digests -> commit -> new outputs/recount; development allocation uses only declared target before measurement/evaluator truth.
 Input -> output / identities / units: 72 observed prespecified requests -> new exports/projection comparison, explicitly not untouched evidence. Dense study: 16 cases, one architecture, matched shot ceilings/groups and alpha.
 Failure and resource behavior: Protocol refuses uncommitted/changed sources; existing byte source guard retained. Errors/divergences stay in rows, never silently dropped.
 Backwards compatibility: Every historical protocol/summary remains unchanged. No production policy/threshold update adopted.
-Tests / exact command / actual result: Development allocation analytic test passed; 16/16 intervals cover oracle; uniform/coefficient both confirm 4/8. The target-only observed 3-qubit design feasibility lower 0.7823152869 is below threshold 0.8 at 32,768 shots, documenting a bound/budget limitation. Current v3 run awaits committed sources.
+Tests / exact command / actual result: Development allocation analytic test passed; 16/16 intervals cover oracle; uniform/coefficient both confirm 4/8. The target-only observed 3-qubit design feasibility lower 0.7823152869 is below threshold 0.8 at 32,768 shots, documenting a bound/budget limitation. Current v4 executed at 97710d834abeef93f0094b169a05d182f22c8434: 72/72 prescribed projections matched, zero errors, 2,272,256 shots, 1,127 executions; retained archive independently verified.
 Documentation / decision IDs: docs/dense-target-development.md; D-057/D-058/D-060.
 Remaining limitation: Development proxy improvement does not establish generalization or superiority; current-source replication is not a new holdout.
 Commit: uncommitted.

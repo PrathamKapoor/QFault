@@ -1,74 +1,57 @@
-# QFault engineering handoff — 2026-10-22
+# QFault engineering handoff — session 2026-10-23
 
 ## 1. Current Phase
 
-Implementation/release contract: implementation assembled, release gates partial. Started clean on research/external-validation at c4be11cded71f7625179f30c2b33b10c3b857d4a. No publication yet. The full owner contract remains active; do not reduce it to an audit.
+Release verification, partial pending final evidence commit/package/push/exact-SHA CI. Implementation 97710d834abeef93f0094b169a05d182f22c8434 is complete and locally verified. Started clean at c4be11cded71f7625179f30c2b33b10c3b857d4a on research/external-validation. Owner's full contract remains active.
 
 ## 2. Work Completed
 
-Inspected clean source, refs/worktrees/stashes, correct QFault origin, runtime, locks and historical records. Fetched origin: HEAD 11 ahead/0 behind origin/main, current branch has no upstream. Root records were read in pages. Previous handoff is preserved verbatim in docs/handoff-history-20261016.md; its contradictory older instructions are historical.
+Preserved original refs/worktree/ignored data, read root records, installed fresh hashed environments, established 449-test baseline. Implemented native QuantumCircuit import/provenance, explicit QASM options, shared lab/recovery CLI, strict numerics, parent-linked replay/new-seed semantics, version guards, local Host/Origin controls, reviewed source/evidence packaging and scoped dependency fixes. Current measured recovery is foregrounded without changing hero/helix. Complete flow and decision records are included.
 
-Fresh isolated hashed CPython install at .local/contract-release/python, editable install, pip check, npm ci/check/build, baseline 449 tests and Aer smoke passed. First --no-build-isolation editable attempt failed because setuptools was absent; the documented normal build succeeded. No shared installation changed.
-
-Added source/evidence snapshot packages and verifier, native QuantumCircuit conversion/provenance, opt-in QASM CLI conversion, custom lab/recovery CLI, strict numeric validation, parent-linked deterministic/new-seed replay, explicit ordinary/blind schema support and loopback/origin enforcement. Patched verified Vite/certifi advisories through existing locks. Current measured recovery reporting, native demonstration, dense development findings and full current flow are implemented. Work is uncommitted; final package/replication/publication gates are pending.
+Executed current-source replication v4 once at 97710d8: 72/72 prescribed scientific projections, zero errors, 2,272,256 shots, 1,127 executions. Retained exactly these controlled evaluation exports and added offline verifier; no engine source changed afterward. Historical recovery recovered from original worktree, summary byte-identical; 310 original reports independently recounted and deliberately packaged. No owner runtime data published.
 
 ## 3. Files Changed
 
-Inspect git status/diff for exact current inventory. Core: scripts/package_submission.py; qfault/qasm_import.py, lab.py, quantum.py, target.py, interventions.py, counterfactual.py, cli.py, api.py. New tests: test_release_package.py, test_native_import.py, test_custom_cli.py, test_strict_scientific_input.py, test_replay_identity.py. Locks/manifests: web/package.json/package-lock.json, pyproject.toml, requirements.lock. Records: decisions.md, flow.md, docs/implementation-ledger.md, docs/evidence-availability.md, this handoff and historical handoff copy.
+Implementation commit 97710d8 contains D-048–D-063, 56 files. Current follow-up paths: scripts/verify_replication.py, scripts/package_submission.py, tests/test_replication_verifier.py, benchmarks/current-release-replication-v4/{summary.json,reports.jsonl.gz}, .gitleaks.toml, README.md, decisions.md, flow.md, handoff.md, docs/evidence-availability.md, docs/implementation-ledger.md, docs/current-state.md, docs/final-verification.md, docs/release-verification-20261023.md. Check actual Git diff/status before staging.
 
 ## 4. Current Architecture / State
 
-Local FastAPI + React; API and CLI share the validated engine. Native import accepts exact built-in H/X/Z/S/Rx/Ry/Rz/CX/CZ/CP/SWAP, 2–5 qubits/32 gates; records global phase/source instructions, with lab-only input preparation. No Python upload/eval/pickle. Optional ImportProvenance is excluded when absent, preserving legacy serialization/IDs. Derived edits retain import ancestry. Replay creates a new record linked to its source and declares same/new-seed semantics.
+Single-process local FastAPI/React workbench; shared scientific engine; 2–5 qubits/32 gates. No Python upload/eval/pickle. Import ancestry retained through edits, reports and replay; original circuit immutable. Browser displays backend decisions. Budgets/fresh reserves/noise abstention are enforced. Schema versions explicit; hashes unsigned. Timeouts remain cooperative between jobs.
 
-Package modes source-only/evidence-inclusive use clean committed source ZIP without full Git history/private runtime sweep. Complete-current evidence means the external study specifically; historical availability is separate. Actual committed-package extraction is not yet run.
+Package modes source-only/evidence-inclusive require clean committed source, exact Git bytes and exclusive new outputs, with no full history/runtime sweep. Full mode verifies external, historical recovery and current replication archives. Source-only omits raw report archives and explicitly cannot supply full evidence. Historical families without raw data remain summary-only. Source version guards are preserved.
 
 ## 5. Decisions Made
 
-D-048–D-063 cover packaging, native/import CLI, strict inputs, dependencies, replay, reporting/contrast, ordinary/blind schema support, local trust, authentic historical evidence, source-pinned replication, negative development findings and browser verification. Append only. Record implementation hash in the next ordinary documentation commit, avoiding self-reference.
+D-048–D-063 implemented in 97710d834abeef93f0094b169a05d182f22c8434; exact owner author AND committer verified. D-064 retains current replication and adds offline verification/package preflight and release records. Append only. This follow-up's own hash is unknown at write time; Git history is authoritative.
 
 ## 6. Requirements and Constraints
 
-Current owner authorizes implementation then publication to https://github.com/PrathamKapoor/QFault after gates. Older no-push/QTrust restrictions are superseded authorization, not current instructions. Preserve all refs/worktrees/ignored work. Never stage paper/, research/ or .tex; no force push. Author AND committer: PrathamKapoor <prathamkapoor027@gmail.com>. No competition submission/external messages/paid hardware. Preserve approved hero/transition. One read-only reviewer was dispatched as explicitly required by requesting-code-review; no implementation was delegated.
+All new commits PrathamKapoor <prathamkapoor027@gmail.com>, author and committer, no coauthors/tool credit/global config changes/history rewriting/force push. Never commit paper/, research/ or .tex. No competition submission/messages/paid hardware. Publication to existing PrathamKapoor/QFault is explicitly authorized after gates. Preserve all historical science and unrelated work, including C:/Projects/QFF-Recovery. Use per-command Git safe.directory; repository is owned by previous local sandbox account.
 
 ## 7. Testing and Verification
 
-Commands use .local/contract-release/python/Scripts/python.exe.
-- Baseline pytest tests -q: 449 passed, Starlette/httpx and unwritable-cache warnings. Subsequently use -p no:cacheprovider.
-- scripts.aer_smoke: pass, counts 00=506/11=518.
-- npm ci/check/build: pass before/after Vite 8.2.4; lazy Three chunk warning remains.
-- Package/legacy transfer: 7 passed after 3 red failures.
-- Native/QASM/recovery: 61 passed. Native + CLI: 11 passed after 9 native/1 CLI red cases and correction of wrong feasibility signature.
-- Strict/lab/recovery/native/CLI: 100 passed. Two additional edit-restriction cases then failed red; strict/boundary/target set passed 60 after correction.
-- Replay/adversarial API: 102 passed after parent-link red regression.
-- External verify_results/reconcile: 2,206 reports, 2,232 rows including 26 unsupported; no missing/duplicate cases.
-- Historical recovery summary in C:/Projects/QFF-Recovery/artifacts/recovery-holdout is byte-identical to committed summary, SHA256 8fb0e091016e5c9106c8ffb73afbcc5e41fe15e9517a566338b9cdfa6d10c957. scripts.audit_counterfactual independently verified 310 manifests/count-based decisions/costs, replayed_records=0. Report: artifacts/contract-release/historical-recovery-audit.json.
-- Old recovery holdout correctly refuses current sources with Frozen recovery sources/cases differ; do not call this the untouched evaluation. Guard unchanged.
-- npm audit: affected Vite before, zero advisories after 8.2.4. pip-audit 2.10.0 isolated at .local/contract-release/audit-tools: certifi PYSEC-2026-4320 before, no known advisories after 2026.10.19. Reports: artifacts/contract-release/python-advisories*.json. pip check passed after hashed reinstall.
-- GitHub connector confirms authenticated login PrathamKapoor. No credentials printed.
-- Latest complete suite before the last blind-schema guard: 483 passed, one Starlette/httpx warning, 44.67 seconds; Aer smoke and pip check passed. Last blind-schema regression failed red, then 13 artifact/blind tests passed after correction. Complete final suite will run on the committed snapshot.
-- Ten original Windows Chromium suites passed: release smoke, counterfactual, external editor, blind lifecycle, lab, landing, cinematic, workspace navigation, inspection and seven-template workflow runner. Native import/phase/recovery/download suite also passed at 1440 and 390/375/360 widths; retained provenance, no page errors, new metric/caption contrast minimum 8.076:1. Actual corrected overview/native recovery and preserved hero/fresh verification screenshots were opened.
-- Native real API demo at seed 7241 passed five expected stages, with fresh original/candidate 4096 shots each and original preserved. Raw evidence is artifacts/contract-release/native-demo and browser-native-final.
-- Dense development study: 16 real Aer cases, one two-qubit development architecture, all intervals cover oracle fidelity, both allocations confirm 4/8. No production method adopted. See docs/dense-target-development.md and benchmarks/dense-target-development-v1.json.
-- Current supported protocol is configs/current-release-replication-v4.json. v1–v3 are preserved unexecuted drafts superseded by last resource/schema corrections; none is untouched evidence. Current-source execution refuses uncommitted inputs and awaits implementation commit.
-- Gitleaks 8.30.1 reviewed history scan covers all 108 commits. Tree scan found only the same source api.py hash pattern in protocol drafts; the narrowly scoped rules classify these as noncredentials. Final staged/tree scan still pending.
-- Fresh package extraction/install, current-source replication and publication remain pending.
+See docs/release-verification-20261023.md for commands/evidence/scope. Windows x64 CPython3.13.2, Node24.19.0, npm12.0.2. Final full tree: 485 passed in48.35s, one Starlette/httpx warning. Fresh cloned 97710d8:484 passed59.85s; separately extracted full ZIP:484 passed50.65s with qfault path confirmed inside extraction. Fresh hashed install/editable/pipcheck and npmci/check/build passed clone/extraction. Aer Bell00=506/11=518. Package+replication tests6passed8.41s.
+
+External independent checks2206exports/2232rows including26unsupported; historical310; current72. Native API demo actual phase/recovery/noise/budget outcomes passed. Ten original real Chromium suites passed; final restarted-backend release_smoke and native_demo_e2e passed. Native ancestry/export retained, mobile390/375/360 nooverflow, no pageerrors, tested light text contrast8.076:1 minimum. Screenshots opened. New output reuse rejected safely, rerun to new directory passed. No narrated new video claimed.
+
+Gitleaks8.30.1 reviewed109commit history+intended tree: no unclassified leaks. Initial final history scan hit ownership and scanned0; reviewed rerun is counted. Narrow source-fingerprint exceptions only. npmzero advisories afterVite8.2.4; pip-audit2.10.0 no known app-lock vulnerabilities aftercertifi2026.10.19. No tracked secrets/env/db/key/paper/research/tex. Final staged scan pending. New Linux/macOS/ARM results not claimed; final GitHubCI pending. Machine clock reported2026-10-22UTC while sessiondate2026-10-23; no external timestamp claim.
 
 ## 8. Known Issues / Risks
 
-Confirmed: new package extraction still pending; all historical/source guards preserved. Historical recovery raw evidence is now curated in benchmarks/historical-recovery-v1 (310 exact old exports, 1,057,578 bytes), with portable independent verifier; ordinary user sessions/reviews excluded. Other historical families remain summary-only where unavailable. Timeouts remain cooperative, hashes unsigned, no hardware calibration or causal localization. Linux/macOS/current hosted CI are not claimed from Windows local checks.
+Confirmed: historical template/custom/target raw availability remains unknown/unavailable as ledger states; checksums are not signatures; dense targets can remain unresolved. Dense development allocation showed no yield advantage (both4/8); no production change. Lazy Three build warning and Starlette/httpx deprecation remain. New final package verification and final remote/CI remain unfinished at this write. No exposed credential or rotation need established by scoped scans.
 
 ## 9. Unfinished Work
 
-Finish reviewed staging/commit under owner identity; run final complete checks and committed v4 replication; verify both package modes and fresh extraction/locked install. Update gate report/next ordinary documentation commit with implementation SHA. Only then integrate normally to established main, push and verify remote SHA/sync and exact-SHA CI. Do not push until mandatory local gates pass.
+Commit reviewed current evidence/docs with exact owner identity; build/verify both final package modes; verify final extraction offline evidence and new test without rerunning expensive scientific evaluation. Update gate record. Fetch and fast-forward established main without loss, push only after local gates, verify remote SHA/aheadbehind and exact-SHA CI. Write ordinary publication follow-up, push and check that final SHA too. Keep tree clean.
 
 ## 10. Next Subphase
 
-Commit the reviewable implementation, then execute frozen v4 replication and package gates. Server was deliberately restarted after core changes: unified exec session 56464, PID 17752, http://127.0.0.1:8000/, QFAULT_ARTIFACTS=artifacts/contract-release/live. Command: .local/contract-release/python/Scripts/python.exe -m qfault serve --port 8000. Real health/Aer/browser checks passed. Last isolated blind-version guard changes only verification of unsupported input; restart before final live demonstration to include it. Recheck PID before stopping; no unrelated process was stopped.
+Final package/publication. Own server PID1492, unified session26591, localhost8000, QFAULT_ARTIFACTS=artifacts/contract-release/live-final; started after all engine changes and actual final smoke passed. Recheck PID before any stop. No unrelated process stopped. Fresh clone .local/contract-release/fresh-clone-v2, fresh environment .local/contract-release/fresh-python. Full ZIP extracted C:/Users/LENOVO/AppData/Local/Temp/qfault-evidence-extracted-97710d8.
 
 ## 11. Critical Context
 
-Historical full handoff: docs/handoff-history-20261016.md. Latest owner contract wins for authorization. Authentic original recovery worktree and its 310-run evidence are preserved. Research evidence may be deliberately selected; user runtime records stay private. Current external raw archive is already tracked (~4.65 MB). Source-only package omits it explicitly. No new evaluation has run yet and no existing holdout has been retuned.
+Current replication protocolv4 SHAabd06df1664c0f9fc7f1282ee624189b5d3170fb7fc4443d257d8dfab97a91c1; raw SHA c648f4c16347306cfd6f3b79e8597681a651deb20d6e20977684990254df2b05,449269bytes. DO NOT change frozen qfault sources/runner/lock after replication without a new protocol. Draftv1–v3 unexecuted. New work is replication of observed designs, not new untouched data. Genuine original historical310reports preserved in recovery worktree and public curated archive. GitHub connector authenticated owner; gitfetchworks; ghCLIabsent. Original main remains35cbbb9 until verified normal integration. Historical complete handoff/flow preserved under docs.
 
 ## 12. Agent Instructions
 
-Read root decisions/flow/handoff, recheck Git and continue without restarting baseline. Keep docs with changes; stage explicit paths. Use per-command git -c safe.directory=C:/Projects/QFF, never global changes. Record blockers honestly; continue independent work. Do not claim readiness/publication without current executed evidence for every mandatory gate.
+Read root documents/recheck Git; continue authorized work without restarting baseline or repeating holdout. Review/stage explicit paths, scan final staged diff. Preserve clean branch policy and original histories. No claims of overall readiness until mandatory gates pass, no push claim without server-side verification, no CI claim from old SHA. Use factual current report and final exact-SHA result.

@@ -173,6 +173,12 @@ def build_package(repo, output, mode='source-only'):
             checked=verify(historical)
             if not checked['valid']: raise ValueError('Historical recovery evidence missing/corrupt: '+str(checked['errors'][:3]))
             evidence['historical_recovery']={'status':'VERIFIED','reports':checked['reports']}
+        replication=repo/'benchmarks/current-release-replication-v4'
+        if (replication/'summary.json').is_file():
+            from scripts.verify_replication import verify
+            checked=verify(replication)
+            if not checked['valid']:raise ValueError('Current replication evidence missing/corrupt: '+str(checked['errors'][:3]))
+            evidence['current_replication']={'status':'VERIFIED','reports':checked['reports']}
     records = _git(repo, 'ls-tree', '-rz', '--full-tree', 'HEAD').split(b'\0')
     members = {}
     for record in records:
