@@ -59,7 +59,7 @@ No Linux/macOS/ARM result is inferred from these local tests.
 | Check | Actual result / local evidence |
 |---|---|
 | Fresh hashed installation, editable installation, `python -m pip check` | PASS in `.local/contract-release/python` and separately `fresh-python`; no shared installation changed |
-| `python -m pytest tests -q -p no:cacheprovider` final assembled tree | **485 passed**, 48.35 s, one Starlette/httpx deprecation warning |
+| `python -m pytest tests -q -p no:cacheprovider` final assembled tree | **486 passed**, 46.34 s, one Starlette/httpx deprecation warning |
 | Same full suite in fresh clone of 97710d8 | **484 passed**, 59.85 s |
 | Same full suite in separately extracted evidence ZIP of 97710d8 | **484 passed**, 50.65 s; module path confirmed extracted files |
 | `python -m scripts.aer_smoke` | PASS, Bell counts 00=506/11=518, also in fresh environment |
@@ -103,7 +103,7 @@ remain, including the separate hero provenance/license boundary.
 |---|---|---|
 | G1 baseline/preservation | PASS | starting SHA above, `docs/implementation-ledger.md`; clean original inventory, refs/worktree preserved |
 | G2 install | PASS | fresh hashed environments, pip check, root/clone/extraction npm ci |
-| G3 input | PASS | native/strict/endian/replay tests in complete 485 suite; real native browser workflow |
+| G3 input | PASS | native/strict/endian/replay tests in complete 486 suite; real native browser workflow |
 | G4 scientific validity | PASS for documented scope | boundary/interval/control/resource tests, independent raw reconstructions; negative dense result retained |
 | G5 recovery | PASS | fresh paired measurements, freeze/diff/abstention tests and actual demo |
 | G6 evidence | PASS for advertised available archives | external/historical/current offline verifiers; missing historical families explicit |
@@ -154,3 +154,16 @@ Piping a diff to stdin loses paths and triggers the already-classified source
 fingerprint; that report is not misrepresented as a credential or a clean scan.
 The package scope wording is corrected in the next ordinary packaging commit.
 No frozen engine source or measured result changes.
+
+Both modes were rebuilt and verified on clean main at
+`4cc58de3aff12f27ed1f6dc131507551acf1bc7a`, including all three available archive
+families and the corrected scope description. A subsequent adversarial test of
+the new offline verifier found an inconsistent duplicated summary source hash
+was accepted. D-066 adds equality with the already hash-checked protocol. The
+regression failed before the fix, then all seven package/replication tests passed
+in 8.08 seconds. Frozen source/protocol/evaluation bytes remain unchanged. Final
+history scan before this verifier-only correction covered 111 commits without
+unclassified leaks.
+
+Final assembled suite after D-066: **486 passed**, one Starlette/httpx warning,
+46.34 seconds. No engine/protocol changes or expensive measurement reruns.

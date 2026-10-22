@@ -763,3 +763,15 @@ still separately authorized; no remote mutation occurred during this gate.
 - Symptom: Package evidence_scope says current external holdout only while the evidence map names three verified archives.
 - Root cause: Original narrow description was not updated when archive preflights were extended.
 - Regression test: Existing tests/test_release_package.py suite plus actual full/source package manifest inspection; no implementation-mirroring text assertion.
+
+### D-066: Bind the retained summary source fingerprints to the frozen protocol
+- Date / phase / commit: 2026-10-23, final independent verification, uncommitted
+- Context: D-065 committed as 4cc58de3aff12f27ed1f6dc131507551acf1bc7a. Final adversarial inspection tests whether the offline replication verifier rejects an edited source fingerprint even when raw measurements are unchanged.
+- Decision: Require the summary's normalized source fingerprint map to equal the frozen protocol map before accepting exports. Preserve all measured records and frozen engine sources.
+- Why: New test changes only qfault/api.py's recorded source hash and initially fails because verify returns valid=true. After explicit comparison, that inconsistent source claim is rejected. The protocol byte digest was already checked, but its source map was not bound to the duplicate summary field.
+- Alternatives considered: Treat all summary provenance as unverified metadata (contradicts advertised source bindings); change original summary/protocol (unnecessary and forbidden).
+- Consequences: Unsigned commit names still do not prove author identity or authenticity; this closes an internal source-fingerprint inconsistency. No scientific rerun is required because only the independent offline verifier changes.
+- Files: scripts/verify_replication.py, tests/test_replication_verifier.py, decisions.md, flow.md, handoff.md, docs/release-verification-20261023.md
+- Symptom: An altered summary source hash was accepted despite disagreement with the checked frozen protocol.
+- Root cause: The verifier bound the protocol byte digest and scientific projections but omitted equality of the duplicated source fingerprint map.
+- Regression test: tests/test_replication_verifier.py::test_replication_source_fingerprints_are_bound_to_frozen_protocol, failed before fix.

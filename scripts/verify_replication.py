@@ -22,7 +22,10 @@ def verify(root):
             raise ValueError('unsupported replication schema/protocol')
         raw=(ROOT/'configs/current-release-replication-v4.json').read_bytes()
         if hashlib.sha256(raw).hexdigest()!=summary['protocol_sha256']:raise ValueError('protocol digest mismatch')
-        protocol=json.loads(raw);cases={c['case_key']:c for c in protocol['cases']}
+        protocol=json.loads(raw)
+        if summary.get('source_sha256_normalized_lf')!=protocol['source_sha256_normalized_lf']:
+            raise ValueError('summary source fingerprints differ from frozen protocol')
+        cases={c['case_key']:c for c in protocol['cases']}
         rows=summary['rows'];by_id={r['experiment_id']:r for r in rows}
         if len(rows)!=72 or len(by_id)!=72 or {r['case_key'] for r in rows}!=set(cases):
             raise ValueError('missing/duplicate case or report identity')

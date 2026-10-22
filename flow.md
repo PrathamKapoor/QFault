@@ -318,6 +318,7 @@ scripts.current_release_evaluation.freeze() new versioned current-source replica
 scripts.verify_replication.verify() scripts/verify_replication.py; offline retained current-source evidence
  ├─ verify_export() qfault/storage.py; schema/membership/document identities
  ├─ normalized() scripts/current_release_evaluation.py; compare frozen scientific projection
+ ├─ summary source map equality with frozen protocol; reject inconsistent recorded source identity
  └─ audit_record() scripts/audit_counterfactual.py; reconstruct recovery intervals from counts
  └─ run()                      committed sources, exact frozen requests, new exports
      └─ audit_record()          scripts/audit_counterfactual.py; independent recovery interval reconstruction
@@ -423,8 +424,10 @@ Known limitations: No selected competition, no submission/external messages, no 
 | Final schema/scan | Require explicit blind schema support and narrowly classify source hashes in versioned protocols | qfault/storage.py; tests/test_artifact_versions.py; scripts/current_release_evaluation.py; configs/current-release-replication-v4.json; .gitleaks.toml | uncommitted | D-063 |
 | Current retained evidence | Verify 72 current-source exports, costs and frozen projections before full packaging; record release checks | scripts/verify_replication.py; scripts/package_submission.py; tests/test_replication_verifier.py; benchmarks/current-release-replication-v4; docs/release-verification-20261023.md; root records | uncommitted | D-064 |
 | Package description | Scope completeness to explicitly listed available studies; record independently extracted checks | scripts/package_submission.py; docs/release-verification-20261023.md; handoff.md | uncommitted | D-065 |
+| Offline source binding | Reject summary fingerprints inconsistent with checked frozen protocol | scripts/verify_replication.py; tests/test_replication_verifier.py; release records | uncommitted | D-066 |
 
 D-048–D-063 and their implementation rows above were committed in
 97710d834abeef93f0094b169a05d182f22c8434. Earlier uncommitted labels describe
 write time; this follow-up records the known hash without rewriting decisions.
 D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503.
+D-065 is committed as 4cc58de3aff12f27ed1f6dc131507551acf1bc7a.
