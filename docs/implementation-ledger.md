@@ -66,7 +66,7 @@ Backwards compatibility: Optional absent provenance omitted; legacy circuit IDs/
 Tests / exact command / actual result: native/QASM/recovery set 61 passed; native+CLI 11 passed; strict/lab/recovery/native set 100 passed. Native real API/Aer/browser import/phase/recovery/export passed, three mobile widths, no page errors.
 Documentation / decision IDs: docs/native-import.md; flow.md; D-049/D-050/D-051.
 Remaining limitation: Static built-in vocabulary and one declared input; conversion is not contract correctness or causal diagnosis.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
 
 ### ID / subsystem: Evidence packaging and historical recovery (D-048/D-056)
 Verified starting condition: Package command unconditionally requires ignored historical files; source bundle contains reachable history. Authentic recovery summary locally found and byte-matched.
@@ -80,7 +80,7 @@ Backwards compatibility: Legacy collector retained; historical source/protocol/I
 Tests / exact command / actual result: Package/legacy seven-test set passed; final five package tests passed including truncation/traversal/deflate. scripts.verify_recovery_archive independently verifies all 310; external verifier/reconciler verifies all 2,206 reports/2,232 attempted rows.
 Documentation / decision IDs: docs/evidence-availability.md; D-048/D-056/D-058.
 Remaining limitation: Other historical families remain summary-only; package extraction/install gate pending until reviewed commit exists.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
 
 ### ID / subsystem: Lifecycle, schema and local boundary (D-052/D-054/D-055/D-060)
 Verified starting condition: Replay lacks parent/new-seed semantics; unknown rehashed schema passes; untrusted Host returns 200; CLI reads unbounded report file.
@@ -94,7 +94,7 @@ Backwards compatibility: Omitted replay options work; old supported records unto
 Tests / exact command / actual result: Replay/adversarial 102 passed; schema/store/export 22 passed; local/adversarial/store 110 passed; final report-size/CLI/export nine passed. Red failures observed before fixes.
 Documentation / decision IDs: flow.md; D-052/D-054/D-055/D-060.
 Remaining limitation: No authenticated multiuser service, external timestamp or hard backend cancellation.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
 
 ### ID / subsystem: Product workflow and demonstration (D-053/D-057/D-061)
 Verified starting condition: Landing foregrounds old template figures; reused metric colors are too pale on the actual white mobile overview.
@@ -108,7 +108,7 @@ Backwards compatibility: Hero/helix/handover/PixelSwap preserved; historical tem
 Tests / exact command / actual result: npm check/build pass. Real native five-stage demo passes; browser native import/validation/phase/recovery/download passes at 1440 and 390/375/360, minimum tested new metric/caption white-surface contrast 8.076:1. Existing ten browser suites passed before the narrowly scoped contrast correction; final native suite verified that correction.
 Documentation / decision IDs: docs/judging-guide.md, docs/native-import.md; D-053/D-057/D-061.
 Remaining limitation: No newly narrated final video; real local captures exist. Cross-platform/browser/device coverage is not universal.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
 
 ### ID / subsystem: Scientific development and source-pinned verification (D-057/D-058/D-060)
 Verified starting condition: Old recovery holdout refuses changed sources, correctly; dense targets remain unresolved in published studies.
@@ -122,7 +122,7 @@ Backwards compatibility: Every historical protocol/summary remains unchanged. No
 Tests / exact command / actual result: Development allocation analytic test passed; 16/16 intervals cover oracle; uniform/coefficient both confirm 4/8. The target-only observed 3-qubit design feasibility lower 0.7823152869 is below threshold 0.8 at 32,768 shots, documenting a bound/budget limitation. Current v4 executed at 97710d834abeef93f0094b169a05d182f22c8434: 72/72 prescribed projections matched, zero errors, 2,272,256 shots, 1,127 executions; retained archive independently verified.
 Documentation / decision IDs: docs/dense-target-development.md; D-057/D-058/D-060.
 Remaining limitation: Development proxy improvement does not establish generalization or superiority; current-source replication is not a new holdout.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
 
 ### ID / subsystem: Dependency and publication safety (D-051/D-059)
 Verified starting condition: npm reports high affected Vite dependency; pip-audit finds certifi advisory; no tracked env/database/private key paths returned.
@@ -133,7 +133,21 @@ When triggered / call order: Install from locks -> scan -> review findings -> ta
 Input -> output / identities / units: Dependency closure and all 108 historical commits -> scoped reports; no credentials printed. api.py source-digest false positive is narrowly allowlisted by file plus exact digest-shaped match.
 Failure and resource behavior: Real secret/advisory issue blocks release until resolved; unavailability is not a clean scan.
 Backwards compatibility: Quantum dependencies preserved, no cloud/key/database added, global Git config unchanged.
-Tests / exact command / actual result: npm audit zero after patch, pip-audit no known vulnerabilities after patch, pip check pass; Gitleaks history reviewed scan no leaks after classifying two occurrences of the same nonsecret source digest. Final staged/tree scan still pending.
+Tests / exact command / actual result: npm audit zero after patch, pip-audit no known vulnerabilities after patch, pip check pass; Gitleaks history reviewed scan no leaks after classifying two occurrences of the same nonsecret source digest. Final staged/tree scans passed; the later final code history scan covers 113 commits with no unclassified findings. See dated release report for each scope and exclusions.
 Documentation / decision IDs: D-051/D-053/D-059; no rotation need found from examined evidence.
 Remaining limitation: Pattern/advisory scans cannot guarantee absence of every secret or vulnerability.
-Commit: uncommitted.
+Commit: 97710d834abeef93f0094b169a05d182f22c8434.
+
+### ID / subsystem: Retained current evidence and publication (D-064–D-068)
+Verified starting condition: Frozen v4 and scientific engine are committed at 97710d8; historical source guards remain active; new raw replication existed only in ignored evaluation output.
+What changed: Retained 72 public-safe exports and summary, added offline projection/count/cost/source-map verification, corrected package evidence scope and literal integer schema dispatch, safely published main and verified public evidence acquisition.
+Why: A current result needs inspectable raw counts and source bindings; malformed or inconsistent records must not verify; a local commit is not proof of publication.
+How / actual files and symbols: scripts.verify_replication.verify/main; scripts.package_submission.build_package/verify_package; regression tests; Git fetch/fast-forward/push/exact-SHA comparison and official GitHub workflow API.
+When triggered / call order: Commit frozen protocol -> one replication -> retain reviewed records -> independently verify -> test malformed inputs -> package committed source -> verify/extract -> normal publication -> compare remote -> inspect exact-SHA CI.
+Input -> output / identities / units: Protocol v4 +72 exports -> valid/invalid, shot/execution recount; committed source -> two explicitly scoped ZIP contracts; remote main -> exact SHA/sync/CI observations.
+Failure and resource behavior: Corrupt/edited/unsupported records fail with nonzero CLI status; malformed boolean/float/string versions rejected; missing full evidence prevents success manifest; source-only explicitly unavailable. Existing size/path/expansion bounds retained.
+Backwards compatibility: No frozen source, historical protocol/summary or measured archive altered. Only new independent verifier semantics hardened. Existing main/history/feature refs and ignored personal data preserved.
+Tests / exact command / actual result: Full pytest488 passed46.96s; nine targeted tests8.96s; final full extraction9passed11.13s, source extraction6passed5.52s plus Aer; all three offline verifiers pass in fresh GitHub clone. Hosted run39837203909 reports success at66db016; remote0/0. Exact commands and dated source boundaries in release-verification-20261023.md.
+Documentation / decision IDs: D-064 at6998e5959180af6c7224b95cb468fa8dd8ea7503; D-065 at4cc58de3aff12f27ed1f6dc131507551acf1bc7a; D-066 at285939f0b170d953d54600955393d3c90f6558c0; D-067 at66db0167fd46ea262bbb22282038fac331707330; D-068 current ordinary follow-up.
+Remaining limitation: Replication reuses observed designs, not untouched holdout. Hashes unsigned. Unavailable historical families and unresolved dense targets remain explicit. No hardware, macOS/ARM or narrated-video claim.
+Commit: D-068 uncommitted at write time; Git history identifies this final documentation follow-up and its subsequent remote/CI verification.

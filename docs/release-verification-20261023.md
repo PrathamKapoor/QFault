@@ -179,3 +179,53 @@ After D-067, all9package/replication tests passed8.96s; final full suite
 **488 passed**, one deprecation warning,46.96s. GitHub connector returned no
 runs even for the independently known historical SHA; exact-SHA hosted checks
 will use GitHub's official public REST API as fallback, not infer success.
+
+## Verified publication and final code packages
+
+Final code: **66db0167fd46ea262bbb22282038fac331707330**, main.
+Origin remains https://github.com/PrathamKapoor/QFault.git. Normal fast-forward
+integration preserved both original branches and the recovery worktree. Push,
+fetch, `rev-parse HEAD origin/main`, `rev-list --left-right --count
+HEAD...origin/main` and independent `ls-remote` agree: same SHA, **0/0**.
+All new commits have exact owner author and committer, with no trailers.
+
+Fresh clone directly from GitHub obtained this exact source and all approved
+archives; each offline verifier passes: 2,206 external, 310 historical recovery,
+72 current replication. Public acquisition does not depend on the owner's ignored
+runtime directories. Final code history scan covers **113 commits**, no
+unclassified leaks; every focused staged diff also passed path-aware scanning.
+
+| Final code package | ZIP bytes | SHA-256 |
+|---|---:|---|
+| source-package-66db016 | 2,053,192 | ce8c7f027b7e50ca390b4391cb426ca51b5ee7e13ddfcb02682d6babc3d8043e |
+| evidence-package-66db016 | 8,001,131 | 928682c7b5b34b17d7e707293c9d5ac34817acef71f85987675679b911e052d9 |
+
+Both manifests/archives verify, then were extracted into separate new directories
+outside Git. Full extraction: nine package/replication tests pass in 11.13 s and
+72-record verifier passes. Source-only extraction: six package tests pass in
+5.52 s and actual Aer smoke passes. Earlier fresh hashed-install, frontend-build
+and complete extracted-suite results remain applicable to unchanged application
+code/dependencies; only independent verifier guards/tests and records followed.
+
+[Hosted run 39837203909](https://github.com/PrathamKapoor/QFault/actions/runs/39837203909)
+reports **completed/success** for exact code SHA 66db016. It executes locked
+installation, pip check, npm ci/typecheck/build, full pytest, Aer and real browser
+smoke on Ubuntu 24.04. Browser job individually reports success. An initial
+individual checks-job response lagged the completed workflow while every step
+already reported success; retain the final refreshed exact-SHA observation
+rather than interpreting stale API state as a failure or a different SHA pass.
+Local JSON record: artifacts/contract-release/ci-66db016.json.
+
+G1–G9 are **PASS** within the explicit local/simulator/evidence scope. G10 is
+**PASS for 66db016**: remote identity/sync and exact-SHA workflow verified.
+The earlier gate table is a dated prepublication snapshot. This final ordinary
+documentation-only follow-up has no scientific changes; its own hash cannot be
+embedded in its contents. Its push, remote SHA and workflow must be verified
+after commit and reported separately. Git history is authoritative.
+
+Known remaining limits: several historical raw families unavailable; dense
+targets unresolved under some budgets; no universal equivalence/causal/hardware
+claim; cooperative timeout and single-process local trust boundary; no new
+narrated video; macOS/ARM untested. No mandatory code failure remains. Ordinary
+runtime records, raw local browser media and dependency environments remain
+ignored and were not published.

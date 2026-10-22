@@ -426,6 +426,7 @@ Known limitations: No selected competition, no submission/external messages, no 
 | Package description | Scope completeness to explicitly listed available studies; record independently extracted checks | scripts/package_submission.py; docs/release-verification-20261023.md; handoff.md | uncommitted | D-065 |
 | Offline source binding | Reject summary fingerprints inconsistent with checked frozen protocol | scripts/verify_replication.py; tests/test_replication_verifier.py; release records | uncommitted | D-066 |
 | Offline format boundary | Require literal integer schema versions in package and replication parsers | scripts/package_submission.py; scripts/verify_replication.py; corresponding tests; release records | uncommitted | D-067 |
+| Publication | Normal main fast-forward/push, exact remote comparison, fresh GitHub evidence acquisition and exact-SHA CI record | docs/release-verification-20261023.md; docs/implementation-ledger.md; docs/current-state.md; root records | uncommitted | D-068 |
 
 D-048–D-063 and their implementation rows above were committed in
 97710d834abeef93f0094b169a05d182f22c8434. Earlier uncommitted labels describe
@@ -433,3 +434,4 @@ write time; this follow-up records the known hash without rewriting decisions.
 D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503.
 D-065 is committed as 4cc58de3aff12f27ed1f6dc131507551acf1bc7a.
 D-066 is committed as 285939f0b170d953d54600955393d3c90f6558c0.
+D-067 is committed as 66db0167fd46ea262bbb22282038fac331707330.

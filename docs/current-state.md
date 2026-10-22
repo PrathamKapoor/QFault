@@ -1,7 +1,12 @@
 # Current scientific and release state
 
-Updated 2026-10-23: implementation is committed as
-97710d834abeef93f0094b169a05d182f22c8434. See
+Updated for the 2026-10-23 session: implementation is committed as
+97710d834abeef93f0094b169a05d182f22c8434 and final verifier code as
+66db0167fd46ea262bbb22282038fac331707330. That exact main revision is published,
+remote SHA/sync verified, and hosted workflow
+[39837203909](https://github.com/PrathamKapoor/QFault/actions/runs/39837203909)
+reports success. This ordinary documentation follow-up records known hashes;
+Git history and its exact-SHA workflow identify the final follow-up itself. See
 [current release verification](release-verification-20261023.md),
 [evidence availability](evidence-availability.md) and root handoff.md.
 The table below preserves the October 16 snapshot; its remote/CI statements

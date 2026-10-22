@@ -787,3 +787,12 @@ still separately authorized; no remote mutation occurred during this gate.
 - Symptom: JSON schema_version true or 1.0 is accepted as integer version 1.
 - Root cause: Numeric equality alone is insufficient because Python bool subclasses int and 1.0 equals 1.
 - Regression test: tests/test_release_package.py::test_package_schema_is_an_integer_not_a_coercible_value; tests/test_replication_verifier.py::test_replication_schema_is_an_integer_not_a_coercible_value; both failed before guards.
+
+### D-068: Publish the verified source and record reproducible release evidence
+- Date / phase / commit: 2026-10-23, publication, uncommitted
+- Context: D-067 is committed as 66db0167fd46ea262bbb22282038fac331707330. All local gates pass for the documented bounded simulator scope. The owner explicitly authorizes publication after those checks.
+- Decision: Fast-forward existing main without rewriting history, push to the preserved PrathamKapoor/QFault origin, fetch and compare server-side SHA, clone from GitHub and verify all advertised available evidence. Record exact code/protocol/package/CI identities in this ordinary documentation follow-up. Verify this follow-up's own SHA and CI after pushing; Git history is authoritative for its self-reference.
+- Why: Remote main and local HEAD both equal 66db0167fd46ea262bbb22282038fac331707330, ahead/behind 0/0. Fresh GitHub clone verifies 2,206 external, 310 historical recovery and 72 current replication reports. Hosted workflow 39837203909 reports completed/success for that exact SHA. Windows full suite passes 488 tests; independent final extraction passes 9 package/evidence tests and source-only extraction passes 6 package tests plus Aer.
+- Alternatives considered: Force push/history rewrite or duplicate repository (unnecessary and unauthorized); stop after local tests (does not satisfy release contract); represent unavailable historical evidence as complete (false).
+- Consequences: No scientific changes or rerun. Exact final documentation SHA/CI must be checked after publication. Archived historical limitations, source-only omissions and unsigned consistency limits remain explicit. No competition action, message or hardware job occurs.
+- Files: decisions.md, flow.md, handoff.md, docs/implementation-ledger.md, docs/current-state.md, docs/release-verification-20261023.md
