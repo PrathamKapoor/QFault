@@ -995,3 +995,49 @@ still separately authorized; no remote mutation occurred during this gate.
 - Regression test: CLI invalid-HTTP invocation must return a bounded JSON error and exit1; production API checks also exercised failure recording without full request headers.
 
 Implementation identity follow-up: D-080–D-083 implementation13c121db7e4b99bc6588203069ae17dfdec49d7a; D-084–D-085 implementation502a416519c2bb1d99265991d4cf5e290e37ba94. Earlier append-only write-time entries remain unchanged. This follow-up is uncommitted at write time; Git history is authoritative for its own identity.
+
+### D-087: Improve hosted presentation and recovery sequentially while preserving science
+- Date / phase / commit: 2026-10-24, hosted usability, uncommitted
+- Context: Clean hosting worktree0f2da99, fetched0/0, exact-SHA CI40002926091 succeeds. Original main and dirty root documents remain separate. Source verifies raw interval display, dense tables, unbounded fetch, no operation identity, whole-session snapshot and no global admission. Owner explicitly authorizes the full A→G improvements and validated deployment.
+- Decision: Execute docs/hosted-usability-ledger.md sequentially with presentation-only summaries/domains first, then wording/history, classified requests/durable idempotency, session export/deletion/prospective retention, measured storage/admission, separate entangling inputs and final real provider/browser deployment gates. Use existing engine and private Blob, no new service/dependency. Record each implemented subsystem with actual tests in subsequent decisions.
+- Why: Existing engine evidence must stay unchanged; lost responses need durable lookup rather than duplicate measurements. Cookie expiry is not deletion; global cross-instance resource coordination requires conditional storage. Owner approval already covers implementation; no repeated design permission ceremony is needed.
+- Alternatives considered: Cosmetic-only work (incomplete scope); new scientific policy (not authorized); overwrite dirty main (preservation violation); add database/paid queue (unnecessary before measuring existing bounded storage).
+- Consequences: No frozen studies rerun or records rewritten. Legacy retention is preserved; new destructive policy applies prospectively only with explicit metadata. Unknown crash windows remain honest. Existing D-080–D-086 remain historical; specific superseding behavior will be stated when implemented.
+- Files: docs/hosted-usability-ledger.md, decisions.md, flow.md, handoff.md
+
+### D-088: Separate concise result conclusions from raw numerical evidence
+- Date / phase / commit: 2026-10-24, result clarity, uncommitted
+- Context: Current real recovery export has obs:IIIX raw interval[-1.074414873109858,-0.925585126890142]; existing guide renders it directly alongside dense repeated evidence. Returned phase-shot keys independently show4096 fresh original and4096 candidate.
+- Decision: Add shared presentation.ts/resultSummary/displayInterval and ResultSummary/ClaimInterval components. Show actual verdict, selected edit only when present, paired assessments, tested/generated counts, total/fresh shots and scope before details. TV/Pauli display intersects only its declared domain; invalid/empty/nonfinite intervals say inconsistent. Preserve raw values/tolerance/units under accessible details. Reuse in guide, custom and recovery views; expand tables/digests on demand.
+- Why: Two Node regressions first failed for missing helpers, then passed boundary/domain/nonfinite/immutability and actual-result summary cases. Typecheck exposed one unmatched details tag during implementation; corrected matching close and typecheck passed. No engine/storage/export change.
+- Alternatives considered: Change concentration intervals in engine (would alter scientific records); hide raw evidence (unreviewable); clip loss/improvement (incorrect units); invent selected edit for abstention (misleading).
+- Consequences: Only display transforms change, never ranking/verdict or historical bytes. Unknown metrics remain untouched. Full real browser/restored report validation remains final gate.
+- Files: web/src/guided/presentation.ts, web/src/components/ResultSummary.tsx, web/src/components/GuidedDemo.tsx, web/src/components/MeasuredRecovery.tsx, web/src/components/CustomLab.tsx, tests/result-presentation.test.mjs, decisions.md, flow.md, docs/hosted-usability-ledger.md
+- Symptom: Main view exposes physically out-of-domain raw concentration endpoints and hides edit/cost conclusion.
+- Root cause: Direct formatting of stored unconstrained intervals and table-first presentation.
+- Regression test: node --test tests/result-presentation.test.mjs;2passed after2observed failures.
+
+### D-089: Prioritize the guided task and invalidate shared saved-history state
+- Date / phase / commit: 2026-10-24, wording/navigation, uncommitted
+- Context: Source has local-only guide copy in hosted builds, hero Enter Workbench primary CTA and overlapping rail destinations. History loads at mount/entry but guide completion does not notify recent count.
+- Decision: Use hosted-aware execution copy, guided primary hero action with secondary workbench/research, task-grouped navigation retaining legacy routes, and shared completed-identity invalidation with generation-guarded history reads. Preserve hero geometry/animation and local wording.
+- Why: New history concurrency regression failed for missing controller, then passed newer-response-wins and identity-only invalidation. Node presentation/controller6tests and typecheck passed before this next change; final browser checks remain required.
+- Alternatives considered: Delete routes/features (unnecessary); poll history every render (wasteful); let stale response replace newer history (incorrect); claim cloud CPU is local or unlimited/free hardware (false).
+- Consequences: Existing URLs remain loadable; evidence/report/integrity contextual inspection retained. Only completed returned IDs emit invalidation; errors never create fake entries.
+- Files: web/src/guided/history.ts, web/src/guided/api.ts, web/src/main.tsx, web/src/components/hero/MentalHero.tsx, web/src/components/landing/Landing.tsx, web/src/components/GuidedDemo.tsx, tests/history-state.test.mjs, decisions.md, flow.md
+- Symptom: Guided completion leaves recent count stale; hosted UI describes local execution.
+- Root cause: Guide owns independent API wrapper without shared history event; unconditional local copy and workbench CTA.
+- Regression test: node --test tests/history-state.test.mjs; observed red then1passed. Typecheck passed.
+
+### D-090: Bound client waits and recover durable session-scoped operations
+- Date / phase / commit: 2026-10-24, operation recovery, uncommitted
+- Context: Four new real API tests reproduced duplicate computation, absent operation lookup/ledger and invalid-request quota spending. Client tests first failed for missing bounded request abstraction. Existing snapshot supports single-object conditional commit, so result files and operation completion can be committed together.
+- Decision: Add hosted_operations fingerprint/validation/public view and durable requests map in existing session snapshot. Bind high-entropy operation ID to method/path/canonical JSON, persist RUNNING before execution, commit COMPLETED/result ID or FAILED before response. Matching repeated ID returns existing result/status, mismatch409, cross-session404, expired/interrupted state UNKNOWN never automatically rerun. Preserve original engine/API. Shared requests.ts classifies bootstrap/read/validation/execution; safe-only bounded transient retries, abort deadlines and cleanup. All active execution wrappers use demoRequest; guide persists operation ID before POST and offers explicit lookup/restoration.
+- Why:19targeted hosting/operation tests pass39.36s after four red cases; additional concurrent duplicate test is running. Node safe-read retry/authorization and execution deadline/no-repeat tests pass. Client timeout is not cancellation. Direct schema rejection occurs before quota; existing API still validates.
+- Alternatives considered: In-memory idempotency (not cross-instance); resubmit after lease expiry (may duplicate unknown execution); persist result ID only after sending response (lost response unresolvable); alter seeds or engine records (unnecessary).
+- Consequences: Legacy requests without header get server identity; local paths remain compatible and local unknown completion still uses history. Durable snapshot CAS binds completion and files atomically. A crash after RUNNING but before save may lose an unsaved measurement result; operation remains UNKNOWN, not exactly-once execution guaranteed. No hidden fresh verification resume or retry occurs. Operation lookup does not spend allowance.
+- Files: qfault/hosted_operations.py, qfault/hosting.py, web/src/guided/requests.ts, web/src/guided/api.ts, web/src/guided/session.ts, web/src/components/HostedSession.tsx, GuidedDemo.tsx, CustomLab.tsx, MeasuredRecovery.tsx, BlindChallenge.tsx, Overview.tsx, web/src/main.tsx, tests/requests.test.mjs, tests/test_hosted_operations.py, decisions.md, flow.md
+- Symptom: Repeated same HTTP request creates a different experiment; unbounded fetch leaves waiting indefinite; quota increments before invalid schema.
+- Root cause: No durable request identity/fingerprint/status; raw fetch lacks AbortController deadline; adapter admits before schema validation.
+- Regression test: tests/test_hosted_operations.py and tests/requests.test.mjs, failures observed before fixes; actual counts above and final assembled evidence recorded later.
+- Supersedes: D-071/D-080/D-086 manual-history-only recovery, not scientific workflow or historical records.

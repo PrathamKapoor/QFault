@@ -23,10 +23,11 @@ interface Props {
   /** QFAULT's Enter Workbench handover is in progress. */
   handover: boolean;
   onEnter: () => void;
+  onWorkbench: () => void;
   onResearch: (e: MouseEvent) => void;
 }
 
-export default function MentalHero({ instant, handover, onEnter, onResearch }: Props) {
+export default function MentalHero({ instant, handover, onEnter, onWorkbench, onResearch }: Props) {
   const reduced = useReducedMotion();
   const [live, setLive] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
@@ -102,8 +103,9 @@ export default function MentalHero({ instant, handover, onEnter, onResearch }: P
             </p>
             <div className="entry__ctas">
               <button type="button" className="cta cta--primary" disabled={handover} onClick={onEnter}>
-                Enter Workbench <span className="cta__arrow" aria-hidden="true">→</span>
+                Run the guided demo <span className="cta__arrow" aria-hidden="true">→</span>
               </button>
+              <button type="button" className="cta cta--ghost" onClick={onWorkbench}>Open workbench</button>
               <a href="#/" className="cta cta--ghost" onClick={onResearch}>
                 Explore the Research
               </a>
@@ -116,7 +118,7 @@ export default function MentalHero({ instant, handover, onEnter, onResearch }: P
             <div className="entry__panel-inner">
               <p className="label label--accent">QFAULT / Workspace access</p>
               <p className="entry__heading">Your quantum laboratory is ready.</p>
-              <p className="entry__sub">Continue to the local workbench. Simulation only: Qiskit and Qiskit Aer.</p>
+              <p className="entry__sub">Continue to the simulation workbench. No quantum-hardware execution.</p>
               <p className="entry__micro">Execute · Diagnose · Recover · Verify</p>
             </div>
           </div>

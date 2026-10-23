@@ -17,6 +17,7 @@ from urllib.request import Request,build_opener,HTTPRedirectHandler
 from fastapi.responses import JSONResponse
 from .api import create_app
 from .evidence import canonical
+from .hosted_operations import OPERATION,fingerprint,operation_view,validate_direct,read_body
 
 MAX_STATE=32*1024*1024
 MAX_RESPONSE=4*1024*1024
@@ -170,14 +171,38 @@ class HostedApp:
             return await JSONResponse({'hosting':{'persistence':'private Vercel Blob','session_scope':'browser cookie','operation_limit':64}},headers={'Set-Cookie':cookie_header,'Cache-Control':'private, no-store'})(scope,receive,send)
         stateless=(method in ('GET','HEAD') and path in ('/api/health','/api/research','/api/guided-demo')) or (method=='POST' and path=='/api/lab/validate')
         mutate=method not in ('GET','HEAD','OPTIONS') and not stateless
-        previous=None;lease_etag=None
+        previous=None;lease_etag=None;operation=None;oid=None
         try:
             state,etag=(empty_state(),None) if stateless else await asyncio.to_thread(self.storage.read,sid)
+            if method=='GET' and path.startswith('/api/operations/'):
+                oid=path.rsplit('/',1)[-1]
+                if not OPERATION.fullmatch(oid) or oid not in state.get('requests',{}):return await error(404,'Operation not found in this session')
+                return await JSONResponse(operation_view(oid,state['requests'][oid]),headers={'Cache-Control':'private, no-store'})(scope,receive,send)
             if mutate:
-                if state['lease_until']>time.time():return await error(409,'Another operation is running in this browser session. Inspect history before retrying.')
+                try:
+                    body,receive=await read_body(receive)
+                    validate_direct(path,body)
+                except (ValueError,UnicodeError):return await error(422,'Invalid request; no execution admitted')
+                ids=[v.decode() for k,v in raw_headers if k.lower()==b'x-qfault-operation']
+                oid=ids[0] if len(ids)==1 else 'operation_'+secrets.token_hex(16)
+                if len(ids)>1 or not OPERATION.fullmatch(oid):return await error(422,'Invalid operation identity')
+                bound=fingerprint(method,path,body);existing=state.get('requests',{}).get(oid)
+                if existing:
+                    if existing['fingerprint']!=bound:return await error(409,'Operation ID is bound to a different request')
+                    view=operation_view(oid,existing)
+                    if view['state']!='COMPLETED':return await JSONResponse(view,status_code=202 if view['state'] in ('RUNNING','ADMITTED','UNKNOWN') else existing.get('status_code',422),headers={'Cache-Control':'private, no-store'})(scope,receive,send)
+                    if existing.get('result_id','').startswith('experiment_'):
+                        from .storage import ArtifactStore
+                        with tempfile.TemporaryDirectory(prefix='qfault-recover-') as folder:
+                            root=Path(folder);restore(root,state['files']);result=ArtifactStore(root).load(existing['result_id'])
+                    else:result=existing['response']
+                    return await JSONResponse(result,status_code=existing['status_code'],headers={'Cache-Control':'private, no-store','X-QFault-Operation':oid})(scope,receive,send)
+                if state['lease_until']>time.time():return await error(409,'Another operation is running in this browser session. Recover its identity before submitting.')
                 if state['operations']>=64:return await error(429,'This hosted session reached its 64-operation limit. Export important reports.')
                 previous=state
-                state={**state,'operations':state['operations']+1,'lease_until':time.time()+310}
+                operation={'fingerprint':bound,'state':'RUNNING','created_at':time.time(),'lease_until':time.time()+310}
+                state={**state,'operations':state['operations']+1,'lease_until':operation['lease_until'],
+                       'requests':{**state.get('requests',{}),oid:operation}}
                 lease_etag=await asyncio.to_thread(self.storage.write,sid,state,etag)
             with tempfile.TemporaryDirectory(prefix='qfault-hosted-') as folder:
                 root=Path(folder);restore(root,state['files'])
@@ -191,7 +216,13 @@ class HostedApp:
                     messages.append(message)
                 await create_app(root)(internal,receive,capture)
                 if mutate:
-                    state={**state,'files':snapshot(root),'lease_until':0}
+                    status=messages[0]['status'];value=json.loads(b''.join(m.get('body',b'') for m in messages))
+                    result_id=value.get('experiment_id') or value.get('challenge_id') or ''
+                    operation={**operation,'state':'COMPLETED' if status<400 else 'FAILED','status_code':status,
+                               'result_id':result_id,'result_path':('/api/experiments/' if result_id.startswith('experiment_') else '/api/challenges/')+result_id if result_id else None,'lease_until':0}
+                    if not result_id.startswith('experiment_'):operation['response']=value
+                    if status>=400:operation['detail']='The server returned a known failure; no successful result is claimed.'
+                    state={**state,'files':snapshot(root),'lease_until':0,'requests':{**state['requests'],oid:operation}}
                     await asyncio.to_thread(self.storage.write,sid,state,lease_etag)
                     lease_etag=None
                 if path=='/api/health':
@@ -203,6 +234,7 @@ class HostedApp:
                     if message['type']=='http.response.start':
                         message['headers']=[(k,v) for k,v in message.get('headers',[]) if k.lower() not in (b'cache-control',b'vary')]
                         message['headers'] += [(b'cache-control',b'private, no-store'),(b'vary',b'Cookie')]
+                        if mutate:message['headers'].append((b'x-qfault-operation',oid.encode()))
                         if mutate and f'{COOKIE}={cookie}' not in headers.get('cookie',''):
                             message['headers'].append((b'set-cookie',cookie_header.encode()))
                     await send(message)
@@ -211,5 +243,7 @@ class HostedApp:
         except (OSError,KeyError,TypeError):return await error(503,'Saved-report storage is unavailable. No successful saved result is claimed; retry after checking history.')
         finally:
             if lease_etag is not None:
-                try:await asyncio.to_thread(self.storage.write,sid,{**previous,'operations':previous['operations']+1,'lease_until':0},lease_etag)
+                try:
+                    unknown={**state,'files':previous['files'],'lease_until':0,'requests':{**state.get('requests',{}),oid:{**operation,'state':'UNKNOWN','lease_until':0,'detail':'Execution or durable save was interrupted. Never automatically resubmit this identity.'}}}
+                    await asyncio.to_thread(self.storage.write,sid,unknown,lease_etag)
                 except (Conflict,OSError,ValueError):pass  # Expiring lease, never overwrite a newer owner.

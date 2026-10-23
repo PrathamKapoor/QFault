@@ -1,17 +1,15 @@
+import {demoRequest} from '../guided/api';
 import React,{useEffect,useMemo,useState} from 'react';
 import Circuit from './quantum/Circuit';
+import ResultSummary,{ClaimInterval} from './ResultSummary';
+import {displayInterval} from '../guided/presentation';
 import MeasuredRecovery from './MeasuredRecovery';
 type Data=Record<string,any>;
 type Gate={name:string;qubits:number[];angle?:number};
 const GATES=['h','x','z','s','rx','ry','rz','cx','cz','cp','swap'];
 const TWO=['cx','cz','cp','swap'],ROT=['rx','ry','rz','cp'];
 const label=(s:string)=>String(s).replaceAll('_',' ').toLowerCase();
-async function api(path:string,body?:Data){
- const r=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);
- const v=await r.json();
- if(!r.ok)throw new Error(Array.isArray(v.detail)?v.detail.map((d:Data)=>(d.loc||[]).slice(1).join('.')+': '+d.msg).join(' · '):typeof v.detail==='string'?v.detail:JSON.stringify(v.detail));
- return v;
-}
+const api=(path:string,body?:Data)=>demoRequest(''+path,body);
 const CLUSTER:Data={schema_version:1,name:'Three-qubit cluster state',n_qubits:3,input:{kind:'computational_basis',bitstring:'000'},
  gates:[{name:'h',qubits:[0]},{name:'h',qubits:[1]},{name:'h',qubits:[2]},{name:'cz',qubits:[0,1]},{name:'cz',qubits:[1,2]}]};
 const STAB={kind:'pauli_expectations',observables:['XZI','ZXZ','IZX'].map(p=>({pauli:p,expected:1,tolerance:0.1}))};
@@ -38,7 +36,7 @@ function Intervals({claims}:{claims:Data[]}){
  {rows.map((c,i)=>{const y=24+i*38,e=c.kind==='distribution'?0:c.expected;return <g key={c.claim_id}>
   <text x="8" y={y+4} className="axis">{c.claim_id}</text>
   <rect x={x(e-c.tolerance)} y={y-9} width={Math.max(2,x(e+c.tolerance)-x(e-c.tolerance))} height="18" rx="3" fill="var(--slate)" opacity=".25"><title>tolerance band</title></rect>
-  <line x1={x(c.interval[0])} x2={x(c.interval[1])} y1={y} y2={y} stroke={c.status==='VIOLATED'?'#c0392b':c.status==='UNRESOLVED'?'#b8860b':'#2e7d32'} strokeWidth="4"/>
+  <line x1={x(displayInterval(c.interval,c.kind==='distribution'?'tv':'pauli').display?.[0]??0)} x2={x(displayInterval(c.interval,c.kind==='distribution'?'tv':'pauli').display?.[1]??0)} y1={y} y2={y} stroke={c.status==='VIOLATED'?'#c0392b':c.status==='UNRESOLVED'?'#b8860b':'#2e7d32'} strokeWidth="4"/>
   <circle cx={x(c.estimate)} cy={y} r="5" fill="var(--accent)"><title>{`estimate ${c.estimate.toFixed(3)} ± ${c.uncertainty_radius.toFixed(3)}`}</title></circle></g>})}
   <text x={L} y={rows.length*38+26} className="axis">{lo}</text><text x={W-20} y={rows.length*38+26} className="axis" textAnchor="end">{hi}</text></svg>
 }
@@ -148,7 +146,7 @@ export default function CustomLab({page,navigate}:{page:string;navigate:(r:strin
    {result.target_evidence.exact?<div className="lab-privileged"><h3>SIMULATOR_ASSISTED_EXACT_STATE · privileged</h3><p>Ideal-circuit fidelity {fmt(result.target_evidence.exact.ideal_fidelity,4)} · gate-noise state fidelity {fmt(result.target_evidence.exact.gate_noise_state_fidelity,4)}.</p><p className="small">{result.target_evidence.exact.note}</p></div>:<p className="small muted">Measurement-only: no exact candidate state or fidelity was computed.</p>}
   </div></section>}
   <section className="panel"><div className="panel-heading"><h2>Claims and uncertainty</h2></div><div className="lab-body"><Intervals claims={result.claims}/>
-   <div className="table-scroll"><table><thead><tr><th>Claim</th><th>Status</th><th>Estimate</th><th>±</th><th>Shots</th><th>Looks</th></tr></thead><tbody>{result.claims.map((c:Data)=><tr key={c.claim_id}><td className="mono">{c.claim_id}</td><td>{label(c.status)}</td><td>{c.estimate!=null?c.estimate.toFixed(3):c.interval?`[${fmt(c.interval[0])}, ${fmt(c.interval[1])}]`:'—'}</td><td>{c.uncertainty_radius!=null?c.uncertainty_radius.toFixed(3):'bound'}</td><td>{c.shots}</td><td>{c.looks}</td></tr>)}</tbody></table></div></div></section>
+   <div className="table-scroll"><table><thead><tr><th>Claim</th><th>Status</th><th>Estimate</th><th>±</th><th>Shots</th><th>Looks</th></tr></thead><tbody>{result.claims.map((c:Data)=><tr key={c.claim_id}><td className="mono">{c.claim_id}</td><td>{label(c.status)}</td><td><ClaimInterval claim={c}/></td><td>{c.uncertainty_radius!=null?c.uncertainty_radius.toFixed(3):'bound'}</td><td>{c.shots}</td><td>{c.looks}</td></tr>)}</tbody></table></div></div></section>
   <section className="panel"><div className="panel-heading"><h2>Evidence-action timeline</h2><span className="small muted">completed history · recorded after synchronous execution</span></div><div className="lab-body"><ol className="lab-timeline">
    {result.action_ledger.map((a:Data)=><li key={a.action_id}><strong>{a.action_id} · measure <span className="mono">{a.measurement_specification.setting}</span> (look {a.measurement_specification.look})</strong>
     <p>{a.reason_selected}</p>

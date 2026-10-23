@@ -646,3 +646,39 @@ production dpl_EZyabyX6wKrTcYA8o394twpPqXin, verified after asynchronous promoti
 Implementation identities: D-080–D-083 correspond to13c121db7e4b99bc6588203069ae17dfdec49d7a;
 D-084–D-085 to502a416519c2bb1d99265991d4cf5e290e37ba94. Historical write-time rows
 remain unchanged; this follow-up's own identity is authoritative in Git history.
+
+## Changes in this session (hosted usability and reliability)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Baseline/design | Record current clean hosting source/CI, preserve original dirty main, and execute dependency-ordered improvements against existing engine | docs/hosted-usability-ledger.md; root records | uncommitted | D-087 |
+
+Result presentation call order: GuidedDemo.Outcome/MeasuredRecovery/CustomLab →
+ResultSummary → resultSummary(actual record). Claim tables → ClaimInterval →
+displayInterval(raw,metric). No request, storage or decision is changed. TV[0,1]
+and Pauli[-1,1] intersections are presentation only; raw evidence remains in details
+and unchanged exports. Invalid/empty intersections explicitly say inconsistent.
+| Results | Shared compact actual-record summary and physical display domains, complete raw evidence retained | presentation.ts; ResultSummary.tsx; guide/lab/recovery; Node tests | uncommitted | D-088 |
+
+Navigation/history: MentalHero.onEnter → Landing.enter('/demo'); secondary
+onWorkbench preserves '/workbench'. Workbench rail groups tasks, legacy URLs stay
+accepted. demoRequest completed identity → notifyCompleted → HISTORY_EVENT →
+Workbench.refreshHistory/historyLoader → GET /api/experiments. Request generation
+prevents stale list replacement; no render-driven polling. Hosted flag only changes
+location/limits wording; no hero rendering or backend decisions change.
+| Wording/history | Guided primary action, grouped task links and completed-ID history invalidation | main.tsx; hero/Landing/Guide; guided/history.ts; tests/history-state.test.mjs | uncommitted | D-089 |
+
+Hosted execution recovery: demoRequest → jsonRequest(class,deadline,operationId) →
+HostedApp.__call__ → read_body/validate_direct/fingerprint → existing requests[ID]
+lookup or conditional RUNNING lease write → original create_app route → capture
+→ snapshot plus COMPLETED/FAILED commit → response. GET /api/operations/{ID} uses
+operation_view and never increments quota; expired RUNNING becomes UNKNOWN in its
+view. Matching completed POST materializes original files and loads the same
+ArtifactStore identity. Failed durable save records UNKNOWN if conditional release
+succeeds; otherwise stored RUNNING expires UNKNOWN. No duplicate POST retry.
+Guide.Pending.operationId survives refresh; recover() reads status then the returned
+result_path and restores actual IDs/results. Generic last operation ID is stored
+without response-shaped evidence. Shared bootstrap/safe read retries only transient
+errors at most3attempts,20s each,500/1000ms backoff; validation30s/execution280s,
+no retries. Abort only ends browser waiting; timers/listeners clear in finally.
+| Operation recovery | Durable fingerprint-bound status/results, explicit unknown lookup and bounded classified client requests | qfault/hosted_operations.py; hosting.py; guided requests/API/session; active components; tests | uncommitted | D-090 |

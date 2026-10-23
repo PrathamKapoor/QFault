@@ -1,3 +1,12 @@
+ACTIVE 2026-10-24 owner-authorized hosted usability: partial. Starting clean
+feat/vercel-hosting0f2da99, upstream0/0 and CI40002926091 success. Original main
+and three dirty root docs preserved. Read docs/hosted-usability-ledger.md. A/B/C
+implemented with presentation, history, classified requests and durable operation
+IDs. Node9tests/typecheck passed;19hosting/operation tests and additional5operation
+concurrency tests passed. D controls tests currently red and not part of A–C commit.
+Continue D→E→F→G; do not stop at plan. Production remains prior502a416 until gates.
+No scientific/frozen source or data changes. D-087–D-090 record current choices.
+
 # QFault handoff — public interactive Vercel delivery
 
 ## 1. Current Phase

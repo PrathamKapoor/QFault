@@ -2,7 +2,7 @@
 export type RunKey='z'|'phase'|'recovery'|'noise'|'budget';
 export type Stage='source'|'z'|'phase'|'edits'|'verify'|'export';
 export type Mode='phase'|'noise'|'budget';
-export type Pending={key:RunKey|'replay';phase:'validating'|'executing'|'unknown';startedAt:number};
+export type Pending={key:RunKey|'replay';phase:'validating'|'executing'|'unknown';startedAt:number;operationId?:string};
 export type Guide={schema_version:1;sessionId:string;stage:Stage;mode:Mode;ids:Partial<Record<RunKey,string>>;replays:string[];pending:Pending|null};
 export type Store={getItem:(key:string)=>string|null;setItem:(key:string,value:string)=>void};
 const KEY='qfault-guided-demo-v1';

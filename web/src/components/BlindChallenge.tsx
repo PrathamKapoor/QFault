@@ -1,7 +1,8 @@
+import {demoRequest} from '../guided/api';
 import React,{useEffect,useState} from 'react';
 import Circuit from './quantum/Circuit';
 type Data=Record<string,any>;
-async function api(path:string,body?:Data){const response=await fetch('/api/challenges'+path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:undefined);const value=await response.json();if(!response.ok)throw new Error(typeof value.detail==='string'?value.detail:JSON.stringify(value.detail));return value;}
+const api=(path:string,body?:Data)=>demoRequest('/api/challenges'+path,body);
 const label=(s:string)=>s.replaceAll('_',' ').toLowerCase();
 function Counts({counts,shots,expected}:{counts:Data;shots:number;expected?:Data}){return <div className="table-scroll"><table><thead><tr><th>Bitstring q[n−1] … q[0]</th>{expected&&<th>Contract expectation</th>}<th>Measured counts / shots</th></tr></thead><tbody>{Object.keys(expected||counts).sort().map(k=><tr key={k}><td className="mono">{k}</td>{expected&&<td>{Number(expected[k]).toFixed(4)}</td>}<td>{counts[k]||0} / {shots}</td></tr>)}</tbody></table></div>}
 export default function BlindChallenge({page,navigate}:{page:string;navigate:(route:string)=>void}){
