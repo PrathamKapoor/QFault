@@ -2,6 +2,23 @@
 
 ACTIVE HOSTING FOLLOW-UP (partial,2026-10-23): owner requests full interactive Vercel
 deployment and approved device login. Account prathamkapoor027-9479, Hobby team
+
+LATEST: hosting implementation committed13c121db7e4b99bc6588203069ae17dfdec49d7a.
+First Vercel build READY but actual runtime import failed on read-only artifacts
+because qfault.api initializes a global local app before wrapper. Build also chose
+root pyproject rather than root requirements.txt. Corrected api/index.py bootstrap
+uses managed temp storage and explicit async ASGI callable. api/pyproject.toml and
+native api/uv.lock include Aer with every version/wheel/source hash matching the
+original requirements.lock; regressions red then pass. Corrected full531tests
+passed102.38s.17targeted hosting/entrypoint tests passed36.45s. These fixes are
+currently uncommitted for next deployment. scripts/hosted_smoke.py adds real public
+privacy/export/replay/blind/Origin/body tests then existing real guided browser suite.
+First deployment dpl_2xMKi8zbtUYjBVFPk6Xd1m4naNJw was automatically production by
+Vercel first-deploy behavior; qfault.vercel.app exists but must NOT be claimed a
+working backend yet. Correct it, verify actual public workflows, then final report.
+ProjectAPI shows ssoProtection all_except_custom_domains; disabling it ONLY for new
+qfault to allow public judge access is authorized by public hosting request. Existing
+trial project untouched. Session data remains private behind signed browser cookie.
 hex-sembly verified. Isolated C:/Projects/QFault-Hosting, feat/vercel-hosting from
 287dd4f; original C:/Projects/QFF runtime/docs preserved. New qfault project and
 private qfault-investigations Blob store created without paid upgrades. Credentials

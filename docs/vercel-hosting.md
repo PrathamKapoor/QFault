@@ -32,8 +32,11 @@ snapshots remain private; operators manage retention in their own Blob store.
 ## Operator setup
 
 Use the repository's locked Python/runtime and frontend requirements. Deployment
-uses `.python-version`3.13 and `requirements.txt` delegates to unchanged hashed
-`requirements.lock`; no hosting SDK/dependency is added. Build checks TypeScript
+uses `.python-version`3.13 and nearest `api/pyproject.toml`/`api/uv.lock` for Vercel's
+native frozen installer. Every runtime version and wheel/source hash is checked
+against unchanged `requirements.lock`, including Aer. Root requirements.txt remains
+a hashed pip convenience file; Vercel prefers a native manifest over that wrapper.
+No hosting SDK/dependency is added. Build checks TypeScript
 then sets the public `VITE_QFAULT_HOSTED=1` feature flag for the frontend build.
 Never put provider tokens or signing keys in a `VITE_` variable.
 
@@ -86,8 +89,18 @@ changing plans: [pricing](https://vercel.com/docs/vercel-blob/usage-and-pricing)
 
 ## Verification
 
-The assembled suite passed529tests, one existing Starlette/httpx deprecation warning,
-99.07seconds. Hosting tests include real Aer recovery, separate-instance restore,
+The first build succeeded but runtime import failed because importing qfault.api
+constructs an unused global local app. The hosted entrypoint now creates that
+bootstrap only in temporary storage before importing the unchanged local API.
+Actual requests use separate restored private snapshots, not that bootstrap app.
+Vercel also preferred the root pyproject over requirements.txt, so the nearest
+hosted native lock explicitly includes Aer without changing local dependencies.
+Read-only-entrypoint and exact original artifact-hash regressions cover both fixes.
+Vercel assigned the first deployment to production automatically; this is recorded
+as a failed runtime deployment, not a verified public workbench.
+
+The corrected assembled suite passed531tests, one existing Starlette/httpx deprecation
+warning,102.38seconds (initial hosting source:529tests99.07s). Hosting tests include real Aer recovery, separate-instance restore,
 two-browser isolation, Origin/Host/body guards, storage failure, leases/quota,
 unsafe paths, consistent reads, signed bootstrap, blind freeze/reveal, expired
 lease recovery and commit conflicts. These unit transport tests use controlled

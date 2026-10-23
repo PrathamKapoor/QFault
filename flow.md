@@ -619,3 +619,16 @@ Origin-consistent reads use the documented private Blob cache=0 option (D-081); 
 | Hosting | Opt-in private session persistence and guarded ASGI deployment; preserve local engine | qfault/hosting.py; api/index.py; vercel.json; requirements.txt; .vercelignore; tests/test_hosting.py; root docs/plan | uncommitted | D-080 |
 | Storage consistency | Origin-consistent cache=0 reads retain ETag checks; actual provider stale-writer rejection verified | qfault/hosting.py; tests/test_hosting.py; docs/vercel-hosting.md | uncommitted | D-081 |
 | Hosted session UI | Initialize one capability before workbench effects; hosted-only privacy/connection notice, local/hero unchanged | HostedSession.tsx/css; App.tsx; main.tsx; qfault/hosting.py; tests/test_hosting.py | uncommitted | D-082 |
+
+Hosted import/runtime correction: api/index.py creates an unused legacy API bootstrap
+under tempfile before importing qfault.api, then its explicit async app() delegates to
+RequestBodyLimit/HostedApp. Per-request private restore remains unchanged. Vercel's
+nearest api/pyproject.toml/api/uv.lock pins Aer and all runtime closure artifacts to
+the original requirements.lock versions/hashes; no old lock is changed. D-084 records
+the actual read-only import failure and root-manifest selection evidence.
+
+scripts.hosted_smoke.run() exercises public HTTPS health/Aer, private two-browser
+history, cookie-context restoration, export verification/replay, Origin/body guards
+and blind freeze/reveal before invoking guided_demo_e2e.run() for real measured UI.
+No credentials/cookies are persisted in its public-safe output. A restored browser
+context is explicitly not a forced provider process restart.

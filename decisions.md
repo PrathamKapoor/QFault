@@ -956,3 +956,28 @@ still separately authorized; no remote mutation occurred during this gate.
 - Alternatives considered: Install the umbrella provider SDK (adds unrelated dependencies); mutate existing runtime pins/lock (unnecessary); upload local runtime/environment files (forbidden); call unit tests proof of deployed behavior (false).
 - Consequences: Preview/build/runtime/browser validation remain gates; no claim of a public URL yet. Hobby limits remain explicit. Existing trial project untouched; no paid plan or release/tag overwrite.
 - Files: .python-version, requirements.txt, .vercelignore, vercel.json, .gitignore, docs/vercel-hosting.md, docs/vercel-hosting-plan.md, README.md, web/src/main.tsx, decisions.md, flow.md, handoff.md
+
+### D-084: Correct the observed Vercel import bootstrap and native dependency selection
+- Date / phase / commit: 2026-10-23, deployed runtime correction, uncommitted
+- Context: Hosting implementation is13c121db7e4b99bc6588203069ae17dfdec49d7a. Vercel first deployment dpl_2xMKi8zbtUYjBVFPk6Xd1m4naNJw built successfully but runtime logs show OSError:[Errno30]Read-only file system:artifacts during qfault.api module import. Build logs show root pyproject.toml selected instead of requirements.txt; Aer is optional there. CLI automatically assigned first deployment to production; no readiness claim was made.
+- Decision: Before legacy API import, create its unused bootstrap store in a managed temporary directory; expose an explicit async ASGI app delegating to the guarded hosted boundary. Add nearest api/pyproject.toml and native api/uv.lock with existing runtime/Aer pins and all original constraints. Verify every resolved version and wheel/source hash against unchanged requirements.lock. Preserve local manifests, scientific sources and all existing release assets.
+- Why: Two regressions failed before correction: read-only-project import and missing native hosted lock. They pass after correction; uv0.12.5 resolves24packages from official PyPI. This replaces the unverified assumption in D-083 that Vercel would select the root hashed requirements wrapper. Runtime/remote workflow gates remain pending until redeployment and execution.
+- Alternatives considered: Remove the global local app or modify frozen API (unneeded); silently rely on /tmp for saved reports (not done; only unused import bootstrap lives there); force Aer mandatory for local users (breaks optional backend contract); accept fresh unpinned resolution (rejected).
+- Consequences: Hosted Python builder uses its supported frozen native lock. Local pip/hash setup stays unchanged. Scratch bootstrap never serves hosted user requests. Public deployment must be independently exercised; no unit pass substitutes for it.
+- Files: api/index.py, api/pyproject.toml, api/uv.lock, tests/test_hosted_entrypoint.py, docs/vercel-hosting.md, decisions.md, flow.md, handoff.md
+- Symptom: FUNCTION_INVOCATION_FAILED; qfault.api import attempts artifacts/investigations on read-only filesystem. Build installation omits optional Aer.
+- Root cause: Existing API app=create_app() runs at import before hosted wrapper; Vercel prioritizes nearest native Python manifest over root requirements.txt.
+- Regression test: tests/test_hosted_entrypoint.py; both red then passed. Actual new deployment must be checked next.
+- Supersedes: D-083 dependency-selection assumption only; all other source/privacy/exclusion rules remain.
+
+### D-085: Verify public hosted workflows and expose only the intended new project
+- Date / phase / commit: 2026-10-23, public hosting validation, uncommitted
+- Context: Corrected deployment source passes531tests102.38s and17targeted hosting/entrypoint tests36.45s. Owner explicitly selects the full public interactive app. New qfault project API reports ssoProtection deploymentType all_except_custom_domains; unrelated trial project remains untouched.
+- Decision: Disable Vercel deployment-login protection only on qfault for judge access, preserving strict hosted Host/Origin and signed private browser-report sessions. Add scripts.hosted_smoke to test actual public health/Aer, two-browser isolation, context restoration, independent report verification, linked replay, Origin/body guards and blind freeze/reveal, then run existing real guided workflow/mobile checks. Commit exact corrected source before deploying; verify provider results rather than upload/READY alone.
+- Why: Initial build READY was not runtime proof; actual browser/runtime logs exposed two corrected integration defects. No paid service, collaborator, local runtime upload or scientific policy change is needed. Unit/store probes and real cloud tests have distinct scopes.
+- Alternatives considered: Require judges to join a Vercel team (unnecessary and no collaborators authorized); return a protected or broken link as success (false); mock successful measurements (forbidden).
+- Consequences: New qfault site/API public; histories remain separate browser capabilities, not shared public artifacts. Hobby resource/operation quotas apply; no global rate-limit claim. Actual browser-context restore is not claimed as forced cold restart. Existing trial and releasev0.1.0 remain unchanged.
+- Files: scripts/hosted_smoke.py, docs/vercel-hosting.md, decisions.md, flow.md, handoff.md
+- Package: Hosted manifest reuses qiskit2.3.1,numpy2.5.2,scipy1.18.1,pydantic2.13.4,fastapi0.141.1,uvicorn0.52.4,qiskit-aer0.17.2; no scientific version changes.
+- Why this package: Aer must be present for the same measured simulator workflow; native API lock supports Vercel's actual frozen dependency selection.
+- Packages compared: Umbrella vercel0.12.0/vercel-blob0.5.0 SDKs unnecessary; stdlib HTTPv12 suffices and real provider CAS/consistent reads passed.
