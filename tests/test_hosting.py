@@ -20,7 +20,9 @@ class MemoryState:
 def client(storage,**kwargs):
     from qfault.hosting import HostedApp
     from qfault.api import RequestBodyLimit
-    return TestClient(RequestBodyLimit(HostedApp(storage=storage,secret='a'*64,hosts={'public.example'},**kwargs)),base_url='https://public.example')
+    from qfault.hosted_admission import Admission
+    if not hasattr(storage,'admission_state'):storage.admission_state=MemoryState()
+    return TestClient(RequestBodyLimit(HostedApp(storage=storage,secret='a'*64,hosts={'public.example'},admission=Admission(storage.admission_state),**kwargs)),base_url='https://public.example')
 
 
 def fixture(key):

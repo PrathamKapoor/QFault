@@ -697,3 +697,19 @@ scripts.cleanup_hosted_sessions → hosted_retention.cleanup uses at most100expl
 private IDs, default dry run, never legacy snapshots. No cron exists or is claimed.
 | Session controls | Allowance/access/complete verified ZIP, confirmed fenced deletion and prospective retention | hosting.py; hosted_retention.py; session_export.py; cleanup script; SessionControls; tests | uncommitted | D-091 |
 D-087–D-090 implementation: e507f33a8aeb867c1ecbe6ca7cdab551888714ce.
+
+Public admission call order: validated hosted request → request_ceiling (original
+request schema, or saved validated replay) → Admission.acquire → conditional shared
+sessions/global-admission-v1.json → session RUNNING CAS → unchanged engine →
+completion CAS → Admission.release in finally. One active slot, immediate503,
+330s expiring lease;100admissions/5million reserved upper-shot budgets per UTCday.
+Busy/refused cost spends no session allowance. No queue or IP identifiers. Fencing
+uses storage ETags; in-memory MemoryState is controlled test transport only.
+BlobState.write → encode_state → bounded schema2 length/digest/zlib-base64;
+BlobState.read → decode_state → legacy schema1 in-memory snapshot → restore.
+A read never rewrites legacy data; a later authorized write compresses transport
+without changing file strings or scientific records. Atomic files+operation commit
+retained; no object/index split or destructive migration. Controlled copied-report
+CPU/bytes and actual provider timings are in docs/hosted-storage-profile.json.
+| Public resources/storage | Global conditional immediate admission and bounded lossless wire compression justified by profiles | hosted_admission/codec/hosting; profile/provider scripts; tests; profile JSON | uncommitted | D-092 |
+D-091 implementation: ad61f6d611547a084b2671ab6688f83c646576af.

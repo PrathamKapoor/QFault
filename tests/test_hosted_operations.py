@@ -56,3 +56,17 @@ def test_two_instances_same_operation_cannot_both_execute(monkeypatch):
   assert second.status_code==202 and second.json()['state']=='RUNNING'
   finish.set();assert first.result().status_code==201
  assert len(calls)==1 and len(a.get('/api/experiments').json())==1
+
+def test_delayed_original_cannot_restore_content_after_expired_lease_deletion(monkeypatch):
+ import qfault.counterfactual as core
+ original=core.recover;entered=threading.Event();finish=threading.Event()
+ def held(request):entered.set();assert finish.wait(10);return original(request)
+ monkeypatch.setattr(core,'recover',held)
+ store=MemoryState();a=client(store);a.post('/api/hosted-session',json={})
+ b=client(store);b.cookies.update(a.cookies)
+ with ThreadPoolExecutor() as pool:
+  future=pool.submit(a.post,'/api/lab/recoveries',json=fixture('budget'),headers={'X-QFault-Operation':OID})
+  assert entered.wait(10);sid=next(iter(store.rows));store.rows[sid][0]['lease_until']=1
+  assert b.post('/api/session/delete',json={'confirm':'DELETE MY SESSION DATA'}).status_code==200
+  finish.set();assert future.result().status_code==409
+ assert store.rows[sid][0]['files']=={} and store.rows[sid][0]['deleted_at']

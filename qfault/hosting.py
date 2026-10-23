@@ -17,6 +17,8 @@ from urllib.request import Request,build_opener,HTTPRedirectHandler
 from fastapi.responses import JSONResponse,Response
 from .api import create_app
 from .evidence import canonical
+from .hosted_codec import encode_state,decode_state
+from .hosted_admission import Admission,Busy,request_ceiling
 from .hosted_retention import expired,tombstone,RETENTION_SECONDS
 from .hosted_operations import OPERATION,fingerprint,operation_view,validate_direct,read_body
 
@@ -104,7 +106,7 @@ class BlobState:
         for _ in range(3):
             body,headers=self.request('GET',url+'?'+urlencode({'cache':'0','qfault_revision':secrets.token_hex(12)}),headers={'Cache-Control':'no-cache'})
             if body is not None and headers.get('etag')==etag:
-                state=json.loads(body)
+                state=decode_state(body)
                 if (type(state.get('schema_version')) is not int or state['schema_version']!=1
                     or type(state.get('operations')) is not int or not 0<=state['operations']<=64
                     or not isinstance(state.get('lease_until'),(int,float)) or not isinstance(state.get('files'),dict)):
@@ -113,7 +115,7 @@ class BlobState:
         raise OSError('Current private snapshot not available')
 
     def write(self,sid,state,etag):
-        raw=canonical(state)
+        raw=encode_state(state)
         if len(raw)>MAX_STATE:raise ValueError('Session storage limit reached')
         headers={'content-type':'application/json','x-content-type':'application/json',
                  'x-vercel-blob-access':'private','x-add-random-suffix':'0',
@@ -127,8 +129,9 @@ class BlobState:
 
 
 class HostedApp:
-    def __init__(self,storage=None,secret=None,hosts=None):
+    def __init__(self,storage=None,secret=None,hosts=None,admission=None):
         self.storage=storage or BlobState()
+        self.admission=admission or Admission(self.storage)
         self.secret=secret or os.environ.get('QFAULT_SESSION_KEY','')
         self.hosts=hosts or {v.lower() for v in [os.environ.get(k,'') for k in ('VERCEL_URL','VERCEL_BRANCH_URL','VERCEL_PROJECT_PRODUCTION_URL')]+os.environ.get('QFAULT_PUBLIC_HOSTS','').split(',') if v}
 
@@ -170,9 +173,9 @@ class HostedApp:
         cookie_header=f'{COOKIE}={cookie}; Path=/; Max-Age={AGE}; Secure; HttpOnly; SameSite=Lax'
         if method=='POST' and path=='/api/hosted-session':
             return await JSONResponse({'hosting':{'persistence':'private Vercel Blob','session_scope':'browser cookie','operation_limit':64}},headers={'Set-Cookie':cookie_header,'Cache-Control':'private, no-store'})(scope,receive,send)
-        stateless=(method in ('GET','HEAD') and path in ('/api/health','/api/research','/api/guided-demo')) or (method=='POST' and path=='/api/lab/validate')
+        stateless=(method in ('GET','HEAD') and (path in ('/api/health','/api/research','/api/guided-demo','/api/circuits','/api/benchmark','/api/evaluation','/api/lab/examples','/api/benchmark/report','/api/evaluation/report') or path.startswith('/api/contracts/'))) or (method=='POST' and path=='/api/lab/validate')
         mutate=method not in ('GET','HEAD','OPTIONS') and not stateless
-        previous=None;lease_etag=None;operation=None;oid=None
+        previous=None;lease_etag=None;operation=None;oid=None;global_lease=None
         try:
             state,etag=(empty_state(),None) if stateless else await asyncio.to_thread(self.storage.read,sid)
             if not stateless and expired(state):
@@ -228,6 +231,10 @@ class HostedApp:
                     return await JSONResponse(result,status_code=existing['status_code'],headers={'Cache-Control':'private, no-store','X-QFault-Operation':oid})(scope,receive,send)
                 if state['lease_until']>time.time():return await error(409,'Another operation is running in this browser session. Recover its identity before submitting.')
                 if state['operations']>=64:return await error(429,'This hosted session reached its 64-operation limit. Export important reports.')
+                try:ceiling=request_ceiling(path,body,state['files'])
+                except (ValueError,KeyError,TypeError):return await error(422,'Invalid or excessive hosted request; no execution admitted')
+                try:global_lease=await asyncio.to_thread(self.admission.acquire,ceiling)
+                except Busy as exc:return await error(503,str(exc))
                 if etag is None:state={**state,'created_at':time.time(),'retention_policy':'prospective-90d-v1','retention_expires_at':time.time()+RETENTION_SECONDS}
                 previous=state
                 operation={'fingerprint':bound,'state':'RUNNING','created_at':time.time(),'lease_until':time.time()+310}
@@ -272,6 +279,9 @@ class HostedApp:
         except ValueError:return await error(507,'Hosted storage or response limit reached. No successful saved result is claimed.')
         except (OSError,KeyError,TypeError):return await error(503,'Saved-report storage is unavailable. No successful saved result is claimed; retry after checking history.')
         finally:
+            if global_lease is not None:
+                try:await asyncio.to_thread(self.admission.release,global_lease)
+                except (OSError,Conflict,ValueError):pass  # Expiring330s global lease, never an unbounded queue.
             if lease_etag is not None:
                 try:
                     unknown={**state,'files':previous['files'],'lease_until':0,'requests':{**state.get('requests',{}),oid:{**operation,'state':'UNKNOWN','lease_until':0,'detail':'Execution or durable save was interrupted. Never automatically resubmit this identity.'}}}
