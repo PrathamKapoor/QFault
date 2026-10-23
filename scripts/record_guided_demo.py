@@ -1,5 +1,6 @@
 """Record the real guide silently, then verify full normal-speed browser playback."""
 import argparse
+import base64
 import hashlib
 import json
 import math
@@ -144,8 +145,10 @@ def playback(folder):
         raise ValueError('Recording size/digest mismatch')
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True);page=browser.new_page(viewport={'width':1440,'height':1050})
-        page.route('https://qfault-media.invalid/recording.webm',lambda route:route.fulfill(content_type='video/webm',body=path.read_bytes()))
-        page.set_content('<body style="margin:0;background:#17131f"><video id="clip" controls muted preload="auto" style="width:1440px;height:1000px" src="https://qfault-media.invalid/recording.webm"></video></body>')
+        page.set_content('<body style="margin:0;background:#17131f"><video id="clip" controls muted preload="auto" style="width:1440px;height:1000px"></video></body>')
+        # Decode the exact local bytes as a seekable Blob. A fulfilled HTTP route
+        # without range responses exposes duration but a zero-length seekable range.
+        page.evaluate('(encoded)=>{const bytes=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));document.querySelector("video").src=URL.createObjectURL(new Blob([bytes],{type:"video/webm"}))}',base64.b64encode(path.read_bytes()).decode('ascii'))
         page.wait_for_function('Number.isFinite(document.querySelector("video").duration)',timeout=30000)
         duration=page.evaluate('document.querySelector("video").duration')
         assert duration>=170,'Recording is shorter than the advertised presentation'

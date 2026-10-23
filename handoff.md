@@ -2,7 +2,7 @@
 
 ## 1. Current Phase
 
-Source preparation complete; release execution partial. Started at clean main
+Source preparation complete; release execution partial. D-077 media correction is uncommitted on main after safe fast-forward to777f5de. Started at clean main
 9866fdb9ed7f22079f6e96bca18d55f0c7d9e173. Working branch feat/guided-demo-release
 in C:/Projects/QFF. Guided milestone db2989b45f48183fdce7ca2980717b8f009758ea is
 committed with exact owner author/committer. Delivery tools/docs are currently
@@ -105,7 +105,7 @@ GitHub connector lacks release upload; official API fallback documented.
 
 ## 8. Known Issues / Risks
 
-No reproduced mandatory UI failure remains. Media/package/public gates pending.
+No reproduced mandatory UI failure remains. Full suite514passed77.31s at777f5de. Recording all five outcomes passed; playback seek failed because the synthetic HTTP route exposed seekable[0,0]. An identical-byte Blob probe exposed the whole180.04seconds and seek10s worked. D-077 fixes only that verifier. Capture/packages must be recreated at the new source SHA; existing package-install runs remain scoped to777f5de. Media/package/public gates pending.
 Historical unavailable raw families stay explicit;72/72 replication is not repair
 accuracy or untouched evidence. Dense/low-budget cases can remain unresolved.
 Unsigned hashes, cooperative timeout, single-process local trust and no

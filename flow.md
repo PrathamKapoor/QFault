@@ -516,7 +516,7 @@ record()                         scripts/record_guided_demo.py; clean-source and
  ├─ actual Playwright actions     existing guide -> Z -> phase -> recovery -> export/replay -> noise -> budget
  ├─ keep() -> verify_export()     returned IDs -> actual reports; distinct fresh execution sets checked
  └─ browser context close         flush genuine silent WebM; source/milestone/report metadata
-playback()                        browser loads actual WebM bytes
+playback()                        browser loads size/hash-checked WebM bytes as a seekable Blob
  ├─ seek/decode captures          source, phase, fresh, noise and budget frames for visual inspection
  ├─ complete normal-speed play    ended/error/frame/corruption/audio-track checks
  └─ captions()/stamp()            WebVTT from actual monotonic milestone offsets
@@ -561,3 +561,9 @@ Persistence / identity / version: New artifact/output directories only. Tag name
 Error / timeout / cancellation / recovery behavior: Missing/corrupt/oversized/unsafe members, failed gates, wrong owner/origin/source, pending CI, existing tag/release or download mismatch block success. Temporary extraction confined to newly created resolved parent. Network timeouts/guards do not claim hard cancellation. Partial downloads remain clearly partial, never verified.
 Verification commands and tests: targeted release/media suites; complete final pytest/Node/frontend/Aer/browser; independent empty extraction/locked installation; actual public download/checksum/package/tag and final exact-SHA CI checks.
 Known limitations: Checksums unsigned; GitHub availability/auth can block publication. No paid service/competition action, no hardware verification, no claim that later documentation is inside an earlier package.
+
+## Changes in this session (media verification correction)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Playback | Decode exact bounded local bytes through a Blob so browser seeking works without a synthetic HTTP range server | scripts/record_guided_demo.py; decisions.md; flow.md; handoff.md | uncommitted | D-077 |

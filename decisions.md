@@ -882,3 +882,15 @@ still separately authorized; no remote mutation occurred during this gate.
 - Files: scripts/release_delivery.py, scripts/prepare_release_assets.py, scripts/public_release.py, tests/test_release_delivery.py, tests/test_public_release.py, tests/test_demo_asset_selection.py, tests/test_research_summary.py, .github/workflows/checks.yml, README.md, docs/public-release.md, decisions.md, flow.md, handoff.md
 - Regression test: tests/test_release_delivery.py; tests/test_public_release.py; tests/test_demo_asset_selection.py; source/eligible/shot documentation consistency test. Full final assembled checks and real remote publication remain pending.
 - API reference: https://docs.github.com/en/rest/releases/releases and https://docs.github.com/en/rest/releases/assets checked during implementation; existing API2022-11-28 contract and response digest fields retained.
+
+### D-077: Decode the exact recording bytes through a seekable browser Blob
+- Date / phase / commit: 2026-10-23, media verification, uncommitted
+- Context: D-075/D-076 is committed as 777f5de157415075fe031f8f045b6c950d6dad3a. Its assembled suite passed514tests77.31s. Actual recording completed all five expected live outcomes, but frame seeking timed out in playback verification.
+- Decision: Load the already size/hash-checked local WebM bytes into a browser Blob URL before seeking and full normal-speed playback. Keep duration, decoding, frame, silence and playback assertions. Recreate recording/packages from corrected committed source.
+- Why: An isolated actual-browser probe of identical15577963bytes found HTTP-route duration180.04seconds but seekable[0,0] and currentTime stayed0 after setting10. A Blob exposed seekable[0,180.04] and currentTime10. The fulfilled route did not implement range responses. No scientific or UI outcome failed.
+- Alternatives considered: Implement HTTP Range responses (unneeded for local-byte verification); remove frame checks or call the recording verified (would conceal failure).
+- Consequences: Base64/Blob briefly duplicates bounded media in browser memory; existing128MiB limit remains. Old failed verification stays local, never published as success.
+- Files: scripts/record_guided_demo.py, decisions.md, flow.md, handoff.md
+- Symptom: Page.wait_for_function: Timeout30000ms exceeded while seeking the first decoded frame.
+- Root cause: Synthetic fulfilled HTTP media response has a zero-length seekable range despite a known duration; identical bytes are seekable as a Blob.
+- Regression test: Actual browser probe and full scripts.record_guided_demo playback on recorded bytes; no fake media fixture or weakened assertion. Existing caption unit tests retained.
