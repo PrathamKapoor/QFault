@@ -10,6 +10,15 @@ QFAULT runs small quantum circuits (2–5 qubits) on local Qiskit simulators, co
 
 Everything is simulated (Qiskit reference simulators and Qiskit Aer). QFAULT makes no hardware, quantum-advantage or universal-verification claims; finite-shot uncertainty, abstentions and negative results are reported alongside successes.
 
+**For judges:** start the server below and choose **Guided demo** on the first
+screen, or open <http://127.0.0.1:8000/#/demo>. Follow an imported QASMBench circuit
+through an inadequate Z contract, complementary evidence, bounded edits and fresh
+verification. Noise-control and insufficient-budget examples execute real
+abstentions. No JSON assembly or stored success response is required.
+
+[Judging/setup guide](docs/judging-guide.md) · [Three-minute narration](docs/three-minute-demo.md) ·
+[Public delivery and verification](docs/public-release.md)
+
 Current scientific scope and dated records: [current-state index](docs/current-state.md).
 The current release adds native circuit import, explicit measured recovery evidence,
 parent-linked replay and verifiable source/evidence packages. The earlier reviewed

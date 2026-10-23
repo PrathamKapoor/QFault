@@ -29,3 +29,13 @@ def test_recovery_comparison_keeps_both_denominators_and_uses_recorded_shot_tota
         assert data['recovery'][policy]['eligible']==41
         assert data['recovery'][policy]['verified']==10
     assert round(comparison['relative_shot_reduction']*100,1)==9.6
+
+
+def test_judging_guide_headlines_stay_consistent_with_recorded_summary():
+    source=json.loads(Path('benchmarks/external-holdout-v1/summary.json').read_bytes())
+    guide=Path('docs/judging-guide.md').read_text(encoding='utf8')
+    for name in ('conservative','point_discrepancy'):
+        row=source['recovery_summaries'][name];verified=row['outcomes']['VERIFIED_UNDER_DECLARED_CONTRACT']
+        assert f"{verified}/{row['runs']}" in guide
+        assert f"{verified}/{row['eligible']}" in guide
+        assert f"{row['shots']:,}" in guide

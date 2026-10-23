@@ -37,6 +37,8 @@ jobs:
       # so the frontend is built before pytest runs.
       - run: npm --prefix web ci
       - run: npm --prefix web run check
+      - name: Guided stage and duplicate-admission regressions
+        run: node --test tests/guided-session.test.mjs
       - run: npm --prefix web run build
       - run: python -m pytest tests -q
       - name: Deterministic Aer execution smoke
@@ -74,6 +76,8 @@ jobs:
           server=$!
           trap 'kill $server 2>/dev/null || true' EXIT
           python -m scripts.release_smoke --base http://127.0.0.1:8000 --out "$RUNNER_TEMP/smoke"
+          python -m scripts.guided_demo_e2e --base http://127.0.0.1:8000 --out "$RUNNER_TEMP/guided"
+          python -m scripts.guided_accessibility_e2e --base http://127.0.0.1:8000 --out "$RUNNER_TEMP/guided-accessibility"
       - name: Server log on failure
         if: failure()
         run: cat "$RUNNER_TEMP/server.log" || true

@@ -447,6 +447,8 @@ D-068 is committed as 9866fdb9ed7f22079f6e96bca18d55f0c7d9e173.
 | Guided accessibility | Keep useful mobile entry, readable aside, stage focus and short control names; verify keyboard/error states and real Aer retry | GuidedDemo.tsx/css; landing/Landing.tsx; landing.css; scripts/guided_accessibility_e2e.py | uncommitted | D-072 |
 | Research interpretation | Derive equal yield and relative shot reduction from recorded totals, retain both denominators | qfault/api.py; ResearchEvidence.tsx; tests/test_research_summary.py | uncommitted | D-073 |
 | Record lifecycle | Refresh history on entry, independently restore available records and prevent overwriting known stage IDs | web/src/main.tsx; GuidedDemo.tsx; guided browser suites | uncommitted | D-074 |
+| Demonstration delivery | Source-bound real silent recording, normal-speed playback/decoded frame checks and actual-time captions; complete narration and setup/fallback guide | scripts/record_guided_demo.py; tests/test_demo_media.py; docs/judging-guide.md; docs/three-minute-demo.md | uncommitted | D-075 |
+| Public delivery | Self-contained bounded outer archives, explicit public asset curation, existing-auth draft publication and independent public download/tag checks; extend CI regressions | scripts/release_delivery.py; scripts/prepare_release_assets.py; scripts/public_release.py; release tests; docs/public-release.md; README.md; .github/workflows/checks.yml | uncommitted | D-076 |
 
 ## 18. Guided external demonstration inputs and text fallback
 
@@ -500,3 +502,62 @@ Restoration uses Promise.allSettled and matches each returned experiment_id to t
 Error / timeout / cancellation / recovery behavior: Busy409 and backend validation errors remain visible/retryable. Connection loss after submission records unknown completion; history inspection and acknowledgement precede a new guide. Missing/corrupt session or server record never supplies a fallback result. Storage failures warn that exports should be retained.
 Verification commands and tests: node --test tests/guided-session.test.mjs (four pass); npm check/build; scripts.guided_demo_e2e against actual Aer backend, including independent downloaded report verification.
 Known limitations: Backend progress is synchronous operation-level; no hard cancellation, external timestamp or unique cause claim. Browser acceptance remains a separate executed gate.
+
+## 20. Genuine demonstration recording and playback
+
+Subsystem: Public-safe media preparation.
+Trigger / when: Explicit scripts.record_guided_demo --out after committing the assembled source.
+What: Record the actual guide, retain controlled exports, verify full silent playback and caption timing.
+Why: A judge needs an honest demonstrable fallback, not screenshots or narration claimed as footage.
+Input / schema / provenance: Clean Git SHA; loopback API; actual guided UI, source-qualified input catalog and returned experiment IDs.
+Ordered calls with actual symbols and paths:
+```text
+record()                         scripts/record_guided_demo.py; clean-source and loopback checks
+ ├─ actual Playwright actions     existing guide -> Z -> phase -> recovery -> export/replay -> noise -> budget
+ ├─ keep() -> verify_export()     returned IDs -> actual reports; distinct fresh execution sets checked
+ └─ browser context close         flush genuine silent WebM; source/milestone/report metadata
+playback()                        browser loads actual WebM bytes
+ ├─ seek/decode captures          source, phase, fresh, noise and budget frames for visual inspection
+ ├─ complete normal-speed play    ended/error/frame/corruption/audio-track checks
+ └─ captions()/stamp()            WebVTT from actual monotonic milestone offsets
+```
+Validation and trust boundary: No mocked outcomes, hidden desktop recording, Python upload or voiceover claim. Timed holds pace actual screens, never fabricate engine progress. Caption intervals ordered inside actual duration. Unsigned hashes bind bytes, not authenticity.
+Output / schema / units: Silent WebM, captions, actual PNG frames, checked controlled reports, source-bound recording/playback JSON; seconds and actual shot/execution costs.
+Persistence / identity / version: Exclusive new directory within artifacts; no overwrite of source or earlier captures. Media SHA and source commit recorded; public selection separate from runtime storage.
+Error / timeout / cancellation / recovery behavior: Dirty source or unexpected live verdict fails without a fabricated successful recording. Browser errors/corrupt playback fail the media gate. No hard backend cancellation is claimed.
+Verification commands and tests: tests/test_demo_media.py; actual record/playback command and manual decoded-frame inspection before publication.
+Known limitations: Narration is supplied as text, footage silent. Pacing can exceed three minutes if actual execution is slow; report observed duration. No competition submission or hardware evidence.
+
+D-069–D-074 implementation commit: db2989b45f48183fdce7ca2980717b8f009758ea.
+
+## 21. Public release packages, curation and verified publication
+
+Subsystem: Reviewable release delivery.
+Trigger / when: Explicit operator bundle/verify/prepare/publish or unauthenticated public verification command after gates.
+What: Make source, available evidence, controlled demonstration and verified media directly obtainable.
+Why: Local artifact paths and an upload response are insufficient public delivery evidence.
+Input / schema / provenance: Clean exact source SHA, existing package manifests, actually executed check record, source-bound recording/playback/controlled reports, explicit tag and asset names. No personal runtime sweep.
+Ordered calls with actual symbols and paths:
+```text
+release_delivery.bundle_package()            scripts/release_delivery.py
+ ├─ package_submission.verify_package()      unchanged existing member/digest/size checks
+ └─ verify_release_archive()                 outer membership/CRC -> inner verify -> optional exclusive extraction
+prepare_release_assets.prepare()             scripts/prepare_release_assets.py
+ ├─ make_demo_archive()                      source/media/report IDs and request profile -> verify_export/audit_record
+ ├─ build_package() or verified package reuse exact source/mode and tested bytes retained
+ └─ public summary / docs / media / SHA256SUMS explicit filenames only; research values from frozen records
+public_release.publish()                     scripts/public_release.py; --publish is explicit
+ ├─ validate_assets()/credential()            reviewed membership/hashes, existing helper in memory only
+ ├─ GitHub.request()                          owner/origin/main/source CI and unused release/tag preflight
+ ├─ draft create -> explicit uploads          validated GitHub hosts; remote name/size/digest checks
+ └─ publish -> verify_public()                new download directory; every remote asset obtained
+     ├─ PublicRedirect()/download()           HTTPS GitHub-owned redirects, size/time bounds
+     ├─ read_checksums()/validate_assets()    downloaded bytes, both package modes, source/media bindings
+     └─ resolve_tag()                         actual remote tag commit, including bounded annotated-tag resolution
+```
+Validation and trust boundary: Only exactly named public assets can publish. No downloaded script execution, credentials in output, ignored data discovery or tag/release overwrite. Verify does not trust embedded success alone; hashes/actual reports/source bindings are checked. Media playback assertions remain observed evidence, not signatures.
+Output / schema / units: Source/evidence outer ZIPs, controlled report ZIP, verification JSON, guide/narration, silent WebM/captions and SHA256SUMS; exact source SHA, byte counts, SHA-256, public URLs and downloaded verification record.
+Persistence / identity / version: New artifact/output directories only. Tag names immutable; draft retained on upload failure. Package source may precede final documentation commit; never relabel archives. All new commits retain owner identity; release API does not rewrite source commits.
+Error / timeout / cancellation / recovery behavior: Missing/corrupt/oversized/unsafe members, failed gates, wrong owner/origin/source, pending CI, existing tag/release or download mismatch block success. Temporary extraction confined to newly created resolved parent. Network timeouts/guards do not claim hard cancellation. Partial downloads remain clearly partial, never verified.
+Verification commands and tests: targeted release/media suites; complete final pytest/Node/frontend/Aer/browser; independent empty extraction/locked installation; actual public download/checksum/package/tag and final exact-SHA CI checks.
+Known limitations: Checksums unsigned; GitHub availability/auth can block publication. No paid service/competition action, no hardware verification, no claim that later documentation is inside an earlier package.
