@@ -14,9 +14,10 @@ from urllib.error import HTTPError,URLError
 from urllib.parse import urlencode,urlsplit
 from urllib.request import Request,build_opener,HTTPRedirectHandler
 
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse,Response
 from .api import create_app
 from .evidence import canonical
+from .hosted_retention import expired,tombstone,RETENTION_SECONDS
 from .hosted_operations import OPERATION,fingerprint,operation_view,validate_direct,read_body
 
 MAX_STATE=32*1024*1024
@@ -174,6 +175,34 @@ class HostedApp:
         previous=None;lease_etag=None;operation=None;oid=None
         try:
             state,etag=(empty_state(),None) if stateless else await asyncio.to_thread(self.storage.read,sid)
+            if not stateless and expired(state):
+                if state['lease_until']>time.time():return await error(409,'Retention reached while operation is active; data remains until its lease clears')
+                state=tombstone(state,'retention');etag=await asyncio.to_thread(self.storage.write,sid,state,etag)
+            if state.get('deleted_at'):return await error(410,'Session data was permanently removed. Clear this session cookie to open a new session.')
+            if method=='GET' and path=='/api/session':
+                info={'operation_limit':64,'used_operations':state['operations'],'remaining_operations':64-state['operations'],
+                      'consumes':'Each admitted state-changing operation, including replay, challenge transitions and review. Validation, status and report reads do not consume allowance.',
+                      'access_expires_at':int(cookie.split('.')[1])+AGE,
+                      'retention':{'policy':state.get('retention_policy','legacy-preserved'),'expires_at':state.get('retention_expires_at'),
+                                   'cleanup':'Expired prospective data is purged on access or by an explicit operator sweep. No background schedule is configured; cookie expiry is not deletion.'},
+                      'running':state['lease_until']>time.time(),'operations':[operation_view(k,v) for k,v in state.get('requests',{}).items()]}
+                return await JSONResponse(info,headers={'Cache-Control':'private, no-store'})(scope,receive,send)
+            if method=='GET' and path=='/api/session/export':
+                from .session_export import build_session_export
+                try:
+                    with tempfile.TemporaryDirectory(prefix='qfault-export-') as folder:
+                        root=Path(folder);restore(root,state['files'])
+                        archive=build_session_export(root,[operation_view(k,v) for k,v in state.get('requests',{}).items()])
+                except (ValueError,KeyError,OSError):return await error(409,'Complete export unavailable: a report is missing, corrupt or exceeds bounds. No partial archive is supplied.')
+                return await Response(archive,media_type='application/zip',headers={'Cache-Control':'private, no-store','Content-Disposition':'attachment; filename="qfault-session-reports.zip"'})(scope,receive,send)
+            if method=='POST' and path=='/api/session/delete':
+                try:body,receive=await read_body(receive)
+                except (ValueError,UnicodeError):return await error(422,'Explicit deletion confirmation required')
+                if body!={'confirm':'DELETE MY SESSION DATA'}:return await error(422,'Explicit deletion confirmation required')
+                if state['lease_until']>time.time():return await error(409,'An operation is running. Wait for its completion or interrupted lease before deleting.')
+                await asyncio.to_thread(self.storage.write,sid,tombstone(state,'user-request'),etag)
+                return await JSONResponse({'deleted':True,'scope':'Current browser session only; report content removed, small anti-resurrection tombstone retained.'},headers={'Cache-Control':'private, no-store','Set-Cookie':f'{COOKIE}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Lax'})(scope,receive,send)
+
             if method=='GET' and path.startswith('/api/operations/'):
                 oid=path.rsplit('/',1)[-1]
                 if not OPERATION.fullmatch(oid) or oid not in state.get('requests',{}):return await error(404,'Operation not found in this session')
@@ -199,6 +228,7 @@ class HostedApp:
                     return await JSONResponse(result,status_code=existing['status_code'],headers={'Cache-Control':'private, no-store','X-QFault-Operation':oid})(scope,receive,send)
                 if state['lease_until']>time.time():return await error(409,'Another operation is running in this browser session. Recover its identity before submitting.')
                 if state['operations']>=64:return await error(429,'This hosted session reached its 64-operation limit. Export important reports.')
+                if etag is None:state={**state,'created_at':time.time(),'retention_policy':'prospective-90d-v1','retention_expires_at':time.time()+RETENTION_SECONDS}
                 previous=state
                 operation={'fingerprint':bound,'state':'RUNNING','created_at':time.time(),'lease_until':time.time()+310}
                 state={**state,'operations':state['operations']+1,'lease_until':operation['lease_until'],

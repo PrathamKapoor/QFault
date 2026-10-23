@@ -682,3 +682,18 @@ without response-shaped evidence. Shared bootstrap/safe read retries only transi
 errors at most3attempts,20s each,500/1000ms backoff; validation30s/execution280s,
 no retries. Abort only ends browser waiting; timers/listeners clear in finally.
 | Operation recovery | Durable fingerprint-bound status/results, explicit unknown lookup and bounded classified client requests | qfault/hosted_operations.py; hosting.py; guided requests/API/session; active components; tests | uncommitted | D-090 |
+
+Session controls (hosted only): HostedReportNotice → SessionControls → safe
+GET /api/session (remaining admitted mutations, access deadline, retention policy)
+or GET /api/session/export → restore → build_session_export → original
+ArtifactStore.export/BlindChallenges.export → verify_session_export → bounded ZIP.
+Original raw documents/IDs remain unchanged; unrevealed challenge private data is
+excluded by its existing projection. Complete membership/hash/report checks reject
+partial output. POST /api/session/delete requires exact confirmation, refuses active
+lease, CAS-writes tombstone and expires cookie before client guide-state cleanup.
+Late completion has stale ETag and cannot resurrect content. New snapshot metadata
+sets prospective90day eligibility; expired() → tombstone() on access. Operator
+scripts.cleanup_hosted_sessions → hosted_retention.cleanup uses at most100explicit
+private IDs, default dry run, never legacy snapshots. No cron exists or is claimed.
+| Session controls | Allowance/access/complete verified ZIP, confirmed fenced deletion and prospective retention | hosting.py; hosted_retention.py; session_export.py; cleanup script; SessionControls; tests | uncommitted | D-091 |
+D-087–D-090 implementation: e507f33a8aeb867c1ecbe6ca7cdab551888714ce.

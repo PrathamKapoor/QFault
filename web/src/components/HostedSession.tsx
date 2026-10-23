@@ -2,6 +2,7 @@
 import React,{useEffect,useState} from 'react';
 import './HostedSession.css';
 import {demoRequest} from '../guided/api';
+import SessionControls from './SessionControls';
 
 export default function HostedSession({children}:{children:React.ReactNode}){
  const hosted=import.meta.env.VITE_QFAULT_HOSTED==='1';
@@ -23,5 +24,5 @@ export default function HostedSession({children}:{children:React.ReactNode}){
 
 export function HostedReportNotice(){
  if(import.meta.env.VITE_QFAULT_HOSTED!=='1')return null;
- return <aside className="hosted-notice" aria-label="Hosted report privacy"><strong>Private browser-session reports</strong><span>Reports are saved in private storage. This browser’s cookie controls access for 30 days; export important reports before clearing cookies or changing browsers. Limit: 64 operations per session.</span></aside>;
+ return <aside className="hosted-notice" aria-label="Hosted report privacy"><strong>Private browser-session reports</strong><span>Real Qiskit Aer simulation — executed on the server. No quantum-hardware execution. Hosted usage limits apply. Reports are saved privately; this browser’s cookie controls access.</span><SessionControls/></aside>;
 }
