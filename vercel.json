@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "npm --prefix web ci",
+  "buildCommand": "npm --prefix web run check && VITE_QFAULT_HOSTED=1 npm --prefix web run build",
+  "outputDirectory": "web/dist",
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 300,
+      "excludeFiles": "{.git/**,.local/**,.env*,.vercel/**,artifacts/**,paper/**,research/**,tests/**,web/node_modules/**,web/dist/**,docs/media/**}"
+    }
+  },
+  "rewrites": [{"source":"/api/:path*","destination":"/api/index"}],
+  "headers": [{"source":"/api/:path*","headers":[{"key":"Cache-Control","value":"private, no-store"}]}]
+}

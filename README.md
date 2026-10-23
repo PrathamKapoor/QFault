@@ -72,6 +72,11 @@ No external API key, provider account, cloud service or database is required.
 Simulation uses local CPU/memory. Keep the server on loopback; it is not an
 authenticated Internet service. Personal records stay in ignored `artifacts/`.
 
+Optional [Vercel hosting](docs/vercel-hosting.md) uses a separate guarded adapter
+and private Blob storage for browser-isolated saved reports. The scientific engine
+and local setup above remain unchanged; hosted deployment credentials belong only
+in Vercel environment settings, never in frontend code or Git.
+
 ### A first real investigation
 
 Open **Custom Circuit** to validate a circuit and an independently declared

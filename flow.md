@@ -27,6 +27,8 @@ Error / timeout / cancellation / recovery behavior: Occupied port exits 2; missi
 Verification commands and tests: tests/test_serve.py, test_local_trust.py; scripts.release_smoke.
 Known limitations: Local single-process trust, no multiuser identity or distributed admission.
 
+Operational rehearsal at287dd4fadaacf973aa3eb926e79189f5958b3949: npm --prefix web run build; QFAULT_ARTIFACTS=artifacts/live-judge-investigations; python -m qfault serve --port8000. Frontend/API share http://127.0.0.1:8000/. Root/health and scripts.guided_demo_e2e passed. This reuses cli.main→api.main→create_app above; no separate frontend proxy. Runtime identity is ephemeral handoff context.
+
 ## 2. Circuit import and structured validation
 
 Subsystem: Developer input.
@@ -579,3 +581,41 @@ Implementation identity follow-up: D-069–D-074/db2989b45f48183fdce7ca2980717b8
 D-075–D-076/777f5de157415075fe031f8f045b6c950d6dad3a;
 D-077/b65dcb60fb216e802b2ff7d71a970169a6c059a2. Prior decision/change rows remain
 append-only historical write-time records; this entry identifies their commits.
+
+## Changes in this session (live judging rehearsal)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Local operation | Record combined frontend/API startup and real guided preflight; reuse existing narration | decisions.md; flow.md; handoff.md | uncommitted operational record | D-079 |
+
+## 22. Opt-in hosted session persistence
+
+Subsystem: Vercel HTTP boundary and private session snapshots.
+Trigger / when: api/index.py receives a hosted API request; local serve unchanged.
+What / why: Preserve existing measured workflows across stateless function instances without exposing shared history or losing saved reports.
+Input / schema / provenance: Existing JSON requests; configured deployment Host/Origin; signed HttpOnly browser capability; private Blob token and signing key from environment only.
+Ordered calls with actual symbols and paths:
+```text
+RequestBodyLimit() api/index.py -> qfault/api.py; existing actual-byte validation
+ └─ HostedApp.__call__() qfault/hosting.py; external host/origin and signed session
+     ├─ POST /api/hosted-session initializes cookie before hosted Workbench mounts
+     ├─ BlobState.read()/write() private HTTPv12 metadata/body ETag, conditional lease
+     ├─ restore() fresh bounded scratch root, validated JSON paths only
+     ├─ create_app(root) qfault/api.py; original API/science/storage/blind lifecycle
+     └─ snapshot()/BlobState.write() conditional durable completion before response
+```
+Validation and trust boundary: No local files/runtime sweep. One private session snapshot; external host validated before internal loopback headers. Cookie cannot name another session without valid HMAC. Reads see last committed documents; concurrent mutations conflict. ETag mismatch rejects stale cached bodies/writers. No raw provider error/secrets returned.
+Output / schema / units: Existing API evidence/IDs/counts/shot units unchanged; health adds hosting persistence/scope. Private state schema1 with original JSON strings, operations and lease expiry. All API responses no-store; cookie Secure/HttpOnly/SameSite.
+Persistence / identity / version: Blob snapshots survive function replacement. Cookie30days,64mutations,1000JSON files/32MiB. Original investigation IDs/digests remain unchanged; no migration of old local records.
+Error / timeout / cancellation / recovery behavior: Unavailable storage503, conflicting lease409, operation cap429, response/storage cap507. No success before durable commit. Failed lease release expires after310s with conditional fencing; no claim of in-flight cancellation. Vercel300s timeout may leave unknown completion; inspect history.
+Verification commands and tests: tests/test_hosting.py; actual remote Blob CAS/ETag probe; deployed real-browser workflows/session isolation/cold-start export/replay. Pending until executed.
+Known limitations: Browser cookie capability, not account recovery; clearing/expiry loses access. Hobby quotas apply, no overage purchase. No distributed global rate-limit or hardware claim.
+Origin-consistent reads use the documented private Blob cache=0 option (D-081); nonce/no-cache alone failed a real overwrite probe and were not treated as valid. HostedSession/HostedReportNotice in web/src/components/HostedSession.tsx gate only hosted builds, explain cookie access/limits, and leave local builds/hero unchanged (D-082). GET responses never replace a cookie; first nonbrowser mutation may initialize one. Real provider conditional overwrite/read/stale-writer rejection passed.
+
+## Changes in this session (full Vercel hosting)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Hosting | Opt-in private session persistence and guarded ASGI deployment; preserve local engine | qfault/hosting.py; api/index.py; vercel.json; requirements.txt; .vercelignore; tests/test_hosting.py; root docs/plan | uncommitted | D-080 |
+| Storage consistency | Origin-consistent cache=0 reads retain ETag checks; actual provider stale-writer rejection verified | qfault/hosting.py; tests/test_hosting.py; docs/vercel-hosting.md | uncommitted | D-081 |
+| Hosted session UI | Initialize one capability before workbench effects; hosted-only privacy/connection notice, local/hero unchanged | HostedSession.tsx/css; App.tsx; main.tsx; qfault/hosting.py; tests/test_hosting.py | uncommitted | D-082 |

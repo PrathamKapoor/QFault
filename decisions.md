@@ -904,3 +904,55 @@ still separately authorized; no remote mutation occurred during this gate.
 - Consequences: Release assets/tag remain immutable under this workflow. Source-only intentionally omits raw archives; full mode includes only three explicitly available research archives and separate five controlled demo exports. Other historical families remain unavailable/unknown. Video is silent with text narration/captions, not narrated. Current main documentation may postdate the release; Git history and exact-SHA hosted checks identify this follow-up. No mandatory delivery asset is blocked; local simulation/finite contract/ambiguous cause/unsigned-hash limits remain.
 - Files: README.md, docs/judge-delivery-plan.md, docs/judge-release-verification.md, decisions.md, flow.md, handoff.md
 - Verification: scripts.public_release --publish followed by unauthenticated redownload; scripts.release_delivery verify on both downloaded archives; independent extracted source imports, npm ci/check/build, representative pytest/Aer/evidence commands. Full commands, results, checksums and public links are in docs/judge-release-verification.md. Final documentation-only identity and CI are checked after commit, not fabricated inside it.
+
+### D-079: Start the existing combined workbench for a live judging rehearsal
+- Date / phase / commit: 2026-10-23, local demonstration operation, uncommitted
+- Context: Owner requests running frontend/backend and a judge walkthrough. Actual checkout remains287dd4fadaacf973aa3eb926e79189f5958b3949. No listeners on8000/8001/8002/5173; frontend package exposes build/check, not a development-server script.
+- Decision: Rebuild existing frontend and run documented qfault serve on loopback8000, serving frontend/API together. Use existing QFAULT_ARTIFACTS=artifacts/live-judge-investigations to separate rehearsal records. Keep ordinary server execution running; reuse existing preflight/narration rather than another demo engine/guide.
+- Why: Build passed; root200/healthok, Aer0.17.2 importable. Actual browser preflight passed18POSTs, export verification, distinct replay, both negative outcomes and390/375/360 widths with no page errors. Recovery used77824shots. Automatic review rejected the combined hidden-process launch; separate build and ordinary server execution succeeded without stopping other processes.
+- Alternatives considered: New frontend dev/proxy infrastructure (unneeded); owner's normal runtime store (less clear separation); retry rejected hidden launcher unchanged (not used).
+- Consequences: Runtime availability/PID are ephemeral; recheck later. Rehearsal is not frozen evaluation. No application/dependency/scientific/release asset change or publication needed.
+- Files: decisions.md, flow.md, handoff.md
+
+### D-080: Adapt private report persistence and trust boundaries for owner-authorized Vercel hosting
+- Date / phase / commit: 2026-10-23, hosted workbench, uncommitted
+- Context: Owner explicitly requests Vercel deployment and selects full live measurements/saved reports. Verified owner login and Hobby team hex-sembly; existing trial project preserved. Vercel Functions expose temporary scratch storage, incompatible with relying on the existing local ArtifactStore between requests. This is a verified hosting requirement superseding local-only deployment scope, not a scientific policy change.
+- Decision: Add an opt-in HostedApp wrapper and Vercel entrypoint around unchanged create_app. Use private Blob HTTPv12 with ETag-conditional per-session lease/snapshot writes; materialize original canonical documents in a new bounded scratch directory, then persist before responding. Sign host-only browser cookies with an environment secret, isolate history/blind state by session, validate external Host/Origin before internal loopback delegation, preserve body guard and local API. Add hashed-lock requirements.txt and deployment/upload exclusions. Keep limits explicit:32MiB/1000files/64operations/30-day cookie,4MiB response and300s platform ceiling.
+- Why: Ten targeted regressions failed before hosting support. Downloaded official vercel-blob0.5.0 MIT wheel was inspected for HTTPv12 protocol; standalone SDK pulls extra httpx2/internal/OIDC packages and lacks conditional put, so stdlib transport avoids a dependency and retains existing lock. Actual private-store consistency/CAS and all workflows remain deployment gates, not assumed passes. New qfault project/store created; no paid upgrade or personal runtime upload.
+- Alternatives considered: Static frontend alone (owner chose full interactivity); put artifacts only in /tmp (loses records across instances); expose local guard unchanged (rejects public Host); remove guard globally/shared global history (unsafe); external persistent paid host/database (unneeded if private Blob validates).
+- Consequences: New hosted boundary requires independent security/concurrency/cold-start tests. Blob quota suspension returns unavailable, never success. Session cookie is a capability, not account login; clearing it loses access, so exports matter. Cookie expiry does not claim automatic record deletion. Leases expire after310s; no hard cancellation/resumable scientific selection claim. Original checkout/release/frozen sources remain unchanged.
+- Files: qfault/hosting.py, api/index.py, vercel.json, requirements.txt, .vercelignore, .gitignore, tests/test_hosting.py, docs/vercel-hosting-plan.md, decisions.md, flow.md, handoff.md
+
+### D-081: Require origin-consistent private reads after actual provider cache failure
+- Date / phase / commit: 2026-10-23, hosting verification, uncommitted
+- Context: Actual private Blob probe created/read a session but an immediate overwrite returned cached body ETag differing from fresh origin metadata. The guard correctly refused stale state; query nonce and no-cache header alone did not bypass the provider CDN.
+- Decision: Use the documented private-storage cache=0 consistent-read option and retain metadata/body ETag checks and conditional writes. No stale-state fallback.
+- Why: New transport regression failed before correction. Official July14,2026 changelog and storage SDK release identify cache=0. Actual provider roundtrip, immediate overwrite/read and stale-writer rejection then passed. No user report was lost or falsely verified.
+- Alternatives considered: Remove ETag check (unsafe); wait60seconds between UI steps (unusable); new database/provider (unnecessary).
+- Consequences: Origin reads consume Hobby transfer/operation quota and can be slower; quota failure remains explicit.
+- Files: qfault/hosting.py, tests/test_hosting.py, decisions.md, flow.md, handoff.md
+- Symptom: OSError: Current private snapshot not available immediately after overwrite.
+- Root cause: Vercel private CDN caches overwritten paths; an arbitrary nonce does not enable origin-consistent reads.
+- Regression test: test_private_reads_explicitly_bypass_provider_cdn_after_overwrite; real private-provider probe passes after fix.
+- Reference: https://vercel.com/changelog/vercel-blob-now-supports-consistent-reads-on-private-storage
+
+### D-082: Initialize one hosted browser capability before concurrent workbench requests
+- Date / phase / commit: 2026-10-23, hosted privacy, uncommitted
+- Context: Multiple first-page API requests without a cookie can each mint a session cookie. A delayed read response could replace the cookie that owns a newly saved investigation.
+- Decision: Add stateless POST /api/hosted-session in the outer adapter and a hosted-build-only HostedSession gate. Initialize the cookie before mounting workbench request effects. GET responses never set session cookies; nonbrowser first mutations can still create one. Show hosted privacy,30-day cookie access,64-operation ceiling and explicit connection error/retry. Local builds render the original workbench immediately; hero untouched.
+- Why: New read-cookie/bootstrap regression failed before change. The session is a capability, not a universal account/login system. Users must know to export before losing cookies. Existing React data access and measured evidence remain unchanged.
+- Alternatives considered: Set new cookies on every API response (race); add public shared history (privacy violation); block the landing hero on simulator startup (unnecessary).
+- Consequences: Hosted workbench can wait for a cold start; no fake progress or success. Full deployed browser/mobile/refresh/privacy checks remain required.
+- Files: qfault/hosting.py, tests/test_hosting.py, web/src/components/HostedSession.tsx, web/src/components/HostedSession.css, web/src/App.tsx, vercel.json, decisions.md, flow.md, handoff.md
+- Symptom: Initial read responses include Set-Cookie and hosted bootstrap is absent.
+- Root cause: Independent anonymous requests mint unrelated capabilities before a stable browser session exists.
+- Regression test: test_bootstrap_cookie_precedes_workbench_and_reads_never_replace_it observed red; hosted actual browser acceptance required after implementation.
+
+### D-083: Pin the hosted runtime and document verified setup before deployment
+- Date / phase / commit: 2026-10-23, Vercel delivery, uncommitted
+- Context: Owner-authorized full hosting has passed529assembled tests99.07s, targeted real provider consistency/CAS and frontend checks/build. Deployment must exclude secrets/runtime data and retain exact source identity.
+- Decision: Pin hosted Python3.13, reuse unchanged hashed requirements.lock through requirements.txt, keep .vercelignore/source exclusions and CLI-managed .vercel ignored, document private session storage/access/quotas and bootstrap flag. Add a README hosting link without changing local setup. Commit reviewed source before preview; inspect and exercise live workflows before promotion.
+- Why: CLI-created broad .env* ignore was redundant and would hide a future .env.example; retain existing precise rules and only .vercel/. No new Python/JS dependency is required by the stdlib Blob HTTP adapter. No scientific core, frozen evidence or original dependency lock differs from287dd4f.
+- Alternatives considered: Install the umbrella provider SDK (adds unrelated dependencies); mutate existing runtime pins/lock (unnecessary); upload local runtime/environment files (forbidden); call unit tests proof of deployed behavior (false).
+- Consequences: Preview/build/runtime/browser validation remain gates; no claim of a public URL yet. Hobby limits remain explicit. Existing trial project untouched; no paid plan or release/tag overwrite.
+- Files: .python-version, requirements.txt, .vercelignore, vercel.json, .gitignore, docs/vercel-hosting.md, docs/vercel-hosting-plan.md, README.md, web/src/main.tsx, decisions.md, flow.md, handoff.md

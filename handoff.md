@@ -1,5 +1,27 @@
 # QFault handoff — verified guided experience and public delivery
 
+ACTIVE HOSTING FOLLOW-UP (partial,2026-10-23): owner requests full interactive Vercel
+deployment and approved device login. Account prathamkapoor027-9479, Hobby team
+hex-sembly verified. Isolated C:/Projects/QFault-Hosting, feat/vercel-hosting from
+287dd4f; original C:/Projects/QFF runtime/docs preserved. New qfault project and
+private qfault-investigations Blob store created without paid upgrades. Credentials
+are CLI-managed or ignored .local/hosting.env; signing secret set in preview and
+production, never printed. No public deployment yet.
+
+New qfault/hosting.py wraps unchanged API/science with signed browser sessions,
+private conditional Blob snapshots/expiring lease, bounded scratch materialization,
+commit-before-response and external Host/Origin checks. api/index.py/Vercel config,
+hashed requirements.txt, upload exclusions and hosted-only frontend bootstrap/privacy
+notice added. D-080–D-082 and docs/vercel-hosting-plan.md record choices. Ten initial
+tests red, then12hosting tests passed16.76s; three more lifecycle/conflict tests added.
+Real provider create/read/immediate overwrite and stale-ETag rejection passed after
+actual CDN stale-read failure: documented cache=0 is required. Frontend check/build
+passed before final extra tests. Next: full assembled tests, frontend hosted build,
+review/exclusions/secret scan, source commit, preview deployment/build fixes, real
+remote guide/session privacy/persistence/blind/replay tests, production promotion,
+then final documentation/identity/remote verification. Never claim prior v0.1.0
+package includes these new hosting changes. No paid services or secret uploads.
+
 ## 1. Current Phase
 
 Judge-facing implementation and public release complete within the bounded local
@@ -7,6 +29,11 @@ simulation scope. Started at9866fdb9ed7f22079f6e96bca18d55f0c7d9e173. Immutable
 v0.1.0 tag/source/packages: b65dcb60fb216e802b2ff7d71a970169a6c059a2 on intended
 PrathamKapoor/QFault. This is a later documentation-only follow-up; its own SHA
 and hosted checks are authoritative in Git/GitHub, not embedded in itself.
+
+Operational follow-up: main287dd4fadaacf973aa3eb926e79189f5958b3949 checked,
+frontend rebuilt and combined frontend/API started at http://127.0.0.1:8000/.
+Root200/healthok and actual guided browser preflight passed. Source/release
+unchanged; root-document operation notes remain local/uncommitted.
 
 ## 2. Work Completed
 
@@ -57,6 +84,7 @@ D-069–D-074: db2989b45f48183fdce7ca2980717b8f009758ea.
 D-075–D-076:777f5de157415075fe031f8f045b6c950d6dad3a.
 D-077:b65dcb60fb216e802b2ff7d71a970169a6c059a2.
 D-078 records observed publication/download proof in this documentation follow-up.
+D-079 records owner-requested live startup and existing-engine rehearsal.
 Prior entries retain their write-time uncommitted labels; next entries supply real
 implementation hashes without rewriting history or attempting self-reference.
 
@@ -95,6 +123,14 @@ Tracked/archive review excluded env/database/private-key/dependencies/runtime sw
 Public tag and all nine downloaded asset sizes/hashes/package sources verified;
 source SHA matched remote main0/0 before this follow-up. Every implementation
 commit author/committer checked. Final documentation commit/checks live in Git.
+
+Fresh operational checks: npm build passed; GET /200; /api/health ok, Aer0.17.2
+importable. scripts.guided_demo_e2e --base http://127.0.0.1:8000 --out
+artifacts/live-judge-preflight-20261023 passed18POSTs, valid export, distinct replay,
+both negative outcomes and390/375/360 widths with no page errors. Recovery
+2d460bc102984a87bee5ee4f20712c8c; replayfaaec9a8d0b249beaf5d052a2e876959.
+No full suite/frozen study repeated. Active serverPID17864, execsession35684;
+store artifacts/live-judge-investigations. Availability must be rechecked later.
 
 ## 8. Known Issues / Risks
 

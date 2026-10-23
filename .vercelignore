@@ -1,0 +1,13 @@
+.git
+.local
+.env
+.env.*
+artifacts
+paper
+research
+**/*.tex
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+.venv*
+web/dist
