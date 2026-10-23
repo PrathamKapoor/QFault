@@ -1,0 +1,148 @@
+import React,{useEffect,useRef,useState} from 'react';
+import Circuit from './quantum/Circuit';
+import {ApiError,demoRequest} from '../guided/api';
+import {canVisit,createGuide,ExecutionGate,readGuide,restartGuide,writeGuide} from '../guided/session';
+import type {Guide,Mode,RunKey,Stage,Store} from '../guided/session';
+import './GuidedDemo.css';
+
+type Data=Record<string,any>;
+const STEPS:[Stage,string][]=[['source','Circuit and reference'],['z','Z-only measurement'],['phase','Complementary evidence'],['edits','Bounded interventions'],['verify','Freeze and verify'],['export','Inspect and export']];
+const count=(n:number|undefined)=>n===undefined?'—':n.toLocaleString();
+const interval=(v:number[]|undefined)=>v?.length===2?`[${v[0].toFixed(3)}, ${v[1].toFixed(3)}]`:'Not measured';
+const human=(s:string)=>s.replaceAll('_',' ').toLowerCase();
+function storage():Store{
+ return {getItem:key=>window.sessionStorage.getItem(key),setItem:(key,value)=>window.sessionStorage.setItem(key,value)};
+}
+function Claims({rows}:{rows:Data[]}){
+ return <div className="table-scroll"><table className="guided-claims"><thead><tr><th>Declared claim</th><th>Measured evidence</th><th>Assessment</th></tr></thead><tbody>{rows.map(c=><tr key={c.claim_id}><td>{c.claim_id}</td><td>{c.interval?interval(c.interval):c.estimate!=null?`${c.estimate.toFixed(3)} ± ${c.uncertainty_radius?.toFixed(3)??'—'}`:'Unmeasured'}</td><td>{human(c.status||'UNRESOLVED')}</td></tr>)}</tbody></table></div>;
+}
+function Outcome({runKey,result}:{runKey:string;result:Data}){
+ const status=result.status||result.diagnosis?.category;
+ const explanation:Record<string,string>={
+  NO_SIGNIFICANT_DISCREPANCY:'The declared measured contract is supported at this budget. Z-only agreement cannot establish the missing phase behavior or universal correctness.',
+  SIGNIFICANT_DISCREPANCY:'Measurements disagree with the declared contract beyond its uncertainty allowance. This identifies a behavior discrepancy, not its unique cause.',
+  VERIFIED_UNDER_DECLARED_CONTRACT:'Fresh samples support the selected candidate’s declared contract and improvement over the fresh original. This covers one input and these claims only.',
+  NOISE_CONTROL_ABSTENTION:'The separate zero-state readout control disagreed significantly. QFault withholds an edit rather than calling noise evidence a circuit repair.',
+  INSUFFICIENT_BUDGET:'Admission could not fund the fresh original/candidate reserve plus initial observation and possible control. No measurement or search was executed.',
+  INSUFFICIENT_EVIDENCE:'The available measurements do not support the required conclusion. An unresolved result is retained, not converted into success.',
+  REJECTED:'Fresh evidence did not support the selected proposal. The original is preserved and this is not a verified repair.'};
+ return <section className="guided-outcome" data-testid={'outcome-'+runKey} data-experiment-id={result.experiment_id}>
+  <p className="guided-status">{status}</p><h3>{runKey==='z'?'What Z-only evidence establishes':runKey==='phase'?'What complementary evidence establishes':'The actual engine outcome'}</h3>
+  <p>{explanation[status]||'The engine returned this scoped outcome. Inspect its reason and evidence; no successful repair is substituted.'}</p>
+  <div className="guided-cost"><strong>{count(result.cost?.shots)} shots</strong><span>{count(result.cost?.evaluations)} executions</span></div>
+  <p className="guided-id">Investigation <code>{result.experiment_id}</code></p>
+  {result.claims&&<Claims rows={result.claims}/>}
+  {result.readout_control&&<p>Readout control: observed zero-state discrepancy {result.readout_control.tv.toFixed(3)} ± {result.readout_control.radius.toFixed(3)} TV distance. {result.readout_control.significant?'Significant; no edit recommended.':'This control does not rule out every gate-noise or state-dependent process.'}</p>}
+  {result.verification?.reason&&<p>{result.verification.reason}</p>}
+ </section>;
+}
+function RecoveryEvidence({result}:{result:Data}){
+ const selected=result.selected_candidate,selection=result.selection,fresh=result.verification;
+ return <div className="guided-recovery-evidence">
+  <h3>Search coverage and unresolved alternatives</h3>
+  <p>{result.cost.tested_candidates} / {result.cost.generated_candidates} generated edits measured; {result.generation.excluded.length} exclusions recorded. {result.generation.truncated?'Generation reached its declared bound; unsearched edits remain.':'Only the declared one-edit operators were searched.'}</p>
+  {result.ranked_candidates.length>0&&<details><summary>Inspect all {result.ranked_candidates.length} measured candidates and unresolved overlaps</summary><div className="table-scroll"><table><thead><tr><th>Intervention</th><th>Screening loss interval</th><th>Evidence</th></tr></thead><tbody>{result.ranked_candidates.map((c:Data)=><tr key={c.candidate_id}><td>{c.edit.operator} at operation {c.edit.index}</td><td>{interval(c.evidence.loss_interval)}</td><td>{c.candidate_id===selected?.candidate_id?'Selected for fresh confirmation':c.plausible?'Plausible; interval overlap unresolved':'Interval dominated'}</td></tr>)}</tbody></table></div></details>}
+  {selected&&<><h3>The selected candidate, without changing the original</h3><p className="guided-id"><code>{selected.candidate_id}</code></p><p>{selected.edit.operator} at operation {selected.edit.index}: <code>{JSON.stringify(selected.edit.before)}</code> → <code>{JSON.stringify(selected.edit.after)}</code></p>
+   <div className="guided-columns"><div><h4>Original submitted circuit</h4><Circuit circuit={result.circuit} highlightIndex={selected.edit.index}/></div><div><h4>Selected counterfactual circuit</h4><Circuit circuit={selected.circuit}/></div></div>
+   {!!selected.equivalent_edits?.length&&<p>Equivalent structural edits also arise at {selected.equivalent_edits.map((e:Data)=>`${e.operator} ${e.index}`).join(', ')}. Their locations are not uniquely identified.</p>}</>}
+  {selection&&<><h3>Selection was frozen before fresh confirmation</h3><p>{selection.frozen_before_verification?'Recorded order: screening → frozen selection → fresh original → fresh candidate.':'Inspect the recorded selection order before interpreting confirmation.'}</p><p className="guided-id">Selection digest <code>{selection.digest}</code></p><p>{selection.plausible_candidate_ids.length} plausible candidates. {selection.tie_rule}</p><p>This is an in-memory recorded order, not an external timestamp or a pause for manual approval.</p></>}
+  <h3>Fresh original and candidate measurements</h3>
+  {fresh?.candidate?<><div className="guided-columns"><div><h4>Fresh original</h4><p>Normalized loss {interval(fresh.original.loss_interval)}</p><Claims rows={fresh.original.claims}/></div><div><h4>Fresh candidate</h4><p>Normalized loss {interval(fresh.candidate.loss_interval)}</p><Claims rows={fresh.candidate.claims}/></div></div>
+   <p>Supported improvement interval: <strong>{interval([fresh.improvement_lower,fresh.improvement_upper])}</strong>, in dimensionless contract-tolerance units. This is not fidelity or a fault probability.</p></>:<p>Fresh paired verification was not completed: {fresh?.status||'NOT_EXECUTED'}. No confirmation is implied.</p>}
+  <dl className="guided-ledger">{Object.entries(result.cost.phase_shots).map(([phase,shots])=><React.Fragment key={phase}><dt>{human(phase)}</dt><dd>{count(shots as number)} shots</dd></React.Fragment>)}</dl>
+  <details><summary>Inspect execution IDs, seeds and raw evidence</summary><pre>{JSON.stringify({selection:result.selection,statistical_design:result.statistical_design,executions:result.executions},null,2)}</pre></details>
+ </div>;
+}
+
+export default function GuidedDemo({navigate}:{navigate:(route:string)=>void}){
+ const [initial]=useState(()=>readGuide(storage()));
+ const [guide,setGuide]=useState<Guide>(initial.session),guideRef=useRef(guide);
+ const [warning,setWarning]=useState(initial.warning),[error,setError]=useState('');
+ const [catalog,setCatalog]=useState<Data|null>(null),[loadToken,setLoadToken]=useState(0);
+ const [records,setRecords]=useState<Record<string,Data>>({}),[restoring,setRestoring]=useState(true);
+ const [checked,setChecked]=useState<Data|null>(null),[inspected,setInspected]=useState(Boolean(initial.session.ids.recovery));
+ const [integrity,setIntegrity]=useState<Data|null>(null),[replayResult,setReplayResult]=useState<Data|null>(null),[newSeed,setNewSeed]=useState(4192);
+ const [elapsed,setElapsed]=useState(0),[acknowledged,setAcknowledged]=useState(false);
+ const content=useRef<HTMLDivElement>(null);
+ const gate=useRef(new ExecutionGate());
+ const save=(next:Guide)=>{guideRef.current=next;setGuide(next);try{writeGuide(storage(),next)}catch{setWarning('Session storage is unavailable. Export completed reports before refreshing; the server still retains investigations.')}};
+ const move=(stage:Stage)=>{if(canVisit(stage,records,inspected)){save({...guideRef.current,stage});setError('');setIntegrity(null)}};
+ const mode=(next:Mode)=>{if(!guideRef.current.pending){save({...guideRef.current,mode:next});setError('');setChecked(null)}};
+ const activeKey:RunKey=guide.mode!=='phase'?guide.mode:guide.stage==='z'||guide.stage==='source'?'z':guide.stage==='phase'?'phase':'recovery';
+ const spec=catalog?.requests[activeKey];
+ const pending=guide.pending;
+ useEffect(()=>{let live=true;setError('');demoRequest('/api/guided-demo').then(data=>{if(live)setCatalog(data)}).catch(e=>{if(live)setError(e.message)});return()=>{live=false}},[loadToken]);
+ useEffect(()=>{let live=true;const entries=Object.entries(initial.session.ids);
+  Promise.allSettled(entries.map(([,id])=>demoRequest('/api/experiments/'+id))).then(rows=>{
+   if(!live)return;const restored:Record<string,Data>={},failures:string[]=[];
+   rows.forEach((row,i)=>{const [key,id]=entries[i];if(row.status==='fulfilled'&&row.value.experiment_id===id)restored[key]=row.value;else failures.push(key+': '+(row.status==='rejected'?row.reason.message:'identity mismatch'))});
+   setRecords(restored);if(failures.length){setError('A saved investigation could not be restored: '+failures.join('; '));setWarning('Available records were restored. Missing records are not substituted or rerun; inspect history or start a new guide.')}
+  }).finally(()=>{if(live)setRestoring(false)});return()=>{live=false}},[]);
+ useEffect(()=>{if(!spec)return;let live=true;setChecked(null);demoRequest('/api/lab/validate',spec.validation_body).then(data=>{if(live)setChecked(data)}).catch(e=>{if(live)setError('Feasibility validation failed: '+e.message)});return()=>{live=false}},[catalog,activeKey]);
+ useEffect(()=>{if(!pending||pending.phase==='unknown')return;const update=()=>setElapsed(Math.max(0,(Date.now()-pending.startedAt)/1000));update();const timer=setInterval(update,250);return()=>clearInterval(timer)},[pending?.startedAt,pending?.phase]);
+ useEffect(()=>{if(content.current?.offsetParent!==null){content.current?.focus({preventScroll:true});content.current?.scrollIntoView({block:'start',behavior:'instant'})}},[guide.stage,guide.mode]);
+
+ async function execute(key:RunKey){
+  if(!catalog||guideRef.current.pending||guideRef.current.ids[key]||records[key])return;
+  await gate.current.run(async()=>{
+   const selected=catalog.requests[key];let submitted=false;setError('');
+   save({...guideRef.current,pending:{key,phase:'validating',startedAt:Date.now()}});
+   try{
+    await demoRequest('/api/lab/validate',selected.validation_body);
+    save({...guideRef.current,pending:{...guideRef.current.pending!,phase:'executing'}});submitted=true;
+    const result=await demoRequest(selected.endpoint,selected.body);
+    if(!/^experiment_[a-f0-9]{32}$/.test(result.experiment_id))throw new ApiError(0,'No valid investigation identity was returned. Inspect history; success is not assumed.');
+    setRecords(old=>({...old,[key]:result}));save({...guideRef.current,ids:{...guideRef.current.ids,[key]:result.experiment_id},pending:null});
+   }catch(e){
+    const failure=e as ApiError;setError(failure.message);
+    save({...guideRef.current,pending:submitted&&failure.status===0?{...guideRef.current.pending!,phase:'unknown'}:null});
+   }
+  });
+ }
+ async function replay(seed?:number){
+  const id=guideRef.current.ids.recovery;if(!id||guideRef.current.pending)return;
+  await gate.current.run(async()=>{
+   setError('');save({...guideRef.current,pending:{key:'replay',phase:'executing',startedAt:Date.now()}});
+   try{
+    const result=await demoRequest(`/api/lab/recoveries/${id}/replay`,seed===undefined?{}:{seed});
+    if(!/^experiment_[a-f0-9]{32}$/.test(result.experiment_id))throw new ApiError(0,'Replay returned no valid identity; inspect history.');
+    setReplayResult(result);save({...guideRef.current,replays:[...guideRef.current.replays,result.experiment_id].slice(-32),pending:null});
+   }catch(e){const failure=e as ApiError;setError(failure.message);save({...guideRef.current,pending:failure.status===0?{...guideRef.current.pending!,phase:'unknown'}:null})}
+  });
+ }
+ function restart(){
+  if(pending&&pending.phase!=='unknown'||pending?.phase==='unknown'&&!acknowledged)return;
+  let fresh=createGuide();try{fresh=restartGuide(storage(),guideRef.current)}catch{setWarning('Local session history unavailable. All completed server investigations remain in Experiment History.')}
+  guideRef.current=fresh;setGuide(fresh);setRecords({});setInspected(false);setIntegrity(null);setReplayResult(null);setAcknowledged(false);setError('');setWarning('New guide started. Earlier server investigations and exported reports are preserved.');
+ }
+ async function verifyStored(){
+  const id=guide.ids.recovery;if(!id)return;setError('');
+  try{setIntegrity(await demoRequest(`/api/experiments/${id}/verification`))}catch(e){setError((e as Error).message)}
+ }
+ const disabled=Boolean(pending)||restoring;
+ const runButton=(key:RunKey,label:string)=><button className="button primary" disabled={disabled||!checked||Boolean(guide.ids[key])||Boolean(records[key])} onClick={()=>execute(key)}>{label}</button>;
+
+ return <div className="guided" data-testid="guided-demo">
+  <header className="guided-intro"><span className="eyebrow">GUIDED DEMONSTRATION · REAL LOCAL MEASUREMENTS</span><h2>See a phase discrepancy.<br/>Test an edit. Check it freshly.</h2><p>A developer’s circuit can agree in one measurement basis and disagree in another. Follow an imported external program from that blind spot to inspectable evidence.</p></header>
+  <div className="guided-scenarios" aria-label="Demonstration scenarios">{([['phase','Main phase investigation','A supported external circuit and fresh paired verification.'],['noise','Noise-control abstention','See why measured noise can stop an edit.'],['budget','Insufficient budget','See admission refuse before spending shots.']] as [Mode,string,string][]).map(([key,title,copy])=><button key={key} aria-label={title} aria-describedby={'guide-scenario-'+key} aria-pressed={guide.mode===key} disabled={Boolean(pending)} onClick={()=>mode(key)}><strong>{title}</strong><span id={'guide-scenario-'+key}>{copy}</span></button>)}</div>
+  {warning&&<p role="status" className="guided-note">{warning}</p>}
+  {error&&<div role="alert" className="guided-error"><strong>The operation did not complete as requested.</strong><p>{error}</p><p>No successful result is substituted. Completed investigations remain preserved.</p>{!catalog&&<button className="button secondary" onClick={()=>setLoadToken(n=>n+1)}>Retry loading inputs</button>}</div>}
+  {restoring&&<p role="status">Restoring completed investigation identities…</p>}
+  {pending&&<div className="guided-running" role="status"><strong>{pending.phase==='unknown'?'Completion unknown':pending.phase==='validating'?'Validating the declared setup':'Executing real Qiskit Aer measurements'}</strong><p>{pending.phase==='unknown'?'Refresh or connection loss does not stop the server. Inspect history before another execution.':`${elapsed.toFixed(1)} seconds elapsed. ${pending.key==='recovery'||pending.key==='replay'?'Screening, selection freeze and fresh paired confirmation run inside one operation.':'Waiting for the actual measured result.'} No per-job percentage is reported.`}</p></div>}
+  {!catalog&&!error&&<p role="status">Loading source-qualified demonstration inputs…</p>}
+  {catalog&&<>
+   {guide.mode==='phase'&&<nav className="guided-steps" aria-label="Guided stages">{STEPS.map(([key,title],i)=><button key={key} aria-label={`Stage ${i+1}: ${title}`} aria-current={guide.stage===key?'step':undefined} disabled={disabled||!canVisit(key,records,inspected)} onClick={()=>move(key)}><span>{String(i+1).padStart(2,'0')}</span>{title}</button>)}</nav>}
+   <div className="guided-layout"><div className="guided-content" ref={content} tabIndex={-1} aria-label="Current guided stage">
+    {guide.mode==='phase'&&guide.stage==='source'&&<section className="guided-card"><p className="eyebrow">01 / START FROM A REAL PROGRAM</p><h3>Reference, candidate and mutation stay distinct.</h3><p>The QASMBench QRNG reference prepares a uniform four-qubit superposition from input <code>0000</code>. Our controlled demonstration appends Z on qubit 0 to create a relative-phase change.</p><div className="guided-columns"><div><h4>QASMBench QRNG reference</h4><p className="guided-id"><code>{catalog.reference.circuit_id}</code></p><Circuit circuit={catalog.reference.circuit}/></div><div><h4>Candidate with controlled terminal Z</h4><p className="guided-id"><code>{catalog.candidate.circuit_id}</code></p><Circuit circuit={catalog.candidate.circuit} highlightIndex={4}/></div></div><p>{catalog.reference.contract_provenance}</p><p>{catalog.scope}</p><details><summary>Inspect source, conversion and declared inputs</summary><p><a href={catalog.source.url} target="_blank" rel="noreferrer">Open pinned external source ↗</a> · <a href={catalog.source.license_url} target="_blank" rel="noreferrer">Upstream license ↗</a></p><p className="guided-id">Source revision <code>{catalog.source.revision}</code><br/>Source byte SHA-256 <code>{catalog.source.sha256}</code></p><pre>{JSON.parse(catalog.reference.circuit.import_provenance.source_representation).source_utf8}</pre><a href="/api/guided-demo" target="_blank" rel="noreferrer">Inspect complete declared demonstration inputs</a></details><button className="button primary" disabled={disabled} onClick={()=>move('z')}>Start with Z measurements</button></section>}
+    {guide.mode==='phase'&&guide.stage==='z'&&<section className="guided-card"><p className="eyebrow">02 / ASK AN INCOMPLETE QUESTION</p><h3>Can Z-only measurements see this phase change?</h3><p>The independently declared contract expects 16 computational outcomes, each with probability 1/16, within TV tolerance {catalog.contracts.z.tolerance}. A terminal Z changes relative phase without changing those probabilities.</p><p>Agreement tests this distribution only. It does not mean “the circuit is correct”.</p>{!records.z&&runButton('z','Run Z-only measurement')}{records.z&&<><Outcome runKey="z" result={records.z}/><button className="button primary" disabled={disabled} onClick={()=>move('phase')}>Add complementary evidence</button></>}</section>}
+    {guide.mode==='phase'&&guide.stage==='phase'&&<section className="guided-card"><p className="eyebrow">03 / MEASURE WHAT WAS MISSING</p><h3>Add complementary X-basis behavior.</h3><p>These Pauli expectations come from the separate unmodified reference. They test phase-sensitive behavior that the Z distribution could not distinguish. No contract is inferred from the candidate.</p><details><summary>Inspect independently declared claims</summary><pre>{JSON.stringify(catalog.contracts.complementary,null,2)}</pre></details>{!records.phase&&runButton('phase','Run complementary measurement')}{records.phase&&<><Outcome runKey="phase" result={records.phase}/>{canVisit('edits',records,false)?<button className="button primary" disabled={disabled} onClick={()=>move('edits')}>Inspect bounded edits</button>:<p>No supported discrepancy was established in this execution. Inspect the evidence or use the custom laboratory to declare a different feasible budget; no repair is presumed.</p>}</>}</section>}
+    {guide.mode==='phase'&&guide.stage==='edits'&&<section className="guided-card" data-testid="candidate-preview"><p className="eyebrow">04 / BOUND THE INTERVENTION</p><h3>Inspect the permitted search before spending shots.</h3><p>Operators: {catalog.requests.recovery.body.edits.operators.join(', ')}. Palette: {catalog.requests.recovery.body.edits.palette.join(', ')}. All declared positions; maximum {catalog.requests.recovery.body.max_candidates} accepted candidates, at most 4,096 proposals inspected. Structural equality is not semantic equivalence.</p><p>{catalog.preview.scope}</p><p>{catalog.preview.candidates.length} candidates generated; {catalog.preview.excluded.length} exclusions; {catalog.preview.proposals_inspected} proposals inspected. {catalog.preview.truncated?'Search is truncated.':'Only the declared operators are covered.'}</p><details><summary>Inspect all {catalog.preview.candidates.length} unmeasured edit proposals</summary><div className="table-scroll"><table><thead><tr><th>Proposed edit</th><th>Before → after</th><th>Depth / two-qubit Δ</th></tr></thead><tbody>{catalog.preview.candidates.map((c:Data)=><tr key={c.candidate_id}><td>{c.edit.operator} at operation {c.edit.index}</td><td><code>{c.edit.before?.name||'∅'} → {c.edit.after?.name||'∅'}</code></td><td>{c.resource_delta.depth} / {c.resource_delta.two_qubit_gates}</td></tr>)}</tbody></table></div></details><p>Screening will compare measured intervals. Overlapping candidates remain plausible; resource tie-breaking chooses an experiment, not the unique cause.</p><button className="button primary" disabled={disabled} onClick={()=>{setInspected(true);save({...guideRef.current,stage:'verify'})}}>Use these limits for fresh verification</button></section>}
+    {guide.mode==='phase'&&guide.stage==='verify'&&<section className="guided-card"><p className="eyebrow">05 / FREEZE, THEN MEASURE AGAIN</p><h3>Test interventions and freshly check the selection.</h3><p>The engine screens measured candidates, records the selected identity and screening digest, freezes that selection, then collects new samples for both original and selected candidate. This is one operation; there is no pretend intermediate approval or cancellation.</p>{!records.recovery&&runButton('recovery','Screen edits and freshly verify')}{records.recovery&&<><Outcome runKey="recovery" result={records.recovery}/><RecoveryEvidence result={records.recovery}/><button className="button primary" disabled={disabled} onClick={()=>move('export')}>Inspect and export evidence</button></>}</section>}
+    {guide.mode==='phase'&&guide.stage==='export'&&<section className="guided-card"><p className="eyebrow">06 / KEEP A REVIEWABLE RECORD</p><h3>Inspect the conclusion and take the evidence with you.</h3>{records.recovery?<><Outcome runKey="recovery" result={records.recovery}/><div className="guided-actions"><a className="button primary" href={`/api/experiments/${records.recovery.experiment_id}/report`} download>Download recovery report</a><button className="button secondary" disabled={disabled} onClick={verifyStored}>Check stored report integrity</button><button className="button secondary" disabled={disabled} onClick={()=>navigate('/lab/recovery/'+records.recovery.experiment_id)}>Open full investigation</button></div>{integrity&&<p data-testid="integrity-result" role="status">{integrity.valid?'Stored hashes verified.':'Stored integrity check failed.'} This checks stored documents; unsigned consistency is not authenticity or scientific correctness.</p>}<p>Independently verify the downloaded bytes locally:</p><pre>python -m qfault verify-report {records.recovery.experiment_id}.json</pre><h4>Replay is a new investigation, never an overwrite</h4><p>Same seed: deterministic replay under the same simulator. Different seed: a new sampling rerun with shared model assumptions, not independent hardware evidence.</p><div className="guided-actions"><button className="button secondary" disabled={disabled} onClick={()=>replay()}>Replay with the same seed</button><label>New rerun seed<input aria-label="New rerun seed" type="number" min="0" max="4294967295" value={newSeed} onChange={e=>setNewSeed(Number(e.target.value))}/></label><button className="button secondary" disabled={disabled||!Number.isInteger(newSeed)||newSeed<0||newSeed>=2**32||newSeed===catalog.requests.recovery.body.seed} onClick={()=>replay(newSeed)}>Rerun with the new seed</button></div>{replayResult&&<div data-testid="replay-result" data-experiment-id={replayResult.experiment_id}><p>New investigation <code>{replayResult.experiment_id}</code> · {replayResult.replay.semantics}</p><p>Original parent remains <code>{replayResult.replay.source_experiment_id}</code>.</p><a href={`/api/experiments/${replayResult.experiment_id}/report`} download>Download replay report</a></div>}</>:<p>The required investigation is not available. Return to the measured stages or inspect history; no record is fabricated.</p>}</section>}
+    {guide.mode!=='phase'&&<section className="guided-card"><p className="eyebrow">HONEST NEGATIVE OUTCOME</p><h3>{guide.mode==='noise'?'When noise evidence withholds an edit.':'When admission cannot fund trustworthy recovery.'}</h3><p>{guide.mode==='noise'?'The same imported candidate is measured with declared symmetric readout noise 0.3. An independent zero-state readout control tests whether an edit recommendation is defensible; it cannot rule out every possible measurement or gate process.':'This run has a 128-shot total ceiling. The fresh pair alone needs at least 128 shots, leaving no resources for initial observation and a possible control. The engine must refuse before executing, rather than pretending a search occurred.'}</p>{!records[guide.mode]&&runButton(guide.mode,'Run '+(guide.mode==='noise'?'noise-control abstention':'insufficient budget'))}{records[guide.mode]&&<><Outcome runKey={guide.mode} result={records[guide.mode]}/><p>{guide.mode==='noise'?'Useful next action: inspect the control, verify the measurement setup or declare a calibrated model in your own investigation. A gate edit is not justified here.':'Useful next action: return to the main demonstration with its declared feasible ceiling, or configure an adequate reserve in the custom laboratory.'}</p><a className="button secondary" href={`/api/experiments/${records[guide.mode].experiment_id}/report`} download>Download {guide.mode==='noise'?'abstention':'budget'} report</a></>}</section>}
+   </div><aside className="guided-aside"><section className="guided-card"><h3>Declared execution</h3><dl><dt>Mode / backend</dt><dd>Measurement-only · Qiskit Aer local simulation</dd><dt>Submitted candidate</dt><dd>{catalog.candidate.circuit.n_qubits} qubits · {catalog.candidate.circuit.gates.length} subject gates · input 0000</dd><dt>Contract</dt><dd>{human(spec.body.contract.kind)}</dd><dt>Resource ceiling</dt><dd>{count(spec.body.max_shots)} shots · {spec.body.max_evaluations} executions</dd><dt>Seed / total alpha</dt><dd>{spec.body.seed} / {spec.body.alpha_total}</dd>{spec.kind==='recovery'&&<><dt>Screen / fresh shots per setting</dt><dd>{spec.body.screen_shots} / {spec.body.verification_shots}</dd><dt>Candidate limit</dt><dd>{spec.body.max_candidates} accepted edits</dd></>}</dl><p>Local simulation consumes CPU and memory; no provider charge. Fixed seeds support reproducibility. Other seeds and backend versions can vary.</p><p>{catalog.feasibility_scope}</p>{checked?<div data-testid="guided-feasibility"><strong>Measurement feasibility checked</strong><p>{checked.feasibility.groups.length} measurement settings; {count(checked.feasibility.claim_shots_available)} claim shots available in this preview. Per-interval alpha {checked.feasibility.alpha_per_interval.toExponential(2)}.</p><p>Alpha is an error budget under IID/stationary sampling assumptions, not the probability a diagnosis is correct.</p></div>:<p role="status">Checking measurable contract feasibility…</p>}</section><section className="guided-card"><h3>What stays unknown</h3><p>One declared input and finite measurements do not prove full unitary equivalence, hardware correctness or the unique original fault. Untested edits and overlapping intervals remain possible.</p><button className="text-button" onClick={()=>navigate('/history')}>Inspect Experiment History →</button></section></aside></div>
+   {!!Object.keys(guide.ids).length&&<section className="guided-card" data-testid="guide-preserved-records"><h3>Completed records remain yours</h3><ul>{Object.entries(guide.ids).map(([key,id])=><li key={key}>{key}: <a href={`#/lab/${key==='z'||key==='phase'?'':'recovery/'}${id}`}><code>{id}</code></a></li>)}</ul>{!!guide.replays.length&&<p className="guided-id">Replay identities: {guide.replays.join(', ')}</p>}</section>}
+   <section className="guided-restart"><p>Starting a new guide creates new investigations. Earlier server records and exports are never overwritten.</p>{pending?.phase==='unknown'&&<label><input type="checkbox" checked={acknowledged} onChange={e=>setAcknowledged(e.target.checked)}/> I inspected history and understand the earlier request may still be running.</label>}<button className="button secondary" disabled={Boolean(pending&&pending.phase!=='unknown')||pending?.phase==='unknown'&&!acknowledged} onClick={restart}>Start a new guide and preserve earlier records</button></section>
+  </>}
+ </div>;
+}

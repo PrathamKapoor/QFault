@@ -40,3 +40,7 @@
 @media(max-width:1100px) and (min-width:801px){.landing-copy{width:47%;top:57%}.landing-copy h2{font-size:36px}.landing-actions{gap:16px}.landing-description{font-size:13px}}
 @media(max-width:800px){.hero-composition{top:112px;height:460px;bottom:auto;left:7%;right:7%}.hero-brand.word-plane{top:45%;font-size:22.5vw}.hero-composition .sculpture{inset:-4% -3% -3% 20%}.landing-copy{top:595px;width:86%;max-width:none}.landing-copy h2{font-size:40px}.landing-copy h2 br{display:block}.landing-copy h2 span{margin-left:0}.landing-description{font-size:14px;max-width:500px}}
 @media(max-width:480px){.hero-composition{top:105px;height:320px}.hero-brand.word-plane{top:47%;font-size:23.3vw}.hero-composition .sculpture{inset:-3% -8% -4% 12%}.landing-copy{top:440px;width:86%}.landing-copy h2{font-size:35px}.landing-description{font-size:13px}.landing-actions{gap:16px}}
+
+/* The mobile navigation keeps the new useful entry visible; the original hero still opens the workbench. */
+@media(max-width:800px){.landing-nav nav>button.nav-demo{display:block;border:1px solid #ffffff50;border-radius:3px;padding:12px 16px;min-height:44px;font-size:12px}.landing-nav nav .nav-enter{display:none}}
+.landing-nav button:focus-visible{outline:2px solid #d6bcff;outline-offset:4px}

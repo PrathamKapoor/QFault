@@ -315,13 +315,13 @@ scripts.external_validation    reference_contract() -> candidate -> investigate_
  └─ scripts.verify_external_results.verify_results() reports, rows and aggregates
      └─ scripts.reconcile_external_evidence.reconcile_rows() every attempted Cartesian case
 scripts.current_release_evaluation.freeze() new versioned current-source replication protocol
+ └─ run()                      committed sources, exact frozen requests, new exports
+     └─ audit_record()          scripts/audit_counterfactual.py; independent recovery interval reconstruction
 scripts.verify_replication.verify() scripts/verify_replication.py; offline retained current-source evidence
  ├─ verify_export() qfault/storage.py; schema/membership/document identities
  ├─ normalized() scripts/current_release_evaluation.py; compare frozen scientific projection
  ├─ summary source map equality with frozen protocol; reject inconsistent recorded source identity
  └─ audit_record() scripts/audit_counterfactual.py; reconstruct recovery intervals from counts
- └─ run()                      committed sources, exact frozen requests, new exports
-     └─ audit_record()          scripts/audit_counterfactual.py; independent recovery interval reconstruction
 ```
 Validation and trust boundary: Truth stays outside participant policies. Byte hashes and separately named LF-normalized digests retain distinct rules. Old source guards/protocols remain unchanged. Current replication uses observed designs/seeds and is explicitly NOT untouched holdout evidence.
 Output / schema / units: Versioned rows, raw exports, source identities, counts, shots/executions/runtime and negative findings; descriptive comparisons across correlated seeds/designs.
@@ -435,3 +435,68 @@ D-064 is committed as 6998e5959180af6c7224b95cb468fa8dd8ea7503.
 D-065 is committed as 4cc58de3aff12f27ed1f6dc131507551acf1bc7a.
 D-066 is committed as 285939f0b170d953d54600955393d3c90f6558c0.
 D-067 is committed as 66db0167fd46ea262bbb22282038fac331707330.
+D-068 is committed as 9866fdb9ed7f22079f6e96bca18d55f0c7d9e173.
+
+## Changes in this session (guided demonstration and public delivery)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Baseline/design | Verify clean source, exact-SHA CI and absent public releases; choose existing-engine guided workflow and sequential acceptance checklist | docs/judge-delivery-plan.md; root records | uncommitted | D-069 |
+| Demonstration inputs | Validate pinned external source, imported ancestry, independent contracts and ordinary real-engine requests; structural preview does not execute | qfault/demo.py; qfault/api.py; scripts/guided_demo.py; examples/qrng-phase-demo.json; tests/test_guided_demo.py | uncommitted | D-070 |
+| Guided interface | Add legal stages, real requests, synchronous duplicate gate, ID-only refresh restoration and honest unknown completion; preserve hero | web/src/components/GuidedDemo.tsx; web/src/components/GuidedDemo.css; web/src/guided; web/src/main.tsx; Overview.tsx; landing/Landing.tsx; tests/guided-session.test.mjs; scripts/guided_demo_e2e.py | uncommitted | D-071 |
+| Guided accessibility | Keep useful mobile entry, readable aside, stage focus and short control names; verify keyboard/error states and real Aer retry | GuidedDemo.tsx/css; landing/Landing.tsx; landing.css; scripts/guided_accessibility_e2e.py | uncommitted | D-072 |
+| Research interpretation | Derive equal yield and relative shot reduction from recorded totals, retain both denominators | qfault/api.py; ResearchEvidence.tsx; tests/test_research_summary.py | uncommitted | D-073 |
+| Record lifecycle | Refresh history on entry, independently restore available records and prevent overwriting known stage IDs | web/src/main.tsx; GuidedDemo.tsx; guided browser suites | uncommitted | D-074 |
+
+## 18. Guided external demonstration inputs and text fallback
+
+Subsystem: Source-qualified presentation inputs.
+Trigger / when: GET /api/guided-demo; explicit developer --write-inputs; text demonstration command.
+What: Supply declared external reference/candidate/contracts, bounded request presets and unmeasured edit preview.
+Why: Judges should execute the existing investigation path without manually constructing JSON.
+Input / schema / provenance: examples/qrng-phase-demo.json version1; unchanged pinned QASMBench QRNG bytes, original reference circuit, separate controlled terminal Z; native qasm2-v1 ancestry.
+Ordered calls with actual symbols and paths:
+```text
+scripts.guided_demo.build_inputs()      scripts/guided_demo.py; explicit exclusive developer output
+ ├─ external_demo.example()            existing separate-reference contracts
+ └─ from_qasm2()                       qfault/qasm_import.py; source representation and identity
+api.guided_demo_inputs()               qfault/api.py; GET /api/guided-demo
+ └─ demo_catalog()                     qfault/demo.py
+     ├─ source byte digest / CustomCircuit identities / LabRequest and RecoveryRequest validation
+     └─ interventions.generate()       structural candidate preview only
+scripts.guided_demo.run()              same catalog -> lab/validate -> existing execution -> report
+ └─ verify_export()                    independent exported-byte consistency check
+```
+Validation and trust boundary: No upload/Python execution, hidden answer or exact candidate analysis enters policies. Reference correctness/Qiskit semantics are assumptions. Catalog contains inputs, never successful live responses. Validation preview is contract feasibility, not recovery admission or promised detectability.
+Output / schema / units: Catalog version1, source/circuit IDs, requests, seed, alpha, shot/evaluation ceilings and candidate exclusions/truncation; text run writes actual reports/summary/costs/elapsed seconds.
+Persistence / identity / version: Fixture source controlled; generated input destination exclusive. Runtime outputs exclusive new directory; experiments use existing ArtifactStore identities.
+Error / timeout / cancellation / recovery behavior: Invalid/missing input/source returns503 with no execution. Text fallback returns nonzero for unexpected outcomes, preserves actual outputs and never replaces them. Ordinary engine admission/busy/error semantics apply.
+Verification commands and tests: tests/test_guided_demo.py; python -m scripts.guided_demo --out NEW_DIRECTORY against actual local Aer server.
+Known limitations: Four-qubit product-state example demonstrates phase observability, not general repair performance. Fresh screening/freeze/confirmation remain one synchronous recovery operation; no pause/cancel promise.
+
+## 19. Guided browser execution, restoration and failures
+
+Subsystem: Judge-facing guided experience.
+Trigger / when: Landing/overview/sidebar Guided demo opens /demo; explicit stage/scenario execution or replay.
+What: Explain and execute the existing declared-contract investigation without JSON assembly.
+Why: Judges need a coherent task, observable evidence, honest refusal and reviewable exports.
+Input / schema / provenance: GET /api/guided-demo input catalog; actual API results; tab-scoped qfault-guided-demo-v1 IDs and stage state only.
+Ordered calls with actual symbols and paths:
+```text
+Landing.enter('/demo') / Overview / Workbench sidebar
+ └─ GuidedDemo()                         web/src/components/GuidedDemo.tsx; retained across navigation
+     ├─ readGuide()/canVisit()            web/src/guided/session.ts; no fabricated completed records
+     ├─ demoRequest('/api/lab/validate')  web/src/guided/api.ts; feasibility before execution
+     ├─ ExecutionGate.run() -> execute()  synchronous admission -> existing investigation/recovery POST
+     │   └─ writeGuide()                 returned experiment ID only; existing ArtifactStore owns results
+     ├─ Outcome()/RecoveryEvidence()      display returned verdicts, costs, selection/fresh evidence
+     ├─ verifyStored()                   GET /api/experiments/{id}/verification
+     └─ replay()                         existing recovery replay route; {} or explicit new seed
+```
+Validation and trust boundary: A measured discrepancy and inspected limits precede recovery; uncertainty remains backend evidence. Stage explanations do not infer a competing diagnosis. Structural previews are not measured candidates. Verify-stored checks server bytes; downloaded bytes use the standalone verifier, not an embedded valid flag.
+Output / schema / units: Six guided stages, three accessible scenarios, actual elapsed seconds, shots/executions, normalized loss intervals, selection digest and explicit contract scope. No percentage/cancel fiction.
+Persistence / identity / version: ID-only version1 session state; restore actual records from server. Restart archives previous IDs locally and preserves server records. Guide remains mounted across navigation; no implicit execution on mount/refresh.
+Restoration uses Promise.allSettled and matches each returned experiment_id to the saved ID; one missing record does not discard valid siblings. Known IDs block implicit reruns. Workbench refreshes /api/experiments on history/overview entry so newly completed guide records are visible without reloading the application.
+Error / timeout / cancellation / recovery behavior: Busy409 and backend validation errors remain visible/retryable. Connection loss after submission records unknown completion; history inspection and acknowledgement precede a new guide. Missing/corrupt session or server record never supplies a fallback result. Storage failures warn that exports should be retained.
+Verification commands and tests: node --test tests/guided-session.test.mjs (four pass); npm check/build; scripts.guided_demo_e2e against actual Aer backend, including independent downloaded report verification.
+Known limitations: Backend progress is synchronous operation-level; no hard cancellation, external timestamp or unique cause claim. Browser acceptance remains a separate executed gate.

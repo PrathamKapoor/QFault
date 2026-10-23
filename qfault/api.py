@@ -207,14 +207,24 @@ def create_app(root=None):
                 'rejected':row['outcomes'].get('REJECTED',0),'shots':row['shots'],
                 'executions':row['executions'],'noise_only_proposals':row['noise_only_proposals']}
         reports=root/'benchmarks/external-holdout-v1/reports.jsonl.gz'
+        conservative,point=recovery['conservative'],recovery['point_discrepancy']
         return {'protocol':data['protocol']['name'],'source_commit':data['execution_revision'],
             'summary_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),
             'architectures':data['architecture_count'],'recovery':recovery,
+            'comparison':{'equal_verified_yield':conservative['verified']==point['verified'],
+                'relative_shot_reduction':(point['shots']-conservative['shots'])/point['shots'] if point['shots'] else None},
             'evidence':{'available':reports.is_file(),'scope':'Current external study; availability is not a fresh integrity audit',
                 'verification_command':'python -m scripts.verify_external_results benchmarks/external-holdout-v1/summary.json'},
             'limitations':['Controlled local simulation; repeated seeds are not independent circuit families',
                 'One declared input/contract; a verified intervention does not identify the causal origin',
                 'Historical template/lab/target studies have separate evidence-availability records']}
+
+    @app.get('/api/guided-demo')
+    def guided_demo_inputs():
+        from .demo import demo_catalog
+        try:return demo_catalog()
+        except (OSError,ValueError,KeyError,TypeError):
+            raise HTTPException(503,'Guided demonstration inputs are unavailable or inconsistent; no execution occurred')
 
     @app.get("/api/benchmark/report")
     def benchmark_report():

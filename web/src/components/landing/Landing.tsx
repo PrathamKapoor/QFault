@@ -26,7 +26,7 @@ export default function Landing({navigate}:{navigate:(route:string)=>void}){
   const hero=phase==='hero'||phase==='reframe'||phase==='swap';
   return <div className={'landing '+(phase==='reframe'||phase==='swap'?'landing--reframe':'')} data-phase={phase}>
     <h1 className="sr-only">QFAULT</h1>
-    <header className="landing-nav"><a href="#/" className="landing-brand"><Mark/><span>QFAULT</span></a><nav aria-label="Primary"><a href="#/" onClick={e=>scrollTo(e,'platform')}>Platform</a><a href="#/" onClick={e=>scrollTo(e,'research')}>Research</a><button onClick={()=>enter('/benchmarks')}>Benchmarks</button><a href="https://github.com/PrathamKapoor/QFault" target="_blank" rel="noreferrer">GitHub ↗</a><button className="nav-enter" aria-label="Enter Workbench from navigation" onClick={()=>enter()}>Enter Workbench <span aria-hidden="true">↗</span></button></nav></header>
+    <header className="landing-nav"><a href="#/" className="landing-brand"><Mark/><span>QFAULT</span></a><nav aria-label="Primary"><a href="#/" onClick={e=>scrollTo(e,'platform')}>Platform</a><a href="#/" onClick={e=>scrollTo(e,'research')}>Research</a><button className="nav-demo" onClick={()=>enter('/demo')}>Guided demo</button><button onClick={()=>enter('/benchmarks')}>Benchmarks</button><a href="https://github.com/PrathamKapoor/QFault" target="_blank" rel="noreferrer">GitHub ↗</a><button className="nav-enter" aria-label="Enter Workbench from navigation" onClick={()=>enter()}>Enter Workbench <span aria-hidden="true">↗</span></button></nav></header>
     {hero&&<>
       <MentalHero instant={instant} handover={phase!=='hero'} onEnter={()=>enter()} onResearch={e=>scrollTo(e,'research')}/>
       <div className="landing-details" inert={phase!=='hero'}>
