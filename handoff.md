@@ -1,177 +1,152 @@
-# QFault handoff — guided experience and public release
+# QFault handoff — verified guided experience and public delivery
 
 ## 1. Current Phase
 
-Source preparation complete; release execution partial. D-077 media correction is uncommitted on main after safe fast-forward to777f5de. Started at clean main
-9866fdb9ed7f22079f6e96bca18d55f0c7d9e173. Working branch feat/guided-demo-release
-in C:/Projects/QFF. Guided milestone db2989b45f48183fdce7ca2980717b8f009758ea is
-committed with exact owner author/committer. Delivery tools/docs are currently
-uncommitted. Next: reviewed source commit, full suite, clean-source capture and
-packages, independent setup, then main/public release and downloaded verification.
+Judge-facing implementation and public release complete within the bounded local
+simulation scope. Started at9866fdb9ed7f22079f6e96bca18d55f0c7d9e173. Immutable
+v0.1.0 tag/source/packages: b65dcb60fb216e802b2ff7d71a970169a6c059a2 on intended
+PrathamKapoor/QFault. This is a later documentation-only follow-up; its own SHA
+and hosted checks are authoritative in Git/GitHub, not embedded in itself.
 
 ## 2. Work Completed
 
-Read root records completely, no applicable AGENTS.md found. Fetched intended
-origin and verified starting sync 0/0 and exact-SHA CI39837839971 success. No
-remote tags/releases; historical local snapshot tags/worktree preserved.
+Guided demo is accessible from landing/workbench, reuses real ordinary API/Aer
+investigation/recovery and a pinned imported external QASMBench QRNG reference.
+Reference/candidate/controlled mutation remain separate. Actual Z agreement,
+complementary discrepancy, bounded edit inspection, freeze/fresh paired evidence,
+export/integrity and distinct replay work. Noise-control abstention and zero-shot
+reserve refusal execute real backend paths. Duplicate guard, ID-only restoration,
+unknown interrupted completion and partial-record recovery preserve earlier results.
+Hero/helix unchanged. Headlines derive equal10/90overall and10/41eligible yield,
+rejections8/31 and9.6%shot reduction from machine summaries with honest scope.
 
-Built the real external QRNG guided page with independently referenced contracts,
-native QASM ancestry, legal stages, actual evidence/diff/selection/fresh costs,
-noise/budget controls, export/integrity and replay/rerun. No scientific policy or
-threshold changed. Duplicate guard and ID-only tab state prevent implicit reruns.
-Actual browser regressions found/fixed hidden mobile entry, stale history and
-all-or-nothing restore. Headline comparison now derives9.6% reduction from recorded
-totals and retains both10/90 and10/41 denominators.
-
-Prepared concise judging/setup/fallback guide, timed three-minute narration,
-clean-source silent recorder/full playback/captions, portable outer packages,
-explicit public asset curator and existing-auth release/download verifier. No
-new dependencies. Actual media capture, package setup and publication not yet run.
+A three-minute narration script, tested same-engine CLI fallback, genuine silent
+180.12s recording and actual-time captions are public. Full normal-speed playback
+ended with4874frames, no dropped/corrupt frames/audio/errors; five decoded stages
+were visually inspected. No voiceover exists. Source/evidence packages came from
+clean committed main, were independently installed/built/tested, published with
+checksums and independently downloaded/extracted/rebuilt/tested again.
 
 ## 3. Files Changed
 
-Committed UI milestone: qfault/demo.py and API catalog/comparison; examples/qrng-phase-demo.json;
-guided React/session/API/CSS/navigation; scripts/guided_demo.py, guided_demo_e2e.py,
-guided_accessibility_e2e.py; tests and root records/plan. Current delivery files:
-scripts/record_guided_demo.py, release_delivery.py, prepare_release_assets.py,
-public_release.py; corresponding four test files; docs/judging-guide.md,
-three-minute-demo.md, public-release.md; README.md; CI; research documentation
-consistency test; decisions.md/flow.md/handoff.md. Check Git for exact inventory.
+Guided milestone db2989b: qfault/demo.py, API catalog/research comparison,
+examples/qrng-phase-demo.json, guided React/session/API/CSS/navigation,
+guided_demo and real browser/accessibility scripts, tests, root records/plan.
+Delivery777f5de: recorder/captions, bounded release_delivery, prepare_release_assets,
+public_release, regression tests, judging/narration/public-release docs and CI.
+Playback correction b65dcb6: exact bounded WebM bytes load as seekable browser Blob.
+This follow-up: README public links, docs/judge-release-verification.md, completed
+docs/judge-delivery-plan.md, append-only decisions/flow and rewritten handoff.
+No dependency, frozen protocol/result/raw archive or scientific policy changed.
 
 ## 4. Current Architecture / State
 
-Existing local FastAPI/React/shared scientific engine remains. Catalog contains
-inputs only, structural preview is unmeasured. Guide runs ordinary lab validation,
-investigation/recovery/export/replay. Screening/freeze/fresh confirmation remains
-one synchronous operation; no fake intermediate approval, percent or cancellation.
-Known saved IDs cannot be overwritten implicitly; valid restored siblings survive
-a missing record. History refreshes on navigation.
-
-Portable download wraps existing manifest.json and qfault-source.zip. Verification
-bounds archives, rejects unsafe members, verifies before exclusive extraction,
-retains package/ and runnable project/. Producer selects exactly five controlled
-reports/media from the source-bound recording; verifies exports and independent
-count reconstruction. Public reporting reads frozen summaries. Publisher validates
-owner/origin/main/source CI/unused version, uploads a draft allowlist, publishes
-and independently downloads/checksums/packages/tag. No mutation executed yet.
+Existing single-process local FastAPI/React/shared scientific engine. Catalog has
+inputs only. Screening/freeze/fresh verification is one synchronous operation,
+labelled honestly; no fake pause/cancel/percentage. Tab storage keeps returned IDs,
+not success responses. History and server records remain authoritative.
+Public release tools verify-before-extract, exact source/membership/checksums,
+exclusive outputs, bounded downloads and unused version; credential helper stays
+in memory. Release v0.1.0 contains exactly nine reviewed assets, not runtime sweeps.
+Source-only evidence is explicitly incomplete; full mode includes available three
+research archives, with a separate deliberately curated five-report demo ZIP.
 
 ## 5. Decisions Made
 
-D-069–D-074 are in db2989b45f48183fdce7ca2980717b8f009758ea. D-075 records genuine
-silent media/narration; D-076 portable/public delivery and CI coverage. Both
-currently uncommitted. Next ordinary record identifies their actual implementation
-hash; do not rewrite decisions to solve self-reference.
+D-069–D-074: db2989b45f48183fdce7ca2980717b8f009758ea.
+D-075–D-076:777f5de157415075fe031f8f045b6c950d6dad3a.
+D-077:b65dcb60fb216e802b2ff7d71a970169a6c059a2.
+D-078 records observed publication/download proof in this documentation follow-up.
+Prior entries retain their write-time uncommitted labels; next entries supply real
+implementation hashes without rewriting history or attempting self-reference.
 
 ## 6. Requirements and Constraints
 
-All new authors AND committers PrathamKapoor <prathamkapoor027@gmail.com>; no tool
-signatures/coauthors/collaborators/global Git changes/destructive cleanup/force
-push/history rewrite. Never commit paper/, research/ or .tex. Preserve hero/helix,
-historical protocols/raw/results, unrelated ignored data and recovery worktree.
-No competition action/messages/paid service. Work sequentially; no parallel agents.
-
-Publication to existing QFault repo explicitly authorized after gates. First formal
-version proposed v0.1.0, matching package0.1.0 and absent at initial remote inspection.
-Never overwrite an existing release/tag. Packages/media must bind exact clean source;
-later final documentation commit may differ, reported explicitly.
+Exact owner author AND committer: PrathamKapoor <prathamkapoor027@gmail.com>.
+No collaborators/coauthors/tool signatures, global Git config, destructive cleanup,
+force push/history rewrite, paper/research/tex commits, paid jobs or competition
+communications/submission. Preserve original worktrees/branches/ignored data,
+hero/helix, all frozen records/guards and third-party licenses. Sequential work.
+No macOS/ARM/hardware/universal equivalence/unique-cause/population superiority claim.
+Never move v0.1.0 or pretend later main documentation is inside its packages.
 
 ## 7. Testing and Verification
 
-Baseline freshly rerun18tests19.62s and actual Aer00=506/11=518. New targeted final
-group27tests passed20.40s; Node controller4passed; npm typecheck/build pass, existing
-lazy Three566.56KB warning remains. New seven guided/research tests previously
-passed12.39s; independent external verifier freshly passes2206exports/2232rows.
-Frozen studies were not rerun. Existing488/full suite is historical until final
-assembled run.
+Exact tagged source: full pytest514passed80.42s, one existing Starlette/httpx warning;
+Node controller4passed. Fresh isolated hashed install/pip check/npmci/check/build
+passed in two independent empty extractions. Source-only22tests33.35s; full28tests
+38.68s; actual Aer Bell00=506/11=518. Public-download extractions imported their
+own code, rebuilt frontend and passed22tests30.56s/28tests33.45s using the already
+verified isolated dependency environments. Downloaded evidence verifiers valid:
+2206external exports across2232attempted rows,310historical recovery,72replication.
+No frozen study rerun. Actual text fallback all five outcomes passed.
 
-Real main browser sequence passes all five Aer outcomes, export/download, refresh,
-distinct replay and history without refresh; no page errors and mobile390/375/360.
-Latest milestone IDs recoveryf88bb48371274dc9a07a2218a8db009a and replay87253bd8445943e3b9e5d31ecbe068d6.
-Keyboard/reduced-motion suite1440/390/375/360 passes including labelled error-only
-409/connection abort, genuine Aer retry, unknown completion and partial restore.
-Existing release smoke, full stable-build cinematic hero/transition seven widths
-and workspace navigation pass. An earlier cinematic reload missed WebGL; cause
-UNKNOWN, no hero/test tolerance changed, stable full rerun passed.
+Actual browser main flow18POSTs/export/refresh/replay/history, no page errors;
+desktop390/375/360, keyboard/reduced motion and labelled error-only409/connection
+injection plus real retry passed. Existing seven-width hero/transition, workspace
+navigation and release smoke passed. Hosted source CI39931840261 both checks and
+browser-smoke completed/success on Ubuntu24.04. Local Windows x64/Python3.13.2/
+Node24.19.0/npm12.0.2. macOS/ARM untested in this task.
 
-Caption tests2pass; outer package7pass; checksum/public8pass; source/media selection2pass.
-All19 release/media tests passed9.52s. New malformed/source/traversal/overwrite
-regressions observed red before implementations. Actual recording/full playback
-and final inner/outer/public package download remain NOT_RUN.
-
-Guided milestone staged Gitleaks8.30.1 scan no leaks. Final source/history/advisory
-scans pending. No new dependency/lock changes. Authenticated read via existing
-Git credential helper confirms owner; token stayed in memory, never printed.
-GitHub connector lacks release upload; official API fallback documented.
+Gitleaks8.30.1:117reachable commits/~21.67MB and public asset folder, no unclassified
+leaks. Initial ownership failure retried with process-scoped safe.directory.
+pip-audit2.10.0 locked requirements and npm audit found no known scoped advisories.
+Tracked/archive review excluded env/database/private-key/dependencies/runtime sweeps.
+Public tag and all nine downloaded asset sizes/hashes/package sources verified;
+source SHA matched remote main0/0 before this follow-up. Every implementation
+commit author/committer checked. Final documentation commit/checks live in Git.
 
 ## 8. Known Issues / Risks
 
-No reproduced mandatory UI failure remains. Full suite514passed77.31s at777f5de. Recording all five outcomes passed; playback seek failed because the synthetic HTTP route exposed seekable[0,0]. An identical-byte Blob probe exposed the whole180.04seconds and seek10s worked. D-077 fixes only that verifier. Capture/packages must be recreated at the new source SHA; existing package-install runs remain scoped to777f5de. Media/package/public gates pending.
-Historical unavailable raw families stay explicit;72/72 replication is not repair
-accuracy or untouched evidence. Dense/low-budget cases can remain unresolved.
-Unsigned hashes, cooperative timeout, single-process local trust and no
-hardware/universal equivalence/unique causal conclusion remain. macOS/ARM untested.
+No mandatory judge-delivery failure remains. Existing lazy Three566.56KB build
+warning and Starlette deprecation remain. Old cinematic reload missed WebGL with
+UNKNOWN cause; full stable-build rerun passed without modifying hero/assertions.
+Initial media seek failure was reproduced and fixed through Blob loading, with
+all checks preserved. One operator test command named a nonexistent file; corrected
+actual release-package tests passed; no zero-test run counted as passing.
+Some historical raw families unavailable/unknown. Dense/low-budget/inadequate
+contracts can remain unresolved. One input/contract, bounded edits, ambiguous cause,
+IID/model assumptions, cooperative time guards, unsigned hashes and no hardware.
+Silent footage plus complete text narration, no recorded voiceover.
 
 ## 9. Unfinished Work
 
-1. Review/stage intended delivery files, scan and commit under owner; full final
-   pytest/Node/frontend/Aer on that exact source, retain output logs.
-2. Integrate local main by safe fast-forward, keeping feature/history refs; no push
-   until local gates ready.
-3. Record actual clean-source guide with scripts.record_guided_demo --base URL
-   --out NEW. It records about180seconds and automatically verifies another full
-   normal-speed playback. Inspect decoded source/phase/fresh/noise/budget images.
-   Label silent; no voiceover claim.
-4. Build inner source-only/evidence-inclusive packages using package_submission
-   from the clean source; independent empty extraction, fresh locked install,
-   npmci/check/build and representative tests. Full evidence package for full
-   raw-archive checks; source-only representative commands in guide.
-5. Create actual-source check JSON (all true observed PASS commands/results), then
-   prepare_release_assets --tag v0.1.0 --recording DIR --verification JSON --out NEW
-   --packages-root DIR. Reuses the exact tested inner package bytes.
-6. Verify outer packages/asset safety, push intended main safely, verify remote SHA
-   and exact-SHA CI (now includes Node and real guided suites).
-7. public_release --publish --tag v0.1.0 --source-commit EXACT --assets DIR
-   --download-out NEW. Requires unused version, correct owner/main/CI; draft uploads,
-   public redownload/checksums/package/tag validation. Verify remote tag via Git too.
-   Preserve partial drafts if an external issue occurs; do not overwrite.
-8. Independently extract downloaded packages and run representative checks; check
-   public README/release links. Add final ordinary documentation/handoff report
-   with actual tag/package/source/CI/checksums. Push/verify that final docs SHA/CI
-   without moving tag or claiming docs are inside earlier packages.
+No remaining mandatory feature, media or public-asset change. This documentation-only
+follow-up must be verified by its actual Git identity and exact-SHA hosted checks
+after writing; do not fabricate those inside its own commit. Future changes require
+normal verification and a new release/version when changing immutable deliverables.
 
 ## 10. Next Subphase
 
-Final source review/commit/full checks. Active test service http://127.0.0.1:8002,
-artifact root artifacts/judge-delivery/investigations-r2, child22408/launcher34612.
-Earlier8001 service36128 left untouched after automatic review rejected restart;
-use8002 while API stable. Separate roots, no distributed concurrency claim.
-A broad Python rewrite command was also rejected; a safer reviewed apply_patch
-completed the authorized edit. No permission request or rejected action bypass.
-
-Interpreter .local/contract-release/python/Scripts/python.exe. New scripts accept
---base; original cinematic/navigation use QFAULT_BASE_URL. .local/contract-release
-contains previously verified Gitleaks/audit tools and fresh-env examples. Keep
-long-running recorder as yielded exec session and send updates within60seconds.
-Do not rebuild frontend during browser/media execution.
+Maintain or demonstrate the published workflow. First verify actual current Git and
+hosted checks before editing. Do not repeat frozen studies or restart this project.
+Release: https://github.com/PrathamKapoor/QFault/releases/tag/v0.1.0 .
+Public report/checksums/guide/media are linked from README and
+ docs/judge-release-verification.md. That record lists exact package SHA-256 values.
 
 ## 11. Critical Context
 
-Main remains9866fdb until safe local integration. Frozen scientific source97710d8,
-protocolv4 and all old sources/records are unchanged except presentation API additions;
-old source guards must continue refusing current source. Original external study
-execution6eaeb2dd/protocol external-qasmbench-v1 retains exact old data. New fixture
-uses QASMBench revision357b942396d5c2b7cbc1c229c585a6ef5ccaebac.
+Original recovery worktree C:/Projects/QFF-Recovery atc5cedf5 preserved. Feature
+branch feat/guided-demo-release preserved. Local historical tags unchanged; new
+remote v0.1.0 resolves to b65dcb60fb216e802b2ff7d71a970169a6c059a2. All90old
+benchmark/config files remain unchanged. Current frozen replication source97710d8,
+protocolv4,72/72consistency is not repair accuracy or untouched holdout. External
+execution6eaeb2dd/protocol external-qasmbench-v1 retained; new fixture pinned
+QASMBench357b942396d5c2b7cbc1c229c585a6ef5ccaebac. Same-seed replay is deterministic.
 
-Media driver requires clean Git. Future source commit must include all tool/docs
-files before capture so prepare source checks match. Publisher exact allowlist:
-qfault-v0.1.0-source.zip, evidence.zip, demo-evidence.zip, guided-demo-silent.webm,
-guided-demo-captions.vtt (each qfault-v0.1.0-prefixed), judging-guide.md,
-three-minute-demo.md, release-verification.json, SHA256SUMS. No asset publication
-or real release tag has happened yet. SHA256SUMS excludes itself deliberately.
+Local evidence under ignored artifacts/judge-delivery: full-final-source-tests.log,
+sourceSetup/evidenceSetup-final.log, checked-final-source.json, release-recording-final,
+inner-packages-final, public-v0.1.0/assets, public-redownload and its verificationJSON.
+Active test service8002 uses investigations-r2; earlier8001 service preserved after
+automatic review rejected restart. No unsafe stop/restart attempted. .local tools
+and all original ignored owner artifacts stay private. Normal Git working tree was
+clean before this explicit documentation-only follow-up.
 
 ## 12. Agent Instructions
 
-Read root documents and verify actual Git on resume. Continue from completed UI,
-do not repeat baseline/holdouts or spawn parallel implementers. Keep source/package/
-final documentation identity distinctions literal. No completion claim until real
-media playback, clean-package installation, public download/tag and final CI gates.
+Read root records fully and actual Git on a new session. Use existing evidence and
+correct intended remote/account. Do not change immutable release/tag/assets, frozen
+math/source guards or hero for presentation convenience. Public verification can
+be repeated unauthenticated with scripts.public_release --tag v0.1.0 --download-out
+NEW. Never treat unsigned checksums or embedded valid flags as scientific truth.
+Continue only actual unfinished work, and report new failures precisely.

@@ -19,6 +19,19 @@ abstentions. No JSON assembly or stored success response is required.
 [Judging/setup guide](docs/judging-guide.md) · [Three-minute narration](docs/three-minute-demo.md) ·
 [Public delivery and verification](docs/public-release.md)
 
+**Verified public release:** [v0.1.0](https://github.com/PrathamKapoor/QFault/releases/tag/v0.1.0)
+— [source package](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/qfault-v0.1.0-source.zip),
+[evidence-inclusive package](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/qfault-v0.1.0-evidence.zip),
+[silent three-minute recording](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/qfault-v0.1.0-guided-demo-silent.webm),
+[captions](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/qfault-v0.1.0-guided-demo-captions.vtt),
+[controlled demo exports](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/qfault-v0.1.0-demo-evidence.zip),
+[verification summary](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/release-verification.json)
+and [checksums](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/SHA256SUMS).
+The recording has no voiceover; use the narration script above. Packages/tag identify
+`b65dcb60fb216e802b2ff7d71a970169a6c059a2`, preceding this documentation follow-up.
+Both packages were independently downloaded, verified, extracted, built and tested.
+See the [release verification record](docs/judge-release-verification.md).
+
 Current scientific scope and dated records: [current-state index](docs/current-state.md).
 The current release adds native circuit import, explicit measured recovery evidence,
 parent-linked replay and verifiable source/evidence packages. The earlier reviewed

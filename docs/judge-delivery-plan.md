@@ -49,17 +49,17 @@ not policies, thresholds, source guards or frozen records.
    yield, both denominators, rejected proposals and calculated shot reduction
    from /api/research. No copied success constants. Acceptance: browser values
    reconcile with the frozen summary and negative interpretation remains visible.
-4. [ ] Demonstration delivery: concise guide, three-minute narration table,
+4. [x] Demonstration delivery: concise guide, three-minute narration table,
    actual silent browser recording, full playback/decoded readability evidence,
    real-engine text fallback and deliberately selected public-safe exports.
    Acceptance: downloadable genuine media clearly labelled silent, script and
    observed outcomes matched; no claim of narration or live recorded evidence.
-5. [ ] Public packaging: regression tests for portable outer packages and safe
+5. [x] Public packaging: regression tests for portable outer packages and safe
    verification/extraction; clean committed source/evidence modes, checksums,
    public verification summary/setup guide and selected media. Independently
    extract, install locked dependencies, build and run representative checks.
    Acceptance: missing/corrupt/unsafe contents fail; no private runtime sweep.
-6. [ ] Release: full assembled tests, frontend build, Aer/browser, scans and
+6. [x] Release: full assembled tests, frontend build, Aer/browser, scans and
    preservation comparison; focused owner commits; safe integration/push and
    exact-SHA CI. First formal release PROPOSED v0.1.0 (matches package metadata;
    unused after inspecting actual tags/releases). Publish reviewed assets, then
@@ -69,3 +69,7 @@ not policies, thresholds, source guards or frozen records.
 Every step includes decisions/flow/handoff updates before committing. Record
 implementation hashes in the next ordinary documentation commit, without a
 self-reference loop. Do not repeat frozen studies for UI/documentation changes.
+
+Completed evidence: [judge release verification](judge-release-verification.md).
+The immutable v0.1.0 source/tag is b65dcb60fb216e802b2ff7d71a970169a6c059a2;
+this checklist update is a later documentation-only follow-up.

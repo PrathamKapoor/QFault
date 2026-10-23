@@ -558,6 +558,7 @@ public_release.publish()                     scripts/public_release.py; --publis
 Validation and trust boundary: Only exactly named public assets can publish. No downloaded script execution, credentials in output, ignored data discovery or tag/release overwrite. Verify does not trust embedded success alone; hashes/actual reports/source bindings are checked. Media playback assertions remain observed evidence, not signatures.
 Output / schema / units: Source/evidence outer ZIPs, controlled report ZIP, verification JSON, guide/narration, silent WebM/captions and SHA256SUMS; exact source SHA, byte counts, SHA-256, public URLs and downloaded verification record.
 Persistence / identity / version: New artifact/output directories only. Tag names immutable; draft retained on upload failure. Package source may precede final documentation commit; never relabel archives. All new commits retain owner identity; release API does not rewrite source commits.
+Observed public instance: v0.1.0 at b65dcb60fb216e802b2ff7d71a970169a6c059a2. Both package modes, five controlled exports, silent180.12s recording, captions, guide/narration, public check JSON and SHA256SUMS were downloaded and verified through verify_public(). Downloaded source/evidence packages were independently extracted, rebuilt and tested (22/28 representative tests). Public links/checksums and source CI are recorded in docs/judge-release-verification.md; later main documentation does not enter these immutable bytes.
 Error / timeout / cancellation / recovery behavior: Missing/corrupt/oversized/unsafe members, failed gates, wrong owner/origin/source, pending CI, existing tag/release or download mismatch block success. Temporary extraction confined to newly created resolved parent. Network timeouts/guards do not claim hard cancellation. Partial downloads remain clearly partial, never verified.
 Verification commands and tests: targeted release/media suites; complete final pytest/Node/frontend/Aer/browser; independent empty extraction/locked installation; actual public download/checksum/package/tag and final exact-SHA CI checks.
 Known limitations: Checksums unsigned; GitHub availability/auth can block publication. No paid service/competition action, no hardware verification, no claim that later documentation is inside an earlier package.
@@ -567,3 +568,14 @@ Known limitations: Checksums unsigned; GitHub availability/auth can block public
 | Area | Change | Files | Commit | Decision |
 |---|---|---|---|---|
 | Playback | Decode exact bounded local bytes through a Blob so browser seeking works without a synthetic HTTP range server | scripts/record_guided_demo.py; decisions.md; flow.md; handoff.md | uncommitted | D-077 |
+
+## Changes in this session (verified public delivery record)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Public delivery | Add verified release/download links, exact-source checksums and observed setup/media/archive/CI results; complete checklist and handoff | README.md; docs/judge-delivery-plan.md; docs/judge-release-verification.md; decisions.md; flow.md; handoff.md | uncommitted; Git history authoritative for this follow-up | D-078 |
+
+Implementation identity follow-up: D-069–D-074/db2989b45f48183fdce7ca2980717b8f009758ea;
+D-075–D-076/777f5de157415075fe031f8f045b6c950d6dad3a;
+D-077/b65dcb60fb216e802b2ff7d71a970169a6c059a2. Prior decision/change rows remain
+append-only historical write-time records; this entry identifies their commits.
