@@ -10,8 +10,9 @@ from .lab import CustomCircuit, LabRequest
 ROOT=Path(__file__).resolve().parents[1]
 
 
-def demo_catalog():
-    path=ROOT/'examples/qrng-phase-demo.json'
+def demo_catalog(example="qrng"):
+    if example not in ('qrng','cat'):raise ValueError('Unsupported demonstration')
+    path=ROOT/('examples/cat-phase-demo.json' if example=='cat' else 'examples/qrng-phase-demo.json')
     if path.stat().st_size>65536:raise ValueError('Demonstration input size exceeds limit')
     data=json.loads(path.read_bytes())
     if not isinstance(data,dict) or type(data.get('schema_version')) is not int or data['schema_version']!=1:

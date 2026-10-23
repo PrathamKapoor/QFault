@@ -3,6 +3,7 @@ import json
 import math
 import os
 import threading
+from typing import Literal
 from pathlib import Path
 from fastapi import FastAPI,HTTPException
 from fastapi.responses import FileResponse,JSONResponse
@@ -220,9 +221,9 @@ def create_app(root=None):
                 'Historical template/lab/target studies have separate evidence-availability records']}
 
     @app.get('/api/guided-demo')
-    def guided_demo_inputs():
+    def guided_demo_inputs(example:Literal['qrng','cat']='qrng'):
         from .demo import demo_catalog
-        try:return demo_catalog()
+        try:return demo_catalog(example)
         except (OSError,ValueError,KeyError,TypeError):
             raise HTTPException(503,'Guided demonstration inputs are unavailable or inconsistent; no execution occurred')
 

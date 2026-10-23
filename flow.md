@@ -713,3 +713,14 @@ retained; no object/index split or destructive migration. Controlled copied-repo
 CPU/bytes and actual provider timings are in docs/hosted-storage-profile.json.
 | Public resources/storage | Global conditional immediate admission and bounded lossless wire compression justified by profiles | hosted_admission/codec/hosting; profile/provider scripts; tests; profile JSON | uncommitted | D-092 |
 D-091 implementation: ad61f6d611547a084b2671ab6688f83c646576af.
+
+Entangling lesson: explicit scripts.build_entangling_demo.build_inputs reads pinned
+cat_state_n4 source/digest → from_qasm2(reference) → independently declared GHZ
+Z distribution and XXXX/ZZ stabilizers → separate terminal-Z candidate → validated
+LabRequest/RecoveryRequest inputs in new examples/cat-phase-demo.json. Existing
+GET /api/guided-demo?example=cat → demo_catalog('cat') validates source and IDs;
+qrng remains default. GuidedDemo selector → separate keyed GuidedJourney with
+ID-only tab session suffix, same ordinary engine routes/stages/export/replay.
+No benchmark, frozen source archive, reference source or scientific policy changes.
+| Entangling lesson | Pinned cat/GHZ source, independent analytical contracts and separate guided session | build_entangling_demo.py; cat-phase-demo.json; demo.py; api.py; GuidedDemo.tsx; tests | uncommitted | D-093 |
+D-092 implementation: c7f087160626ecb43be3ea9f3d6e93c4c3c8d0cf.
