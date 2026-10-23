@@ -108,4 +108,47 @@ storage; the actual private-provider probe is a separate observed check.
 
 Frontend typecheck and normal/hosted builds passed; existing lazy Three chunk
 warning remains. Actual preview/production browser, cold-start persistence and
-public access are separate deployment gates, not yet claimed by this source record.
+public access are separate deployment gates, recorded below after execution.
+
+## Public deployment verified on 2026-10-23
+
+- Public app: <https://qfault.vercel.app>; guided workflow:
+  <https://qfault.vercel.app/#/demo>.
+- Exact deployed source: `502a416519c2bb1d99265991d4cf5e290e37ba94`, branch
+  `feat/vercel-hosting`. Later documentation/test-log changes are not claimed to
+  be in that deployed snapshot. Existing v0.1.0 packages remain unchanged.
+- Verified preview: `dpl_jPcZxcUsHbAUrQpP3yRPFhv2vgh9`,
+  <https://qfault-an6wooy6v-hex-sembly.vercel.app>.
+- Verified production: `dpl_EZyabyX6wKrTcYA8o394twpPqXin`,
+  <https://qfault-o64u90pgy-hex-sembly.vercel.app>. CLI promotion created a new
+  production deployment asynchronously; READY and stable alias binding were
+  checked after it completed. Immediate inspection during promotion still saw the
+  old deployment, and was not accepted as proof.
+- Actual production Chromium command:
+  `python -m scripts.guided_demo_e2e --base https://qfault.vercel.app --out artifacts/vercel-production-browser-2`.
+  Passed: 18 actual POSTs, imported external circuit, inadequate Z evidence,
+  complementary discrepancy, freshly verified recovery, independently verified
+  downloaded export, history/refresh, distinct replay, noise abstention, zero-shot
+  budget refusal, mobile widths390/375/360, no page errors.
+- Separate production API checks passed in
+  `artifacts/vercel-production-safe-check/api-summary.json`: Aer0.17.2,
+  private two-browser history, cookie-context restoration, independently verified
+  exports, parent-linked replay, Origin403/body413 and blind freeze/reveal.
+  This restores browser context; it does not force a provider process restart.
+- The same combined smoke passed completely on the corrected preview
+  (`artifacts/vercel-corrected-preview/summary.json`). Production attempts also
+  recorded intermittent API-client `read ECONNRESET`; a later combined run passed
+  its API checks but timed out locating a preserved guide ID. The separate full
+  production browser run above passed. These intermittent checks are retained as
+  limitations; their cause is UNKNOWN. No measurement POST was automatically
+  retried, no failing assertion was removed, and no result was substituted.
+- Source CI [40001833472](https://github.com/PrathamKapoor/QFault/actions/runs/40001833472)
+  completed successfully for the exact deployed SHA (checks and browser-smoke).
+
+The private provider probe verified create/read/immediate conditional overwrite
+and stale-writer rejection. Hosted report storage is durable Blob, not function
+scratch. Browser cookies provide access, not an account or administrator secrecy.
+No paid upgrades, provider charges or hardware jobs were enabled. Quota exhaustion,
+network failures and unknown completion remain possible; inspect history before
+resubmitting and export important reports. Deployment runtime is Vercel Linux
+Python3.13; local verification was Windows x86-64 Python3.13.2/Node24.19.0.

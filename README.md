@@ -16,6 +16,14 @@ through an inadequate Z contract, complementary evidence, bounded edits and fres
 verification. Noise-control and insufficient-budget examples execute real
 abstentions. No JSON assembly or stored success response is required.
 
+**Hosted interactive demo:** [qfault.vercel.app](https://qfault.vercel.app/#/demo)
+runs the real Aer workflow with private saved reports. Reports belong to this
+browser's signed cookie; export important records before clearing cookies or
+switching browsers. The hosted app has Hobby resource limits and 64 mutations per
+session. [Hosting scope and verification](docs/vercel-hosting.md). This deployment
+uses source `502a416519c2bb1d99265991d4cf5e290e37ba94`; the older release packages
+below retain their original source identity.
+
 [Judging/setup guide](docs/judging-guide.md) · [Three-minute narration](docs/three-minute-demo.md) ·
 [Public delivery and verification](docs/public-release.md)
 

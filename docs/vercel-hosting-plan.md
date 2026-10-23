@@ -28,3 +28,11 @@ Limits: Vercel function time/payload limits; 32MiB session snapshot, 1,000JSON f
 64 mutating operations per browser session, 30-day signed cookie. No distributed
 global rate-limit claim. Losing the cookie loses access; export important reports.
 Private storage is free only within Hobby quota; quota exhaustion must fail clearly.
+
+Executed: provider CAS/consistent reads passed; 531 assembled tests passed;
+frontend check/build passed; corrected preview passed full API/browser smoke.
+Production source502a416 deployed READY with public alias, separate API privacy/
+blind/export checks and complete real guided browser workflow passed. Preserve
+intermittent production test failures as documented in vercel-hosting.md; do not
+claim guaranteed availability or forced cold-start testing. No scientific study
+was rerun and no frozen protocol, raw evidence or mathematical policy changed.

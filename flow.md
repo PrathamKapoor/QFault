@@ -608,7 +608,7 @@ Validation and trust boundary: No local files/runtime sweep. One private session
 Output / schema / units: Existing API evidence/IDs/counts/shot units unchanged; health adds hosting persistence/scope. Private state schema1 with original JSON strings, operations and lease expiry. All API responses no-store; cookie Secure/HttpOnly/SameSite.
 Persistence / identity / version: Blob snapshots survive function replacement. Cookie30days,64mutations,1000JSON files/32MiB. Original investigation IDs/digests remain unchanged; no migration of old local records.
 Error / timeout / cancellation / recovery behavior: Unavailable storage503, conflicting lease409, operation cap429, response/storage cap507. No success before durable commit. Failed lease release expires after310s with conditional fencing; no claim of in-flight cancellation. Vercel300s timeout may leave unknown completion; inspect history.
-Verification commands and tests: tests/test_hosting.py; actual remote Blob CAS/ETag probe; deployed real-browser workflows/session isolation/cold-start export/replay. Pending until executed.
+Verification commands and tests: tests/test_hosting.py; actual remote Blob CAS/ETag probe; deployed real-browser workflow and separate session isolation/context-restore/export/replay passed. No forced provider restart claim. Detailed source/commands and retained intermittent failures: docs/vercel-hosting.md.
 Known limitations: Browser cookie capability, not account recovery; clearing/expiry loses access. Hobby quotas apply, no overage purchase. No distributed global rate-limit or hardware claim.
 Origin-consistent reads use the documented private Blob cache=0 option (D-081); nonce/no-cache alone failed a real overwrite probe and were not treated as valid. HostedSession/HostedReportNotice in web/src/components/HostedSession.tsx gate only hosted builds, explain cookie access/limits, and leave local builds/hero unchanged (D-082). GET responses never replace a cookie; first nonbrowser mutation may initialize one. Real provider conditional overwrite/read/stale-writer rejection passed.
 
@@ -632,3 +632,17 @@ history, cookie-context restoration, export verification/replay, Origin/body gua
 and blind freeze/reveal before invoking guided_demo_e2e.run() for real measured UI.
 No credentials/cookies are persisted in its public-safe output. A restored browser
 context is explicitly not a forced provider process restart.
+
+Hosted smoke failure path: __main__ in scripts/hosted_smoke.py catches an exception,
+records only its bounded first error line in a new output folder, then exits1.
+Request headers/cookies from multiline Playwright logs are omitted; no POST retry
+or successful evidence is fabricated. Stable public URL uses source502a416,
+production dpl_EZyabyX6wKrTcYA8o394twpPqXin, verified after asynchronous promotion.
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Public verification | Record actual production browser/API scopes, exact deployed source, failed probes and safe diagnostic failure output | scripts/hosted_smoke.py; README.md; docs/vercel-hosting.md; docs/vercel-hosting-plan.md; root documents | uncommitted | D-086 |
+
+Implementation identities: D-080–D-083 correspond to13c121db7e4b99bc6588203069ae17dfdec49d7a;
+D-084–D-085 to502a416519c2bb1d99265991d4cf5e290e37ba94. Historical write-time rows
+remain unchanged; this follow-up's own identity is authoritative in Git history.

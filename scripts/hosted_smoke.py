@@ -63,4 +63,14 @@ def run(base,out):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--base',required=True);parser.add_argument('--out',required=True)
-    args=parser.parse_args();run(args.base.rstrip('/'),args.out)
+    args=parser.parse_args();existed=Path(args.out).exists()
+    try:run(args.base.rstrip('/'),args.out)
+    except Exception as exc:
+        # Playwright call logs may include the browser capability cookie. Retain
+        # the exact first error line, not credential-bearing request headers.
+        failure={'passed':False,'error_type':type(exc).__name__,'detail':str(exc).splitlines()[0][:400],
+                 'retry_semantics':'No POST is automatically retried; inspect history for unknown completion.'}
+        folder=Path(args.out)
+        if not existed and folder.is_dir():
+            with (folder/'failure.json').open('x',encoding='utf8') as stream:json.dump(failure,stream,indent=2)
+        print(json.dumps(failure));raise SystemExit(1)

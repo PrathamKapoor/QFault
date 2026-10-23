@@ -981,3 +981,17 @@ still separately authorized; no remote mutation occurred during this gate.
 - Package: Hosted manifest reuses qiskit2.3.1,numpy2.5.2,scipy1.18.1,pydantic2.13.4,fastapi0.141.1,uvicorn0.52.4,qiskit-aer0.17.2; no scientific version changes.
 - Why this package: Aer must be present for the same measured simulator workflow; native API lock supports Vercel's actual frozen dependency selection.
 - Packages compared: Umbrella vercel0.12.0/vercel-blob0.5.0 SDKs unnecessary; stdlib HTTPv12 suffices and real provider CAS/consistent reads passed.
+
+### D-086: Record public deployment evidence and redact diagnostic request headers
+- Date / phase / commit: 2026-10-23, hosted verification, uncommitted
+- Context: Exact source502a416519c2bb1d99265991d4cf5e290e37ba94 passes531tests and exact-SHA CI40001833472. Corrected preview passed all live checks. Production guided browser run passed18POSTs, export/replay, noise/budget and390/375/360widths. Separate production API privacy/restore/export/replay/Origin/body/blind checks passed. Earlier production attempts encountered ECONNRESET; a combined repeat timed out locating a preserved ID. Cause UNKNOWN; retained as intermittent limitations.
+- Decision: Publish the verified stable URL and exact deployed snapshot separately from later documentation commits. Preserve failed probes and state their scope. Catch hosted_smoke command failures, retain only first error line and nonzero exit, never Playwright request headers/capability cookies. Never automatically retry measurement POSTs. Record actual asynchronous promotion/new deployment behavior, not the initial incorrect expectation that promotion retains the preview deployment ID.
+- Why: Production dpl_EZyabyX6wKrTcYA8o394twpPqXin is READY and stable alias qfault.vercel.app was independently checked; actual browser success proves live behavior, not guaranteed availability. Request tracebacks can contain a signed browser capability; public-safe diagnostics need bounded error summaries. No provider signing secret or Blob token belongs in outputs.
+- Alternatives considered: Claim all production probes passed (false); repeat measurement submissions automatically (unknown completion); alter scientific assertions/timeouts to hide unexplained intermittency (rejected); rotate the signing key and invalidate all sessions without necessity (not done).
+- Consequences: Current app source stays502a416; later docs/log safety changes are distinct. First broken deployment and intermittent transport/assertion failures remain documented. Cookie restore is not forced provider restart. Original checkout dirty docs, main branch and v0.1.0 release are preserved. No paid upgrades or scientific changes.
+- Files: scripts/hosted_smoke.py, README.md, docs/vercel-hosting.md, docs/vercel-hosting-plan.md, decisions.md, flow.md, handoff.md
+- Symptom: Raw Playwright exception logs may include browser cookie request headers during connection failures.
+- Root cause: Default uncaught exception renders Playwright's multiline request call log.
+- Regression test: CLI invalid-HTTP invocation must return a bounded JSON error and exit1; production API checks also exercised failure recording without full request headers.
+
+Implementation identity follow-up: D-080–D-083 implementation13c121db7e4b99bc6588203069ae17dfdec49d7a; D-084–D-085 implementation502a416519c2bb1d99265991d4cf5e290e37ba94. Earlier append-only write-time entries remain unchanged. This follow-up is uncommitted at write time; Git history is authoritative for its own identity.
