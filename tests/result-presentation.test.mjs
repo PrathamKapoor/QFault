@@ -15,4 +15,5 @@ test('summary uses actual verdict/edit/paired cost without manufacturing selecti
  for(const status of ['NO_SIGNIFICANT_DISCREPANCY','SIGNIFICANT_DISCREPANCY','REJECTED','INSUFFICIENT_EVIDENCE','INSUFFICIENT_BUDGET','NOISE_CONTROL_ABSTENTION','BACKEND_ERROR','UNKNOWN']){
   const v=m.resultSummary({status,cost:{shots:0}});assert.ok(v.title);assert.equal(v.edit,null);assert.equal(v.shots,0);
  }
+ assert.equal(m.resultSummary({status:'BACKEND_ERROR'}).shots,null,'missing failure cost must not be invented as zero');
 });

@@ -11,3 +11,8 @@ test('execution deadline is unknown completion and never repeats the POST',async
  assert.ok(m);let calls=0;
  await assert.rejects(m.jsonRequest('/execute',{}, {kind:'execution',timeout:10,fetcher:async(_,{signal})=>{calls++;return new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(Error('aborted'))))}}),e=>e.status===0&&/may still be running/.test(e.message));assert.equal(calls,1);
 });
+test('safe body transport loss retries but syntax corruption does not',async()=>{
+ let calls=0;
+ const result=await m.jsonRequest('/read',undefined,{backoff:1,fetcher:async()=>{calls++;if(calls===1)return {ok:true,json:async()=>{throw new TypeError('network body lost')}};return new Response('{"ok":true}')}});
+ assert.equal(result.ok,true);assert.equal(calls,2);
+});

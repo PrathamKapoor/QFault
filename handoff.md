@@ -1,3 +1,16 @@
+LATEST 2026-10-24: D-094 committed/pushed92aee5284839fe4a4427b6bfa9e8d84093075d1e,
+CI40052082113 success. Previewdpl_Go4oi6F1JfAVDDzVsze6ThejxAmD READY actual metadata
+source92aee. Cat dropped-response workflow/ZIP/isolation/deletion/mobile passed,
+153600shots. API smoke API portion passed after GET-only reset retries; main QRNG
+browser recovery delivery timed out after201, exact network cause UNKNOWN. Raw
+JS-parsed export check was a test-serialization defect, independently reproduced
+and fixed with raw text. Current D-095 client changes uncommitted: OperationWait
+supersedes held response/gate safely, dropped read body vs malformed JSON, obsolete
+history errors, elapsed loading/retry.12Node tests/typecheck pass. Next build both
+modes/commit/second preview. New hosted browser test additionally holds phase response
+until durable lookup; must pass before promotion. Never promote old source92aee as
+though including D-095. Production remains old502a416. No science/lock changes.
+
 # QFault handoff — hosted usability validation in progress
 
 ## 1. Current Phase

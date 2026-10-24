@@ -247,3 +247,15 @@ and scripts.hosted_usability_e2e. The latter deliberately loses one real respons
 after durable completion, restores the original operation, runs the entangling
 example, verifies export-all/isolation and deletes only its disposable session.
 Deployment results and exact source are added after actual execution.
+
+
+Hosted validation follow-up: keep raw report bytes when checking qfault-json-v1;
+JavaScript JSON parsing/reserialization can change1.0to1 and invalidate hashes.
+Confirmed operation recovery can supersede a stalled browser response before its
+280s deadline. OperationWait aborts only that obsolete browser wait after durable
+completion, prevents late errors overwriting the restored record and releases the
+client duplicate guard. No backend cancellation or repeated computation is implied.
+Safe read-body transport loss retries; malformed JSON fails without blind retry.
+Historical API-client ECONNRESET remains an unresolved transport observation,
+handled by bounded safe-read retries and explicit operation lookup, not called a
+proven eliminated network cause. Actual browser tests retain failed probes.

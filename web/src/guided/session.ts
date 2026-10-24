@@ -53,3 +53,13 @@ export class ExecutionGate{
   try{return await work()}finally{this.locked=false}
  }
 }
+
+/** Only abort browser waiting AFTER durable status wins; never cancel backend work. */
+export class OperationWait{
+ private id:string|null=null;
+ private controller:AbortController|null=null;
+ begin(id:string){this.id=id;this.controller=new AbortController();return this.controller.signal}
+ current(id:string){return this.id===id}
+ recovered(id:string){if(!this.current(id))return;this.id=null;this.controller?.abort();this.controller=null}
+ settle(id:string){if(this.current(id)){this.id=null;this.controller=null}}
+}

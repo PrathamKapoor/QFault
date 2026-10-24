@@ -736,3 +736,16 @@ mocked success or repeated POST. It runs cat/Z/phase/recovery, complete export,
 separate-browser404 and disposable deletion. All Node tests now run in CI.
 | Assembled checks | Correct observed error/deletion-read edge cases, retain semantic browser assertions and document operation/session/resource boundaries | D-094 files | uncommitted | D-094 |
 D-093 implementation:506b47ab316725825d86676083ec18d00720c2ae.
+
+Client recovery supersession: execute/replay → OperationWait.begin(id,signal) →
+jsonRequest(execution,signal) and durable server ID. recover() → bounded GET status/
+result → verify still-current pending ID → OperationWait.recovered clears generation
+before aborting browser wait → actual saved result/pending-null → old catch ignored
+→ ExecutionGate finally releases. No backend cancellation or POST retry. Concurrent
+lookup is disabled/guarded, stale lookups cannot restore into a new guide. Safe body
+transport failures retry, syntactic corruption does not; stale history errors are
+ignored after newer success. Loading stages display measured elapsed seconds.
+Hosted driver exports use raw response text to preserve1vs1.0; GET-only documented
+transport retry, bounded user-style operation lookup, no weaker scientific assertions.
+| Hosted integration | Raw-byte verification, stalled-wait recovery supersession and classified body/stale-error fixes | D-095 files | uncommitted | D-095 |
+D-094 implementation:92aee5284839fe4a4427b6bfa9e8d84093075d1e; its initial preview/CI pass remain historical evidence, not proof of this later source.

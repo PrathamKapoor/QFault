@@ -46,3 +46,12 @@ test('malformed local state cannot manufacture a completed run',()=>{
   assert.deepEqual(loaded.session.ids,{});assert.ok(loaded.warning);
  }
 });
+test('recovering durable completion releases a stalled client wait without late overwrite',async()=>{
+ assert.ok(mod.OperationWait,'operation wait controller missing');
+ const wait=new mod.OperationWait(),gate=new mod.ExecutionGate();let overwritten=false;
+ const signal=wait.begin('operation-a');
+ const pending=gate.run(async()=>{try{await new Promise((_,reject)=>signal.addEventListener('abort',()=>reject(Error('browser stopped waiting'))))}catch{if(wait.current('operation-a'))overwritten=true}});
+ wait.recovered('operation-a');await pending;
+ assert.equal(overwritten,false);assert.equal(signal.aborted,true);assert.equal(await gate.run(async()=>42),42);
+ assert.equal(wait.current('operation-a'),false);
+});

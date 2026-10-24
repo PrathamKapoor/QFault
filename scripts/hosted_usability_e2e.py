@@ -1,5 +1,5 @@
 """Actual hosted UI/provider/Aer journey, with one deliberately lost response."""
-import argparse,json
+import argparse,json,time
 from pathlib import Path
 from playwright.sync_api import sync_playwright,expect
 from qfault.session_export import verify_session_export
@@ -33,8 +33,20 @@ def run(base,out):
         assert z.get_attribute('data-experiment-id')==lost[0]
         assert 'NO_SIGNIFICANT_DISCREPANCY' in z.inner_text()
         page.get_by_role('button',name='Add complementary evidence').click()
+        held=[]
+        def hold_completed_response(route):
+            response=route.fetch(timeout=120000);assert response.status==201
+            held.append(response.json()['experiment_id'])
+            # Intentionally do not fulfill the browser response. Server work is done.
+        page.route('**/api/lab/investigations',hold_completed_response,times=1)
         page.get_by_role('button',name='Run complementary measurement').click()
-        expect(page.get_by_test_id('outcome-phase')).to_contain_text('SIGNIFICANT_DISCREPANCY',timeout=120000)
+        until=time.monotonic()+90
+        while not held and time.monotonic()<until:page.wait_for_timeout(100)
+        assert held,'No durable phase result was observed'
+        expect(page.get_by_test_id('outcome-phase')).to_have_count(0)
+        page.get_by_role('button',name='Recover existing operation',exact=True).click()
+        expect(page.get_by_test_id('outcome-phase')).to_contain_text('SIGNIFICANT_DISCREPANCY',timeout=90000)
+        assert page.get_by_test_id('outcome-phase').get_attribute('data-experiment-id')==held[0]
         page.get_by_role('button',name='Inspect bounded edits').click()
         page.get_by_role('button',name='Use these limits for fresh verification').click()
         page.get_by_role('button',name='Screen edits and freshly verify').click()
@@ -44,9 +56,11 @@ def run(base,out):
         assert 'fresh verification shots' in summary.inner_text()
         expect(page.locator('.history-label span')).to_have_text('3',timeout=90000)
         # Native browser fetch uses its private cookie; no capability is exported.
-        value=page.evaluate('async id=>{const r=await fetch("/api/experiments/"+id+"/report");return {status:r.status,body:await r.json()}}',eid)
-        assert value['status']==200 and verify_export(value['body'])['valid']
-        (out/'entangling-report.json').write_text(json.dumps(value['body']))
+        value=page.evaluate('async id=>{const r=await fetch("/api/experiments/"+id+"/report");return {status:r.status,raw:await r.text()}}',eid)
+        assert value['status']==200,f'report HTTP{value["status"]}'
+        (out/'entangling-report.json').write_text(value['raw'])
+        value['body']=json.loads(value['raw']);checked=verify_export(value['body'])
+        assert checked['valid'],checked.get('errors')
         for width in (390,375,360):
             page.set_viewport_size({'width':width,'height':900})
             assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),f'overflow{width}'
@@ -69,7 +83,7 @@ def run(base,out):
         assert page.evaluate('async id=>(await fetch("/api/experiments/"+id)).status',eid)==404
         assert not errors,errors
         proof={'passed':True,'example':'qasmbench-cat-phase-v1','lost_response_recovered_same_id':lost[0],
-               'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,
+               'stalled_response_recovered_same_id':held[0],'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,
                'complete_export_verified':True,'isolated':True,'disposable_session_deleted':True,
                'mobile_widths':[390,375,360],'reduced_motion':True,'page_errors':errors,
                'scope':'Actual browser/provider/Aer. Only one response was deliberately dropped AFTER durable completion; no success response was mocked.'}
@@ -79,4 +93,4 @@ def run(base,out):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--base',required=True);p.add_argument('--out',required=True);a=p.parse_args()
     try:run(a.base.rstrip('/'),a.out)
-    except Exception as exc:print(json.dumps({'passed':False,'error':type(exc).__name__,'detail':str(exc).splitlines()[0][:300]}));raise SystemExit(1)
+    except Exception as exc:print(json.dumps({'passed':False,'error':type(exc).__name__,'detail':(str(exc).splitlines() or [type(exc).__name__])[0][:300]}));raise SystemExit(1)

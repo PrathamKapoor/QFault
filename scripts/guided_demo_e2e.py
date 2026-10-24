@@ -1,6 +1,8 @@
 """Actual Chromium/Aer judge journey; only failure-injection checks may stub errors."""
 import argparse
 import json
+import time
+from urllib.parse import urlsplit
 from pathlib import Path
 from playwright.sync_api import expect,sync_playwright
 from qfault.storage import verify_export
@@ -11,10 +13,28 @@ def run(base,out):
     with sync_playwright() as p:
         browser=p.chromium.launch(headless=True)
         context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce',accept_downloads=True)
-        page=context.new_page();errors=[];posts=[]
-        page.on('pageerror',lambda error:errors.append(str(error)))
+        page=context.new_page();errors=[];posts=[];began=time.monotonic()
+        def response_seen(response):
+            if '/api/' in response.url:
+                with (out/'api-timing.jsonl').open('a') as stream:stream.write(json.dumps({'path':urlsplit(response.url).path,'status':response.status,'elapsed_seconds':time.monotonic()-began})+'\n')
+        page.on('response',response_seen)
+        def page_error(error):
+            errors.append(str(error));(out/'page-errors.json').write_text(json.dumps(errors))
+        page.on('pageerror',page_error)
         page.on('request',lambda request:posts.append({'url':request.url,'body':request.post_data_json})
                 if request.method=='POST' and '/api/lab/' in request.url else None)
+        def await_outcome(key,timeout):
+            outcome=page.get_by_test_id('outcome-'+key)
+            until=time.monotonic()+timeout/1000;lookups=0;last_lookup=0
+            while time.monotonic()<until:
+                if outcome.is_visible():return outcome
+                if errors:raise AssertionError(errors)
+                recover=page.get_by_role('button',name='Recover existing operation',exact=True)
+                if recover.is_visible() and recover.is_enabled() and lookups<3 and time.monotonic()-last_lookup>5:
+                    lookups+=1;last_lookup=time.monotonic();recover.click() # Existing operation lookup only; never POST a computation.
+                elif page.locator('.guided-error').is_visible():raise AssertionError(page.locator('.guided-error').inner_text())
+                page.wait_for_timeout(1000)
+            raise AssertionError('No outcome after bounded operation lookup: '+key)
         page.goto(base)
         expect(page.locator('[data-research="measured-recovery"]')).to_contain_text('9.6% fewer shots')
         expect(page.get_by_role('button',name='Guided demo',exact=True).first).to_be_visible(timeout=5000)
@@ -26,19 +46,19 @@ def run(base,out):
         expect(page.get_by_role('button',name='Run Z-only measurement')).to_be_enabled()
         before=len([x for x in posts if x['url'].endswith('/investigations')])
         page.get_by_role('button',name='Run Z-only measurement').evaluate('(button)=>{button.click();button.click()}')
-        z=page.get_by_test_id('outcome-z');expect(z).to_be_visible(timeout=120000)
+        z=await_outcome('z',120000)
         assert len([x for x in posts if x['url'].endswith('/investigations')])==before+1
         assert 'NO_SIGNIFICANT_DISCREPANCY' in z.inner_text()
         page.get_by_role('button',name='Add complementary evidence').click()
         page.get_by_role('button',name='Run complementary measurement').click()
-        phase=page.get_by_test_id('outcome-phase');expect(phase).to_be_visible(timeout=120000)
+        phase=await_outcome('phase',120000)
         assert 'SIGNIFICANT_DISCREPANCY' in phase.inner_text()
         page.screenshot(path=str(out/'phase.png'),full_page=True)
         page.get_by_role('button',name='Inspect bounded edits').click()
         expect(page.get_by_test_id('candidate-preview')).to_be_visible()
         page.get_by_role('button',name='Use these limits for fresh verification').click()
         page.get_by_role('button',name='Screen edits and freshly verify').click()
-        recovery=page.get_by_test_id('outcome-recovery');expect(recovery).to_be_visible(timeout=180000)
+        recovery=await_outcome('recovery',180000)
         assert 'VERIFIED_UNDER_DECLARED_CONTRACT' in recovery.inner_text()
         first_id=recovery.get_attribute('data-experiment-id')
         page.screenshot(path=str(out/'recovery.png'),full_page=True)
@@ -60,13 +80,13 @@ def run(base,out):
         expect(page.get_by_test_id('replay-result')).to_be_visible(timeout=180000)
         replay_id=page.get_by_test_id('replay-result').get_attribute('data-experiment-id')
         assert replay_id!=first_id
-        replay=context.request.get(base+'/api/experiments/'+replay_id).json()
+        replay=context.request.get(base+'/api/experiments/'+replay_id,max_retries=2).json()
         assert replay['replay']['source_experiment_id']==first_id and replay['replay']['semantics']=='deterministic_replay'
         for label,key,status in [('Noise-control abstention','noise','NOISE_CONTROL_ABSTENTION'),
                                  ('Insufficient budget','budget','INSUFFICIENT_BUDGET')]:
             page.get_by_role('button',name=label,exact=True).click()
             page.get_by_role('button',name='Run '+label.lower(),exact=True).click()
-            outcome=page.get_by_test_id('outcome-'+key);expect(outcome).to_be_visible(timeout=120000)
+            outcome=await_outcome(key,120000)
             assert status in outcome.inner_text()
             if key=='budget':assert '0 shots' in outcome.inner_text()
             page.screenshot(path=str(out/(key+'.png')),full_page=True)
