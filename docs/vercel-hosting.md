@@ -259,3 +259,9 @@ Safe read-body transport loss retries; malformed JSON fails without blind retry.
 Historical API-client ECONNRESET remains an unresolved transport observation,
 handled by bounded safe-read retries and explicit operation lookup, not called a
 proven eliminated network cause. Actual browser tests retain failed probes.
+
+A status lookup404 before durable admission is unresolved: the original request
+may still be in transit. The guide keeps its pending ID and does not resubmit.
+A recorded COMPLETED operation with an unavailable result is a distinct error,
+not that admission race. The browser acceptance pauses before forwarding and
+checks zero allowance spent, then forwards exactly that original request.

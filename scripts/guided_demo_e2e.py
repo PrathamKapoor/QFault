@@ -25,7 +25,7 @@ def run(base,out):
                 if request.method=='POST' and '/api/lab/' in request.url else None)
         def await_outcome(key,timeout):
             outcome=page.get_by_test_id('outcome-'+key)
-            until=time.monotonic()+timeout/1000;lookups=0;last_lookup=0
+            until=time.monotonic()+timeout/1000;lookups=0;last_lookup=time.monotonic()
             while time.monotonic()<until:
                 if outcome.is_visible():return outcome
                 if errors:raise AssertionError(errors)

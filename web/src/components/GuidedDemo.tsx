@@ -133,7 +133,7 @@ function GuidedJourney({navigate,example,onBusy}:{navigate:(route:string)=>void;
     else{setRecords(old=>({...old,[current.key]:result}));save({...guideRef.current,ids:{...guideRef.current.ids,[current.key]:result.experiment_id},pending:null})}}
    else if(operation.state==='FAILED'){waiting.current.recovered(current.operationId);setError(operation.detail||'Known execution failure. No verified result.');save({...guideRef.current,pending:null})}
    else setWarning('Existing operation: '+operation.state+'. No new execution was submitted. Check again after connectivity returns.');
-  }catch(e){if(guideRef.current.pending?.operationId===current.operationId)setError((e as Error).message)}finally{recoveryGate.current=false;setRecovering(false)}
+  }catch(e){if(guideRef.current.pending?.operationId===current.operationId){if(e instanceof ApiError&&e.status===404)setWarning('No durable operation is visible in this browser session yet. The request may still be in transit or its session access may be unavailable. No success, failure or cancellation is established; nothing was resubmitted.');else setError((e as Error).message)}}finally{recoveryGate.current=false;setRecovering(false)}
  }
  function restart(){
   if(pending&&pending.phase!=='unknown'||pending?.phase==='unknown'&&!acknowledged)return;

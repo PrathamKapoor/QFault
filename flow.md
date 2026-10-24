@@ -749,3 +749,12 @@ Hosted driver exports use raw response text to preserve1vs1.0; GET-only document
 transport retry, bounded user-style operation lookup, no weaker scientific assertions.
 | Hosted integration | Raw-byte verification, stalled-wait recovery supersession and classified body/stale-error fixes | D-095 files | uncommitted | D-095 |
 D-094 implementation:92aee5284839fe4a4427b6bfa9e8d84093075d1e; its initial preview/CI pass remain historical evidence, not proof of this later source.
+
+Admission lookup race: recoverOperation GET404 before a durable operation is visible
+→ GuidedJourney retains same pending ID and shows unresolved warning. No new POST,
+no quota and no claim of cancellation/failure. If status already says COMPLETED
+but its result GET404, API client reports424/unavailable, not an admission race.
+Hosted browser test pauses original request before forwarding, observes actual404
+and used allowance0, then resumes that same request; no extra computation is added.
+| Admission race | Keep unadmitted lookup unresolved, distinguish missing completed result, test actual ingress pause | D-096 files | uncommitted | D-096 |
+D-095 implementation:79356eafe627e9dc8e093e4ff51ff4d38f3bafb1.

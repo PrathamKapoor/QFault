@@ -4,7 +4,7 @@ export {ApiError} from './requests';
 export function newOperationId(){return 'operation_'+crypto.randomUUID().replaceAll('-','')}
 export async function recoverOperation(id:string){
  const operation=await jsonRequest('/api/operations/'+id);
- if(operation.state==='COMPLETED'&&operation.result_path){const result=await jsonRequest(operation.result_path);notifyCompleted(result);return {operation,result}}
+ if(operation.state==='COMPLETED'&&operation.result_path){try{const result=await jsonRequest(operation.result_path);notifyCompleted(result);return {operation,result}}catch(error){const failure=error as ApiError;throw new ApiError(failure.status===404?424:failure.status,'The operation is recorded as completed, but its saved result is unavailable. No substitute result is supplied. '+failure.message)}}
  return {operation,result:null};
 }
 export async function demoRequest(path:string,body?:Record<string,any>,options:{signal?:AbortSignal;operationId?:string;kind?:'bootstrap'|'read'|'validation'|'execution'}={}){

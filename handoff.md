@@ -1,3 +1,12 @@
+LATEST:79356ea committed/pushed, CI40054256753 green. Preview3PWdpj7RagsN6YaEMbMtnpBhAYnr
+at https://qfault-fhj1dc0b7-hex-sembly.vercel.app passed cat dropped+held response
+workflow,153600shots, complete export/isolation/disposable deletion/mobile. Standard
+API portion passed, then eager main status lookup404 before observed admission
+incorrectly showed failed operation. D-096 deterministic before-forwarding check
+red with zero execution. Current tiny frontend fix keeps that state unresolved;
+completed-but-missing result remains a distinct error. Next build/commit/new preview,
+run both actual workflows before promote. Production still old502a416, untouched.
+
 LATEST 2026-10-24: D-094 committed/pushed92aee5284839fe4a4427b6bfa9e8d84093075d1e,
 CI40052082113 success. Previewdpl_Go4oi6F1JfAVDDzVsze6ThejxAmD READY actual metadata
 source92aee. Cat dropped-response workflow/ZIP/isolation/deletion/mobile passed,

@@ -18,14 +18,18 @@ def run(base,out):
         page.get_by_label('Guided circuit',exact=True).select_option('cat')
         expect(page.get_by_text('QASMBench entangled cat reference',exact=True)).to_be_visible()
         page.get_by_role('button',name='Start with Z measurements').click()
-        lost=[]
-        def lose_response(route):
-            response=route.fetch(timeout=120000)
-            assert response.status==201
-            lost.append(response.json()['experiment_id'])
-            route.abort('failed')
-        page.route('**/api/lab/investigations',lose_response,times=1)
+        lost=[];before_admission=[]
+        page.route('**/api/lab/investigations',lambda route:before_admission.append(route),times=1)
         page.get_by_role('button',name='Run Z-only measurement').click()
+        until=time.monotonic()+30
+        while not before_admission and time.monotonic()<until:page.wait_for_timeout(100)
+        assert before_admission,'The original request was not intercepted'
+        page.get_by_role('button',name='Recover existing operation',exact=True).click()
+        expect(page.get_by_text('No durable operation is visible in this browser session yet.',exact=False)).to_be_visible(timeout=30000)
+        used=page.evaluate('async()=>{const r=await fetch("/api/session");return (await r.json()).used_operations}')
+        assert used==0,'Unadmitted request must not spend allowance'
+        response=before_admission[0].fetch(timeout=120000);assert response.status==201
+        lost.append(response.json()['experiment_id']);before_admission[0].abort('failed')
         expect(page.get_by_text('Completion unknown',exact=True)).to_be_visible(timeout=120000)
         page.reload();expect(page.get_by_text('Completion unknown',exact=True)).to_be_visible(timeout=90000)
         page.get_by_role('button',name='Recover existing operation',exact=True).click()
@@ -83,7 +87,7 @@ def run(base,out):
         assert page.evaluate('async id=>(await fetch("/api/experiments/"+id)).status',eid)==404
         assert not errors,errors
         proof={'passed':True,'example':'qasmbench-cat-phase-v1','lost_response_recovered_same_id':lost[0],
-               'stalled_response_recovered_same_id':held[0],'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,
+               'stalled_response_recovered_same_id':held[0],'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,'unadmitted_lookup_retains_pending_without_cost':True,
                'complete_export_verified':True,'isolated':True,'disposable_session_deleted':True,
                'mobile_widths':[390,375,360],'reduced_motion':True,'page_errors':errors,
                'scope':'Actual browser/provider/Aer. Only one response was deliberately dropped AFTER durable completion; no success response was mocked.'}
