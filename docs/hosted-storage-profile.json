@@ -128,5 +128,12 @@
     "independent_admission_busy_release": true
   },
   "decision": "Retain bounded atomic snapshots with lossless compressed wire envelope; no immutable multi-object index migration. Exact embedded scientific strings preserved. Linear restore still bounded by32MiB/1000files/64mutations. Copy profile is not a diversity or availability benchmark.",
-  "profile_revision_note": "Follow-up instrumentation records failed conditional PUT as a storage request as well; earlier probe retained under artifacts. Both exact roundtrips and stale rejections pass."
+  "profile_revision_note": "Follow-up instrumentation records failed conditional PUT as a storage request as well; earlier probe retained under artifacts. Both exact roundtrips and stale rejections pass.",
+  "current_request_model": {
+    "baseline_session_read_requests": 2,
+    "baseline_session_mutation_requests": 4,
+    "additional_global_admission_requests_normal_case": 6,
+    "current_normal_mutation_total": 10,
+    "scope": "Successful uncontended metadata/body/PUT request model. CAS/read consistency retries and failures add bounded requests; byte metrics are HTTP payload sizes, not billing or NIC transfer guarantees."
+  }
 }

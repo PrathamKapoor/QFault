@@ -20,9 +20,12 @@ abstentions. No JSON assembly or stored success response is required.
 runs the real Aer workflow with private saved reports. Reports belong to this
 browser's signed cookie; export important records before clearing cookies or
 switching browsers. The hosted app has Hobby resource limits and 64 mutations per
-session. [Hosting scope and verification](docs/vercel-hosting.md). This deployment
-uses source `502a416519c2bb1d99265991d4cf5e290e37ba94`; the older release packages
+session. [Hosting scope](docs/vercel-hosting.md) · [Verified hosted improvements](docs/hosted-usability-verification.md). This deployment
+uses source `d074a9bbd3c2e36379f0b9ea015d219ea5387c49`; the older release packages
 below retain their original source identity.
+Choose **Guided circuit** to run the quick QRNG lesson or the imported entangling
+cat/GHZ example. Hosted session controls provide operation recovery, remaining
+allowance, export-all and confirmed deletion.
 
 [Judging/setup guide](docs/judging-guide.md) · [Three-minute narration](docs/three-minute-demo.md) ·
 [Public delivery and verification](docs/public-release.md)
@@ -36,7 +39,8 @@ below retain their original source identity.
 [verification summary](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/release-verification.json)
 and [checksums](https://github.com/PrathamKapoor/QFault/releases/download/v0.1.0/SHA256SUMS).
 The recording has no voiceover; use the narration script above. Packages/tag identify
-`b65dcb60fb216e802b2ff7d71a970169a6c059a2`, preceding this documentation follow-up.
+`b65dcb60fb216e802b2ff7d71a970169a6c059a2`, the earlier local-release snapshot.
+They do not include subsequent hosted-workbench changes.
 Both packages were independently downloaded, verified, extracted, built and tested.
 See the [release verification record](docs/judge-release-verification.md).
 

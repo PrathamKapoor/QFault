@@ -588,29 +588,59 @@ append-only historical write-time records; this entry identifies their commits.
 |---|---|---|---|---|
 | Local operation | Record combined frontend/API startup and real guided preflight; reuse existing narration | decisions.md; flow.md; handoff.md | uncommitted operational record | D-079 |
 
-## 22. Opt-in hosted session persistence
+## 22. Hosted operation, session and resource boundary
 
-Subsystem: Vercel HTTP boundary and private session snapshots.
-Trigger / when: api/index.py receives a hosted API request; local serve unchanged.
-What / why: Preserve existing measured workflows across stateless function instances without exposing shared history or losing saved reports.
-Input / schema / provenance: Existing JSON requests; configured deployment Host/Origin; signed HttpOnly browser capability; private Blob token and signing key from environment only.
+Subsystem: Opt-in Vercel adapter; local serve and scientific engine unchanged.
+Trigger / when: api/index.py app receives a hosted HTTP request; HostedSession gates browser workbench initialization.
+What / why: Bound public execution and preserve private reports/operation recovery across stateless instances without a second scientific engine.
+Input / schema / provenance: Existing validated JSON, external Host/Origin, signed browser cookie, optional X-QFault-Operation operation_<32hex>. CLI-managed BLOB_READ_WRITE_TOKEN/QFAULT_SESSION_KEY never reach frontend. One input/contract and the original execution request remain authoritative.
 Ordered calls with actual symbols and paths:
 ```text
-RequestBodyLimit() api/index.py -> qfault/api.py; existing actual-byte validation
- └─ HostedApp.__call__() qfault/hosting.py; external host/origin and signed session
-     ├─ POST /api/hosted-session initializes cookie before hosted Workbench mounts
-     ├─ BlobState.read()/write() private HTTPv12 metadata/body ETag, conditional lease
-     ├─ restore() fresh bounded scratch root, validated JSON paths only
-     ├─ create_app(root) qfault/api.py; original API/science/storage/blind lifecycle
-     └─ snapshot()/BlobState.write() conditional durable completion before response
+api.index.app() api/index.py; temporary unused legacy import bootstrap
+ └─ RequestBodyLimit() qfault/api.py; actual64KiB receive guard
+     └─ HostedApp.__call__() qfault/hosting.py; Host/Origin and signed session
+         ├─ session()/read_body() bootstrap; reset only after confirmed tombstone
+         ├─ stateless create_app() public catalogs/validation; no scientific quota
+         └─ BlobState.read() -> decode_state() qfault/hosted_codec.py
+             ├─ expired()/tombstone() qfault/hosted_retention.py; prospective only
+             ├─ GET /api/session; allowance/access/retention/operation views
+             ├─ GET /api/session/export -> restore() -> build_session_export()
+             │   └─ ArtifactStore.export()/BlindChallenges.export()
+             │       └─ verify_session_export() qfault/session_export.py; complete ZIP
+             ├─ POST /api/session/delete -> confirmation/active lease -> CAS tombstone
+             ├─ GET /api/operations/{id} -> operation_view() hosted_operations.py
+             └─ mutation read_body()/validate_direct()/fingerprint()
+                 ├─ matching existing ID -> original result/status; no execution
+                 ├─ request_ceiling() hosted_admission.py; validated saved replay
+                 ├─ Admission.acquire() shared conditional global slot, no queue
+                 ├─ BlobState.write(RUNNING,lease) -> encode_state() wire schema2
+                 ├─ restore() bounded scratch -> create_app() original API/engine
+                 ├─ capture response -> snapshot() -> CAS files + COMPLETED/FAILED
+                 └─ finally Admission.release(); interrupted save conditional UNKNOWN
 ```
-Validation and trust boundary: No local files/runtime sweep. One private session snapshot; external host validated before internal loopback headers. Cookie cannot name another session without valid HMAC. Reads see last committed documents; concurrent mutations conflict. ETag mismatch rejects stale cached bodies/writers. No raw provider error/secrets returned.
-Output / schema / units: Existing API evidence/IDs/counts/shot units unchanged; health adds hosting persistence/scope. Private state schema1 with original JSON strings, operations and lease expiry. All API responses no-store; cookie Secure/HttpOnly/SameSite.
-Persistence / identity / version: Blob snapshots survive function replacement. Cookie30days,64mutations,1000JSON files/32MiB. Original investigation IDs/digests remain unchanged; no migration of old local records.
-Error / timeout / cancellation / recovery behavior: Unavailable storage503, conflicting lease409, operation cap429, response/storage cap507. No success before durable commit. Failed lease release expires after310s with conditional fencing; no claim of in-flight cancellation. Vercel300s timeout may leave unknown completion; inspect history.
-Verification commands and tests: tests/test_hosting.py; actual remote Blob CAS/ETag probe; deployed real-browser workflow and separate session isolation/context-restore/export/replay passed. No forced provider restart claim. Detailed source/commands and retained intermittent failures: docs/vercel-hosting.md.
-Known limitations: Browser cookie capability, not account recovery; clearing/expiry loses access. Hobby quotas apply, no overage purchase. No distributed global rate-limit or hardware claim.
-Origin-consistent reads use the documented private Blob cache=0 option (D-081); nonce/no-cache alone failed a real overwrite probe and were not treated as valid. HostedSession/HostedReportNotice in web/src/components/HostedSession.tsx gate only hosted builds, explain cookie access/limits, and leave local builds/hero unchanged (D-082). GET responses never replace a cookie; first nonbrowser mutation may initialize one. Real provider conditional overwrite/read/stale-writer rejection passed.
+Validation and trust boundary: External host/same-origin checked before internal loopback delegation. Fingerprint binds session/method/path/canonical JSON. Another session cannot inspect operations/reports; exact ID reuse with changed request rejected. Original scientific/evaluator boundary remains in core. Private consistent reads cache=0 retain metadata/body ETag checks. No provider redirect/token in URL or raw backend secret returned. Public export only uses allowed challenge projection, never unrevealed private setup.
+Output / schema / units: Original records/verdicts/shot units unchanged. Operation states RUNNING/COMPLETED/FAILED/UNKNOWN; result identity/path where known. Early404 does not establish failure. Session quota counts admitted workflow mutations, including zero-shot abstentions; opening/deletion/validation/reads exempt. Global reservation ceilings are distinct from actual shots. Missing failure cost stays unknown.
+Persistence / identity / version: Logical snapshot schema1, bounded lossless wire schema2 length/digest/zlib-base64; legacy wire1 reads supported and exact scientific strings retained.32MiB/1000JSON/64mutations, response/export4MiB, expanded ZIP32MiB. Signed cookie access30days. New prospective90day cleanup eligibility; legacy records get no new deadline. Complete result files and operation completion share one conditional snapshot commit. Tiny deletion tombstones fence stale writers.
+Error / timeout / cancellation / recovery behavior:400/403 external boundary,413 body,422 schema/resource refusal,409 conflicting state/lease/fingerprint,429 session quota,503 global busy/storage,507 size,410 deleted session. Noncompleted repeat may return202 status, never another computation. Global busy before admission spends no session allowance. Session delete refuses an active lease and only clears client state after confirmed server response. Interrupted result save remains UNKNOWN, with no exactly-once or unsaved-result recovery promise.330s global lease assumes configured300s provider maximum; no independent hard cancellation.100admissions/5million reserved upper shots per UTCday, one slot/no queue; per custom request250000shots/160evaluations/120cooperative seconds. Existing template/challenge600evaluation schema preserved. Quota and network failures do not become success.
+Verification commands and tests:550Python tests;12Node controller tests; tests/test_hosted_operations.py, test_hosted_session_controls.py, test_hosted_admission.py; actual private provider roundtrip/CAS/legacy/cleanup; actual preview and production hosted_smoke/hosted_usability_e2e/hosted_admission_e2e; independent session ZIP verifier. Exact evidence/source/CI: docs/hosted-usability-verification.md/json.
+Known limitations: Browser capability, not account recovery/admin secrecy. No scheduled cleanup; access/operator purge only. Snapshot traffic/restore remain bounded linear. No global HTTP/read DoS or guaranteed Hobby availability. No forced provider restart or container-routing proof. Underlying intermittent transport loss cause UNKNOWN.
+
+Hosted UI flow: HostedSession -> demoRequest/jsonRequest(bootstrap), then Workbench
+and HostedReportNotice/SessionControls. Guide execute/replay -> persisted pending
+operation ID + OperationWait signal -> one POST. recoverOperation GET status/result
+restores existing data; recovered generation wins before browser wait is aborted,
+late callback ignored, ExecutionGate releases. Early lookup404 keeps pending warning;
+missing completed result is a distinct client424. No scientific POST auto-retry.
+Shared HISTORY_EVENT/historyLoader refreshes only completed IDs, navigation entry
+and explicit refresh; stale responses/errors cannot replace a newer list. ResultSummary
+and ClaimInterval are presentation-only, keeping raw values under details. Limits,
+export, deletion and useful recovery actions remain visible in hosted controls.
+
+Operator retention flow: scripts.cleanup_hosted_sessions -> cleanup() with at most
+100explicit private IDs, default dry-run. Only expired prospective/inactive snapshots
+are CAS-tombstoned; legacy and active data skipped. No cron exists or is claimed.
+Independent offline export: scripts.verify_session_export -> bounded read4MiB+1 ->
+verify_session_export exact membership/hash/report validation; nonzero on invalid.
 
 ## Changes in this session (full Vercel hosting)
 
@@ -758,3 +788,21 @@ Hosted browser test pauses original request before forwarding, observes actual40
 and used allowance0, then resumes that same request; no extra computation is added.
 | Admission race | Keep unadmitted lookup unresolved, distinguish missing completed result, test actual ingress pause | D-096 files | uncommitted | D-096 |
 D-095 implementation:79356eafe627e9dc8e093e4ff51ff4d38f3bafb1.
+
+## Changes in this session (observed hosted delivery)
+
+| Area | Change | Files | Commit | Decision |
+|---|---|---|---|---|
+| Public verification | Record actual production source/alias/CI/outcomes and complete root flow/handoff; preserve packages and dirty checkout; publish bounded public admission probe | D-097 files | uncommitted at write time; Git history authoritative | D-097 |
+
+Public delivery order: reviewed tested d074a9b → explicit preview deploy → actual
+source/READY and browser/API tests → promote preview → new production ID → actual
+alias/source/CI check → fresh public browser/exports/isolation/deletion/zero-shot
+admission → reviewed final documentation/tooling commit → safe remote main fast-
+forward if still ancestor → fetch/ls-remote/exact-SHA CI. Original dirty checkout
+is untouched. Existing v0.1.0 source/assets remain older and immutable. No release
+asset is overwritten and no new package is claimed for this hosted-only update.
+
+Known implementation identities: D-087–D-090/e507f33, D-091/ad61f6d,
+D-092/c7f0871, D-093/506b47a, D-094/92aee52, D-095/79356ea,
+D-096/d074a9b. Final follow-up identity is authoritative in Git after writing.

@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-10-24T03:04:23.410124+00:00",
+  "starting_branch": "feat/vercel-hosting",
+  "starting_commit": "0f2da99f0f3d8c2290c7bb68f21d33de8b79c0c1",
+  "deployed_source": "d074a9bbd3c2e36379f0b9ea015d219ea5387c49",
+  "production_id": "dpl_CPqRmn2QBmWSDCnMTYzdNh8qfF2v",
+  "production_url": "https://qfault.vercel.app/",
+  "guided_url": "https://qfault.vercel.app/#/demo",
+  "preview_id": "dpl_BaSeBFZijmcaZtH9ugndNNhpUmDX",
+  "preview_url": "https://qfault-r2wcd40sx-hex-sembly.vercel.app",
+  "code_ci": {
+    "id": 40054986316,
+    "source": "d074a9bbd3c2e36379f0b9ea015d219ea5387c49",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/PrathamKapoor/QFault/actions/runs/40054986316"
+  },
+  "implementation_status": {
+    "result_clarity": "COMPLETE",
+    "physical_interval_display": "COMPLETE",
+    "hosted_wording": "COMPLETE",
+    "navigation_history": "COMPLETE",
+    "bounded_reads": "COMPLETE",
+    "operation_recovery": "COMPLETE",
+    "session_limits_export_delete_retention": "COMPLETE",
+    "global_admission": "COMPLETE",
+    "storage_efficiency": "COMPLETE",
+    "entangling_example": "COMPLETE",
+    "verified_deployment": "COMPLETE"
+  },
+  "tests": {
+    "local_python": {
+      "passed": 550,
+      "warnings": 1,
+      "seconds": 143.92,
+      "scope": "Windows x86-64 isolated Python3.13.2; final backend unchanged by later frontend-only recovery fixes"
+    },
+    "node_controller_passed": 12,
+    "npm_ci_check_build_local_hosted": true,
+    "aer_smoke": {
+      "00": 506,
+      "11": 518
+    },
+    "pip_check": true,
+    "npm_advisories": 0,
+    "python_lock_advisories": 0
+  },
+  "production_qrng": {
+    "status": "VERIFIED_UNDER_DECLARED_CONTRACT",
+    "total_shots": 77824,
+    "tested_edits": 32,
+    "generated_edits": 32,
+    "fresh_original_shots": 4096,
+    "fresh_candidate_shots": 4096,
+    "independent_export_valid": true,
+    "replay_distinct": true,
+    "noise_abstention": true,
+    "budget_refusal_zero_shots": true
+  },
+  "production_entangling": {
+    "fixture": "qasmbench-cat-phase-v1",
+    "total_shots": 153600,
+    "fresh_original_shots": 8192,
+    "fresh_candidate_shots": 8192,
+    "admission_404_unresolved_zero_allowance": true,
+    "dropped_response_recovered": true,
+    "held_response_recovered": true,
+    "phase_response_mode": "held",
+    "history_count": 3,
+    "complete_export_verified": true,
+    "session_isolation": true,
+    "disposable_deletion": true,
+    "mobile_widths": [
+      390,
+      375,
+      360
+    ],
+    "reduced_motion": true,
+    "page_errors": []
+  },
+  "production_api": {
+    "public_api": true,
+    "aer": "0.17.2",
+    "private_history": true,
+    "cookie_restore": true,
+    "independent_export_verification": true,
+    "distinct_replay": true,
+    "same_origin": true,
+    "actual_body_limit": true,
+    "blind_freeze_reveal": true,
+    "budget_id": "experiment_733ac64c02df40769e7a7a0370861c37",
+    "challenge_id": "challenge_043edc40e57d4074a2f65473b59d91c0",
+    "scope": "Actual remote provider/API/engine; browser-context restore, not a forced provider restart"
+  },
+  "production_admission": {
+    "passed": true,
+    "concurrent_attempts": [
+      {
+        "attempt": 1,
+        "statuses": [
+          201,
+          503
+        ]
+      }
+    ],
+    "overload_status": 503,
+    "unadmitted_allowance_delta": 0,
+    "same_id_one_result": true,
+    "mismatch_status": 409,
+    "private_lookup_status": 404,
+    "scientific_shots": 0,
+    "disposable_sessions_deleted": true,
+    "scope": "Actual public API and shared private-provider admission across two browser sessions; at most4tiny zero-shot requests, no stress test and no admin token"
+  },
+  "retained_archives": {
+    "external_reports": 2206,
+    "external_attempted_rows": 2232,
+    "historical_recovery_reports": 310,
+    "current_replication_reports": 72,
+    "all_three_verifiers_pass": true,
+    "studies_rerun": false
+  },
+  "local_evidence": {
+    "scope": "Controlled test exports/screenshots are ignored local evidence, not public user/runtime data. Re-run live guide to create your own export. This summary is an observed verification record, not a signature or certificate.",
+    "paths": [
+      "artifacts/usability/production-recovered-transport",
+      "artifacts/usability/production-hosted-smoke",
+      "artifacts/usability/production-admission.json",
+      "artifacts/usability/provider-legacy-retention.json"
+    ]
+  },
+  "remaining_limits": [
+    "Transport resets still possible; underlying cause UNKNOWN. Bounded safe-read retry and durable lookup demonstrated, no scientific POST auto-retry.",
+    "Crash before result commit can leave UNKNOWN without recoverable measurements; lease expiry never authorizes resubmission.",
+    "Cookie access30days differs from content cleanup; prospective90day eligibility with access/operator cleanup, no background schedule. Legacy snapshots preserved.",
+    "One shared admission slot assumes configured300s provider duration;330s lease.100admissions/5million reserved shot ceilings per UTC day, no queue or global HTTP/read DoS guarantee.",
+    "Snapshots remain linear but bounded32MiB/1000files/64mutations; controlled repeated-copy compression profile is not diverse workload evidence.",
+    "No forced container restart, cross-container routing proof, hardware validation, universal equivalence, causal localization or new population-performance claim.",
+    "Existingv0.1.0 packages/tag remain b65dcb60fb216e802b2ff7d71a970169a6c059a2 and omit later hosting changes."
+  ],
+  "verification_tooling": "Later documentation/test-only follow-up; not claimed inside deployed source snapshot"
+}

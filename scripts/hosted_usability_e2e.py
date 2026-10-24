@@ -18,6 +18,14 @@ def run(base,out):
         page.get_by_label('Guided circuit',exact=True).select_option('cat')
         expect(page.get_by_text('QASMBench entangled cat reference',exact=True)).to_be_visible()
         page.get_by_role('button',name='Start with Z measurements').click()
+        transport_errors=[]
+        def completed_operation_id():
+            saved=json.loads(page.evaluate("sessionStorage.getItem('qfault-guided-demo-v1-cat')"));oid=saved['pending']['operationId']
+            for _ in range(3):
+                value=page.evaluate('''async id=>{const r=await fetch('/api/operations/'+id,{signal:AbortSignal.timeout(20000)});return {status:r.status,body:await r.json()}}''',oid)
+                if value['status']==200 and value['body']['state']=='COMPLETED':return value['body']['result_id']
+                page.wait_for_timeout(1000)
+            raise AssertionError('Original operation is not durably completed; no POST was retried')
         lost=[];before_admission=[]
         page.route('**/api/lab/investigations',lambda route:before_admission.append(route),times=1)
         page.get_by_role('button',name='Run Z-only measurement').click()
@@ -28,8 +36,13 @@ def run(base,out):
         expect(page.get_by_text('No durable operation is visible in this browser session yet.',exact=False)).to_be_visible(timeout=30000)
         used=page.evaluate('async()=>{const r=await fetch("/api/session");return (await r.json()).used_operations}')
         assert used==0,'Unadmitted request must not spend allowance'
-        response=before_admission[0].fetch(timeout=120000);assert response.status==201
-        lost.append(response.json()['experiment_id']);before_admission[0].abort('failed')
+        try:
+            response=before_admission[0].fetch(timeout=120000);assert response.status==201
+            lost.append(response.json()['experiment_id'])
+        except Exception as exc:
+            transport_errors.append({'stage':'z','type':type(exc).__name__,'detail':(str(exc).splitlines() or ['empty'])[0][:200]})
+            lost.append(completed_operation_id())
+        before_admission[0].abort('failed')
         expect(page.get_by_text('Completion unknown',exact=True)).to_be_visible(timeout=120000)
         page.reload();expect(page.get_by_text('Completion unknown',exact=True)).to_be_visible(timeout=90000)
         page.get_by_role('button',name='Recover existing operation',exact=True).click()
@@ -37,16 +50,21 @@ def run(base,out):
         assert z.get_attribute('data-experiment-id')==lost[0]
         assert 'NO_SIGNIFICANT_DISCREPANCY' in z.inner_text()
         page.get_by_role('button',name='Add complementary evidence').click()
-        held=[]
+        held=[];phase_mode=['held']
         def hold_completed_response(route):
-            response=route.fetch(timeout=120000);assert response.status==201
-            held.append(response.json()['experiment_id'])
-            # Intentionally do not fulfill the browser response. Server work is done.
+            try:
+                response=route.fetch(timeout=120000);assert response.status==201
+                held.append(response.json()['experiment_id'])
+                # Intentionally do not fulfill the browser response. Server work is done.
+            except Exception as exc:
+                transport_errors.append({'stage':'phase','type':type(exc).__name__,'detail':(str(exc).splitlines() or ['empty'])[0][:200]})
+                phase_mode[0]='lost_in_transport';held.append(None);route.abort('failed')
         page.route('**/api/lab/investigations',hold_completed_response,times=1)
         page.get_by_role('button',name='Run complementary measurement').click()
         until=time.monotonic()+90
         while not held and time.monotonic()<until:page.wait_for_timeout(100)
         assert held,'No durable phase result was observed'
+        if held[0] is None:held[0]=completed_operation_id()
         expect(page.get_by_test_id('outcome-phase')).to_have_count(0)
         page.get_by_role('button',name='Recover existing operation',exact=True).click()
         expect(page.get_by_test_id('outcome-phase')).to_contain_text('SIGNIFICANT_DISCREPANCY',timeout=90000)
@@ -87,7 +105,7 @@ def run(base,out):
         assert page.evaluate('async id=>(await fetch("/api/experiments/"+id)).status',eid)==404
         assert not errors,errors
         proof={'passed':True,'example':'qasmbench-cat-phase-v1','lost_response_recovered_same_id':lost[0],
-               'stalled_response_recovered_same_id':held[0],'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,'unadmitted_lookup_retains_pending_without_cost':True,
+               'stalled_response_recovered_same_id':held[0],'phase_response_mode':phase_mode[0],'transport_errors':transport_errors,'recovery_id':eid,'cost':value['body']['investigation']['cost'],'history_count':3,'unadmitted_lookup_retains_pending_without_cost':True,
                'complete_export_verified':True,'isolated':True,'disposable_session_deleted':True,
                'mobile_widths':[390,375,360],'reduced_motion':True,'page_errors':errors,
                'scope':'Actual browser/provider/Aer. Only one response was deliberately dropped AFTER durable completion; no success response was mocked.'}
