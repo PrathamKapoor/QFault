@@ -38,7 +38,7 @@ jobs:
       - run: npm --prefix web ci
       - run: npm --prefix web run check
       - name: Guided stage and duplicate-admission regressions
-        run: node --test tests/guided-session.test.mjs
+        run: node --test tests/*.test.mjs
       - run: npm --prefix web run build
       - run: python -m pytest tests -q
       - name: Deterministic Aer execution smoke

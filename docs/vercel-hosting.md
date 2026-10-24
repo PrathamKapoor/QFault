@@ -152,3 +152,98 @@ No paid upgrades, provider charges or hardware jobs were enabled. Quota exhausti
 network failures and unknown completion remain possible; inspect history before
 resubmitting and export important reports. Deployment runtime is Vercel Linux
 Python3.13; local verification was Windows x86-64 Python3.13.2/Node24.19.0.
+
+
+## Hosted usability and reliability update (2026-10-24)
+
+Implementation starts at0f2da99; deployment remains the older recorded source until
+preview and production gates below are executed. Do not relabelv0.1.0 packages.
+
+The first-screen primary action is **Run the guided demo**. The quick QRNG lesson
+and separately imported **four-qubit cat/GHZ** lesson both use ordinary validated
+engine requests. Reference/candidate identities and independent declared contracts
+stay distinct. Result summaries lead with the actual verdict/edit/total and fresh
+shots/scope. TV and Pauli intervals display physical-domain intersections only;
+advanced inspection retains raw intervals/tolerance/units. Loss/improvement and
+stored/exported records are unchanged.
+
+Browser requests share bootstrap/read/validation/execution classes. Bootstrap and
+safe reads have20s deadlines and at most3transient attempts (500/1000ms backoff).
+Validation has30s, execution280s, no automatic execution retry. Timers/controllers
+are cleaned up; timeouts only stop waiting. Invalid schema/auth errors do not
+blindly retry. Busy responses remain explicit. Completed IDs invalidate shared
+history with newer-response guards; replay retains separate identities.
+
+Hosted execution sends X-QFault-Operation:operation_<32hex>, bound durably to its
+browser session, method/path and canonical validated JSON request. GET
+/api/operations/{id} returns RUNNING/COMPLETED/FAILED/UNKNOWN and a result identity/
+path when available. The guide's **Recover existing operation** looks up the saved
+operation after refresh/lost response, then loads the existing result. The generic
+session controls can recover the last submitted operation. Same ID/different
+request409; another session404. Expired RUNNING stays UNKNOWN, never resubmitted.
+Crash before durable result commit can lose unsaved evidence; this is not universal
+exactly-once execution. Result files and completion commit together in one snapshot.
+
+**Session controls** show remaining64admitted mutations, access expiry, export and
+confirmed deletion. Validation/status/report reads do not spend mutation allowance;
+replay/challenge transitions/reviews do. GET /api/session/export returns a complete
+ZIP of accessible completed ordinary/public challenge reports with raw manifests
+and member hashes,4MiB compressed/32MiB expanded bound. Corrupt/missing required
+records refuse a complete export. Independently verify downloaded bytes:
+
+```text
+python -m scripts.verify_session_export qfault-session-reports.zip
+```
+
+POST /api/session/delete requires explicit confirmation, refuses an active lease,
+CAS-removes content, leaves a tiny anti-resurrection tombstone, and expires the
+cookie. Client state clears only after confirmed success. If that response is lost,
+POST /api/hosted-session with reset:true only opens a new session after checking a
+tombstone; it refuses to reset an intact session. Existing reports in other browser
+sessions are unaffected. Tests use disposable sessions only.
+
+New snapshots have prospective90day cleanup eligibility metadata. Existing legacy
+snapshots without it retain all records and no retroactive expiry. Cookie expiry
+is not deletion. Eligible prospective content is purged on access or an explicit
+bounded operator sweep; **no background schedule is configured or claimed**.
+Operator command, using a private CLI-managed Blob environment and private JSON
+array of at most100session IDs:
+
+```text
+python -m scripts.cleanup_hosted_sessions --session-list PRIVATE_SESSION_LIST.json
+python -m scripts.cleanup_hosted_sessions --session-list PRIVATE_SESSION_LIST.json --apply
+```
+
+Default dry run reports counts only. Apply skips legacy and active snapshots, uses
+conditional tombstones, never prints session IDs or credentials. Do not feed owner
+sessions into disposable tests. An automated legacy-retention migration remains
+unauthorized; no existing records were deleted or shortened here.
+
+Aggregate admission uses one shared conditional private Blob record, one active
+slot,330s lease versus configured300s function maximum, immediate busy/no queue.
+At most100admissions/5million reserved shot ceilings per UTCday; hosted custom
+request cap250000shots/160evaluations/120cooperative seconds. Template/challenge
+existing600evaluation bound remains. Replay derives the ceiling from its validated
+saved request. These are conservative admission reservations, not measured shot
+costs. Busy/invalid/cost refusal spends no session allowance. No IP identifiers are
+collected. Safety assumes provider function-duration enforcement; no independent
+hard backend cancellation is claimed. Reads/bootstrap/HTTP traffic can still
+consume provider quotas; this is not comprehensive public denial-of-service
+protection. Hobby quota exhaustion fails closed, without paid upgrades.
+
+Storage profile and actual provider evidence: [hosted-storage-profile.json](hosted-storage-profile.json).
+Retain atomic bounded snapshots with schema2 length/digest-checked lossless
+zlib/base64 wire envelope; legacy schema1 reads supported. Scientific JSON strings
+are identical after decode. Transfer and restore still grow linearly, bounded by
+32MiB/1000files/64mutations. Controlled64copies shrink25.9MB to1.53MB; this is not
+a diverse-workload benchmark. Actual disposable1/4copy provider probes verify
+roundtrip/stale-writer rejection; their corrected instrumentation counts failed
+conditional PUTs as requests. No multi-object/orphan migration is introduced.
+
+Validation commands include the full Python suite, all Node controller tests,
+local/hosted check/build, actual Aer, existing archive verifiers, local guide and
+keyboard/mobile/error paths, then actual preview/production scripts.hosted_smoke
+and scripts.hosted_usability_e2e. The latter deliberately loses one real response
+after durable completion, restores the original operation, runs the entangling
+example, verifies export-all/isolation and deletes only its disposable session.
+Deployment results and exact source are added after actual execution.

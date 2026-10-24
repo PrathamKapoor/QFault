@@ -54,25 +54,35 @@
     "profiles": [
       {
         "copied_reports": 1,
-        "end_to_end_seconds": 2.1860324000008404,
+        "end_to_end_seconds": 1.9903229999981704,
         "transport": [
           {
             "method": "PUT",
             "written_bytes": 26170,
             "read_bytes": 593,
-            "seconds": 0.7175792000016372
+            "seconds": 0.5868210000007821,
+            "failed": false
           },
           {
             "method": "GET",
             "written_bytes": 0,
             "read_bytes": 682,
-            "seconds": 0.5107625999989978
+            "seconds": 0.43096959999820683,
+            "failed": false
           },
           {
             "method": "GET",
             "written_bytes": 0,
             "read_bytes": 26170,
-            "seconds": 0.507372199997917
+            "seconds": 0.528248499998881,
+            "failed": false
+          },
+          {
+            "method": "PUT",
+            "written_bytes": 26170,
+            "read_bytes": 0,
+            "seconds": 0.42285350000020117,
+            "failed": true
           }
         ],
         "exact_roundtrip": true,
@@ -80,25 +90,35 @@
       },
       {
         "copied_reports": 4,
-        "end_to_end_seconds": 2.8734793000003265,
+        "end_to_end_seconds": 3.7355214999988675,
         "transport": [
           {
             "method": "PUT",
             "written_bytes": 97487,
             "read_bytes": 593,
-            "seconds": 0.829851399998006
+            "seconds": 1.3687411999999313,
+            "failed": false
           },
           {
             "method": "GET",
             "written_bytes": 0,
             "read_bytes": 682,
-            "seconds": 0.4174579000027734
+            "seconds": 0.4507037000003038,
+            "failed": false
           },
           {
             "method": "GET",
             "written_bytes": 0,
             "read_bytes": 97487,
-            "seconds": 0.6599315000021306
+            "seconds": 1.051223200000095,
+            "failed": false
+          },
+          {
+            "method": "PUT",
+            "written_bytes": 97487,
+            "read_bytes": 0,
+            "seconds": 0.7825641999988875,
+            "failed": true
           }
         ],
         "exact_roundtrip": true,
@@ -107,5 +127,6 @@
     ],
     "independent_admission_busy_release": true
   },
-  "decision": "Retain bounded atomic snapshots with lossless compressed wire envelope; no immutable multi-object index migration. Exact embedded scientific strings preserved. Linear restore still bounded by32MiB/1000files/64mutations. Copy profile is not a diversity or availability benchmark."
+  "decision": "Retain bounded atomic snapshots with lossless compressed wire envelope; no immutable multi-object index migration. Exact embedded scientific strings preserved. Linear restore still bounded by32MiB/1000files/64mutations. Copy profile is not a diversity or availability benchmark.",
+  "profile_revision_note": "Follow-up instrumentation records failed conditional PUT as a storage request as well; earlier probe retained under artifacts. Both exact roundtrips and stale rejections pass."
 }

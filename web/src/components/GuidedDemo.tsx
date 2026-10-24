@@ -33,7 +33,7 @@ function Outcome({runKey,result}:{runKey:string;result:Data}){
   <div className="guided-cost"><strong>{count(result.cost?.shots)} shots</strong><span>{count(result.cost?.evaluations)} executions</span></div>
   <p className="guided-id">Investigation <code>{result.experiment_id}</code></p>
   {result.claims&&<details><summary>Per-observable evidence</summary><Claims rows={result.claims}/></details>}
-  {result.readout_control&&<p>Readout control: observed zero-state discrepancy {result.readout_control.tv.toFixed(3)} ± {result.readout_control.radius.toFixed(3)} TV distance. {result.readout_control.significant?'Significant; no edit recommended.':'This control does not rule out every gate-noise or state-dependent process.'}</p>}
+  {result.readout_control&&<p>Readout control: observed zero-state discrepancy <ClaimInterval claim={{kind:'distribution',estimate:result.readout_control.tv,uncertainty_radius:result.readout_control.radius}}/> TV distance. {result.readout_control.significant?'Significant; no edit recommended.':'This control does not rule out every gate-noise or state-dependent process.'}</p>}
   {result.verification?.reason&&<p>{result.verification.reason}</p>}
  </section>;
 }
@@ -78,14 +78,14 @@ function GuidedJourney({navigate,example,onBusy}:{navigate:(route:string)=>void;
  const spec=catalog?.requests[activeKey];
  const pending=guide.pending;
  useEffect(()=>onBusy(Boolean(pending)),[pending,onBusy]);
- useEffect(()=>{let live=true;const controller=new AbortController();setError('');demoRequest('/api/guided-demo?example='+example,undefined,{signal:controller.signal}).then(data=>{if(live)setCatalog(data)}).catch(e=>{if(live)setError(e.message)});return()=>{live=false;controller.abort()}},[loadToken]);
- useEffect(()=>{let live=true;const entries=Object.entries(initial.session.ids);
-  Promise.allSettled(entries.map(([,id])=>demoRequest('/api/experiments/'+id))).then(rows=>{
+ useEffect(()=>{let live=true;const controller=new AbortController();setError('');demoRequest('/api/guided-demo?example='+example,undefined,{signal:controller.signal}).then(data=>{if(!data||data.schema_version!==1||!data.requests||!data.source)throw new ApiError(422,'Unsupported demonstration input schema. No execution started.');if(live)setCatalog(data)}).catch(e=>{if(live)setError(e.message)});return()=>{live=false;controller.abort()}},[loadToken]);
+ useEffect(()=>{let live=true;const controller=new AbortController();const entries=Object.entries(initial.session.ids);
+  Promise.allSettled(entries.map(([,id])=>demoRequest('/api/experiments/'+id,undefined,{signal:controller.signal}))).then(rows=>{
    if(!live)return;const restored:Record<string,Data>={},failures:string[]=[];
    rows.forEach((row,i)=>{const [key,id]=entries[i];if(row.status==='fulfilled'&&row.value.experiment_id===id)restored[key]=row.value;else failures.push(key+': '+(row.status==='rejected'?row.reason.message:'identity mismatch'))});
    setRecords(restored);if(failures.length){setError('A saved investigation could not be restored: '+failures.join('; '));setWarning('Available records were restored. Missing records are not substituted or rerun; inspect history or start a new guide.')}
-  }).finally(()=>{if(live)setRestoring(false)});return()=>{live=false}},[]);
- useEffect(()=>{if(!spec)return;let live=true;setChecked(null);demoRequest('/api/lab/validate',spec.validation_body).then(data=>{if(live)setChecked(data)}).catch(e=>{if(live)setError('Feasibility validation failed: '+e.message)});return()=>{live=false}},[catalog,activeKey]);
+  }).finally(()=>{if(live)setRestoring(false)});return()=>{live=false;controller.abort()}},[]);
+ useEffect(()=>{if(!spec)return;let live=true;const controller=new AbortController();setChecked(null);demoRequest('/api/lab/validate',spec.validation_body,{signal:controller.signal}).then(data=>{if(live)setChecked(data)}).catch(e=>{if(live)setError('Feasibility validation failed: '+e.message)});return()=>{live=false;controller.abort()}},[catalog,activeKey]);
  useEffect(()=>{if(!pending||pending.phase==='unknown')return;const update=()=>setElapsed(Math.max(0,(Date.now()-pending.startedAt)/1000));update();const timer=setInterval(update,250);return()=>clearInterval(timer)},[pending?.startedAt,pending?.phase]);
  useEffect(()=>{if(content.current?.offsetParent!==null){content.current?.focus({preventScroll:true});content.current?.scrollIntoView({block:'start',behavior:'instant'})}},[guide.stage,guide.mode]);
 
@@ -145,7 +145,7 @@ function GuidedJourney({navigate,example,onBusy}:{navigate:(route:string)=>void;
   {error&&<div role="alert" className="guided-error"><strong>The operation did not complete as requested.</strong><p>{error}</p><p>No successful result is substituted. Completed investigations remain preserved.</p>{!catalog&&<button className="button secondary" onClick={()=>setLoadToken(n=>n+1)}>Retry loading inputs</button>}</div>}
   {restoring&&<p role="status">Restoring completed investigation identities…</p>}
   {pending?.operationId&&<div className="guided-note"><p className="guided-id">Operation <code>{pending.operationId}</code></p><button className="button secondary" onClick={recover}>Recover existing operation</button></div>}
-  {pending&&<div className="guided-running" role="status"><strong>{pending.phase==='unknown'?'Completion unknown':pending.phase==='validating'?'Validating the declared setup':'Executing real Qiskit Aer measurements'}</strong><p>{pending.phase==='unknown'?'Refresh or connection loss does not stop the server. Inspect history before another execution.':`${elapsed.toFixed(1)} seconds elapsed. ${pending.key==='recovery'||pending.key==='replay'?'Screening, selection freeze and fresh paired confirmation run inside one operation.':'Waiting for the actual measured result.'} No per-job percentage is reported.`}</p></div>}
+  {pending&&<div className="guided-running" role="status"><strong>{pending.phase==='unknown'?'Completion unknown':pending.phase==='validating'?'Validating the declared setup':'Waiting for admitted measurements and their result'}</strong><p>{pending.phase==='unknown'?'Refresh or connection loss does not stop the server. Inspect history before another execution.':`${elapsed.toFixed(1)} seconds elapsed. ${pending.key==='recovery'||pending.key==='replay'?'Screening, selection freeze and fresh paired confirmation run inside one operation.':'Waiting for the actual measured result.'} No per-job percentage is reported.`}</p></div>}
   {!catalog&&!error&&<p role="status">Loading source-qualified demonstration inputs…</p>}
   {catalog&&<>
    {guide.mode==='phase'&&<nav className="guided-steps" aria-label="Guided stages">{STEPS.map(([key,title],i)=><button key={key} aria-label={`Stage ${i+1}: ${title}`} aria-current={guide.stage===key?'step':undefined} disabled={disabled||!canVisit(key,records,inspected)} onClick={()=>move(key)}><span>{String(i+1).padStart(2,'0')}</span>{title}</button>)}</nav>}

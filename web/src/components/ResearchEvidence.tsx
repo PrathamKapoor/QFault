@@ -1,10 +1,11 @@
 import React,{useEffect,useState} from 'react';
 import './ResearchEvidence.css';
+import {demoRequest} from '../guided/api';
 type Data=Record<string,any>;
 
 export default function ResearchEvidence(){
  const [data,setData]=useState<Data|null>(null),[error,setError]=useState('');
- useEffect(()=>{let active=true;fetch('/api/research').then(async r=>{if(!r.ok)throw new Error('Research evidence is unavailable');return r.json()}).then(v=>{if(active)setData(v)}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[]);
+ useEffect(()=>{let active=true;const controller=new AbortController();demoRequest('/api/research',undefined,{signal:controller.signal}).then(v=>{if(active)setData(v)}).catch(e=>{if(active)setError(e.message)});return()=>{active=false;controller.abort()}},[]);
  if(error)return <p role="status">{error}. No result is substituted.</p>;
  if(!data)return <p role="status">Loading recorded research evidence…</p>;
  const conservative=data.recovery.conservative,point=data.recovery.point_discrepancy;

@@ -172,6 +172,16 @@ class HostedApp:
         path=scope.get('path','');method=scope['method']
         cookie_header=f'{COOKIE}={cookie}; Path=/; Max-Age={AGE}; Secure; HttpOnly; SameSite=Lax'
         if method=='POST' and path=='/api/hosted-session':
+            try:
+                setup,receive=await read_body(receive)
+                if setup!={} and (not isinstance(setup,dict) or set(setup)!={'reset'} or setup['reset'] is not True):return await error(422,'Unsupported session setup')
+                if setup.get('reset'):
+                    old,_=await asyncio.to_thread(self.storage.read,sid)
+                    if not old.get('deleted_at'):return await error(409,'Existing session has not been deleted; reset refused')
+                    sid,cookie=self.session({})
+                    cookie_header=f'{COOKIE}={cookie}; Path=/; Max-Age={AGE}; Secure; HttpOnly; SameSite=Lax'
+            except (ValueError,UnicodeError):return await error(422,'Invalid session setup')
+            except OSError:return await error(503,'Session storage is unavailable; reset is not confirmed')
             return await JSONResponse({'hosting':{'persistence':'private Vercel Blob','session_scope':'browser cookie','operation_limit':64}},headers={'Set-Cookie':cookie_header,'Cache-Control':'private, no-store'})(scope,receive,send)
         stateless=(method in ('GET','HEAD') and (path in ('/api/health','/api/research','/api/guided-demo','/api/circuits','/api/benchmark','/api/evaluation','/api/lab/examples','/api/benchmark/report','/api/evaluation/report') or path.startswith('/api/contracts/'))) or (method=='POST' and path=='/api/lab/validate')
         mutate=method not in ('GET','HEAD','OPTIONS') and not stateless

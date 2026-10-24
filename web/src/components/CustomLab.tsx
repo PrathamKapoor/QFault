@@ -33,7 +33,7 @@ function Intervals({claims}:{claims:Data[]}){
  const rows=claims.filter(c=>c.estimate!=null);if(!rows.length)return null;
  const dist=rows[0].kind==='distribution';const lo=dist?0:-1,hi=dist?1:1,W=640,L=150,span=W-L-20,x=(v:number)=>L+(Math.min(hi,Math.max(lo,v))-lo)/(hi-lo)*span;
  return <svg className="lab-intervals" viewBox={`0 0 ${W} ${rows.length*38+34}`} role="img" aria-label="Estimates with uncertainty intervals and tolerance bands per declared claim">
- {rows.map((c,i)=>{const y=24+i*38,e=c.kind==='distribution'?0:c.expected;return <g key={c.claim_id}>
+ {rows.map((c,i)=>{const y=24+i*38,e=c.kind==='distribution'?0:c.expected;if(displayInterval(c.interval,c.kind==='distribution'?'tv':'pauli').state==='inconsistent')return <text key={c.claim_id} x={8} y={y}>Inconsistent interval: inspect raw evidence</text>;return <g key={c.claim_id}>
   <text x="8" y={y+4} className="axis">{c.claim_id}</text>
   <rect x={x(e-c.tolerance)} y={y-9} width={Math.max(2,x(e+c.tolerance)-x(e-c.tolerance))} height="18" rx="3" fill="var(--slate)" opacity=".25"><title>tolerance band</title></rect>
   <line x1={x(displayInterval(c.interval,c.kind==='distribution'?'tv':'pauli').display?.[0]??0)} x2={x(displayInterval(c.interval,c.kind==='distribution'?'tv':'pauli').display?.[1]??0)} y1={y} y2={y} stroke={c.status==='VIOLATED'?'#c0392b':c.status==='UNRESOLVED'?'#b8860b':'#2e7d32'} strokeWidth="4"/>

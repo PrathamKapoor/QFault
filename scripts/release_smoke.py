@@ -46,7 +46,7 @@ def main():
         page.goto(a.base + "/")
         expect(page.locator(".entry__stage canvas[data-engine]")).to_be_attached(timeout=30000)
         engine = page.locator(".entry__stage canvas").get_attribute("data-engine")
-        page.get_by_role("button", name="Enter Workbench", exact=True).first.click()
+        page.get_by_role("button", name="Open workbench", exact=True).first.click()
         expect(page.get_by_role("heading", name="Quantum investigation intelligence.")).to_be_visible(timeout=30000)
         response = ctx.request.post(a.base + "/api/lab/investigations",
                                     data={"circuit": BELL, "contract": TARGET, "backend": "aer"}, timeout=180000)

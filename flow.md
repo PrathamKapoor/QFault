@@ -724,3 +724,15 @@ ID-only tab session suffix, same ordinary engine routes/stages/export/replay.
 No benchmark, frozen source archive, reference source or scientific policy changes.
 | Entangling lesson | Pinned cat/GHZ source, independent analytical contracts and separate guided session | build_entangling_demo.py; cat-phase-demo.json; demo.py; api.py; GuidedDemo.tsx; tests | uncommitted | D-093 |
 D-092 implementation: c7f087160626ecb43be3ea9f3d6e93c4c3c8d0cf.
+
+Confirmed deletion recovery: POST /api/hosted-session {reset:true} → read current
+session tombstone → only if deleted, mint new signed capability. Intact sessions
+return409; unavailable store503; no data/quota reset is assumed. SessionControls
+clears qfault tab state only after the confirmed response. Session ZIP independent
+CLI scripts.verify_session_export reads at most4MiB+1 before verify_session_export.
+Actual hosted acceptance driver drops a route response only after forwarding the
+real request/durable completion; subsequent recovery is GET status/result, not a
+mocked success or repeated POST. It runs cat/Z/phase/recovery, complete export,
+separate-browser404 and disposable deletion. All Node tests now run in CI.
+| Assembled checks | Correct observed error/deletion-read edge cases, retain semantic browser assertions and document operation/session/resource boundaries | D-094 files | uncommitted | D-094 |
+D-093 implementation:506b47ab316725825d86676083ec18d00720c2ae.

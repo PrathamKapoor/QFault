@@ -1,133 +1,138 @@
-ACTIVE 2026-10-24 owner-authorized hosted usability: partial. Starting clean
-feat/vercel-hosting0f2da99, upstream0/0 and CI40002926091 success. Original main
-and three dirty root docs preserved. Read docs/hosted-usability-ledger.md. A/B/C
-implemented with presentation, history, classified requests and durable operation
-IDs. Node9tests/typecheck passed;19hosting/operation tests and additional5operation
-concurrency tests passed. D controls tests currently red and not part of A–C commit.
-Continue D→E→F→G; do not stop at plan. Production remains prior502a416 until gates.
-No scientific/frozen source or data changes. D-087–D-090 record current choices.
-
-# QFault handoff — public interactive Vercel delivery
+# QFault handoff — hosted usability validation in progress
 
 ## 1. Current Phase
 
-Full interactive hosting implemented and production browser/API behavior verified,
-2026-10-23. Status: complete for deployment, with intermittent probe limitations
-below. Deployed source502a416519c2bb1d99265991d4cf5e290e37ba94;
-https://qfault.vercel.app/#/demo. Current documentation/test-log follow-up is
-uncommitted at write time; Git history identifies its own commit.
+2026-10-24 hosted usability/reliability implementation. Status partial: A–F
+implemented, G local/provider checks mostly pass; new preview/production deployment
+not yet performed. Starting branch feat/vercel-hosting at0f2da99f0f3d8c2290c7bb68f21d33de8b79c0c1.
+Current committed HEAD506b47ab316725825d86676083ec18d00720c2ae; G changes uncommitted; final550suite143.92s and final hosted check/build now passed.
+Production still prior502a416, dpl_EZyabyX6wKrTcYA8o394twpPqXin, qfault.vercel.app.
 
 ## 2. Work Completed
 
-Owner approved Vercel login and full live measurements/private saved reports.
-Opt-in hosting adapter wraps the existing scientific API, using signed browser
-capabilities, private Blob snapshots, ETag-fenced leases and commit-before-response.
-Hosted frontend initializes its cookie before loading workbench requests and
-explains report access/limits. Initial read-only import/native dependency selection
-failures were corrected without changing the original scientific API or locks.
-Actual provider consistency/CAS checks, corrected preview API/browser checks and
-production real browser plus separate API privacy/blind checks passed. Public
-Vercel login protection disabled only for new qfault project, not unrelated trial.
-No paid plan or service enabled. Failed/intermittent probes remain documented.
+A: dynamic compact ResultSummary and display-only TV/Pauli physical intersections;
+raw values/decisions unchanged, inconsistent intervals explicit. B: guided hero
+primary CTA, secondary workbench, grouped rail/legacy URLs, shared guarded history
+invalidation and hosted wording. C: bounded classified request client, durable
+session-scoped operation IDs/fingerprints/status, no duplicate execution, explicit
+unknown lookup/restoration. D: remaining quota/access, bounded complete export-all
+with independent verifier, confirmed tombstone deletion, prospective90day cleanup
+metadata; legacy retention preserved. E: globally conditional one-slot admission,
+100admissions/5million reserved upper shots per UTCday; lossless compressed atomic
+snapshots justified by controlled and actual provider profiles. F: imported pinned
+cat/GHZ example with independent analytical contracts, real engine2tests passed.
+G: new real hosted acceptance script deliberately drops a genuine completed response
+then recovers it, verifies cat/export/isolation/deletion/mobile; not yet executed.
 
 ## 3. Files Changed
 
-Implementation13c121d: qfault/hosting.py, api/index.py, vercel.json,
-.python-version, requirements.txt, .vercelignore, .gitignore, hosted UI bootstrap/
-notice, tests/test_hosting.py, README/root docs and hosting guides.
-Correction502a416: api/index.py scratch bootstrap, api/pyproject.toml/api/uv.lock
-with exact original dependency artifacts, tests/test_hosted_entrypoint.py,
-scripts/hosted_smoke.py and documentation. Current follow-up: README public link,
-hosting guide/plan, root records and bounded safe smoke failure diagnostics.
+See decisionsD-087–D-094 and docs/hosted-usability-ledger.md. New hosted_operations,
+hosted_retention, hosted_admission, hosted_codec, session_export; bounded request/
+history/presentation helpers; ResultSummary/SessionControls; cat fixture/builder;
+regression tests/profile/provider/cleanup/export-verifier/browser scripts. Only
+qfault/api.py change is presentation catalog whitelisted example query. Frozen
+mathematical modules, benchmark/config bytes and dependency locks unchanged.
 
 ## 4. Current Architecture / State
 
-Isolated C:/Projects/QFault-Hosting, feat/vercel-hosting, intended origin
-https://github.com/PrathamKapoor/QFault. Branch source502a416 pushed and verified
-0ahead/0behind before this follow-up. Original C:/Projects/QFF main287dd4f and its
-three dirty root operational documents remain preserved. Local combined frontend/
-API was started on127.0.0.1:8000; do not kill unknown processes. Existing recovery
-worktree and immutable v0.1.0 release/tag/packages remain unchanged.
-Vercel Hobby team hex-sembly, project qfault. Private qfault-investigations Blob
-store; credentials CLI-managed or ignored local environment, never in Git.
-Production dpl_EZyabyX6wKrTcYA8o394twpPqXin READY and stable alias verified.
-Corrected preview dpl_jPcZxcUsHbAUrQpP3yRPFhv2vgh9 passed combined smoke.
-Promotion created a new asynchronous production deployment, not the preview ID.
+Work in C:/Projects/QFault-Hosting. Original C:/Projects/QFF main287dd4f and dirty
+decisions/flow/handoff are preserved. Recovery worktree and v0.1.0 assets preserved.
+Hosting commits not yet pushed this session: e507f33a8aeb867c1ecbe6ca7cdab551888714ce
+(A–C), ad61f6d611547a084b2671ab6688f83c646576af(D),
+c7f087160626ecb43be3ea9f3d6e93c4c3c8d0cf(E),506b47ab316725825d86676083ec18d00720c2ae(F).
+All owner author/committer verified. Local test server8003, PID24008/session77161,
+artifacts/usability/local-investigations. Current frontend dist was rebuilt hosted
+for build validation, so local service UI now needs an ordinary build before local
+browser checks. Do not stop original8000 or unknown processes.
+Vercel auth already approved; Hobby hex-sembly existing qfault project/private
+qfault-investigations store. Secrets CLI-managed or ignored .local/hosting.env;
+do not print them or rerun original provider_probe.py which tries env key creation.
 
 ## 5. Decisions Made
 
-D-079 preserved local startup notes. D-080 private hosted wrapper; D-081 actual
-cache=0 consistent reads; D-082 cookie bootstrap/privacy UI; D-083 initial deployment
-setup; D-084 observed import/native-lock fixes; D-085 public access/live smoke;
-D-086 safe diagnostic logs and exact public verification scope. Implementation
-identities: D-080–083=13c121db7e4b99bc6588203069ae17dfdec49d7a;
-D-084–085=502a416519c2bb1d99265991d4cf5e290e37ba94. Append-only history preserved.
+D-087 baseline/plan;088 display/summary;089 navigation/history;090 operation recovery;
+091 session export/deletion/prospective retention;092 global admission/compression;
+093 entangling lesson;094 actual validation gaps, safe reads/error/deletion recovery.
+Identity records in flow; own current follow-up remains uncommitted at write time.
 
 ## 6. Requirements and Constraints
 
-Exact owner author AND committer required; no coauthors/tool signatures. Preserve
-science/protocols/raw evidence/hero, unrelated files and original main dirty docs.
-No paid upgrades, secrets in output, force-push, history rewrite, competition
-submission or external messages. Never commit paper/, research/ or .tex. Do not
-claim old v0.1.0 package includes new hosting. User authorized public hosting.
+Finish authorized complete scope, sequential dependencies, no further permission
+needed for validated existing-project preview/promotion. Preserve science, reports,
+hero rendering, private data, legacy access, old release. No paid upgrade, secret
+rotation, force push/history rewrite, new project, paper/research/tex commits.
+Owner exact author AND committer required. No agents. Do not auto-retry POSTs.
 
 ## 7. Testing and Verification
 
-Windows x86-64 Python3.13.2/Node24.19.0. Full assembled531passed, one existing
-Starlette/httpx warning,102.38s;17targeted hosting/entrypoint tests passed36.45s.
-Frontend npm ci/check and normal/hosted build passed, existing chunk warning.
-Real provider create/read/immediate overwrite/stale ETag rejection passed.
-Preview scripts.hosted_smoke all API and guided checks passed.
-Production python -m scripts.guided_demo_e2e --base https://qfault.vercel.app
---out artifacts/vercel-production-browser-2 passed:18POSTs, imported circuit,
-Z/phase discrepancy, fresh recovery, downloaded export independent verification,
-history/refresh/replay, noise abstention, zero-shot budget,390/375/360widths,
-no page errors. Production hosted_smoke separate API portion passed in
-artifacts/vercel-production-safe-check/api-summary.json: two-browser isolation,
-cookie-context restore, export/replay,403Origin/413body and blind lifecycle.
-Its subsequent guided repeat failed a preserved-ID locator assertion; earlier
-production probes hit ECONNRESET. Retained; no failing assertions weakened or
-POST auto-retries. Source CI40001833472 completed success for exact502a416,
-checks and browser-smoke. Vercel Linux Python3.13 actual runtime/Aer verified.
-No forced provider restart or non-Windows local platform claim. No frozen study
-rerun. Final follow-up CI must be checked independently after push.
+Starting CI0f2da99 run40002926091 success, fetched0/0. Actual current production
+inspect still old READY source; never claim new code deployed until verified.
+First assembled549passed139.97s; after reset regression550passed130.70s.
+Then strict reset:1 test exposed boolean/dict equality409vs422, fixed is True guard;
+targeted test passed6.15s; final550rerun after this guard still required.
+Node9passed including bounded retry/deadline, presentation physical boundaries,
+immutability, stage gate, stale history. npmci reports0advisories, typecheck/local
+build pass, hosted check/build currently session95941 (poll). Aer smoke counts00=506,
+11=518; pipcheck pass; pip-audit2.10.0 scoped unchanged hashed lock no known advisories.
+All three offline archive verifiers pass: external2206, historical310, replication72;
+no scientific evaluation rerun. git diff0f2da99 for benchmarks/configs/math modules/
+locks empty. Local guided main passes18POSTs/export/replay/noise/budget/mobile;
+corrected release smoke passes, guided keyboard/mobile/error suite passes after
+restoring busy context. Cinematic seven-width/reduced-motion/fallback/navigation
+suite passed at artifacts/usability/browser-local-cinematic-correct-command.
+Actual private provider compressed roundtrip/stale ETag and isolated admission
+probe passed; corrected1/4copy timings1.990/3.736s include failed CAS instrumentation.
+Profiles in docs/hosted-storage-profile.json. Real new hosted preview tests NOT RUN.
 
 ## 8. Known Issues / Risks
 
-Confirmed: intermittent production probe connection resets and preserved-ID locator
-timeout; cause UNKNOWN. Complete separate production browser and API scopes passed.
-Browser cookie capability expires30days; clearing/switching browser loses access.
-64mutation/32MiB/1000JSON per-session limits; free Hobby quotas apply. No global
-rate-limit/account recovery/provider-authenticity/hardware claim. Function300s
-limit can leave unknown completion; inspect history before resubmitting. No
-provider cold-start was forced. First failed production retained in deployment
-history; current stable alias points to corrected production.
+Current G uncommitted. Actual hosted acceptance driver not yet run; expect to fix
+real integration defects before promotion. No prior success claim substitutes.
+Historical intermittent production ECONNRESET/preserved-ID timeout remain not
+proven resolved until new actual workflow checks. No automatic cleanup schedule:
+90day eligibility, access/operator bounded purge; legacy snapshots never expired.
+Cookie access30days distinct from deletion. Tiny tombstones retained. Snapshots
+still grow linearly bounded32MiB/1000files/64mutations. Global admission assumes
+provider300s maximum;330s lease, no independent hard cancellation guarantee.
+100admissions/5million reserved ceilings per day can intentionally refuse users;
+not actual shot accounting, no global HTTP/read DoS protection. Unknown crash before
+save may lose unsaved measurements; never replay same operation automatically.
 
 ## 9. Unfinished Work
 
-Finalize reviewed documentation/log-safety follow-up, safe staged scan, owner commit,
-push hosting branch and verify exact remote SHA/CI. Do not merge into original
-dirty main automatically or redeploy docs-only changes unnecessarily. Intermittent
-probe cause remains unresolved; no scientific decision regression observed.
+Poll hosted build95941; run final550suite after strict reset guard (now passed143.92s). Commit reviewed
+G changes with docs/scan/owner identity. Push hosting branch safely, inspect exact
+source CI. Vercel CLI65.2.0 deploy explicit preview, poll READY/source. Execute real
+scripts.hosted_smoke and hosted_usability_e2e against preview sequentially, inspect
+mobile screenshot and downloaded ZIP. Correct actual failures, repeat justified
+checks. Promote only verified source; Vercel creates NEW asynchronous production
+deployment, wait stable alias READY and source. Fresh production browser full guide,
+cat/unknown recovery/session controls/isolation/deletion and negatives required.
+Final exact source/remote/CI/publicdocs verification; preserve failed probes.
 
 ## 10. Next Subphase
 
-Maintain public demo and inspect retained failures if reproducible. User already has
-verified public guided URL. No additional login or paid activation needed.
+Finish G source checks/commit/preview, not more audit/planning. Latest user says
+continue. Full implementation and deployment are authorized; no login needed.
 
 ## 11. Critical Context
 
-Stable site source is502a416 even after later docs commit. Signed cookie/key must
-remain stable; never print tokens, keys, cookies or Playwright full request logs.
-Runtime ordinary reports remain private in Blob, not Git. artifacts/local probes
-are ignored controlled test evidence. Historical releasev0.1.0 sourceb65dcb60fb216e802b2ff7d71a970169a6c059a2
-stays immutable. Source integrity differs from authenticity; no universal claims.
+Use C:/Projects/QFF/.local/contract-release/python/Scripts/python.exe. Vercel command:
+npm exec --yes --package=vercel@65.2.0 -- vercel deploy --environment preview --yes
+--no-wait --json. --dry --json inventories source; --dry-run invalid. Inspect
+--format json; deploy JSON nested deployment. Promote creates new prod asynchronously.
+Teamhex-sembly, projectqfault. Never print credential/cookie-containing full logs;
+new hosted drivers catch exception first line only. Old local scripts may log full
+Playwright traceback; sanitize cookie request headers in tool output if remote.
+Provider check script reads ignored env privately and only disposable objects,
+never rotates signing key. Source v0.1.0b65dcb6 stays unchanged. Do not claim packages
+contain hosting changes. Exact owner identities already verified four commits.
 
 ## 12. Agent Instructions
 
-Read decisions.md/flow.md/handoff.md fully and verify actual Git state before new
-work. Preserve original dirty docs and worktrees. Secrets stay ignored/CLI-managed;
-use ordinary authenticated CLI, no credential requests if login works. Verify
-production instead of trusting READY, and wait asynchronous alias promotion.
-Never auto-retry measurement POSTs. Keep failure/nonzero exit truthful and redact
-request headers. Exact source CI must be checked, not inferred from older runs.
+Read root records fully and verify state after resume; continue current work, do not
+restart science. Keep decisions append-only and flow current; final handoff rewrite
+with actual completed/pending gates. Review staged paths explicitly, scan with
+Gitleaks8.30.1 command-local safe.directory, never global Git config. Ignore scanner
+false positive only with verified scope; current one was nonsecret global namespace
+parameter, renamed namespace without allowlist. Original dirty docs remain in QFF.

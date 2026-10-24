@@ -5,6 +5,7 @@ test('safe reads retry transient failures, never authorization or invalid JSON',
  const fetcher=async()=>{calls++;if(calls<3)throw Error('offline');return new Response('{"ok":true}')};
  assert.equal((await m.jsonRequest('/read',undefined,{fetcher,backoff:1,timeout:30})).ok,true);assert.equal(calls,3);
  for(const status of [400,401,403,422]){calls=0;await assert.rejects(m.jsonRequest('/read',undefined,{fetcher:async()=>{calls++;return new Response('{"detail":"invalid"}',{status})},backoff:1}));assert.equal(calls,1)}
+ calls=0;await assert.rejects(m.jsonRequest('/read',undefined,{fetcher:async()=>{calls++;return new Response('not-json')},backoff:1}));assert.equal(calls,1);
 });
 test('execution deadline is unknown completion and never repeats the POST',async()=>{
  assert.ok(m);let calls=0;

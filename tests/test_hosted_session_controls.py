@@ -59,3 +59,14 @@ def test_operator_cleanup_dryrun_apply_legacy_and_active_guards():
  assert store.read('a'*64)[0]['files']
  assert cleanup(store,['a'*64,'b'*64,'c'*64],apply=True,now=100)['purged']==1
  assert store.read('b'*64)[0]['files'] and store.read('c'*64)[0]['files']
+
+def test_lost_delete_response_can_open_new_session_only_after_tombstone():
+ store=MemoryState();a=client(store);a.post('/api/lab/recoveries',json=fixture('budget'))
+ import httpx
+ cookies=httpx.Cookies(a.cookies);assert a.post('/api/hosted-session',json={'reset':True}).status_code==409
+ assert a.post('/api/hosted-session',json={'reset':1}).status_code==422
+ assert a.post('/api/session/delete',json={'confirm':'DELETE MY SESSION DATA'}).status_code==200
+ a.cookies.update(cookies) # Deliberately model losing the cookie-expiry response.
+ assert a.get('/api/session').status_code==410
+ assert a.post('/api/hosted-session',json={'reset':True}).status_code==200
+ assert a.get('/api/session').json()['remaining_operations']==64

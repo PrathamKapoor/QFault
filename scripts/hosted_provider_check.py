@@ -12,8 +12,10 @@ def run(report,environment,out):
         if sep and key=='BLOB_READ_WRITE_TOKEN':os.environ[key]=json.loads(value) if value.startswith('"') else value
     storage=BlobState();request=storage.request;metrics=[]
     def measured(method,url,body=None,headers=None,limit=33554432):
-        began=time.perf_counter();data,meta=request(method,url,body,headers,limit)
-        metrics.append({'method':method,'written_bytes':len(body or b''),'read_bytes':len(data or b''),'seconds':time.perf_counter()-began});return data,meta
+        began=time.perf_counter();data=None;failed=True
+        try:
+            data,meta=request(method,url,body,headers,limit);failed=False;return data,meta
+        finally:metrics.append({'method':method,'written_bytes':len(body or b''),'read_bytes':len(data or b''),'seconds':time.perf_counter()-began,'failed':failed})
     storage.request=measured;raw=Path(report).read_text();rows=[]
     for count in (1,4):
         sid=secrets.token_hex(32);state={**empty_state(),'files':{f'profile_{i}.json':raw for i in range(count)}}
